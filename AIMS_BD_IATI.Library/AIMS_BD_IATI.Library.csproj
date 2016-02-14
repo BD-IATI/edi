@@ -40,7 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parser\IParserIATI.cs" />
+    <Compile Include="Parser\ParserIATIv1\iati-activities-schema.cs">
+      <DependentUpon>iati-activities-schema.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Parser\ParserIATIv1\ParserIATIv1.cs" />
+    <Compile Include="Parser\ParserIATIv1\XmlResultv1.cs" />
     <Compile Include="Parser\ParserIATIv2\iati-activities-schema.cs">
       <DependentUpon>iati-activities-schema.xsd</DependentUpon>
     </Compile>
@@ -51,6 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+    <None Include="Parser\ParserIATIv1\iati-activities-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Parser\ParserIATIv1\iati-common.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Parser\ParserIATIv2\iati-activities-schema.xsd">
       <SubType>Designer</SubType>
     </None>
