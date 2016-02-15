@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
     /// <summary>
-    /// The "XmlResult" is wrapper calss of "iatiactivities" which was generated using following steps:
+    /// The "XmlResult" is wrapper class of "iatiactivities" which was generated using following steps:
     /// 1. "iati-activities-schema.xsd" file was downloaded from "http://iatistandard.org/201/schema/downloads/iati-activities-schema.xsd"
     /// 2. "iati-common.xsd" file was downloaded from "http://iatistandard.org/201/schema/downloads/iati-common.xsd"
     /// 3. "iati-activities-schema.cs" was generated using following Visual Studio 2013 commad tool: 

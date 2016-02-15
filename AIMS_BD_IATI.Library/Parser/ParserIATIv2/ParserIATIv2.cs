@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 //XML
 using System.Xml;
 using System.Xml.Serialization;
+//Json
+using Newtonsoft.Json;
 
 namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
