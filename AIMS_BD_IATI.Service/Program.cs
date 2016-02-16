@@ -37,7 +37,7 @@ namespace AIMS_BD_IATI.Service
             activitiesURL = "http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
             var returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
 
-            //ToDo Conversion test2
+            //ToDo Conversion integration test
             //XmlResultv2 returnResult2 = (XmlResultv1)returnResult1;
             //returnResult2.AnyAttr
             
