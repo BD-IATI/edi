@@ -18,6 +18,7 @@ namespace AIMS_BD_IATI.Service
         {
             Console.WriteLine("Parsing Started...");
             IParserIATI parserIATI;
+            IConverterIATI converterIATI;
             string activitiesURL;
             
             //Parser v2.01
@@ -29,7 +30,6 @@ namespace AIMS_BD_IATI.Service
             activitiesURL = "http://localhost:1000/UploadedFiles/activity_GB-1_2.xml"; //"http://localhost:1000/UploadedFiles/activity_CA-3_2.xml";
             var returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
             
-            
             //Parser v1.05
             parserIATI = new ParserIATIv1();
             //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=GB-1&stream=True";
@@ -37,11 +37,15 @@ namespace AIMS_BD_IATI.Service
             activitiesURL = "http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
             var returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
 
-            //ToDo Conversion integration test
-            //XmlResultv2 returnResult2 = (XmlResultv1)returnResult1;
-            //returnResult2.AnyAttr
-            
             Console.WriteLine("Parsing completed!");
+
+            Console.WriteLine("Convertion completed...");
+
+            //Conversion
+            ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
+            convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
+
+            Console.WriteLine("Convertion completed!");
             Console.ReadLine();
         }
     }
