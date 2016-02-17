@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cc867c25206d4a0d8c835534876d8cd1" Name="Diagram1">
+        <EntityTypeShape EntityType="AIMS_DBModel.tblAgreementType" Width="1.5" PointX="8" PointY="34.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblAidCategory" Width="1.5" PointX="11.25" PointY="82.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblAIDEffectivenessIndicator" Width="1.5" PointX="12.5" PointY="44.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblAIDEffectivenessPIUType" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblAIDEffectivenessResourceTiedType" Width="1.5" PointX="10.25" PointY="58.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblAIDPlanning" Width="1.5" PointX="5.25" PointY="41.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblAIDPlanningDetail" Width="1.5" PointX="7.5" PointY="41.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblApprovalAuthority" Width="1.5" PointX="8" PointY="45.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblApprovalStatu" Width="1.5" PointX="8" PointY="30.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblAssistanceType" Width="1.5" PointX="8" PointY="54.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblCommonConfiguration" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblCurrency" Width="1.5" PointX="0.75" PointY="48.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblCurrencyBB" Width="1.5" PointX="0.75" PointY="54.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblCurrencyMapping" Width="1.5" PointX="3" PointY="49.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblDistrict" Width="1.5" PointX="10.25" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblDivision" Width="1.5" PointX="8" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblDocumentCategory" Width="1.5" PointX="18.5" PointY="38.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblDocumentType" Width="1.5" PointX="18.5" PointY="51.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblExchangeRate" Width="1.5" PointX="3.75" PointY="53.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblExchangeRateDetail" Width="1.5" PointX="6" PointY="49.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblExecutingAgencyType" Width="1.5" PointX="10.25" PointY="34.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblFinancialYear" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblFundSource" Width="1.5" PointX="3" PointY="41.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblFundSourceCategory" Width="1.5" PointX="0.75" PointY="43.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblImplementationStatu" Width="1.5" PointX="8" PointY="58" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblLoanAgreement" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblLoanRepaymentType" Width="1.5" PointX="8.25" PointY="83.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblMinistry" Width="1.5" PointX="11" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblMinistryAgency" Width="1.5" PointX="13.25" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblNGOCSO" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblNGOOrganizationType" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblOrganizationType" Width="1.5" PointX="0.75" PointY="37.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectADPInfo" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectAnalyticalWorksMissionInfo" Width="1.5" PointX="15.5" PointY="44.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectAttachment" Width="1.5" PointX="20.75" PointY="45.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectExecutingAgency" Width="1.5" PointX="12.5" PointY="40" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectFundingActualDisbursement" Width="1.5" PointX="7.5" PointY="67.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectFundingCommitment" Width="1.5" PointX="10.5" PointY="63.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectFundingExpenditure" Width="1.5" PointX="13.5" PointY="62.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectFundingPlannedDisbursement" Width="1.5" PointX="13.5" PointY="70.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectGeographicAllocation" Width="1.5" PointX="12.5" PointY="51.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectGoBExecutingAgency" Width="1.5" PointX="18.5" PointY="46" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectInfo" Width="1.5" PointX="10.25" PointY="38.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectNote" Width="1.5" PointX="12.5" PointY="79" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectSectoralAllocation" Width="1.5" PointX="15.5" PointY="40" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectThematicMarker" Width="1.5" PointX="15.5" PointY="52.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectType" Width="1.5" PointX="8" PointY="61.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblRevisionStatu" Width="1.5" PointX="8" PointY="75.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblSector" Width="1.5" PointX="5.25" PointY="36" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblSectorSubSectorMap" Width="1.5" PointX="15.5" PointY="35.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblSubSector" Width="1.5" PointX="13.25" PointY="34.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblThematicMarker" Width="1.5" PointX="13.25" PointY="57.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblTrustFund" Width="1.5" PointX="5.25" PointY="96.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblTrustFundDetail" Width="1.5" PointX="10.5" PointY="73" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblUpazila" Width="1.5" PointX="10.25" PointY="77.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.TblUserActivity" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblUserFundSource" Width="1.5" PointX="5.25" PointY="45.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblUserProject" Width="1.5" PointX="18.5" PointY="42.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblUserRegistrationInfo" Width="1.5" PointX="3" PointY="35.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblUserRegistrationStatu" Width="1.5" PointX="4.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblVerificationStatu" Width="1.5" PointX="11.25" PointY="87.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AIMS_DBModel.CommonConfigType" Width="1.5" PointX="6.75" PointY="8.75" IsExpanded="true" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectInfo_tblAgreementType" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingActualDisbursement_tblAidCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingCommitment_tblAidCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingExpenditure_tblAidCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingPlannedDisbursement_tblAidCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblAIDEffectivenessIndicators_tblAIDEffectivenessResourceTiedType" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblAIDEffectivenessIndicators_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblAIDPlanning_tblFundSource" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblAIDPlanningDetail_tblAIDPlanning" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblAIDPlanningDetail_tblSector" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectInfo_tblApprovalAuthority" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectInfo_tblApprovalStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectInfo_tblAssistanceType" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblCurrencyMapping_tblCurrency" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblExchangeRateDetail_tblExchangeRateDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblFundSource_tblCurrency" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingActualDisbursement_tblCurrency" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingCommitment_tblCurrency" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingExpenditure_tblCurrency" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingPlannedDisbursement_tblCurrency" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectInfo_tblCurrency" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectInfo_tblCurrency1" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblTrustFundDetail_tblCurrency" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblCurrencyMapping_tblCurrencyBB" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblDistrict_tblDivision" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectGeographicAllocation_tblDistrict" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblUpazila_tblDistrict" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectGeographicAllocation_tblDivision" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblUpazila_tblDivision" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectAttachments_tblDocumentCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectAttachments_tblDocumentType" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblExchangeRateDetail_tblExchangeRate" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectExecutingAgency_tblExecutingAgencyType" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblFundSource_tblFundSourceCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingActualDisbursement_tblFundSource" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingCommitment_tblFundSource" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingExpenditure_tblFundSource" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingPlannedDisbursement_tblFundSource" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectInfo_tblFundSource" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblTrustFund_tblFundSource" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblTrustFundDetail_tblFundSource" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblUserFundSource_tblFundSource" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectInfo_tblImplementationStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingCommitment_tblLoanRepaymentType" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblMinistryAgency_tblMinistry" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectGoBExecutingAgency_tblMinistry" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectAnalyticalWorksMissionInfo_tblMinistryAgency" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectGoBExecutingAgency_tblMinistryAgency" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblNGOCSO_tblNGOOrganizationType" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblUserRegistrationInfo_tblOrganizationType" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectAnalyticalWorksMissionInfo_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectAttachments_tblProjectAnalyticalWorksMissionInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectAttachments_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectExecutingAgency_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingActualDisbursement_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingActualDisbursement_tblTrustFund" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingActualDisbursement_tblVerificationStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingCommitment_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingCommitment_tblTrustFund" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingCommitment_tblVerificationStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingExpenditure_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingExpenditure_tblTrustFund" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingExpenditure_tblVerificationStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingPlannedDisbursement_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingPlannedDisbursement_tblTrustFund" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingPlannedDisbursement_tblVerificationStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectGeographicAllocation_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectGeographicAllocation_tblUpazila" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectGoBExecutingAgency_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectInfo_tblProjectType" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectInfo_tblRevisionStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectNote_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectSectoralAllocation_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectThematicMarker_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblUserProject_tblProjectInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectSectoralAllocation_tblSector" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectSectoralAllocation_tblSubSector" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectThematicMarker_tblThematicMarker" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblSectorSubSectorMap_tblSector" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblSubSector_tblSector" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblSectorSubSectorMap_tblSubSector" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblTrustFundDetail_tblTrustFund" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblUserFundSource_tblUserRegistrationInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblUserProject_tblUserRegistrationInfo" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using AIMS_BD_IATI.Library;
 using AIMS_BD_IATI.Library.Parser;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv1;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+using AIMS_BD_IATI.DAL;
 
 namespace AIMS_BD_IATI.Service
 {
@@ -47,6 +47,9 @@ namespace AIMS_BD_IATI.Service
 
             Console.WriteLine("Convertion completed!");
             Console.ReadLine();
+            
+            var a = AimsDAL.getProjects("GB-1");
+            string b = a.FirstOrDefault().tblFundSource.FundSourceName;
         }
     }
 }

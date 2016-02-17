@@ -30,8 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,8 +49,233 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="AIMS_DB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AIMS_DB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AIMS_DB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AIMS_DB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AIMS_DB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="AimsDAL.cs" />
+    <Compile Include="CommonConfigType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tblAgreementType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblAidCategory.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblAIDEffectivenessIndicator.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblAIDEffectivenessPIUType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblAIDEffectivenessResourceTiedType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblAIDPlanning.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblAIDPlanningDetail.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblApprovalAuthority.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblApprovalStatu.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblAssistanceType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblCommonConfiguration.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblCurrency.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblCurrencyBB.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblCurrencyMapping.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblDistrict.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblDivision.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblDocumentCategory.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblDocumentType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblExchangeRate.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblExchangeRateDetail.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblExecutingAgencyType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblFinancialYear.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblFundSource.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblFundSourceCategory.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblImplementationStatu.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblLoanAgreement.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblLoanRepaymentType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblMinistry.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblMinistryAgency.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblNGOCSO.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblNGOOrganizationType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblOrganizationType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectADPInfo.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectAnalyticalWorksMissionInfo.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectAttachment.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectExecutingAgency.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectFundingActualDisbursement.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectFundingCommitment.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectFundingExpenditure.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectFundingPlannedDisbursement.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectGeographicAllocation.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectGoBExecutingAgency.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectInfo.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectNote.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectSectoralAllocation.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectThematicMarker.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblRevisionStatu.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSector.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSectorSubSectorMap.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSubSector.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblThematicMarker.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblTrustFund.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblTrustFundDetail.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblUpazila.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TblUserActivity.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblUserFundSource.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblUserProject.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblUserRegistrationInfo.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblUserRegistrationStatu.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblVerificationStatu.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="AIMS_DB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AIMS_DB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="AIMS_DB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AIMS_DB.edmx</DependentUpon>
+      <LastGenOutput>AIMS_DB.Context.cs</LastGenOutput>
+    </None>
+    <None Include="AIMS_DB.edmx.diagram">
+      <DependentUpon>AIMS_DB.edmx</DependentUpon>
+    </None>
+    <None Include="AIMS_DB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AIMS_DB.edmx</DependentUpon>
+      <LastGenOutput>AIMS_DB.cs</LastGenOutput>
+    </None>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

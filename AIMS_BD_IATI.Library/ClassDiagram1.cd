@@ -24,6 +24,22 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="AIMS_BD_IATI.Library.Parser.ParserIATIv1.XmlResultv1">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAACAAAAACAAAAAEBgAAAAAAA=</HashCode>
+      <FileName>Parser\ParserIATIv1\XmlResultv1.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AIMS_BD_IATI.Library.Parser.ParserIATIv2.ConvertIATIv2">
+    <Position X="4.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAABAEAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Parser\ParserIATIv2\ConvertIATIv2.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Interface Name="AIMS_BD_IATI.Library.Parser.IParserIATI">
     <Position X="3.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
@@ -36,6 +52,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Parser\IXmlResult.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AIMS_BD_IATI.Library.Parser.IConverterIATI">
+    <Position X="3.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Parser\IConverterIATI.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
