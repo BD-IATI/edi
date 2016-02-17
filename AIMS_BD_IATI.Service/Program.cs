@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using AIMS_BD_IATI.Library.Parser;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv1;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+using System.Xml.Serialization;
+using System.Xml;
 using AIMS_BD_IATI.DAL;
 
 namespace AIMS_BD_IATI.Service
@@ -44,6 +46,12 @@ namespace AIMS_BD_IATI.Service
             //Conversion
             ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
             convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
+
+            var serializer = new XmlSerializer(typeof(XmlResultv2), new XmlRootAttribute("result"));
+
+            TextWriter writer = new StreamWriter("D:\\xx.xml");
+            serializer.Serialize(writer, returnResult2);
+
 
             Console.WriteLine("Convertion completed!");
             Console.ReadLine();
