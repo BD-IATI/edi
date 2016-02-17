@@ -9,6 +9,8 @@ using AIMS_BD_IATI.Library;
 using AIMS_BD_IATI.Library.Parser;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv1;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace AIMS_BD_IATI.Service
 {
@@ -20,7 +22,7 @@ namespace AIMS_BD_IATI.Service
             IParserIATI parserIATI;
             IConverterIATI converterIATI;
             string activitiesURL;
-            
+
             //Parser v2.01
             parserIATI = new ParserIATIv2();
             //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=CA-3&stream=True"
@@ -29,7 +31,7 @@ namespace AIMS_BD_IATI.Service
             //activitiesURL = Common.iati_url + "recipient-country=" + Common.iati_recipient_country + "&reporting-org=" + "CA-3" + "&stream="+Common.iati_stream;
             activitiesURL = "http://localhost:1000/UploadedFiles/activity_GB-1_2.xml"; //"http://localhost:1000/UploadedFiles/activity_CA-3_2.xml";
             var returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
-            
+
             //Parser v1.05
             parserIATI = new ParserIATIv1();
             //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=GB-1&stream=True";
@@ -44,6 +46,12 @@ namespace AIMS_BD_IATI.Service
             //Conversion
             ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
             convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
+
+            var serializer = new XmlSerializer(typeof(XmlResultv2), new XmlRootAttribute("result"));
+
+            TextWriter writer = new StreamWriter("D:\\xx.xml");
+            serializer.Serialize(writer, returnResult2);
+
 
             Console.WriteLine("Convertion completed!");
             Console.ReadLine();

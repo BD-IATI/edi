@@ -105,6 +105,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                     narrative[] arrynarrative = getNarrativeArray(description);
 
                                     desActivity.description = new iatiactivityDescription[1];
+                                    desActivity.description[0] = new iatiactivityDescription();
                                     desActivity.description[0].narrative = arrynarrative;
                                 }
                                 //participating-org
@@ -120,6 +121,126 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                     targetParticipatingOrg.role = getOrgRoleCode(participatingorg.role);
                                     targetParticipatingOrg.narrative = arrynarrative;
                                 }
+
+                                //recipient-country
+                                //Same
+
+                                //activity-status
+                                //Same
+
+                                //activity-date
+                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.activitydate))
+                                {
+                                    var activitydate = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.activitydate)activityItem;
+
+                                    var targetActivitydate = desActivity.activitydate.FirstOrDefault(x => x.type == activitydate.type);
+                                    targetActivitydate.type = getActivityDateCode(activitydate.type);
+                                }
+                                //contact-info
+                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfo))
+                                {
+                                    var contactinfo = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfo)activityItem;
+                                    if (desActivity.contactinfo == null) desActivity.contactinfo = new contactinfo[1];
+                                    if (desActivity.contactinfo[0] == null) desActivity.contactinfo[0] = new contactinfo();
+                                    var desContactInfo = desActivity.contactinfo;
+
+                                    foreach (var it in contactinfo.Items)
+                                    {
+                                        //organisation
+                                        if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)) //[textType has multiple]
+                                        {
+                                            var org = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)it;
+
+                                            narrative[] arrynarrative2 = getNarrativeArray(org);
+
+                                            desActivity.contactinfo[0].organisation = new textRequiredType();
+
+                                            desActivity.contactinfo[0].organisation.narrative = arrynarrative2;
+                                        }
+                                        //mailingaddress
+                                        if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfoMailingaddress))
+                                        {
+                                            var addr = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfoMailingaddress)it;
+
+                                            narrative[] arrynarrative2 = getNarrativeArray2(addr);
+
+                                            desActivity.contactinfo[0].mailingaddress = new textRequiredType[1];
+                                            desActivity.contactinfo[0].mailingaddress[0] = new textRequiredType();
+
+                                            desActivity.contactinfo[0].mailingaddress[0].narrative = arrynarrative2;
+                                        }
+                                    }
+
+                                }
+                                //location
+                                //ToDo
+
+                                //sector
+                                //same
+
+                                //policy-marker
+                                //same
+
+                                //collaboration-type
+                                //same
+
+                                //default-finance-type
+                                //same
+
+                                //budget
+                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.budget))
+                                {
+                                    var budget = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.budget)activityItem;
+
+                                    foreach (var b in desActivity.budget)
+                                    {
+                                        b.type = budget.type == "Original" ? "1" : "2";
+                                    }
+
+                                }
+
+                                //planned-disbursement
+                                //not in 1.05
+
+                                //transaction
+                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.transaction))
+                                {
+                                    var transaction = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.transaction)activityItem;
+
+
+                                    var targettransaction = desActivity.transaction.FirstOrDefault(x => x.transactiontype.code == transaction.transactiontype.code);
+                                    targettransaction.transactiontype.code = gettransactionCode(transaction.transactiontype.code);
+
+                                    //------------------
+
+
+                                }
+                                //document-link
+                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.documentlink))
+                                {
+                                    var documentlink = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.documentlink)activityItem;
+
+                                    var d = documentlink.Items.FirstOrDefault(x => x.GetType() == typeof(textType));
+
+                                    if (d != null)
+                                    {
+                                        narrative[] arrynarrative = getNarrativeArray((textType)d);
+
+                                        var targetdocumentlink = desActivity.documentlink.FirstOrDefault(x => x.url == documentlink.url);
+
+                                        targetdocumentlink.title = new textRequiredType();
+                                        targetdocumentlink.title.narrative = arrynarrative;
+                                    }
+
+                                }
+                                //conditions 
+                                //Not in 1.05
+
+                                //result 
+                                //Not in 1.05
+
+
+
                             }
                         }
                     }
@@ -144,6 +265,18 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             return narrativeArray;
         }
+        private static narrative[] getNarrativeArray2(dynamic activityItem)
+        {
+            narrative narrative = new narrative();
+            narrative.lang = "en";
+            var narrative_value = activityItem.Text[0];
+            narrative.Value = narrative_value; //!= null ? narrative_value.InnerText : "";
+
+            narrative[] narrativeArray = new narrative[1];
+            narrativeArray[0] = narrative;
+
+            return narrativeArray;
+        }
         private static string getOrgRoleCode(string roleName)
         {
             if (roleName.ToLower() == "funding")
@@ -157,7 +290,66 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             return "";
         }
+        private static string getActivityDateCode(string name)
+        {
+            //http://iatistandard.org/201/codelists/ActivityDateType/
+            //1	Planned start
+            //2	Actual start
+            //3	Planned End	
+            //4	Actual end	
 
+            if (name.ToLower() == "start-planned")
+                return "1";
+            else if (name.ToLower() == "start-actual")
+                return "2";
+            else if (name.ToLower() == "end-planned")
+                return "3";
+            else if (name.ToLower() == "end-actual")
+                return "4";
+
+            return "";
+
+
+        }
+        private static string gettransactionCode(string name)
+        {
+            //http://iatistandard.org/205/codelists/TransactionType/
+            //2 C	    Commitment	        
+            //3 D	    Disbursement	    
+            //4 E	    Expenditure	        
+            //1 IF	Incoming Funds   
+            //5 IR	Interest Repayment	
+            //6 LR	Loan Repayment	    
+            //7 R	    Reimbursement	    
+            //8 QP	Purchase of Equity	
+            //9 QS	Sale of Equity	    
+            //10 CG	Credit Guarantee	
+
+            if (name == "C")
+                return "2";
+            else if (name == "D")
+                return "3";
+            else if (name == "E")
+                return "4";
+            else if (name == "IF")
+                return "1";
+            else if (name == "IR")
+                return "5";
+            else if (name == "LR")
+                return "6";
+            else if (name == "R")
+                return "7";
+            else if (name == "QP")
+                return "8";
+            else if (name == "QS")
+                return "9";
+            else if (name == "CG")
+                return "10";
+
+            return "";
+
+
+        }
     }
 
     public enum OrganizationRole
