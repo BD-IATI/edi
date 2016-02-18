@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity.cs">
+      <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
+    </Compile>
     <Compile Include="AIMS_DB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -68,6 +71,21 @@
       <DependentUpon>AIMS_DB.edmx</DependentUpon>
     </Compile>
     <Compile Include="AimsDAL.cs" />
+    <Compile Include="AIMS_DB_IATI.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AIMS_DB_IATI.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AIMS_DB_IATI.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AIMS_DB_IATI.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AIMS_DB_IATI.edmx</DependentUpon>
+    </Compile>
     <Compile Include="CommonConfigType.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
@@ -273,6 +291,23 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AIMS_DB.edmx</DependentUpon>
       <LastGenOutput>AIMS_DB.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="AIMS_DB_IATI.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AIMS_DB_IATI.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="AIMS_DB_IATI.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AIMS_DB_IATI.edmx</DependentUpon>
+      <LastGenOutput>AIMS_DB_IATI.Context.cs</LastGenOutput>
+    </None>
+    <None Include="AIMS_DB_IATI.edmx.diagram">
+      <DependentUpon>AIMS_DB_IATI.edmx</DependentUpon>
+    </None>
+    <None Include="AIMS_DB_IATI.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AIMS_DB_IATI.edmx</DependentUpon>
+      <LastGenOutput>AIMS_DB_IATI.cs</LastGenOutput>
     </None>
     <None Include="App.config" />
     <None Include="packages.config" />
