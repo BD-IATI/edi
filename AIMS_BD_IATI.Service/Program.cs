@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using AIMS_BD_IATI.Library;
 using AIMS_BD_IATI.Library.Parser;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv1;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using System.Xml.Serialization;
 using System.Xml;
 using AIMS_BD_IATI.DAL;
-//using AIMS_BD_IATI.DAL;
 
 namespace AIMS_BD_IATI.Service
 {
@@ -19,76 +19,89 @@ namespace AIMS_BD_IATI.Service
     {
         static void Main(string[] args)
         {
+            ParseIATI();
+        }
 
-            Console.WriteLine("Parsing Started...");
-            #region Convert Data from v1.05 to v2.01
+        private static void ParseIATI()
+        {
+            AimsDAL _AimsDAL = new AimsDAL();
+            var fundSources = _AimsDAL.getFundSources();//.FindAll(q=>q.IATICode.Contains("CA"));
+
             IParserIATI parserIATI;
-            IConverterIATI converterIATI;
+            //IConverterIATI converterIATI;
             string activitiesURL;
+            XmlResultv2 returnResult2;
+            XmlResultv1 returnResult1;
 
-            //Parser v2.01
-            parserIATI = new ParserIATIv2();
-            //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=CA-3&stream=True"
-            //single activity : "http://datastore.iatistandard.org/api/1/access/activity.xml?iati-identifier=CA-3-A035529001
-            //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=CA-3
-            //activitiesURL = Common.iati_url + "recipient-country=" + Common.iati_recipient_country + "&reporting-org=" + "CA-3" + "&stream="+Common.iati_stream;
-            activitiesURL = "http://localhost:1000/UploadedFiles/activity_GB-1Full.xml";//"http://localhost:1000/UploadedFiles/activity_GB-1_2.xml"; //"http://localhost:1000/UploadedFiles/activity_CA-3_2.xml";
-            var returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
-
-            if (returnResult2.iatiactivities.iatiactivity[0].AnyAttr[0].Value == "1.05")
+            foreach (var fundSource in fundSources)
             {
-                //Parser v1.05
-                parserIATI = new ParserIATIv1();
-                //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=GB-1&stream=True";
-                //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=GB-1 or XM-DAC-12-1
-                activitiesURL = "http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
-                var returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
+                Console.WriteLine("Parsing Started...for: " + fundSource.IATICode);
 
-                Console.WriteLine("Parsing completed!");
+                #region Convert Data from v1.05 to v2.01
 
-                Console.WriteLine("Convertion completed...");
+                //Parser v2.01
+                parserIATI = new ParserIATIv2();
+                //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=CA-3&stream=True" //"http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
+                //single activity : "http://datastore.iatistandard.org/api/1/access/activity.xml?iati-identifier=CA-3-A035529001
+                //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=CA-3
+                activitiesURL = Common.iati_url + "recipient-country=" + Common.iati_recipient_country + "&reporting-org=" + fundSource.IATICode + "&stream=" + Common.iati_stream;
+                returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
 
-                //Conversion
-                ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
-                returnResult2 = convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
+                var iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
+                if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value == "1.05")
+                {
+                    //Parser v1.05
+                    parserIATI = new ParserIATIv1();
+                    //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=GB-1&stream=True"; //"http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
+                    //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=GB-1 or XM-DAC-12-1
+                    returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
 
+                    Console.WriteLine("Parsing completed!");
+
+                    //Conversion
+                    ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
+                    returnResult2 = convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
+                    Console.WriteLine("Convertion completed!");
+                }
+
+                #endregion
+
+                iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
+                if (iatiactivityArray != null)
+                {
+                    SaveToDB(iatiactivityArray);
+                }
             }
-
-            #endregion
-            Console.WriteLine("Convertion completed!");
-
-            #region Save Converted Data to File
-
-            var serializer = new XmlSerializer(typeof(XmlResultv2), new XmlRootAttribute("result"));
-            TextWriter writer = new StreamWriter("D:\\xxv2.01.xml");
-            serializer.Serialize(writer, returnResult2);
-            Console.WriteLine("Saved Converted Data to File");
-
-            #endregion
+        }
 
 
-            #region Save Data To DB
+        /// <summary>
+        /// Save Data To DB
+        /// </summary>
+        /// <param name="returnResult2"></param>
+        private static void SaveToDB(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray)
+        {
             List<Activity> Activities = new List<Activity>();
 
             int counter = 0;
-            int totalActivity = returnResult2.iatiactivities.iatiactivity.Count();
+            int totalActivity = iatiactivityArray.Count();
 
             Console.WriteLine("Total Activity: " + totalActivity);
             Console.WriteLine("");
 
-            foreach (var iatiactivity in returnResult2.iatiactivities.iatiactivity)
+            foreach (var iatiactivityItem in iatiactivityArray)
             {
                 var Activity = new Activity();
 
-                Activity.Organization_Id = iatiactivity.reportingorg.@ref;
-                Activity.IATI_Identifier = iatiactivity.iatiidentifier.Value;
-                Activity.Hierarchy = iatiactivity.hierarchy;
-                
+                Activity.Organization_Id = iatiactivityItem.reportingorg.n().@ref;
+                Activity.IATI_Identifier = iatiactivityItem.iatiidentifier.n().Value;
+                Activity.Hierarchy = iatiactivityItem.hierarchy;
+
                 //Activity.Last_XML = iatiactivity.ToXmlString();
                 using (StringWriter ww = new StringWriter())
                 {
                     var ss = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity), new XmlRootAttribute("iati-activity"));
-                    ss.Serialize(ww, iatiactivity);
+                    ss.Serialize(ww, iatiactivityItem);
                     Activity.strLast_XML = ww.ToString();
                     Activity.Last_XML = Activity.strLast_XML;
                 }
@@ -99,36 +112,25 @@ namespace AIMS_BD_IATI.Service
 
             var c = new AimsDbIatiDAL().SaveAtivity(Activities);
             Console.WriteLine("Saved Data To DB");
+        }
 
-            #endregion
+        /// <summary>
+        /// Save Converted Data to File
+        /// </summary>
+        /// <param name="returnResult2"></param>
+        private static void SaveToDisk(XmlResultv2 returnResult2)
+        {
+            var serializer = new XmlSerializer(typeof(XmlResultv2), new XmlRootAttribute("result"));
+            TextWriter writer = new StreamWriter("D:\\xxv2.01.xml");
+            serializer.Serialize(writer, returnResult2);
+            Console.WriteLine("Saved Converted Data to File");
 
-            #region Get Data From AIMS
+            //#region Get Data From AIMS
             //var a = new AimsDAL().getAIMSDataInIATIFormat("CA-1");
-
-            #endregion
-
-
+            //#endregion
         }
+
     }
 
-    public static class XmlTools
-    {
-        public static string ToXmlString<T>(this T input)
-        {
-            using (var writer = new StringWriter())
-            {
-                input.ToXml(writer);
-                return writer.ToString();
-            }
-        }
-        public static void ToXml<T>(this T objectToSerialize, Stream stream)
-        {
-            new XmlSerializer(typeof(T)).Serialize(stream, objectToSerialize);
-        }
-
-        public static void ToXml<T>(this T objectToSerialize, StringWriter writer)
-        {
-            new XmlSerializer(typeof(T)).Serialize(writer, objectToSerialize);
-        }
-    }
+    
 }
