@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="n.cs" />
     <Compile Include="Parser\IConverterIATI.cs" />
     <Compile Include="Parser\IParserIATI.cs" />
     <Compile Include="Parser\ParserIATIv1\iati-activities-schema.cs">

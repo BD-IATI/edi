@@ -54,12 +54,15 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             //iatiactivities
             if (objSource != null && objSource.iatiactivities != null && objSource.iatiactivities.Items != null)
             {
+                objSource.iatiactivities.version = (decimal)2.01;
                 //activity
                 foreach (var item in objSource.iatiactivities.Items)
                 {
+
                     if (item.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.iatiactivity))
                     {
                         var activity = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.iatiactivity)item;
+
                         string srcIatiidentifier = "";
 
                         if (activity.Items != null)
@@ -75,8 +78,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                             }
 
                             var desActivity = objDestinaiton.iatiactivities.iatiactivity.FirstOrDefault(q => q.iatiidentifier.Value == srcIatiidentifier);
+                            desActivity.AnyAttr[0].Prefix = "";
+                            desActivity.AnyAttr[0].Value = "2.01";
 
-
+                            int otherIdentifierCounter = 0;
                             foreach (var activityItem in activity.Items)
                             {
                                 //reporting-org
@@ -240,7 +245,25 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 //Not in 1.05
 
 
+                                //other-identifier
+                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.otheridentifier))
+                                {
 
+                                    var otheridentifier = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.otheridentifier)activityItem;
+
+                                    narrative[] arrynarrative = getNarrativeArrayStr(otheridentifier.ownername);
+
+                                    var targetotheridentifier = desActivity.otheridentifier[otherIdentifierCounter];
+
+                                    targetotheridentifier.@ref = otheridentifier.Text.FirstOrDefault();
+                                    targetotheridentifier.type = "A1";
+
+                                    targetotheridentifier.ownerorg = new otheridentifierOwnerorg();
+                                    targetotheridentifier.ownerorg.@ref = otheridentifier.ownerref;
+                                    targetotheridentifier.ownerorg.narrative = arrynarrative;
+                                    targetotheridentifier.AnyAttr = null;
+                                    otherIdentifierCounter++;
+                                }
                             }
                         }
                     }
@@ -271,6 +294,17 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             narrative.lang = "en";
             var narrative_value = activityItem.Text[0];
             narrative.Value = narrative_value; //!= null ? narrative_value.InnerText : "";
+
+            narrative[] narrativeArray = new narrative[1];
+            narrativeArray[0] = narrative;
+
+            return narrativeArray;
+        }
+        private static narrative[] getNarrativeArrayStr(string ttext)
+        {
+            narrative narrative = new narrative();
+            narrative.lang = "en";
+            narrative.Value = ttext;
 
             narrative[] narrativeArray = new narrative[1];
             narrativeArray[0] = narrative;

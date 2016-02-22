@@ -55,6 +55,7 @@
     <Compile Include="Activity.cs">
       <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
     </Compile>
+    <Compile Include="AimsDbIatiDAL.cs" />
     <Compile Include="AIMS_DB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
