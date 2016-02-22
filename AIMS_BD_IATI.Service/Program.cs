@@ -70,22 +70,30 @@ namespace AIMS_BD_IATI.Service
             #region Save Data To DB
             List<Activity> Activities = new List<Activity>();
 
+            int counter = 0;
+            int totalActivity = returnResult2.iatiactivities.iatiactivity.Count();
+
+            Console.WriteLine("Total Activity: " + totalActivity);
+            Console.WriteLine("");
+
             foreach (var iatiactivity in returnResult2.iatiactivities.iatiactivity)
             {
                 var Activity = new Activity();
 
                 Activity.Organization_Id = iatiactivity.reportingorg.@ref;
                 Activity.IATI_Identifier = iatiactivity.iatiidentifier.Value;
-
+                Activity.Hierarchy = iatiactivity.hierarchy;
+                
                 //Activity.Last_XML = iatiactivity.ToXmlString();
                 using (StringWriter ww = new StringWriter())
                 {
                     var ss = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity), new XmlRootAttribute("iati-activity"));
                     ss.Serialize(ww, iatiactivity);
-
-                    Activity.Last_XML = ww.ToString();
+                    Activity.strLast_XML = ww.ToString();
+                    Activity.Last_XML = Activity.strLast_XML;
                 }
                 Activities.Add(Activity);
+                Console.Write("\r{0}   ", counter++);
             }
 
 

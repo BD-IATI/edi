@@ -26,6 +26,5 @@ namespace AIMS_BD_IATI.Web.Controllers
 
             return View();
         }
-
     }
 }

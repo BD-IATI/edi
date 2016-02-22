@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AIMS_AIMS_BD_IATI.Web")]
+[assembly: AssemblyTitle("AIMS_BD_IATI.Web")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("TechnoVista Ltd")]
-[assembly: AssemblyProduct("AIMS_AIMS_BD_IATI.Web")]
-[assembly: AssemblyCopyright("Copyright © TechnoVista Ltd 2016")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("AIMS_BD_IATI.Web")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a86f7756-ddcd-4526-bba8-27fb32ed4ba2")]
+[assembly: Guid("ad913ef1-42f7-4a60-aeab-d3147f635275")]
 
 // Version information for an assembly consists of the following four values:
 //

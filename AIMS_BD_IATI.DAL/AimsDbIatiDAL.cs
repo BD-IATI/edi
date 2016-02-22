@@ -25,6 +25,8 @@ namespace AIMS_BD_IATI.DAL
                     a.Previous_XML = a.Last_XML;
                     a.Hierarchy = activity.Hierarchy;
                     a.Parent_Hierarchy = activity.Parent_Hierarchy;
+                    a.strLast_XML = activity.strLast_XML;
+                    a.strPrevious_XML = a.strLast_XML;
                 }
                 else
                 {
