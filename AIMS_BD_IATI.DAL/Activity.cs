@@ -21,6 +21,8 @@ namespace AIMS_BD_IATI.DAL
         public Nullable<System.DateTime> Previous_Downloaded { get; set; }
         public string Last_XML { get; set; }
         public string Previous_XML { get; set; }
+        public string strLast_XML { get; set; }
+        public string strPrevious_XML { get; set; }
         public Nullable<int> Hierarchy { get; set; }
         public Nullable<int> Parent_Hierarchy { get; set; }
     }

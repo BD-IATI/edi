@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AIMS_DB_IATIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AIMS_DB_IATIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="RecordId" />
@@ -16,17 +16,21 @@
           <Property Name="Previous_Downloaded" Type="datetime" />
           <Property Name="Last_XML" Type="xml" />
           <Property Name="Previous_XML" Type="xml" />
+          <Property Name="strLast_XML" Type="nvarchar(max)" />
+          <Property Name="strPrevious_XML" Type="nvarchar(max)" />
           <Property Name="Hierarchy" Type="int" />
           <Property Name="Parent_Hierarchy" Type="int" />
         </EntityType>
         <EntityContainer Name="AIMS_DB_IATIModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AIMS_DB_IATIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AIMS_DB_IATIEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Activities" EntityType="AIMS_DB_IATIModel.Activity" />
+        </EntityContainer>
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="RecordId" />
@@ -38,30 +42,31 @@
           <Property Name="Previous_Downloaded" Type="DateTime" Precision="3" />
           <Property Name="Last_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Previous_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="strLast_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="strPrevious_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Hierarchy" Type="Int32" />
           <Property Name="Parent_Hierarchy" Type="Int32" />
         </EntityType>
-        <EntityContainer Name="AIMS_DB_IATIEntities3" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Activities" EntityType="Self.Activity" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AIMS_DB_IATIModelStoreContainer" CdmEntityContainer="AIMS_DB_IATIEntities3">
+        <EntityContainerMapping StorageEntityContainer="AIMS_DB_IATIModelStoreContainer" CdmEntityContainer="AIMS_DB_IATIEntities">
           <EntitySetMapping Name="Activities">
             <EntityTypeMapping TypeName="AIMS_DB_IATIModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
-                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
-                <ScalarProperty Name="Organization_Id" ColumnName="Organization_Id" />
-                <ScalarProperty Name="IATI_Identifier" ColumnName="IATI_Identifier" />
-                <ScalarProperty Name="Last_Downloaded" ColumnName="Last_Downloaded" />
-                <ScalarProperty Name="Previous_Downloaded" ColumnName="Previous_Downloaded" />
-                <ScalarProperty Name="Last_XML" ColumnName="Last_XML" />
-                <ScalarProperty Name="Previous_XML" ColumnName="Previous_XML" />
-                <ScalarProperty Name="Hierarchy" ColumnName="Hierarchy" />
                 <ScalarProperty Name="Parent_Hierarchy" ColumnName="Parent_Hierarchy" />
+                <ScalarProperty Name="Hierarchy" ColumnName="Hierarchy" />
+                <ScalarProperty Name="strPrevious_XML" ColumnName="strPrevious_XML" />
+                <ScalarProperty Name="strLast_XML" ColumnName="strLast_XML" />
+                <ScalarProperty Name="Previous_XML" ColumnName="Previous_XML" />
+                <ScalarProperty Name="Last_XML" ColumnName="Last_XML" />
+                <ScalarProperty Name="Previous_Downloaded" ColumnName="Previous_Downloaded" />
+                <ScalarProperty Name="Last_Downloaded" ColumnName="Last_Downloaded" />
+                <ScalarProperty Name="IATI_Identifier" ColumnName="IATI_Identifier" />
+                <ScalarProperty Name="Organization_Id" ColumnName="Organization_Id" />
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

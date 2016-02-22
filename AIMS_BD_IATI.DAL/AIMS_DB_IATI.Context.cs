@@ -13,10 +13,10 @@ namespace AIMS_BD_IATI.DAL
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class AIMS_DB_IATIEntities3 : DbContext
+    public partial class AIMS_DB_IATIEntities : DbContext
     {
-        public AIMS_DB_IATIEntities3()
-            : base("name=AIMS_DB_IATIEntities3")
+        public AIMS_DB_IATIEntities()
+            : base("name=AIMS_DB_IATIEntities")
         {
         }
     
