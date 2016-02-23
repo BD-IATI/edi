@@ -20,7 +20,7 @@ namespace AIMS_BD_IATI.Web.Controllers
 
         static List<AimsProject> aimsProjects = new List<AimsProject>
         { 
-            new AimsProject { title = "SoupTomato ", description = "Groceries", matchedProjects = new List<IatiProject>()}, 
+            new AimsProject { title = "SoupTomatoooooooooo ", description = "Groceries", matchedProjects = new List<IatiProject>()}, 
             new AimsProject { title = "-yoYo", description = "Toys", matchedProjects = new List<IatiProject>() }, 
             new AimsProject { title = "merHam", description = "Dhaka, BD", matchedProjects = new List<IatiProject>() } 
         };
@@ -28,18 +28,21 @@ namespace AIMS_BD_IATI.Web.Controllers
 
         RootObject DataModel = new RootObject() { iatiProjects = iatiProjects, aimsProjects = aimsProjects };
 
-        [HttpGet]
-        public async Task<IHttpActionResult> GetData()
+        public object GetProjectHierarchyData(string dp)
         {
+
             return Ok(DataModel);
         }
 
         //[HttpGet]
-        //public async Task<IHttpActionResult> GetEmployeeById(int id)
-        //{
-        //    var obj = emp.Where(e => e.Id == id).FirstOrDefault();
-        //    return Ok(obj);
-        //}
+        public RootObject GetData()
+        {
+            return DataModel;
+        }
+        public object GetFundSources()
+        {
+            return DataModel;
+        }
 
         [HttpPost]
         public async Task<IHttpActionResult> PostData(RootObject dataModel)

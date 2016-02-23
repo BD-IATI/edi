@@ -38,6 +38,33 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
+        public object GetProjects(string dp)
+        {
+            var q = from a in dbContext.Activities
+                    where a.Organization_Id == dp
+                    select new ProjectHierachy
+                    {
+                        Organization_Id = a.Organization_Id,
+                        IATI_Identifier = a.IATI_Identifier,
+                        Last_Downloaded = a.Last_Downloaded,
+                        Previous_Downloaded = a.Last_Downloaded,
+                        //Hierarchy = a.Hierarchy,
+                        //Parent_Hierarchy = a.Parent_Hierarchy
+                    };
+
+            return q.ToList();
+
+        }
+
+
+    }
+
+    public class ProjectHierachy
+    {
+        public string Organization_Id { get; set; }
+        public string IATI_Identifier { get; set; }
+        public Nullable<System.DateTime> Last_Downloaded { get; set; }
+        public Nullable<System.DateTime> Previous_Downloaded { get; set; }
 
     }
 }
