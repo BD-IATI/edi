@@ -12,6 +12,14 @@ namespace AIMS_BD_IATI.DAL
     {
         AIMS_DBEntities dbContext = new AIMS_DBEntities();
 
+        public List<tblFundSource> getFundSources()
+        {
+            var fundSources = from fundSource in dbContext.tblFundSources
+                              where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
+                           select fundSource;
+
+            return fundSources.ToList();
+        }
 
         public List<tblProjectInfo> getProjects(string reportingOrg)
         {
@@ -53,13 +61,13 @@ namespace AIMS_BD_IATI.DAL
 
                 iatiActivity.description = new iatiactivityDescription[1] { new iatiactivityDescription { narrative = getNarativeArray(project.Objective) } };
 
-                iatiActivity.defaultaidtype = new defaultaidtype { code = project.tblAssistanceType.nl().IATICode };
+                iatiActivity.defaultaidtype = new defaultaidtype { code = project.tblAssistanceType.N().IATICode };
 
                 iatiActivity.reportingorg = new reportingorg
                 {
-                    narrative = getNarativeArray(project.tblFundSource.nl().FundSourceName),
-                    @ref = project.tblFundSource.nl().IATICode,
-                    type = project.tblFundSource.nl().tblFundSourceCategory.nl().IATICode
+                    narrative = getNarativeArray(project.tblFundSource.N().FundSourceName),
+                    @ref = project.tblFundSource.N().IATICode,
+                    type = project.tblFundSource.N().tblFundSourceCategory.N().IATICode
                 };
 
 
@@ -67,16 +75,16 @@ namespace AIMS_BD_IATI.DAL
 
                 iatiActivity.participatingorg[0] = new participatingorg
                 {
-                    narrative = getNarativeArray(project.tblFundSource.nl().FundSourceGroup),
+                    narrative = getNarativeArray(project.tblFundSource.N().FundSourceGroup),
                     role = "1",
-                    @ref = project.tblFundSource.nl().IATICode,
+                    @ref = project.tblFundSource.N().IATICode,
                     type = "10"
                 };
                 iatiActivity.participatingorg[1] = new participatingorg
                 {
-                    narrative = getNarativeArray(project.tblFundSource.nl().FundSourceName),
+                    narrative = getNarativeArray(project.tblFundSource.N().FundSourceName),
                     role = "3",
-                    @ref = project.tblFundSource.nl().IATICode,
+                    @ref = project.tblFundSource.N().IATICode,
                     type = "10"
                 };
                 //ToDo
@@ -100,7 +108,7 @@ namespace AIMS_BD_IATI.DAL
         private string getIdentifer(tblProjectInfo project)
         {
             return string.IsNullOrWhiteSpace(project.IatiIdentifier) ?
-                project.DPProjectNo.StartsWith(project.tblFundSource.nl().IATICode) ? project.DPProjectNo : project.tblFundSource.nl().IATICode + project.DPProjectNo
+                project.DPProjectNo.StartsWith(project.tblFundSource.N().IATICode) ? project.DPProjectNo : project.tblFundSource.N().IATICode + project.DPProjectNo
                 : project.IatiIdentifier;
         }
 

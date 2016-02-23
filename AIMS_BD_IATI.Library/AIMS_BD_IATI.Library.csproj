@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="n.cs" />
+    <Compile Include="NullChecker.cs" />
     <Compile Include="Parser\IConverterIATI.cs" />
     <Compile Include="Parser\IParserIATI.cs" />
     <Compile Include="Parser\ParserIATIv1\iati-activities-schema.cs">
@@ -63,6 +63,7 @@
     <Compile Include="Parser\ParserIATIv2\XmlResultv2.cs" />
     <Compile Include="Parser\IXmlResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
