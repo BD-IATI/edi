@@ -1,0 +1,62 @@
+﻿<div role="tabpanel" class="tab-pane" id="filterBD">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 2. Filter for activities relevant to Bangladesh</h2>
+            <p class="lead">
+                Some of the activities published at headquarters
+                level will not be relevant to Bangladesh. We have filtered out those projects where:
+            </p>
+            <ul>
+                <li>less than 20% is tagged as Bangladesh</li>
+                <li>projects where the "Aid Type" is core contributions to multilaterals or NGOs</li>
+            </ul>
+            <hr>
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-10">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Activity ID</th>
+                                    <th>Activity Title</th>
+                                    <th>% to Bangladesh</th>
+                                    <th>Aid type</th>
+                                    <th>Relevant</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>GB-1-107368</code></td>
+                                    <td>Rural Electrification Development Project</td>
+                                    <td>70%</td>
+                                    <td>
+                                        Project-type interventions (<code>C01</code>)
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" checked="">
+                                    </td>
+                                </tr>
+                                <tr class="active">
+                                    <td><code>GB-1-999999</code></td>
+                                    <td>World Bank core contributions</td>
+                                    <td>2%</td>
+                                    <td>
+                                        Core contributions to multilaterals (<code>B01</code>)
+                                    </td>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-1 col-md-10">
+                        <button type="submit" class="btn btn-default">Filter relevant projects</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

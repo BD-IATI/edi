@@ -1,0 +1,64 @@
+﻿<div role="tabpanel" class="tab-pane" id="hierarchy">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 1. Select unit of aid</h2>
+            <p class="lead">
+                It looks like you use multiple levels of
+                activities in your data (for example, projects and
+                sub-components). We've compared your activities against those
+                found in the AIMS, and recommend you proceed with hierarchy 1.
+                However, you can adjust below.
+            </p>
+            <hr>
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-10">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Hierarchy</th>
+                                    <th>Sample data</th>
+                                    <th>% matched</th>
+                                    <th>Select</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="success">
+                                    <td>1</td>
+                                    <td><code>GB-1-107368</code> Rural Electrification Development Project</td>
+                                    <td>70%</td>
+                                    <td>
+                                        <div class="radio">
+                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>
+                                        <p><code>GB-1-107368-101</code> PROCOFSERVICES and P0050 for Rural Electrification Development Project</p>
+                                        <p><code>GB-1-107368-102</code> MULTILATORGANISATION and P0050 for Rural Electrification Development Project</p>
+                                        <p><code>GB-1-107368-103</code> NONBUDSUPPFINAID and P0050 for Rural Electrification Development Project</p>
+                                        <p><code>GB-1-107368-104</code> MOU With USAID for REDP</p>
+                                        <p><code>GB-1-107368-105</code> NONBUDSUPPFINAID and CP026 for Rural Electrification Development Project</p>
+                                    </td>
+                                    <td>0%</td>
+                                    <td>
+                                        <div class="radio">
+                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-1 col-md-10">
+                        <button type="submit" class="btn btn-default">Select hierarchy</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

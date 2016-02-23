@@ -16,11 +16,22 @@ namespace AIMS_BD_IATI.DAL
         {
             var fundSources = from fundSource in dbContext.tblFundSources
                               where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
-                           select fundSource;
+                              select fundSource;
 
             return fundSources.ToList();
         }
 
+        public List<DropdownItem> getFundSourcesDropdownData()
+        {
+            var fundSources = from fundSource in dbContext.tblFundSources
+                              where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
+                              select new DropdownItem { 
+                                ID = fundSource.IATICode,
+                                Name = fundSource.FundSourceName
+                              };
+
+            return fundSources.ToList();
+        }
         public List<tblProjectInfo> getProjects(string reportingOrg)
         {
 

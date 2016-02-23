@@ -185,6 +185,15 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\App.js" />
+    <Content Include="App\Controller\1BeginContoller.js" />
+    <Content Include="App\Home.html" />
+    <Content Include="App\Stages\2Hierarchy.html" />
+    <Content Include="App\Stages\3FilterBD.html" />
+    <Content Include="App\Stages\6Match.html" />
+    <Content Include="App\Stages\5Projects.html" />
+    <Content Include="App\Stages\4FilterDP.html" />
+    <Content Include="App\Stages\1Begin.html" />
     <Content Include="Content\AngularDragAndDrop\demo-framework.css" />
     <Content Include="Content\AngularDragAndDrop\demo-framework.js" />
     <Content Include="Content\AngularDragAndDrop\vendor\bootstrap-theme.min.css" />
@@ -254,6 +263,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AIMS_BD_IATI.DAL\AIMS_BD_IATI.DAL.csproj">
+      <Project>{eb82e9d6-c868-4155-8d20-5127c8ab1d1e}</Project>
+      <Name>AIMS_BD_IATI.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AIMS_BD_IATI.Library\AIMS_BD_IATI.Library.csproj">
+      <Project>{7864245e-5463-4c47-b5ef-e44fe9748b84}</Project>
+      <Name>AIMS_BD_IATI.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

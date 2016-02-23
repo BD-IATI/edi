@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DropdownItem.cs" />
     <Compile Include="NullChecker.cs" />
     <Compile Include="Parser\IConverterIATI.cs" />
     <Compile Include="Parser\IParserIATI.cs" />

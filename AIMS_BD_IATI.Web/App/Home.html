@@ -1,0 +1,234 @@
+<!-- saved from url=(0037)http://test.brough.io/bd/sprint2.htm? -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>Mockups - IATI-AIMS importing</title>
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/style.css" rel="stylesheet" />
+
+    <!--for AngularDragAndDrop-->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="../Scripts/angular-drag-and-drop-lists.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
+
+    <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/prism.css">
+    <link rel="stylesheet" href="../Content/AngularDragAndDrop/demo-framework.css">
+    <script src="../Content/AngularDragAndDrop/vendor/prism.js"></script>
+
+    <script type="text/javascript">
+        var IatiDataImporterApp = angular.module("IatiDataImporter", ["ngRoute", 'dndLists']);
+
+        IatiDataImporterApp.config(function ($routeProvider) {
+            $routeProvider
+                .when('/1Begin', {
+                    templateUrl: 'Stages/1Begin.html',
+                    controller: 'beginImportController'
+                })
+                .when('/2Hierarchy', {
+                    templateUrl: 'Stages/2Hierarchy.html',
+                    //controller: 'NestedListsDemoController'
+                })
+                .when('/3FilterBD', {
+                    templateUrl: 'Stages/3FilterBD.html',
+                    //controller: 'TypesDemoController'
+                })
+                .when('/4FilterDP', {
+                    templateUrl: 'Stages/4FilterDP.html',
+                    //controller: 'AdvancedDemoController'
+                })
+                .when('/5Projects', {
+                    templateUrl: 'Stages/5Projects.html',
+                    //controller: 'MultiDemoController'
+                })
+                .when('/6Match', {
+                    templateUrl: 'Stages/6Match.html',
+                    controller: 'projectMappingController'
+                })
+                .otherwise({ redirectTo: '/1Begin' });
+        })
+
+        IatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
+                return {
+                    template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +
+                              '    <a ng-href="{{option.href}}">{{option.label}}</a>' +
+                              '</li>',
+                    link: function (scope, element, attr) {
+                        scope.options = [
+                            { label: "1. Begin import", href: "#/1Begin" },
+                            { label: "2. Hierarchy", href: "#/2Hierarchy" },
+                            { label: "3. Filter Bangladesh-relevant activities", href: "#/3FilterBD" },
+                            { label: "4. Filter DP activities", href: "#/4FilterDP" },
+                            { label: "5. Show projects", href: "#/5Projects" },
+                            { label: "6. Match unmatched projects", href: "#/6Match" }
+                        ];
+
+                        scope.isActive = function (option) {
+                            return option.href.indexOf(scope.location) === 1;
+                        };
+
+                        $rootScope.$on("$locationChangeSuccess", function (event, next, current) {
+                            scope.location = $location.path();
+                        });
+                    }
+                };
+            });
+    </script>
+
+    <!--1-->
+    <script type="text/javascript">
+
+        angular.module("IatiDataImporter").controller("beginImportController", function ($scope, $http) {
+
+            $scope.selectedFundSource = null;
+            $scope.FundSources = [];
+
+            $http({
+                method: 'GET',
+                url: '../api/ApiHome/GetFundSources',
+                //data: { applicationId: 3 }
+            }).success(function (result) {
+                $scope.FundSources = result;
+            });
+
+            $scope.Commands = {
+                Next: function () {
+                    console.log("Nejvckls");
+
+                }
+
+            };
+        });
+    </script>
+
+
+    <!--6-->
+    <script type="text/javascript">
+
+        angular.module("IatiDataImporter").controller("projectMappingController", function ($scope, $http) {
+
+            (function startup() {
+
+                $http({
+                    url: '../api/ApiHome/GetData',
+                    method: 'GET',
+                    dataType: 'json'
+                }).then(function (result) {
+                    $scope.models = result.data;
+                    //deferred.resolve(result);
+                },
+                    function (response) {
+                        //deferred.reject(response);
+                    });
+
+            })();
+
+            //$scope.models = {
+            //    selected: null,
+            //    //iatiProjects: { "IATIProjects": [] },
+            //    iatiProjects: [],
+            //    //aimsProjects: { "WATER MANAGEMENT IMPROVEMENT PROJECT": [], "Urban Dredging Project": [] }
+            //    aimsProjects: []
+            //};
+
+            //// Generate initial model
+            //$scope.models.iatiProjects.push({
+            //    title: "IED-SRHR project",
+            //    description: "Promoting adolescents wellbeing",
+            //    startDate: "2014-12-01", endDate: "2015-12-31"
+            //});
+            //$scope.models.iatiProjects.push({
+            //    title: "Water Mgmt.Impr.Proj WB",
+            //    description: "1. Institutional reform of the Water sector institution 2. Development of a rehabilitation and o & m strategy of coastal and river polders 3. Rehabilitation of polders and improvement of water management",
+            //    startDate: "2014-07-03", endDate: "2015-09-31"
+            //});
+            //$scope.models.iatiProjects.push({
+            //    title: "Bangladesh veiligh.akkoord",
+            //    description: "vervolg op 25967. Hoofddoel is implementeren van brand- en gebouw- veiligheidsakkoord in Bangladesh (Fire and Building Safety Agreement)",
+            //    startDate: "2014-07-03", endDate: "2015-09-31"
+            //});
+
+            //$scope.models.aimsProjects.push({
+            //    title: "WATER MANAGEMENT IMPROVEMENT PROJECT",
+            //    description: "Promcents wellbeing",
+            //    startDate: "2014-12-01", endDate: "2015-12-31",
+            //    matchedProjects: []
+            //});
+            //$scope.models.aimsProjects.push({
+            //    title: "Urban Dredging Project",
+            //    description: "Water sector institution 2. Development of a rehabilitation and o & m strategy of coastal and river polders 3. Rehabilitation",
+            //    startDate: "2014-07-03", endDate: "2015-09-31",
+            //    matchedProjects: []
+            //});
+
+            $scope.Commands = {
+                saveData: function () {
+                    console.log(JSON.stringify($scope.models));
+                    $http({
+                        url: '../api/ApiHome/PostData',
+                        method: 'POST',
+                        data: JSON.stringify($scope.models),
+                        dataType: 'json'
+                    }).then(function (result) {
+                        //deferred.resolve(result);
+                    },
+                    function (response) {
+                        //deferred.reject(response);
+                    });
+
+                }
+
+            };
+
+            //// Model to JSON for demo purpose
+            //$scope.$watch('models', function (model) {
+            //    $scope.modelAsJson = angular.toJson(model, true);
+            //}, true);
+
+        });
+
+
+    </script>
+
+</head>
+<body ng-app="IatiDataImporter">
+    <header>
+        <nav id="main" class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <span class="navbar-brand">IATI-AIMS Import mockups</span>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="http://test.brough.io/bd/sprint2.htm?#home">Sprint 2</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div>
+            <!-- Nav tabs -->
+            <ul navigation class="nav nav-tabs" role="tablist"></ul>
+
+            <!-- Tab panes -->
+            <div ng-view class="tab-content">
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <script src="../Scripts/jquery-ui.min.js"></script>
+
+
+</body>
+</html>

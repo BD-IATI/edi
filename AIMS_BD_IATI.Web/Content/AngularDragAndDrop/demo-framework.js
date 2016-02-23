@@ -1,9 +1,9 @@
-angular.module("demo", ["ngRoute", "dndLists"])
+angular.module("IatiDataImporter", ["ngRoute", "dndLists"])
     .config(function($routeProvider) {
         $routeProvider
             .when('/simple', {
                 templateUrl: 'simple/simple-frame.html',
-                controller: 'SimpleDemoController'
+                controller: 'projectMappingController'
             })
             .when('/nested', {
                 templateUrl: 'nested/nested-frame.html',

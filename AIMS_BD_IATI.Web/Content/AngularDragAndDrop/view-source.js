@@ -1,4 +1,4 @@
-angular.module("demo").directive('viewSource', function($http, $timeout) {
+angular.module("IatiDataImporter").directive('viewSource', function($http, $timeout) {
     return {
         scope: {
             demoName: "@viewSource",

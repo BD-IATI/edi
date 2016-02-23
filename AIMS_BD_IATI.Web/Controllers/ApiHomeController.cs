@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AIMS_BD_IATI.DAL;
+using AIMS_BD_IATI.Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -39,9 +41,9 @@ namespace AIMS_BD_IATI.Web.Controllers
         {
             return DataModel;
         }
-        public object GetFundSources()
+        public List<DropdownItem> GetFundSources()
         {
-            return DataModel;
+            return new AimsDAL().getFundSourcesDropdownData();
         }
 
         [HttpPost]

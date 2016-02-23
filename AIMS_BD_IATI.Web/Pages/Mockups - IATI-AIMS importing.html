@@ -1,5 +1,5 @@
 <!-- saved from url=(0037)http://test.brough.io/bd/sprint2.htm? -->
-<html>
+<html ng-app="IatiDataImporter">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
     <title>Mockups - IATI-AIMS importing</title>
@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/prism.css">
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/demo-framework.css">
 
+    <script type="text/javascript">
+        var IatiDataImporterApp = angular.module("IatiDataImporter", ['dndLists']);
+
+    </script>
     <!--<script src="../Content/AngularDragAndDrop/view-source.js"></script>-->
 
 </head>
@@ -63,17 +67,19 @@
                                 imported at this stage.
                             </p>
                             <hr>
-                            <div class="row">
+
+                            <div class="row" ng-controller="beginImportController">
                                 <div class="col-md-10 col-md-offset-1">
                                     <form class="form-horizontal">
                                         <div class="form-group">
                                             <label for="beginDPselect" class="col-sm-2 control-label">Development Partner</label>
                                             <div class="col-sm-8">
-                                                <select class="form-control" id="beginDPselect">
-                                                    <option>Select one...</option>
-                                                    <option value="CA-3">Canada, DFATD</option>
-                                                    <option value="DFID">DFID</option>
-                                                </select>
+
+                                                <select class ="form-control" id="beginDPselect" 
+                                                        ng-model="selectedFundSource" 
+                                                        ng-options="item.ID as item.Name for item in FundSources">
+                                                    <option value="">Select one...</option>
+                                                </select class>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -84,6 +90,25 @@
                                     </form>
                                 </div>
                             </div>
+
+                            <script type="text/javascript">
+                                IatiDataImporterApp.controller("beginImportController", function ($scope, $http) {
+
+                                    $scope.selectedFundSource = null;
+                                    $scope.FundSources = [];
+
+                                    $http({
+                                        method: 'GET',
+                                        url: '../api/ApiHome/GetFundSources',
+                                        //data: { applicationId: 3 }
+                                    }).success(function (result) {
+                                        $scope.FundSources = result;
+                                    });
+                                });
+
+                            </script>
+
+
                         </div>
                     </div>
                 </div>
@@ -492,7 +517,7 @@
                     </div>
                     <script type="text/javascript">
 
-                        angular.module("demo", ['dndLists']).controller("SimpleDemoController", function ($scope, $http) {
+                        IatiDataImporterApp.controller("projectMappingController", function ($scope, $http) {
 
                             (function startup() {
 
@@ -573,19 +598,21 @@
                             //}, true);
 
                         });
+                    
+
                     </script>
 
 
                     <style>
-                        .simpleDemo {
+                        .divDragDrop {
                             margin: 10px;
                         }
                             /**
                         * For the correct positioning of the placeholder element, the dnd-list and
                         * it's children must have position: relative
                         */
-                            .simpleDemo ul[dnd-list],
-                            .simpleDemo ul[dnd-list] > li {
+                            .divDragDrop ul[dnd-list],
+                            .divDragDrop ul[dnd-list] > li {
                                 position: relative;
                             }
 
@@ -593,7 +620,7 @@
                         * The dnd-list should always have a min-height,
                         * otherwise you can't drop to it once it's empty
                         */
-                            .simpleDemo ul[dnd-list] {
+                            .divDragDrop ul[dnd-list] {
                                 min-height: 42px;
                                 padding-left: 0px;
                             }
@@ -604,7 +631,7 @@
                         * sense to hide it to give the user the feeling
                         * that he's actually moving it.
                         */
-                                .simpleDemo ul[dnd-list] .dndDraggingSource {
+                                .divDragDrop ul[dnd-list] .dndDraggingSource {
                                     display: none;
                                 }
 
@@ -613,7 +640,7 @@
                         * added to the dnd-list while the user is dragging
                         * over it.
                         */
-                                .simpleDemo ul[dnd-list] .dndPlaceholder {
+                                .divDragDrop ul[dnd-list] .dndPlaceholder {
                                     display: block;
                                     background-color: #ddd;
                                     min-height: 42px;
@@ -626,7 +653,7 @@
                         * half of the element we are dragging over. In other
                         * browsers we can use event.offsetY for this.
                         */
-                                .simpleDemo ul[dnd-list] li {
+                                .divDragDrop ul[dnd-list] li {
                                     background-color: #fff;
                                     border: 1px solid #ddd;
                                     border-top-right-radius: 4px;
@@ -639,13 +666,13 @@
                                     /**
                         * Show selected elements in green
                         */
-                                    .simpleDemo ul[dnd-list] li.selected {
+                                    .divDragDrop ul[dnd-list] li.selected {
                                         background-color: #dff0d8;
                                         color: #3c763d;
                                     }
                     </style>
 
-                    <div ng-app="demo" ng-controller="SimpleDemoController" class="simpleDemo">
+                    <div ng-controller="projectMappingController" class="divDragDrop">
 
                         <table width="100%" style="vertical-align:top">
                             <thead>
