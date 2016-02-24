@@ -1,4 +1,4 @@
-﻿<div role="tabpanel" class="tab-pane" id="hierarchy">
+﻿<div role="tabpanel" class="tab-pane active" id="hierarchy">
     <div class="row">
         <div class="col-md-12">
             <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 1. Select unit of aid</h2>
@@ -10,6 +10,11 @@
                 However, you can adjust below.
             </p>
             <hr>
+            <!--<div ng-repeat="activity in iatiActivities">
+                <input type="text" ng-model="activity.iatiidentifier.Value" />
+                       {{activity.iatiidentifier.Value}} -
+                       {{activity.title.narrative[0].Value}}>
+            </div>-->
             <form class="form-horizontal">
                 <div class="row">
                     <div class="col-md-offset-1 col-md-10">
@@ -49,15 +54,28 @@
                                         </div>
                                     </td>
                                 </tr>
+                                <tr ng-repeat="activity in iatiActivities">
+                                    <td>{{activity.hierarchy}}</td>
+                                    <td ng-class="success : (activity.hierarchy == '1')"><code>{{activity.iatiidentifier.Value}}</code> {{activity.title.narrative[0].Value}}</td>
+                                    <td>70%</td>
+                                    <td>
+                                        <div class="radio">
+                                            <input type="radio" name="{{activity.iatiidentifier.Value | limitTo: 11}}" id="optionsRadios1" value="option1" checked="">
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <div class="col-md-offset-1 col-md-10">
-                        <button type="submit" class="btn btn-default">Select hierarchy</button>
+                    <div class="col-md-offset-1 col-md-10 btnFooter">
+                        <a class="btn btn-default" ng-href="#/1Begin">Back</a>
+                        <a class="btn btn-default" ng-href="#/3FilterBD">Next</a>
                     </div>
                 </div>
+
             </form>
         </div>
     </div>

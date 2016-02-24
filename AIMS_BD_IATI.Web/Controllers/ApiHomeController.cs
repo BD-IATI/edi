@@ -1,11 +1,15 @@
 ﻿using AIMS_BD_IATI.DAL;
 using AIMS_BD_IATI.Library;
+using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace AIMS_BD_IATI.Web.Controllers
@@ -13,6 +17,17 @@ namespace AIMS_BD_IATI.Web.Controllers
     [RoutePrefix("api/ApiHome")]
     public class ApiHomeController : ApiController
     {
+        public List<iatiactivity> iatiactivities
+        {
+            get
+            {
+                return HttpContext.Current.Session["iatiactivities"] == null ? 
+                    null 
+                    : (List<iatiactivity>)HttpContext.Current.Session["iatiactivities"];
+            }
+            set { HttpContext.Current.Session["iatiactivities"] = value; }
+        }
+
         static List<IatiProject> iatiProjects = new List<IatiProject>
         { 
             new IatiProject { title = "Tomato Soup", description = "Groceries"}, 
@@ -30,10 +45,18 @@ namespace AIMS_BD_IATI.Web.Controllers
 
         RootObject DataModel = new RootObject() { iatiProjects = iatiProjects, aimsProjects = aimsProjects };
 
-        public object GetProjectHierarchyData(string dp)
+        public List<iatiactivity> GetProjectHierarchyData()
         {
 
-            return Ok(DataModel);
+            if (iatiactivities == null)
+                iatiactivities = new AimsDbIatiDAL().GetActivities("GB-1");
+
+            return iatiactivities;
+            //TextWriter tw = new StringWriter();
+
+            //new Newtonsoft.Json.JsonSerializer().Serialize(tw, iatiactivities);
+
+            //return tw.ToString();
         }
 
         //[HttpGet]

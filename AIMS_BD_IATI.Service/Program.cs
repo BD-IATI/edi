@@ -19,6 +19,14 @@ namespace AIMS_BD_IATI.Service
     {
         static void Main(string[] args)
         {
+            var k = new AimsDbIatiDAL().GetActivities("GB-1");
+
+            TextWriter tw = new StringWriter();
+
+            new Newtonsoft.Json.JsonSerializer().Serialize(tw, k);
+
+            var ss = tw.ToString();
+            return;
             ParseIATI();
         }
 

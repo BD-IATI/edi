@@ -27,7 +27,7 @@
                 })
                 .when('/2Hierarchy', {
                     templateUrl: 'Stages/2Hierarchy.html',
-                    //controller: 'NestedListsDemoController'
+                    controller: 'hierarchyController'
                 })
                 .when('/3FilterBD', {
                     templateUrl: 'Stages/3FilterBD.html',
@@ -51,7 +51,7 @@
         IatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
                 return {
                     template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +
-                              '    <a ng-href="{{option.href}}">{{option.label}}</a>' +
+                              '    <a>{{option.label}}</a>' + //'    <a ng-href="{{option.href}}">{{option.label}}</a>'
                               '</li>',
                     link: function (scope, element, attr) {
                         scope.options = [
@@ -78,7 +78,7 @@
     <!--1-->
     <script type="text/javascript">
 
-        angular.module("IatiDataImporter").controller("beginImportController", function ($scope, $http) {
+        angular.module("IatiDataImporter").controller("beginImportController", function ($rootScope, $scope, $http, $location) {
 
             $scope.selectedFundSource = null;
             $scope.FundSources = [];
@@ -93,7 +93,32 @@
 
             $scope.Commands = {
                 Next: function () {
-                    console.log("Nejvckls");
+                    $location.url('http://localhost:1715/App/Home.html#/6Match.html');
+                    
+                }
+
+            };
+        });
+    </script>
+
+    <!--2-->
+    <script type="text/javascript">
+
+        angular.module("IatiDataImporter").controller("hierarchyController", function ($rootScope, $scope, $http, $location) {
+            $scope.iatiActivities = [];
+
+            $http({
+                method: 'GET',
+                url: '../api/ApiHome/GetProjectHierarchyData',
+                dataType: 'json'
+                //data: { dp: "GB-1" }
+            }).success(function (result) {
+                $scope.iatiActivities = result;
+            });
+
+            $scope.Commands = {
+                Next: function () {
+                    $location.url('http://localhost:1715/App/Home.html#/6Match.html');
 
                 }
 
@@ -190,6 +215,11 @@
 
     </script>
 
+    <style>
+        .btnFooter{
+            text-align:right;
+        }
+    </style>
 </head>
 <body ng-app="IatiDataImporter">
     <header>

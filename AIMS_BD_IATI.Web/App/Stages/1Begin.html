@@ -24,9 +24,9 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-1 col-md-10">
-                                <button class="btn btn-default" ng-click="Commands.Next()">Begin import...</button>
+                        <div class="form-group" ng-show="selectedFundSource != null">
+                            <div class="col-md-offset-1 col-md-10 btnFooter">
+                                <a class="btn btn-default" ng-href="#/2Hierarchy">Next</a>
                             </div>
                         </div>
                     </form>

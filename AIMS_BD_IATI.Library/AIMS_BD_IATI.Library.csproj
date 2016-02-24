@@ -60,6 +60,7 @@
     <Compile Include="Parser\ParserIATIv2\iati-activities-schema.cs">
       <DependentUpon>iati-activities-schema.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Parser\ParserIATIv2\iatiactivityPartial.cs" />
     <Compile Include="Parser\ParserIATIv2\ParserIATIv2.cs" />
     <Compile Include="Parser\ParserIATIv2\XmlResultv2.cs" />
     <Compile Include="Parser\IXmlResult.cs" />

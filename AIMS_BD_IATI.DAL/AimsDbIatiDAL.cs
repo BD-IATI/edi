@@ -1,14 +1,17 @@
-﻿using System;
+﻿using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace AIMS_BD_IATI.DAL
 {
     public class AimsDbIatiDAL
     {
-         AIMS_DB_IATIEntities dbContext = new AIMS_DB_IATIEntities();
+        AIMS_DB_IATIEntities dbContext = new AIMS_DB_IATIEntities();
 
         public int SaveAtivity(List<Activity> activities)
         {
@@ -38,22 +41,44 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
-        public object GetProjects(string dp)
+        public List<iatiactivity> GetActivities(string dp)
         {
             var q = from a in dbContext.Activities
                     where a.Organization_Id == dp
-                    select new ProjectHierachy
-                    {
-                        Organization_Id = a.Organization_Id,
-                        IATI_Identifier = a.IATI_Identifier,
-                        Last_Downloaded = a.Last_Downloaded,
-                        Previous_Downloaded = a.Last_Downloaded,
-                        //Hierarchy = a.Hierarchy,
-                        //Parent_Hierarchy = a.Parent_Hierarchy
-                    };
+                    orderby a.IATI_Identifier
+                    select a;
 
-            return q.ToList();
+            var result = new List<iatiactivity>();
+            var activity = new iatiactivity();
+            var serializer = new XmlSerializer(typeof(iatiactivity));
 
+            foreach (var a in q)
+            {
+                using (TextReader reader = new StringReader(a.strLast_XML))
+                {
+                    activity = (iatiactivity)serializer.Deserialize(reader);
+
+                }
+                result.Add(activity);
+            }
+
+            var parentActivities = result.FindAll(x => x.relatedactivity.Where(r => r.type != "1").Count() == 0);
+            foreach (var pa in parentActivities)
+            {
+
+                foreach (var ra in pa.relatedactivity)
+                {
+                    //load related activities
+                    var ha = result.Find(f => f.iatiidentifier.Value == ra.@ref);
+
+                    activity.relatedIatiActivities.Add(ha);
+                }
+
+
+            }
+
+
+            return result;
         }
 
 
