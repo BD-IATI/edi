@@ -3,7 +3,7 @@ angular.module("IatiDataImporter", ["ngRoute", "dndLists"])
         $routeProvider
             .when('/simple', {
                 templateUrl: 'simple/simple-frame.html',
-                controller: 'projectMappingController'
+                controller: 'ProjectMappingController'
             })
             .when('/nested', {
                 templateUrl: 'nested/nested-frame.html',

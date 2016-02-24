@@ -47,13 +47,34 @@
                                         <input type="checkbox">
                                     </td>
                                 </tr>
+
+                                <tr ng-repeat-start="activity in iatiActivities">
+                                    <td><code>{{activity.iatiidentifier.Value}}</code></td>
+                                    <td>{{activity.title.narrative[0].Value}}</td>
+                                    <td>{{activity.PercentToBD}}%</td>
+                                    <td>{{activity.defaultaidtype.name}}(<code>{{activity.defaultaidtype.code}}</code>)</td>
+                                    <td>
+                                        <input type="checkbox" checked="">
+                                    </td>
+                                </tr>
+                                <tr class="active" ng-repeat-end>
+                                    <td><code>{{activity.iatiidentifier.Value}}</code></td>
+                                    <td>{{activity.title.narrative[0].Value}}</td>
+                                    <td>{{activity.PercentToBD}}%</td>
+                                    <td>{{activity.defaultaidtype.name}}(<code>{{activity.defaultaidtype.code}}</code>)<td>
+                                        <input type="checkbox">
+                                    </td>
+                                </tr>
+
                             </tbody>
                         </table>
+
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-1 col-md-10 btnFooter">
-                        <a class="btn btn-default" ng-href="#/2Hierarchy">  Back  </a>
+                        <a ng-hide="$root.HasRelatedActivity" class="btn btn-default" ng-href="#/1Begin">  Back  </a>
+                        <a ng-show="$root.HasRelatedActivity" class="btn btn-default" ng-href="#/2Hierarchy">  Back  </a>
                         <a class="btn btn-default" ng-href="#/4FilterDP">  Next  </a>
                     </div>
                 </div>

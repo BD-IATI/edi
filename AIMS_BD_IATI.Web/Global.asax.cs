@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,19 @@ namespace AIMS_BD_IATI.Web
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
             */
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DynamicContractResolver();
+        }
+
+        public class DynamicContractResolver : DefaultContractResolver
+        {
+            protected override IList<JsonProperty> CreateProperties(Type type,
+                MemberSerialization memberSerialization)
+            {
+                IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
+
+                properties = properties.Where(p => p.PropertyName != "AnyAttr" && p.PropertyName != "Any").ToList();
+                return properties;
+            }
         }
 
         public override void Init()

@@ -20,7 +20,7 @@ namespace AIMS_BD_IATI.Service
         static void Main(string[] args)
         {
 
-            var k = new AimsDbIatiDAL().GetActivities("GB-1");
+            var k = new AimsDbIatiDAL().GetActivities("CAfc-3");
 
 
             try

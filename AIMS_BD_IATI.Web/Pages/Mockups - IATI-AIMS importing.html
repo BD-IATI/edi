@@ -68,7 +68,7 @@
                             </p>
                             <hr>
 
-                            <div class="row" ng-controller="beginImportController">
+                            <div class="row" ng-controller="BeginImportController">
                                 <div class="col-md-10 col-md-offset-1">
                                     <form class="form-horizontal">
                                         <div class="form-group">
@@ -92,7 +92,7 @@
                             </div>
 
                             <script type="text/javascript">
-                                IatiDataImporterApp.controller("beginImportController", function ($scope, $http) {
+                                IatiDataImporterApp.controller("BeginImportController", function ($scope, $http) {
 
                                     $scope.selectedFundSource = null;
                                     $scope.FundSources = [];
@@ -517,7 +517,7 @@
                     </div>
                     <script type="text/javascript">
 
-                        IatiDataImporterApp.controller("projectMappingController", function ($scope, $http) {
+                        IatiDataImporterApp.controller("ProjectMappingController", function ($scope, $http) {
 
                             (function startup() {
 
@@ -672,7 +672,7 @@
                                     }
                     </style>
 
-                    <div ng-controller="projectMappingController" class="divDragDrop">
+                    <div ng-controller="ProjectMappingController" class="divDragDrop">
 
                         <table width="100%" style="vertical-align:top">
                             <thead>
