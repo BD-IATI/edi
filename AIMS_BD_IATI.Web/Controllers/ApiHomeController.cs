@@ -17,15 +17,15 @@ namespace AIMS_BD_IATI.Web.Controllers
     [RoutePrefix("api/ApiHome")]
     public class ApiHomeController : ApiController
     {
-        public List<iatiactivity> iatiactivities
+        public iatiactivityContainer iatiactivities
         {
             get
             {
-                return HttpContext.Current.Session["iatiactivities"] == null ? 
-                    null 
-                    : (List<iatiactivity>)HttpContext.Current.Session["iatiactivities"];
+                return HttpContext.Current.Session["iatiactivityContainer"] == null ? 
+                    null
+                    : (iatiactivityContainer)HttpContext.Current.Session["iatiactivityContainer"];
             }
-            set { HttpContext.Current.Session["iatiactivities"] = value; }
+            set { HttpContext.Current.Session["iatiactivityContainer"] = value; }
         }
 
         static List<IatiProject> iatiProjects = new List<IatiProject>
@@ -45,18 +45,12 @@ namespace AIMS_BD_IATI.Web.Controllers
 
         RootObject DataModel = new RootObject() { iatiProjects = iatiProjects, aimsProjects = aimsProjects };
 
-        public List<iatiactivity> GetProjectHierarchyData()
+        public iatiactivityContainer GetProjectHierarchyData(string dp)
         {
-
-            if (iatiactivities == null)
-                iatiactivities = new AimsDbIatiDAL().GetActivities("GB-1");
+            //if (iatiactivities == null)
+                iatiactivities = new AimsDbIatiDAL().GetActivities(dp);
 
             return iatiactivities;
-            //TextWriter tw = new StringWriter();
-
-            //new Newtonsoft.Json.JsonSerializer().Serialize(tw, iatiactivities);
-
-            //return tw.ToString();
         }
 
         //[HttpGet]

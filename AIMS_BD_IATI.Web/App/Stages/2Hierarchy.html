@@ -28,39 +28,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="success">
+                                <tr class="success" ng-repeat-start="activity in iatiActivities">
                                     <td>1</td>
-                                    <td><code>GB-1-107368</code> Rural Electrification Development Project</td>
+                                    <td>
+                                        <code>{{activity.iatiidentifier.Value}}</code> {{activity.title.narrative[0].Value}}
+                                    </td>
+
                                     <td>70%</td>
                                     <td>
                                         <div class="radio">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                            <input type="radio" name="{{activity.iatiidentifier.Value}}" value="Hierarchy1" ng-model="activity.SelectedHierarchy">
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+
+                                <tr ng-repeat-end>
                                     <td>2</td>
                                     <td>
-                                        <p><code>GB-1-107368-101</code> PROCOFSERVICES and P0050 for Rural Electrification Development Project</p>
-                                        <p><code>GB-1-107368-102</code> MULTILATORGANISATION and P0050 for Rural Electrification Development Project</p>
-                                        <p><code>GB-1-107368-103</code> NONBUDSUPPFINAID and P0050 for Rural Electrification Development Project</p>
-                                        <p><code>GB-1-107368-104</code> MOU With USAID for REDP</p>
-                                        <p><code>GB-1-107368-105</code> NONBUDSUPPFINAID and CP026 for Rural Electrification Development Project</p>
+                                        <p ng-repeat="ra in activity.relatedIatiActivities track by $index">
+                                            <code>{{ra.iatiidentifier.Value}}</code> {{ra.title.narrative[0].Value}}
+                                        </p>
                                     </td>
                                     <td>0%</td>
                                     <td>
                                         <div class="radio">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr ng-repeat="activity in iatiActivities">
-                                    <td>{{activity.hierarchy}}</td>
-                                    <td ng-class="success : (activity.hierarchy == '1')"><code>{{activity.iatiidentifier.Value}}</code> {{activity.title.narrative[0].Value}}</td>
-                                    <td>70%</td>
-                                    <td>
-                                        <div class="radio">
-                                            <input type="radio" name="{{activity.iatiidentifier.Value | limitTo: 11}}" id="optionsRadios1" value="option1" checked="">
+                                            <input type="radio" name="{{activity.iatiidentifier.Value}}" value="Hierarchy2" ng-model="activity.SelectedHierarchy">
                                         </div>
                                     </td>
                                 </tr>
@@ -73,6 +65,7 @@
                     <div class="col-md-offset-1 col-md-10 btnFooter">
                         <a class="btn btn-default" ng-href="#/1Begin">Back</a>
                         <a class="btn btn-default" ng-href="#/3FilterBD">Next</a>
+                        <a id="btn3FilterBD" hidden ng-href="#/3FilterBD">Next</a>
                     </div>
                 </div>
 

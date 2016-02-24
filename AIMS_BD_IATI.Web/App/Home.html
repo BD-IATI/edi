@@ -6,10 +6,12 @@
     <link href="../Content/bootstrap.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
 
-    <!--for AngularDragAndDrop-->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
     <script src="../Scripts/angular-drag-and-drop-lists.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>-->
 
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/bootstrap-theme.min.css">
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/prism.css">
@@ -17,21 +19,21 @@
     <script src="../Content/AngularDragAndDrop/vendor/prism.js"></script>
 
     <script type="text/javascript">
-        var IatiDataImporterApp = angular.module("IatiDataImporter", ["ngRoute", 'dndLists']);
+        var iatiDataImporterApp = angular.module("iatiDataImporter", ["ngRoute", 'dndLists']);
 
-        IatiDataImporterApp.config(function ($routeProvider) {
+        iatiDataImporterApp.config(function ($routeProvider) {
             $routeProvider
                 .when('/1Begin', {
                     templateUrl: 'Stages/1Begin.html',
-                    controller: 'beginImportController'
+                    controller: 'BeginImportController'
                 })
                 .when('/2Hierarchy', {
                     templateUrl: 'Stages/2Hierarchy.html',
-                    controller: 'hierarchyController'
+                    controller: 'HierarchyController'
                 })
                 .when('/3FilterBD', {
                     templateUrl: 'Stages/3FilterBD.html',
-                    //controller: 'TypesDemoController'
+                    controller: 'FilterBDController'
                 })
                 .when('/4FilterDP', {
                     templateUrl: 'Stages/4FilterDP.html',
@@ -43,12 +45,12 @@
                 })
                 .when('/6Match', {
                     templateUrl: 'Stages/6Match.html',
-                    controller: 'projectMappingController'
+                    controller: 'ProjectMappingController'
                 })
                 .otherwise({ redirectTo: '/1Begin' });
         })
 
-        IatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
+        iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
                 return {
                     template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +
                               '    <a>{{option.label}}</a>' + //'    <a ng-href="{{option.href}}">{{option.label}}</a>'
@@ -72,15 +74,29 @@
                         });
                     }
                 };
-            });
+        });
+
+        //iatiDataImporterApp.animation('.slide', [function () {
+        //    return {
+        //        enter: function (element, doneFn) {
+        //            $(element).slideUp(1000, doneFn);
+        //        }
+        //    }
+        //}]);
+
+        //$(function () {
+        //    alert("dfasd");
+        //    $('.tab-content').hide();
+        //})
     </script>
 
     <!--1-->
     <script type="text/javascript">
 
-        angular.module("IatiDataImporter").controller("beginImportController", function ($rootScope, $scope, $http, $location) {
+        iatiDataImporterApp.controller("BeginImportController", function ($rootScope, $scope, $http, $location) {
 
-            $scope.selectedFundSource = null;
+            $rootScope.selectedFundSource = null;
+
             $scope.FundSources = [];
 
             $http({
@@ -91,46 +107,52 @@
                 $scope.FundSources = result;
             });
 
-            $scope.Commands = {
-                Next: function () {
-                    $location.url('http://localhost:1715/App/Home.html#/6Match.html');
-                    
-                }
-
-            };
         });
     </script>
 
     <!--2-->
     <script type="text/javascript">
 
-        angular.module("IatiDataImporter").controller("hierarchyController", function ($rootScope, $scope, $http, $location) {
+        iatiDataImporterApp.controller("HierarchyController", function ($rootScope, $scope, $http, $location, $timeout) {
             $scope.iatiActivities = [];
-
+            //$rootScope.iatiActivities = $scope.iatiActivities;
+            $rootScope.HasRelatedActivity = false;
             $http({
                 method: 'GET',
                 url: '../api/ApiHome/GetProjectHierarchyData',
-                dataType: 'json'
-                //data: { dp: "GB-1" }
+                dataType: 'json',
+                params: { dp: $rootScope.selectedFundSource }
             }).success(function (result) {
-                $scope.iatiActivities = result;
+                $rootScope.HasRelatedActivity = result.HasRelatedActivity;
+                if ($rootScope.HasRelatedActivity == false) {
+                    $scope.iatiActivities = [];
+                    $timeout(function () {
+                        document.getElementById('btn3FilterBD').click(); //redirect
+                    });
+                }
+                else {
+                    $rootScope.iatiActivities = $scope.iatiActivities = result.iatiActivities;
+                }
             });
 
-            $scope.Commands = {
-                Next: function () {
-                    $location.url('http://localhost:1715/App/Home.html#/6Match.html');
-
-                }
-
-            };
         });
     </script>
 
+    <!--3-->
+    <script type="text/javascript">
+
+        iatiDataImporterApp.controller("FilterBDController", function ($rootScope, $scope, $http, $location, $timeout) {
+            $scope.iatiActivities = $rootScope.iatiActivities;
+
+
+
+        });
+    </script>
 
     <!--6-->
     <script type="text/javascript">
 
-        angular.module("IatiDataImporter").controller("projectMappingController", function ($scope, $http) {
+        iatiDataImporterApp.controller("ProjectMappingController", function ($scope, $http) {
 
             (function startup() {
 
@@ -147,44 +169,6 @@
                     });
 
             })();
-
-            //$scope.models = {
-            //    selected: null,
-            //    //iatiProjects: { "IATIProjects": [] },
-            //    iatiProjects: [],
-            //    //aimsProjects: { "WATER MANAGEMENT IMPROVEMENT PROJECT": [], "Urban Dredging Project": [] }
-            //    aimsProjects: []
-            //};
-
-            //// Generate initial model
-            //$scope.models.iatiProjects.push({
-            //    title: "IED-SRHR project",
-            //    description: "Promoting adolescents wellbeing",
-            //    startDate: "2014-12-01", endDate: "2015-12-31"
-            //});
-            //$scope.models.iatiProjects.push({
-            //    title: "Water Mgmt.Impr.Proj WB",
-            //    description: "1. Institutional reform of the Water sector institution 2. Development of a rehabilitation and o & m strategy of coastal and river polders 3. Rehabilitation of polders and improvement of water management",
-            //    startDate: "2014-07-03", endDate: "2015-09-31"
-            //});
-            //$scope.models.iatiProjects.push({
-            //    title: "Bangladesh veiligh.akkoord",
-            //    description: "vervolg op 25967. Hoofddoel is implementeren van brand- en gebouw- veiligheidsakkoord in Bangladesh (Fire and Building Safety Agreement)",
-            //    startDate: "2014-07-03", endDate: "2015-09-31"
-            //});
-
-            //$scope.models.aimsProjects.push({
-            //    title: "WATER MANAGEMENT IMPROVEMENT PROJECT",
-            //    description: "Promcents wellbeing",
-            //    startDate: "2014-12-01", endDate: "2015-12-31",
-            //    matchedProjects: []
-            //});
-            //$scope.models.aimsProjects.push({
-            //    title: "Urban Dredging Project",
-            //    description: "Water sector institution 2. Development of a rehabilitation and o & m strategy of coastal and river polders 3. Rehabilitation",
-            //    startDate: "2014-07-03", endDate: "2015-09-31",
-            //    matchedProjects: []
-            //});
 
             $scope.Commands = {
                 saveData: function () {
@@ -220,8 +204,38 @@
             text-align:right;
         }
     </style>
+
+    
+    <style>
+
+        .animate-repeat {
+            line-height: 30px;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+            .animate-repeat.ng-move,
+            .animate-repeat.ng-enter,
+            .animate-repeat.ng-leave {
+                transition: all linear 0.5s;
+            }
+
+                .animate-repeat.ng-leave.ng-leave-active,
+                .animate-repeat.ng-move,
+                .animate-repeat.ng-enter {
+                    opacity: 0;
+                    max-height: 0;
+                }
+
+                    .animate-repeat.ng-leave,
+                    .animate-repeat.ng-move.ng-move-active,
+                    .animate-repeat.ng-enter.ng-enter-active {
+                        opacity: 1;
+                        max-height: 30px;
+                    }
+    </style>
 </head>
-<body ng-app="IatiDataImporter">
+<body ng-app="iatiDataImporter">
     <header>
         <nav id="main" class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">

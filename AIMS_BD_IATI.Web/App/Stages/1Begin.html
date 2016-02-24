@@ -18,10 +18,13 @@
                             <div class="col-sm-8">
 
                                 <select class="form-control" id="beginDPselect"
-                                        ng-model="selectedFundSource"
+                                        ng-model="$root.selectedFundSource"
                                         ng-options="item.ID as item.Name for item in FundSources">
                                     <option value="">Select one...</option>
                                 </select>
+
+                                <p ng-bind="$root.selectedFundSource"></p>
+                            
                             </div>
                         </div>
                         <div class="form-group" ng-show="selectedFundSource != null">

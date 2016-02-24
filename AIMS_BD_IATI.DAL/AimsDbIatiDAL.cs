@@ -41,7 +41,7 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
-        public List<iatiactivity> GetActivities(string dp)
+        public iatiactivityContainer GetActivities(string dp)
         {
             var q = from a in dbContext.Activities
                     where a.Organization_Id == dp
@@ -62,23 +62,30 @@ namespace AIMS_BD_IATI.DAL
                 result.Add(activity);
             }
 
-            var parentActivities = result.FindAll(x => x.relatedactivity.Where(r => r.type != "1").Count() == 0);
+            var parentActivities = result.FindAll(x => x.hierarchy == 1);
+            var returnResult = new iatiactivityContainer();
             foreach (var pa in parentActivities)
             {
-
-                foreach (var ra in pa.relatedactivity)
+                if (pa.relatedactivity != null)
                 {
-                    //load related activities
-                    var ha = result.Find(f => f.iatiidentifier.Value == ra.@ref);
+                    pa.SelectedHierarchy = "Hierarchy1";
+                    foreach (var ra in pa.relatedactivity.Where(r=>r.type == "2"))
+                    {
+                        //load related activities
+                        var ha = result.Find(f => f.iatiidentifier.Value == ra.@ref);
 
-                    activity.relatedIatiActivities.Add(ha);
+                        if (ha != null)
+                        {
+                            pa.relatedIatiActivities.Add(ha);
+                        }
+                    }
                 }
 
 
             }
+            returnResult.iatiActivities = parentActivities;
 
-
-            return result;
+            return returnResult;
         }
 
 
