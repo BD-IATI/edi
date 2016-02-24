@@ -21,7 +21,17 @@ namespace AIMS_BD_IATI.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            //JSON Media-Type Formatter ref: http://www.asp.net/web-api/overview/formats-and-model-binding/json-and-xml-serialization
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
+
+            //XML Media-Type Formatter ref:http://www.asp.net/web-api/overview/formats-and-model-binding/json-and-xml-serialization
+            GlobalConfiguration.Configuration.Formatters.XmlFormatter.UseXmlSerializer = true;
+
+            /*
+            //switched off XML and forced only JSON to be returned.
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
+            */
         }
 
         public override void Init()

@@ -22,7 +22,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+    [System.Xml.Serialization.XmlRootAttribute("result", Namespace = "", IsNullable = false)]
     public class XmlResultv2 : IXmlResult
     {
         private iatiactivities iatiactivitiesField;
