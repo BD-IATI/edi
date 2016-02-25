@@ -105,28 +105,30 @@
                                 <!--ng-include="'simple/simple.html'"-->
                                 <!-- The dnd-list directive allows to drop elements into it.
                                 The dropped data will be added to the referenced list -->
-                                <ul dnd-list="models.iatiProjects">
+                                <ul dnd-list="models.IatiActivitiesNotInAims">
                                     <!-- The dnd-draggable directive makes an element draggable and will
                                     transfer the object that was assigned to it. If an element was
                                     dragged away, you have to remove it from the original list
                                     yourself using the dnd-moved attribute -->
-                                    <li ng-repeat="item in models.iatiProjects"
+                                    <li ng-repeat="item in models.IatiActivitiesNotInAims"
                                         dnd-draggable="item"
-                                        dnd-moved="models.iatiProjects.splice($index, 1)"
+                                        dnd-moved="models.IatiActivitiesNotInAims.splice($index, 1)"
                                         dnd-effect-allowed="move"
                                         dnd-selected="models.selected = item"
                                         ng-class="{'selected': models.selected === item}">
+                                        <code>{{item.iatiidentifier.Value}}</code>
 
-                                        <h3 class="project-title">{{item.title}}</h3>
+
+                                        <h3 class="project-title">{{item.title.narrative[0].Value}}</h3>
                                         <p><span class="label label-primary">Reported by: Netherlands</span></p>
                                         <p>
-                                            {{item.description}}
+                                            {{item.description[0].narrative[0].Value}}
                                         </p>
                                         <dl class="dl-horizontal">
                                             <dt>Start date</dt>
-                                            <dd>{{item.startDate}}</dd>
+                                            <dd></dd>
                                             <dt>End date</dt>
-                                            <dd>{{item.endDate}}</dd>
+                                            <dd></dd>
                                         </dl>
 
                                     </li>
@@ -140,10 +142,12 @@
                 </td>
 
                 <td width="50%" style="vertical-align: top; padding:10px">
-                    <div ng-repeat="(projectId, projectObj) in models.aimsProjects">
+                    <div ng-repeat="m in models.AimsProjectsNotInIati">
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h3 class="project-title">{{projectObj.title}}</h3>
+                                <code>{{m.iatiidentifier.Value}}</code>
+
+                                <h3 class="project-title">{{m.title.narrative[0].Value}}</h3>
                                 <p><span class="label label-primary">Reported by: Netherlands</span></p>
 
                                 <dl class="dl-horizontal">
@@ -156,24 +160,58 @@
 
                             <div class="panel-body">
 
-                                <span ng-hide="projectObj.matchedProjects.length>0" ng-show="projectObj.matchedProjects.length==0" style="color:gray"> Drop matched projects here...</span>
+                                <span ng-hide="m.MatchedProjects.length>0" ng-show="m.MatchedProjects.length==0" style="color:gray"> Drop matched projects here...</span>
 
                                 <!--ng-include="'simple/simple.html'"-->
                                 <!-- The dnd-list directive allows to drop elements into it.
                                 The dropped data will be added to the referenced list -->
-                                <ul dnd-list="projectObj.matchedProjects">
+                                <ul dnd-list="m.MatchedProjects">
                                     <!-- The dnd-draggable directive makes an element draggable and will
                                     transfer the object that was assigned to it. If an element was
                                     dragged away, you have to remove it from the original list
                                     yourself using the dnd-moved attribute -->
-                                    <li ng-repeat="item in projectObj.matchedProjects"
+                                    <li ng-repeat="item in m.MatchedProjects"
                                         dnd-draggable="item"
-                                        dnd-moved="projectObj.matchedProjects.splice($index, 1)"
+                                        dnd-moved="m.MatchedProjects.splice($index, 1)"
                                         dnd-effect-allowed="move"
                                         dnd-selected="models.selected = item"
                                         ng-class="{'selected': models.selected === item}"
-                                        title="{{item.description}}">
-                                        {{item.title}}
+                                        title="{{item.description[0].narrative[0].Value}}">
+                                        {{item.title.narrative[0].Value}}
+
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div>
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="project-title">New Projects</h3>
+                            </div>
+
+                            <div class="panel-body">
+
+                                <span ng-hide="models.NewProjectsToAddInAims.length>0" ng-show="models.NewProjectsToAddInAims.length==0" style="color:gray"> Drop matched projects here...</span>
+
+                                <!--ng-include="'simple/simple.html'"-->
+                                <!-- The dnd-list directive allows to drop elements into it.
+                                The dropped data will be added to the referenced list -->
+                                <ul dnd-list="models.NewProjectsToAddInAims">
+                                    <!-- The dnd-draggable directive makes an element draggable and will
+                                    transfer the object that was assigned to it. If an element was
+                                    dragged away, you have to remove it from the original list
+                                    yourself using the dnd-moved attribute -->
+                                    <li ng-repeat="item in models.NewProjectsToAddInAims"
+                                        dnd-draggable="item"
+                                        dnd-moved="models.NewProjectsToAddInAims.splice($index, 1)"
+                                        dnd-effect-allowed="move"
+                                        dnd-selected="models.selected = item"
+                                        ng-class="{'selected': models.selected === item}"
+                                        title="{{item.description[0].narrative[0].Value}}">
+                                        {{item.title.narrative[0].Value}}
 
                                     </li>
                                 </ul>
