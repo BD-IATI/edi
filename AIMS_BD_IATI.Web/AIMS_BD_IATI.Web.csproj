@@ -179,6 +179,7 @@
     <Compile Include="Controllers\ApiHomeController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\ApiIatiConverterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
