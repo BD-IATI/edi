@@ -41,7 +41,7 @@
                 })
                 .when('/5Projects', {
                     templateUrl: 'Stages/5Projects.html',
-                    //controller: 'MultiDemoController'
+                    controller: 'ShowProjectsController'
                 })
                 .when('/6Match', {
                     templateUrl: 'Stages/6Match.html',
@@ -51,29 +51,29 @@
         })
 
         iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
-                return {
-                    template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +
-                              '    <a>{{option.label}}</a>' + //'    <a ng-href="{{option.href}}">{{option.label}}</a>'
-                              '</li>',
-                    link: function (scope, element, attr) {
-                        scope.options = [
-                            { label: "1. Begin import", href: "#/1Begin" },
-                            { label: "2. Hierarchy", href: "#/2Hierarchy" },
-                            { label: "3. Filter Bangladesh-relevant activities", href: "#/3FilterBD" },
-                            { label: "4. Filter DP activities", href: "#/4FilterDP" },
-                            { label: "5. Show projects", href: "#/5Projects" },
-                            { label: "6. Match unmatched projects", href: "#/6Match" }
-                        ];
+            return {
+                template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +
+                          '    <a>{{option.label}}</a>' + //'    <a ng-href="{{option.href}}">{{option.label}}</a>'
+                          '</li>',
+                link: function (scope, element, attr) {
+                    scope.options = [
+                        { label: "1. Begin import", href: "#/1Begin" },
+                        { label: "2. Hierarchy", href: "#/2Hierarchy" },
+                        { label: "3. Filter Bangladesh-relevant activities", href: "#/3FilterBD" },
+                        { label: "4. Filter DP activities", href: "#/4FilterDP" },
+                        { label: "5. Show projects", href: "#/5Projects" },
+                        { label: "6. Match unmatched projects", href: "#/6Match" }
+                    ];
 
-                        scope.isActive = function (option) {
-                            return option.href.indexOf(scope.location) === 1;
-                        };
+                    scope.isActive = function (option) {
+                        return option.href.indexOf(scope.location) === 1;
+                    };
 
-                        $rootScope.$on("$locationChangeSuccess", function (event, next, current) {
-                            scope.location = $location.path();
-                        });
-                    }
-                };
+                    $rootScope.$on("$locationChangeSuccess", function (event, next, current) {
+                        scope.location = $location.path();
+                    });
+                }
+            };
         });
 
         //iatiDataImporterApp.animation('.slide', [function () {
@@ -94,6 +94,8 @@
     <script type="text/javascript">
 
         iatiDataImporterApp.controller("BeginImportController", function ($rootScope, $scope, $http, $location) {
+            $rootScope.models = [];
+            $rootScope.iatiActivities = [];
 
             $rootScope.selectedFundSource = null;
 
@@ -144,7 +146,56 @@
         iatiDataImporterApp.controller("FilterBDController", function ($rootScope, $scope, $http, $location, $timeout) {
             $scope.iatiActivities = $rootScope.iatiActivities;
 
+            //$http({
+            //    url: '../api/ApiHome/SubmitHierarchy',
+            //    method: 'POST',
+            //    data: JSON.stringify($rootScope.iatiActivities),
+            //    dataType: 'json'
+            //}).then(function (result) {
+            //    $scope.iatiActivities = result;
+            //    //deferred.resolve(result);
+            //},
+            //function (response) {
+            //    //deferred.reject(response);
+            //});
 
+
+        });
+    </script>
+
+    <!--4-->
+    <script type="text/javascript">
+
+        iatiDataImporterApp.controller("ShowProjectsController", function ($rootScope, $scope, $http, $location, $timeout) {
+            //$scope.iatiActivities = $rootScope.iatiActivities;
+            $scope.models = {
+                selected : false,
+                MatchedProjects : [],
+                IatiActivitiesNotInAims : [],
+                AimsProjectsNotInIati : [],
+                NewProjectsToAddInAims : []
+            };
+            $rootScope.models = $scope.models;
+            //$scope.MatchedProjects = [];
+            //$scope.IatiActivityNotInAims = [];
+            //$scope.AimsProjectNotInIati = [];
+
+            $http({
+                url: '../api/ApiHome/SubmitActivities',
+                method: 'POST',
+                data: JSON.stringify($rootScope.iatiActivities),
+                dataType: 'json'
+            }).then(function (result) {
+                $rootScope.models = $scope.models = result.data;
+                //$rootScope.MatchedProjects = $scope.MatchedProjects = result.data.MatchedProjects;
+                //$rootScope.IatiActivityNotInAims = $scope.IatiActivityNotInAims = result.data.IatiActivityNotInAims;
+                //$scope.AimsProjectNotInIati = result.data.AimsProjectNotInIati;
+
+                //deferred.resolve(result);
+            },
+            function (response) {
+                //deferred.reject(response);
+            });
 
         });
     </script>
@@ -152,23 +203,24 @@
     <!--6-->
     <script type="text/javascript">
 
-        iatiDataImporterApp.controller("ProjectMappingController", function ($scope, $http) {
+        iatiDataImporterApp.controller("ProjectMappingController", function ($rootScope, $scope, $http) {
+            $scope.models = $rootScope.models;
 
-            (function startup() {
+            //(function startup() {
 
-                $http({
-                    url: '../api/ApiHome/GetData',
-                    method: 'GET',
-                    dataType: 'json'
-                }).then(function (result) {
-                    $scope.models = result.data;
-                    //deferred.resolve(result);
-                },
-                    function (response) {
-                        //deferred.reject(response);
-                    });
+            //    $http({
+            //        url: '../api/ApiHome/GetData',
+            //        method: 'GET',
+            //        dataType: 'json'
+            //    }).then(function (result) {
+            //        $scope.models = result.data;
+            //        //deferred.resolve(result);
+            //    },
+            //        function (response) {
+            //            //deferred.reject(response);
+            //        });
 
-            })();
+            //})();
 
             $scope.Commands = {
                 saveData: function () {
@@ -200,14 +252,13 @@
     </script>
 
     <style>
-        .btnFooter{
-            text-align:right;
+        .btnFooter {
+            text-align: right;
         }
     </style>
 
-    
-    <style>
 
+    <style>
         .animate-repeat {
             line-height: 30px;
             list-style: none;
