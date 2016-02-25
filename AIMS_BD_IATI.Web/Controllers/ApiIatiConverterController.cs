@@ -21,31 +21,55 @@ namespace AIMS_BD_IATI.Web.Controllers
         /// <param name="activitiesURL"></param>
         /// <returns></returns>
         [AcceptVerbs("GET", "POST")]
-        public XmlResultv2 ConvertIATI()
+        public XmlResultv2 ConvertIATI(string org, string country)
         {
+            string activitiesURL;
             IParserIATI parserIATI;
-            XmlResultv2 returnResult2;
-            XmlResultv1 returnResult1;
-            string activitiesURL = "http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
-            //Parser v2.01
-            parserIATI = new ParserIATIv2();
+            XmlResultv2 returnResult2 = null;
+            XmlResultv1 returnResult1 = null;
 
-            returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
-
-            var iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
-            if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value == "1.05")
+            try
             {
-                //Parser v1.05
-                parserIATI = new ParserIATIv1();
-                returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
+                activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=" + country + "&reporting-org=" + org + "&stream=True";
+                //Parser v2.01
+                parserIATI = new ParserIATIv2();
 
-                //Conversion
-                ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
-                returnResult2 = convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
+                returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
+
+                var iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
+                if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value == "1.05")
+                {
+                    //Parser v1.05
+                    parserIATI = new ParserIATIv1();
+                    returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
+
+                    //Conversion
+                    ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
+                    returnResult2 = convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
+                }
+            }
+            catch (Exception ex)
+            {
+                returnResult2.n().Value = ex.Message;
             }
 
             return returnResult2;
             //return Newtonsoft.Json.JsonConvert.SerializeObject(returnResult2);
         }
+
+        public List<AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity> ConvertAIMStoIATI(string org)
+        {
+            List<AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity> iatiactivityList = new List<Library.Parser.ParserIATIv2.iatiactivity>();
+            try
+            {
+                iatiactivityList = new AIMS_BD_IATI.DAL.AimsDAL().getAIMSDataInIATIFormat(org);
+            }
+            catch (Exception)
+            {
+                
+            }
+            return iatiactivityList;
+        }
+        
     }
 }
