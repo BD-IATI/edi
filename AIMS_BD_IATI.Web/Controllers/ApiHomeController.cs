@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using MoreLinq;
 
 namespace AIMS_BD_IATI.Web.Controllers
 {
@@ -21,7 +22,7 @@ namespace AIMS_BD_IATI.Web.Controllers
         {
             get
             {
-                return HttpContext.Current.Session["iatiactivityContainer"] == null ? 
+                return HttpContext.Current.Session["iatiactivityContainer"] == null ?
                     null
                     : (iatiactivityContainer)HttpContext.Current.Session["iatiactivityContainer"];
             }
@@ -48,7 +49,7 @@ namespace AIMS_BD_IATI.Web.Controllers
         public iatiactivityContainer GetProjectHierarchyData(string dp)
         {
             //if (iatiactivities == null)
-                iatiactivities = new AimsDbIatiDAL().GetActivities(dp);
+            iatiactivities = new AimsDbIatiDAL().GetActivities(dp);
 
             return iatiactivities;
         }
@@ -68,7 +69,57 @@ namespace AIMS_BD_IATI.Web.Controllers
         {
             return Ok(DataModel);
         }
+        [HttpPost]
+        public async Task<IHttpActionResult> SubmitHierarchy(List<iatiactivity> _iatiactivities)
+        {
+            //var SelectedHierarchy1Activities = _iatiactivities.n().FindAll(f => f.SelectedHierarchy == "Heirarchy1");
+            //foreach (var activity in SelectedHierarchy1Activities)
+            //{
+            //    if  (activity.defaultaidtype == null)
+            //    {
 
+            //        //activity.defaultaidtype.code == activity.relatedIatiActivities.Max(m=>m.transaction.Sum(s=>s..value.Value))
+            //    }
+            //}
+
+            return Ok(_iatiactivities);
+        }
+
+        [HttpPost]
+        public ProjectMapModel SubmitActivities(List<iatiactivity> _iatiactivities)
+        {
+            var relevantActivies = _iatiactivities.n().FindAll(f => f.IsRelevant == true);
+
+            var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(relevantActivies.n(0).reportingorg.n().@ref);
+
+            var MatchedProjects = (from i in relevantActivies
+                                   join a in AimsProjects on i.iatiidentifier.Value equals a.iatiidentifier.Value
+                                   orderby i.iatiidentifier.Value
+                                   select i).ToList();
+
+            var MatchedProjects2 = (from i in relevantActivies
+                                    join a in AimsProjects on i.iatiidentifier.Value equals a.iatiidentifier.Value
+                                    orderby i.iatiidentifier.Value
+                                    select new MatchedProject
+                                    {
+                                        iatiActivity = i,
+                                        aimsProjects = a
+                                    }).ToList();
+
+            var IatiActivityNotInAims = relevantActivies.Except(MatchedProjects).ToList();
+
+
+            var AimsProjectNotInIati = AimsProjects.ExceptBy(MatchedProjects, f => f.iatiidentifier.Value).ToList();
+
+
+            return new ProjectMapModel
+            {
+                MatchedProjects = MatchedProjects2,
+                IatiActivitiesNotInAims = IatiActivityNotInAims,
+                AimsProjectsNotInIati = AimsProjectNotInIati,
+                NewProjectsToAddInAims = new List<iatiactivity>()
+            };
+        }
         //[HttpPut]
         //public async Task<IHttpActionResult> PutEmployee(EmployeeModel employee)
         //{
@@ -77,6 +128,26 @@ namespace AIMS_BD_IATI.Web.Controllers
         //    return Ok(employee);
         //}
     }
+
+
+    public class ProjectMapModel
+    {
+        public object selected { get; set; }
+
+        public List<MatchedProject> MatchedProjects { get; set; }
+        public List<iatiactivity> IatiActivitiesNotInAims { get; set; }
+        public List<iatiactivity> AimsProjectsNotInIati { get; set; }
+        public List<iatiactivity> NewProjectsToAddInAims { get; set; }
+
+
+    }
+
+    public class MatchedProject
+    {
+        public iatiactivity iatiActivity { get; set; }
+        public iatiactivity aimsProjects { get; set; }
+    }
+
 
     public class IatiProject
     {
