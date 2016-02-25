@@ -32,13 +32,13 @@ namespace AIMS_BD_IATI.DAL
 
             return fundSources.ToList();
         }
-        public List<tblProjectInfo> getProjects(string reportingOrg)
+        public List<tblProjectInfo> getProjects(string dp)
         {
 
             var projects = from project in dbContext.tblProjectInfoes.Include("tblFundSources")
                            join fundSource in dbContext.tblFundSources on project.FundSourceId equals fundSource.Id
                            //&& fundSource.IATICode equals fun
-                           where fundSource.IATICode == reportingOrg
+                           where fundSource.IATICode == dp
 
                            select project
                            ;
@@ -46,12 +46,12 @@ namespace AIMS_BD_IATI.DAL
             return projects.ToList();
         }
 
-        public List<iatiactivity> getAIMSDataInIATIFormat(string reportingOrg)
+        public List<iatiactivity> getAIMSDataInIATIFormat(string dp)
         {
 
             var projects = (from project in dbContext.tblProjectInfoes
                             join fundSource in dbContext.tblFundSources on project.FundSourceId equals fundSource.Id
-                            where fundSource.IATICode == reportingOrg
+                            where fundSource.IATICode == dp
                             select project);
 
             List<iatiactivity> iatiactivities = new List<iatiactivity>();
@@ -72,13 +72,13 @@ namespace AIMS_BD_IATI.DAL
 
                 iatiActivity.description = new iatiactivityDescription[1] { new iatiactivityDescription { narrative = getNarativeArray(project.Objective) } };
 
-                iatiActivity.defaultaidtype = new defaultaidtype { code = project.tblAssistanceType.N().IATICode };
+                iatiActivity.defaultaidtype = new defaultaidtype { code = project.tblAssistanceType.n().IATICode };
 
                 iatiActivity.reportingorg = new reportingorg
                 {
-                    narrative = getNarativeArray(project.tblFundSource.N().FundSourceName),
-                    @ref = project.tblFundSource.N().IATICode,
-                    type = project.tblFundSource.N().tblFundSourceCategory.N().IATICode
+                    narrative = getNarativeArray(project.tblFundSource.n().FundSourceName),
+                    @ref = project.tblFundSource.n().IATICode,
+                    type = project.tblFundSource.n().tblFundSourceCategory.n().IATICode
                 };
 
 
@@ -86,16 +86,16 @@ namespace AIMS_BD_IATI.DAL
 
                 iatiActivity.participatingorg[0] = new participatingorg
                 {
-                    narrative = getNarativeArray(project.tblFundSource.N().FundSourceGroup),
+                    narrative = getNarativeArray(project.tblFundSource.n().FundSourceGroup),
                     role = "1",
-                    @ref = project.tblFundSource.N().IATICode,
+                    @ref = project.tblFundSource.n().IATICode,
                     type = "10"
                 };
                 iatiActivity.participatingorg[1] = new participatingorg
                 {
-                    narrative = getNarativeArray(project.tblFundSource.N().FundSourceName),
+                    narrative = getNarativeArray(project.tblFundSource.n().FundSourceName),
                     role = "3",
-                    @ref = project.tblFundSource.N().IATICode,
+                    @ref = project.tblFundSource.n().IATICode,
                     type = "10"
                 };
                 //ToDo
@@ -119,7 +119,7 @@ namespace AIMS_BD_IATI.DAL
         private string getIdentifer(tblProjectInfo project)
         {
             return string.IsNullOrWhiteSpace(project.IatiIdentifier) ?
-                project.DPProjectNo.StartsWith(project.tblFundSource.N().IATICode) ? project.DPProjectNo : project.tblFundSource.N().IATICode + project.DPProjectNo
+                project.DPProjectNo.n().StartsWith(project.tblFundSource.n().IATICode) ? project.DPProjectNo : project.tblFundSource.n().IATICode + "-" + project.DPProjectNo
                 : project.IatiIdentifier;
         }
 

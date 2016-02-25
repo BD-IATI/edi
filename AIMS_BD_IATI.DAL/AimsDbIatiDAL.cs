@@ -89,14 +89,6 @@ namespace AIMS_BD_IATI.DAL
         }
 
 
-    }
-
-    public class ProjectHierachy
-    {
-        public string Organization_Id { get; set; }
-        public string IATI_Identifier { get; set; }
-        public Nullable<System.DateTime> Last_Downloaded { get; set; }
-        public Nullable<System.DateTime> Previous_Downloaded { get; set; }
 
     }
 }

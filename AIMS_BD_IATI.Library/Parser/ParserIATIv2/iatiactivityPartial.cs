@@ -9,13 +9,17 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     public class iatiactivityContainer
     {
         public List<iatiactivity> iatiActivities { get; set; }
+        public List<iatiactivity> NewProjects { get; set; }
+
         public bool HasRelatedActivity { get { return iatiActivities.Count > 0; } }
 
     }
     public partial class iatiactivity
     {
         public List<iatiactivity> relatedIatiActivities { get; set; }
+        public List<iatiactivity> MatchedProjects { get; set; }
         public string SelectedHierarchy { get; set; }
+        public string AidType { get; set; }
 
         public decimal PercentToBD
         {
