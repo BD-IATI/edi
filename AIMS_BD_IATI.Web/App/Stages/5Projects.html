@@ -21,13 +21,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="active"></tr>
-                            <tr>
-                                <td><code>GB-1-202123</code></td>
-                                <td>Bangladesh Education Development Programme</td>
-                                <td><code>GB-1-202123</code></td>
-                                <td>Bangladesh Education Development Programme (BEDP)</td>
+                            <tr ng-repeat="m in models.MatchedProjects" class="table-striped">
+                                <td><code>{{m.iatiActivity.iatiidentifier.Value}}</code></td>
+                                <td>{{m.iatiActivity.title.narrative[0].Value}}</td>
+                                <td><code>{{m.aimsProjects.iatiidentifier.Value}}</code></td>
+                                <td>{{m.aimsProjects.title.narrative[0].Value}}</td>
                             </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -36,7 +36,7 @@
             <div class="row">
                 <div class="col-md-offset-1 col-md-10">
                     <h3>IATI activities not found in the AIMS</h3>
-                    <table class="table">
+                    <table class="table" ng-show="models.IatiActivitiesNotInAims.length > 0">
                         <thead>
                             <tr>
                                 <th>IATI Project ID</th>
@@ -45,12 +45,18 @@
                         </thead>
                         <tbody>
                             <tr class="active"></tr>
-                            <tr>
-                                <td><code>GB-1-204131</code></td>
-                                <td>Ending the Cycle of Undernutrition in Bangladesh - Suchana</td>
+                            <tr ng-repeat="activity in models.IatiActivitiesNotInAims" class="table-striped">
+                                <td><code>{{activity.iatiidentifier.Value}}</code></td>
+                                <td>{{activity.title.narrative[0].Value}}</td>
                             </tr>
                         </tbody>
                     </table>
+
+                    <div class="alert alert-success" ng-hide="models.IatiActivitiesNotInAims.length > 0">
+                        Great news! All AIMS
+                        projects were found in this DP's IATI data.
+                    </div>
+
                 </div>
             </div>
 
@@ -58,10 +64,27 @@
             <div class="row">
                 <div class="col-md-offset-1 col-md-10">
                     <h3>AIMS projects not found in IATI</h3>
-                    <div class="alert alert-success">
+                    <table class="table" ng-show="models.AimsProjectsNotInIati.length > 0">
+                        <thead>
+                            <tr>
+                                <th>IATI Project ID</th>
+                                <th>IATI Project Title</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="active"></tr>
+                            <tr ng-repeat="activity in models.AimsProjectsNotInIati" class="table-striped">
+                                <td><code>{{activity.iatiidentifier.Value}}</code></td>
+                                <td>{{activity.title.narrative[0].Value}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert alert-success" ng-hide="AimsProjectNotInIati.length > 0">
                         Great news! All AIMS
                         projects were found in this DP's IATI data.
                     </div>
+
                 </div>
             </div>
 
