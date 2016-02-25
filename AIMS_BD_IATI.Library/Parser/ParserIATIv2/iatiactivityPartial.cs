@@ -25,6 +25,20 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return rc == null ? 0 : rc.percentage;
             }
         }
+
+        private bool? isRelevant;
+        public bool? IsRelevant
+        {
+            //ToDo add AidType criteria
+            get
+            {
+                return isRelevant?? PercentToBD >= 20 && activitystatus.code == "2";
+            }
+            set
+            {
+                isRelevant = value;
+            }
+        } 
     }
 
     public partial class defaultaidtype
@@ -48,6 +62,24 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 else if (code == "G01") return "Administrative costs not included elsewhere";
                 else if (code == "H01") return "Development awareness";
                 else if (code == "H02") return "Refugees in donor countries";
+                else
+                    return "";
+            }
+
+        }
+    }
+    public partial class activitystatus
+    {
+        public string name
+        {
+            get
+            {
+                if (code == "1") return "Pipeline/identification";
+                else if (code == "2") return "Implementation";
+                else if (code == "3") return "Completion";
+                else if (code == "4") return "Post-completion";
+                else if (code == "5") return "Cancelled";
+                else if (code == "6") return "Suspended";
                 else
                     return "";
             }
