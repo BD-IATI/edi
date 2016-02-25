@@ -14,58 +14,26 @@
             <form class="form-horizontal">
                 <div class="row">
                     <div class="col-md-offset-1 col-md-10">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Activity ID</th>
                                     <th>Activity Title</th>
                                     <th>% to Bangladesh</th>
                                     <th>Aid type</th>
+                                    <th>Status</th>
                                     <th>Relevant</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><code>GB-1-107368</code></td>
-                                    <td>Rural Electrification Development Project</td>
-                                    <td>70%</td>
-                                    <td>
-                                        Project-type interventions (<code>C01</code>)
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" checked="">
-                                    </td>
-                                </tr>
-                                <tr class="active">
-                                    <td><code>GB-1-999999</code></td>
-                                    <td>World Bank core contributions</td>
-                                    <td>2%</td>
-                                    <td>
-                                        Core contributions to multilaterals (<code>B01</code>)
-                                    </td>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                </tr>
-
-                                <tr ng-repeat-start="activity in iatiActivities">
+                                <tr ng-repeat="activity in iatiActivities">
                                     <td><code>{{activity.iatiidentifier.Value}}</code></td>
                                     <td>{{activity.title.narrative[0].Value}}</td>
                                     <td>{{activity.PercentToBD}}%</td>
                                     <td>{{activity.defaultaidtype.name}}(<code>{{activity.defaultaidtype.code}}</code>)</td>
-                                    <td>
-                                        <input type="checkbox" checked="">
-                                    </td>
+                                    <td>{{activity.activitystatus.name}}</td>
+                                    <td><input type="checkbox" ng-model="activity.IsRelevant"></td>
                                 </tr>
-                                <tr class="active" ng-repeat-end>
-                                    <td><code>{{activity.iatiidentifier.Value}}</code></td>
-                                    <td>{{activity.title.narrative[0].Value}}</td>
-                                    <td>{{activity.PercentToBD}}%</td>
-                                    <td>{{activity.defaultaidtype.name}}(<code>{{activity.defaultaidtype.code}}</code>)<td>
-                                        <input type="checkbox">
-                                    </td>
-                                </tr>
-
                             </tbody>
                         </table>
 
