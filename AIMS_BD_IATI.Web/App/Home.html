@@ -127,6 +127,7 @@
             }).success(function (result) {
                 $rootScope.HasRelatedActivity = result.HasRelatedActivity;
                 if ($rootScope.HasRelatedActivity == false) {
+                    $rootScope.iatiActivities = result.iatiActivities;
                     $scope.iatiActivities = [];
                     $timeout(function () {
                         document.getElementById('btn3FilterBD').click(); //redirect
@@ -181,7 +182,7 @@
             //$scope.AimsProjectNotInIati = [];
 
             $http({
-                url: '../api/ApiHome/SubmitActivities',
+                url: '../api/ApiHome/SubmitActivities?orgId='+$rootScope.selectedFundSource,
                 method: 'POST',
                 data: JSON.stringify($rootScope.iatiActivities),
                 dataType: 'json'
