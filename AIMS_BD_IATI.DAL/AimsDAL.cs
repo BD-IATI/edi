@@ -119,7 +119,7 @@ namespace AIMS_BD_IATI.DAL
         private string getIdentifer(tblProjectInfo project)
         {
             return string.IsNullOrWhiteSpace(project.IatiIdentifier) ?
-                project.DPProjectNo.n().StartsWith(project.tblFundSource.n().IATICode) ? project.DPProjectNo : project.tblFundSource.n().IATICode + "-" + project.DPProjectNo
+                project.DPProjectNo //project.DPProjectNo.n().StartsWith(project.tblFundSource.n().IATICode) ? project.DPProjectNo : project.tblFundSource.n().IATICode + "-" + project.DPProjectNo
                 : project.IatiIdentifier;
         }
 

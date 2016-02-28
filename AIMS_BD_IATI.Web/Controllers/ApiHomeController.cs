@@ -93,12 +93,14 @@ namespace AIMS_BD_IATI.Web.Controllers
             var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(relevantActivies.n(0).reportingorg.n().@ref);
 
             var MatchedProjects = (from i in relevantActivies
-                                   join a in AimsProjects on i.iatiidentifier.Value equals a.iatiidentifier.Value
+                                   from a in AimsProjects.Where(k=>i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value)) 
                                    orderby i.iatiidentifier.Value
+
                                    select i).ToList();
 
+            //for showing mathced projects side by side
             var MatchedProjects2 = (from i in relevantActivies
-                                    join a in AimsProjects on i.iatiidentifier.Value equals a.iatiidentifier.Value
+                                    from a in AimsProjects.Where(k => i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value))
                                     orderby i.iatiidentifier.Value
                                     select new MatchedProject
                                     {
