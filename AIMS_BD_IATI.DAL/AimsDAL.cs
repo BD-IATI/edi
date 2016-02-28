@@ -52,6 +52,7 @@ namespace AIMS_BD_IATI.DAL
             var projects = (from project in dbContext.tblProjectInfoes
                             join fundSource in dbContext.tblFundSources on project.FundSourceId equals fundSource.Id
                             where fundSource.IATICode == dp
+                            && (project.IatiIdentifier != null || project.DPProjectNo != null)
                             select project);
 
             List<iatiactivity> iatiactivities = new List<iatiactivity>();
