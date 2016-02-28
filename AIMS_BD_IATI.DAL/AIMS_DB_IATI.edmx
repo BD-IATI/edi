@@ -16,8 +16,6 @@
           <Property Name="Previous_Downloaded" Type="datetime" />
           <Property Name="Last_XML" Type="xml" />
           <Property Name="Previous_XML" Type="xml" />
-          <Property Name="strLast_XML" Type="nvarchar(max)" />
-          <Property Name="strPrevious_XML" Type="nvarchar(max)" />
           <Property Name="Hierarchy" Type="int" />
           <Property Name="Parent_Hierarchy" Type="int" />
         </EntityType>
@@ -42,8 +40,6 @@
           <Property Name="Previous_Downloaded" Type="DateTime" Precision="3" />
           <Property Name="Last_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Previous_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="strLast_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="strPrevious_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Hierarchy" Type="Int32" />
           <Property Name="Parent_Hierarchy" Type="Int32" />
         </EntityType>
@@ -58,8 +54,6 @@
               <MappingFragment StoreEntitySet="Activity">
                 <ScalarProperty Name="Parent_Hierarchy" ColumnName="Parent_Hierarchy" />
                 <ScalarProperty Name="Hierarchy" ColumnName="Hierarchy" />
-                <ScalarProperty Name="strPrevious_XML" ColumnName="strPrevious_XML" />
-                <ScalarProperty Name="strLast_XML" ColumnName="strLast_XML" />
                 <ScalarProperty Name="Previous_XML" ColumnName="Previous_XML" />
                 <ScalarProperty Name="Last_XML" ColumnName="Last_XML" />
                 <ScalarProperty Name="Previous_Downloaded" ColumnName="Previous_Downloaded" />

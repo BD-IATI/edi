@@ -19,7 +19,6 @@ namespace AIMS_BD_IATI.Service
     {
         static void Main(string[] args)
         {
-
             try
             {
                 ParseIATI().Wait();
@@ -30,6 +29,10 @@ namespace AIMS_BD_IATI.Service
             }
         }
 
+        /// <summary>
+        /// Parse IATI XML data from IATI data store and converts from v1 to v2
+        /// </summary>
+        /// <returns></returns>
         private static async Task ParseIATI()
         {
             IParserIATI parserIATI;
@@ -110,8 +113,7 @@ namespace AIMS_BD_IATI.Service
                 {
                     var ss = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity), new XmlRootAttribute("iati-activity"));
                     ss.Serialize(ww, iatiactivityItem);
-                    Activity.strLast_XML = ww.ToString();
-                    Activity.Last_XML = Activity.strLast_XML;
+                    Activity.Last_XML = ww.ToString();
                 }
                 Activities.Add(Activity);
                 Console.Write("\r Activity Counter: {0}   ", counter++);
