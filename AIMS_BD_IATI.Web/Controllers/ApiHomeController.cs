@@ -86,11 +86,11 @@ namespace AIMS_BD_IATI.Web.Controllers
         }
 
         [HttpPost]
-        public ProjectMapModel SubmitActivities(List<iatiactivity> _iatiactivities)
+        public ProjectMapModel SubmitActivities([FromUri]string orgId,List<iatiactivity> _iatiactivities)
         {
             var relevantActivies = _iatiactivities.n().FindAll(f => f.IsRelevant == true);
 
-            var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(relevantActivies.n(0).reportingorg.n().@ref);
+            var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(orgId);
 
             var MatchedProjects = (from i in relevantActivies
                                    from a in AimsProjects.Where(k=>i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value)) 
