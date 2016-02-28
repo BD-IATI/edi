@@ -18,8 +18,9 @@ namespace AIMS_BD_IATI.Web.Controllers
         /// <summary>
         /// Convert Data from v1.05 to v2.02
         /// </summary>
-        /// <param name="activitiesURL"></param>
-        /// <returns></returns>
+        /// <param name="org">Organization IATI Identifier, eg: CA-3</param>
+        /// <param name="country">Country Prefix, eg: BD</param>
+        /// <returns>IATI activity list in XML format</returns>
         [AcceptVerbs("GET", "POST")]
         public XmlResultv2 ConvertIATI(string org, string country)
         {
@@ -57,6 +58,12 @@ namespace AIMS_BD_IATI.Web.Controllers
             //return Newtonsoft.Json.JsonConvert.SerializeObject(returnResult2);
         }
 
+        /// <summary>
+        /// Convert AIMS Projects into IATI v2.x format
+        /// </summary>
+        /// <param name="org">Organization IATI Identifier of Managing DP, eg: CA-3</param>
+        /// <returns>IATI activity list in XML format</returns>
+        [AcceptVerbs("GET", "POST")]
         public List<AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity> ConvertAIMStoIATI(string org)
         {
             List<AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity> iatiactivityList = new List<Library.Parser.ParserIATIv2.iatiactivity>();
