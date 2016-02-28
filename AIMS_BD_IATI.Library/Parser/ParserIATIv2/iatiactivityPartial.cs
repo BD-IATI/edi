@@ -8,14 +8,24 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
     public class iatiactivityContainer
     {
+        public iatiactivityContainer()
+        {
+            iatiActivities = new List<iatiactivity>();
+            NewProjects = new List<iatiactivity>();
+        }
         public List<iatiactivity> iatiActivities { get; set; }
         public List<iatiactivity> NewProjects { get; set; }
 
-        public bool HasRelatedActivity { get { return iatiActivities.Count > 0; } }
+        public bool HasRelatedActivity { get { return iatiActivities.Exists(e => e.relatedIatiActivities.Count > 0); } }
 
     }
     public partial class iatiactivity
     {
+        public iatiactivity()
+        {
+            relatedIatiActivities = new List<iatiactivity>();
+            MatchedProjects = new List<iatiactivity>();
+        }
         public List<iatiactivity> relatedIatiActivities { get; set; }
         public List<iatiactivity> MatchedProjects { get; set; }
         public string SelectedHierarchy { get; set; }
@@ -36,13 +46,47 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             //ToDo add AidType criteria
             get
             {
-                return isRelevant?? PercentToBD >= 20 && activitystatus.code == "2";
+                return isRelevant ?? PercentToBD >= 20 && activitystatus.code == "2";
             }
             set
             {
                 isRelevant = value;
             }
-        } 
+        }
+
+        public DateTime PlannedStartDate
+        {
+            get
+            {
+                var sdate = activitydate.n().FirstOrDefault(f => f.type == "1");
+                return sdate == null ? default(DateTime) : sdate.isodate;
+            }
+        } //1
+        public DateTime ActualStartDate
+        {
+            get
+            {
+                var sdate = activitydate.n().FirstOrDefault(f => f.type == "2");
+                return sdate == null ? default(DateTime) : sdate.isodate;
+            }
+        } //2
+        public DateTime PlannedEndDate
+        {
+            get
+            {
+                var sdate = activitydate.n().FirstOrDefault(f => f.type == "3");
+                return sdate == null ? default(DateTime) : sdate.isodate;
+            }
+        } //3
+        public DateTime ActualEndDate
+        {
+            get
+            {
+                var sdate = activitydate.n().FirstOrDefault(f => f.type == "4");
+                return sdate == null ? default(DateTime) : sdate.isodate;
+            }
+        } //4
+
     }
 
     public partial class defaultaidtype

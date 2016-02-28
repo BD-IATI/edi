@@ -29,7 +29,7 @@
                         * otherwise you can't drop to it once it's empty
                         */
             .divDragDrop ul[dnd-list] {
-                min-height: 42px;
+                min-height: 50px;
                 padding-left: 0px;
             }
 
@@ -51,7 +51,7 @@
                 .divDragDrop ul[dnd-list] .dndPlaceholder {
                     display: block;
                     background-color: #ddd;
-                    min-height: 42px;
+                    min-height: 50px;
                 }
 
                 /**
@@ -116,19 +116,19 @@
                                         dnd-effect-allowed="move"
                                         dnd-selected="models.selected = item"
                                         ng-class="{'selected': models.selected === item}">
-                                        <code>{{item.iatiidentifier.Value}}</code>
-
 
                                         <h3 class="project-title">{{item.title.narrative[0].Value}}</h3>
-                                        <p><span class="label label-primary">Reported by: Netherlands</span></p>
-                                        <p>
-                                            {{item.description[0].narrative[0].Value}}
+                                        <p><code>{{item.iatiidentifier.Value}}</code></p>
+                                        <p><span class="label label-primary">Reported by: {{item.reportingorg.narrative[0].Value}}</span></p>
+                                        <p title="{{item.description[0].narrative[0].Value}}">
+                                            {{item.description[0].narrative[0].Value | limitTo:200}} ...
                                         </p>
+
                                         <dl class="dl-horizontal">
                                             <dt>Start date</dt>
-                                            <dd></dd>
-                                            <dt>End date</dt>
-                                            <dd></dd>
+                                            <dd>{{item.ActualStartDate | date:"dd MMMM yyyy"}}</dd>
+                                            <dt>Planned End date</dt>
+                                            <dd>{{item.PlannedEndDate | date:"dd MMMM yyyy"}}</dd>
                                         </dl>
 
                                     </li>
@@ -145,16 +145,15 @@
                     <div ng-repeat="m in models.AimsProjectsNotInIati">
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <code>{{m.iatiidentifier.Value}}</code>
-
                                 <h3 class="project-title">{{m.title.narrative[0].Value}}</h3>
-                                <p><span class="label label-primary">Reported by: Netherlands</span></p>
+                                <p><code>{{item.iatiidentifier.Value}}</code></p>
+                                <p><span class="label label-primary">Reported by: {{item.reportingorg.narrative[0].Value}}</span></p>
 
                                 <dl class="dl-horizontal">
                                     <dt>Start date</dt>
-                                    <dd>2014-12-01</dd>
-                                    <dt>End date</dt>
-                                    <dd>2015-12-31</dd>
+                                    <dd>{{item.ActualStartDate | date:"dd MMMM yyyy"}}</dd>
+                                    <dt>Planned End date</dt>
+                                    <dd>{{item.PlannedEndDate | date:"dd MMMM yyyy"}}</dd>
                                 </dl>
                             </div>
 
