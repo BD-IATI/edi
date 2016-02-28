@@ -20,9 +20,6 @@ namespace AIMS_BD_IATI.Service
         static void Main(string[] args)
         {
 
-            var k = new AimsDbIatiDAL().GetActivities("CAfc-3");
-
-
             try
             {
                 ParseIATI().Wait();
@@ -81,7 +78,7 @@ namespace AIMS_BD_IATI.Service
                 iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
                 if (iatiactivityArray != null)
                 {
-                    SaveToDB(iatiactivityArray);
+                    SaveToDB(fundSource.IATICode, iatiactivityArray);
                 }
             }
         }
@@ -91,7 +88,7 @@ namespace AIMS_BD_IATI.Service
         /// Save Data To DB
         /// </summary>
         /// <param name="returnResult2"></param>
-        private static void SaveToDB(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray)
+        private static void SaveToDB(string organization_Id, AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray)
         {
             List<Activity> Activities = new List<Activity>();
 
@@ -104,7 +101,7 @@ namespace AIMS_BD_IATI.Service
             {
                 var Activity = new Activity();
 
-                Activity.Organization_Id = iatiactivityItem.reportingorg.n().@ref;
+                Activity.Organization_Id = organization_Id;// iatiactivityItem.reportingorg.n().@ref;
                 Activity.IATI_Identifier = iatiactivityItem.iatiidentifier.n().Value;
                 Activity.Hierarchy = iatiactivityItem.hierarchy;
 
