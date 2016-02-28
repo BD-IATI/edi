@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
+    public class IatiIgnoreAttribute : Attribute
+    {
+
+    }
     public class iatiactivityContainer
     {
         public iatiactivityContainer()
@@ -26,11 +30,16 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             relatedIatiActivities = new List<iatiactivity>();
             MatchedProjects = new List<iatiactivity>();
         }
+        [IatiIgnore]
         public List<iatiactivity> relatedIatiActivities { get; set; }
+        [IatiIgnore]
         public List<iatiactivity> MatchedProjects { get; set; }
+        [IatiIgnore]
         public string SelectedHierarchy { get; set; }
+        [IatiIgnore]
         public string AidType { get; set; }
 
+        [IatiIgnore]
         public decimal PercentToBD
         {
             get
@@ -40,7 +49,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
         }
 
+        [IatiIgnore]
         private bool? isRelevant;
+        [IatiIgnore]
         public bool? IsRelevant
         {
             //ToDo add AidType criteria
@@ -54,6 +65,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
         }
 
+        [IatiIgnore]
         public DateTime PlannedStartDate
         {
             get
@@ -62,6 +74,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //1
+        [IatiIgnore]
         public DateTime ActualStartDate
         {
             get
@@ -70,6 +83,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //2
+        [IatiIgnore]
         public DateTime PlannedEndDate
         {
             get
@@ -78,6 +92,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //3
+        [IatiIgnore]
         public DateTime ActualEndDate
         {
             get
@@ -91,7 +106,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     public partial class defaultaidtype
     {
-        public string name
+         [IatiIgnore]
+       public string name
         {
             get
             {
@@ -118,7 +134,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     }
     public partial class activitystatus
     {
-        public string name
+         [IatiIgnore]
+       public string name
         {
             get
             {
