@@ -13,41 +13,46 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
     <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>-->
 
+    <script src="../Scripts/spin.min.js"></script>
+    <script src="../Scripts/spinner.js"></script>
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/bootstrap-theme.min.css">
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/prism.css">
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/demo-framework.css">
     <script src="../Content/AngularDragAndDrop/vendor/prism.js"></script>
+    <script type="text/javascript">
+
+    </script>
 
     <script type="text/javascript">
-        var iatiDataImporterApp = angular.module("iatiDataImporter", ["ngRoute", 'dndLists']);
+        var iatiDataImporterApp = angular.module("iatiDataImporter", ["ngRoute", 'dndLists', 'ngLoadingSpinner']);
 
         iatiDataImporterApp.config(function ($routeProvider) {
             $routeProvider
-                .when('/1Begin', {
-                    templateUrl: 'Stages/1Begin.html',
+                .when('/0Begin', {
+                    templateUrl: 'Stages/0Begin.html',
                     controller: 'BeginImportController'
                 })
-                .when('/2Hierarchy', {
-                    templateUrl: 'Stages/2Hierarchy.html',
+                .when('/1Hierarchy', {
+                    templateUrl: 'Stages/1Hierarchy.html',
                     controller: 'HierarchyController'
                 })
-                .when('/3FilterBD', {
-                    templateUrl: 'Stages/3FilterBD.html',
+                .when('/2FilterBD', {
+                    templateUrl: 'Stages/2FilterBD.html',
                     controller: 'FilterBDController'
                 })
-                .when('/4FilterDP', {
-                    templateUrl: 'Stages/4FilterDP.html',
+                .when('/3FilterDP', {
+                    templateUrl: 'Stages/3FilterDP.html',
                     //controller: 'AdvancedDemoController'
                 })
-                .when('/5Projects', {
-                    templateUrl: 'Stages/5Projects.html',
+                .when('/4Projects', {
+                    templateUrl: 'Stages/4Projects.html',
                     controller: 'ShowProjectsController'
                 })
-                .when('/6Match', {
-                    templateUrl: 'Stages/6Match.html',
+                .when('/5Match', {
+                    templateUrl: 'Stages/5Match.html',
                     controller: 'ProjectMappingController'
                 })
-                .otherwise({ redirectTo: '/1Begin' });
+                .otherwise({ redirectTo: '/0Begin' });
         })
 
         iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
@@ -57,12 +62,12 @@
                           '</li>',
                 link: function (scope, element, attr) {
                     scope.options = [
-                        { label: "1. Begin import", href: "#/1Begin" },
-                        { label: "2. Hierarchy", href: "#/2Hierarchy" },
-                        { label: "3. Filter Bangladesh-relevant activities", href: "#/3FilterBD" },
-                        { label: "4. Filter DP activities", href: "#/4FilterDP" },
-                        { label: "5. Show projects", href: "#/5Projects" },
-                        { label: "6. Match unmatched projects", href: "#/6Match" }
+                        { label: "Begin import", href: "#/0Begin" },
+                        { label: "1. Hierarchy", href: "#/1Hierarchy" },
+                        { label: "2. Filter Bangladesh-relevant activities", href: "#/2FilterBD" },
+                        { label: "3. Filter DP activities", href: "#/3FilterDP" },
+                        { label: "4. Show projects", href: "#/4Projects" },
+                        { label: "5. Match unmatched projects", href: "#/5Match" }
                     ];
 
                     scope.isActive = function (option) {
@@ -88,8 +93,30 @@
         //    alert("dfasd");
         //    $('.tab-content').hide();
         //})
-    </script>
 
+        (function () {
+            iatiDataImporterApp.directive('usSpinner', ['$http', '$rootScope', function ($http, $rootScope) {
+                return {
+                    link: function (scope, elm, attrs) {
+                        $rootScope.spinnerActive = false;
+                        scope.isLoading = function () {
+                            return $http.pendingRequests.length > 0;
+                        };
+
+                        scope.$watch(scope.isLoading, function (loading) {
+                            $rootScope.spinnerActive = loading;
+                            if (loading) {
+                                elm.removeClass('ng-hide');
+                            } else {
+                                elm.addClass('ng-hide');
+                            }
+                        });
+                    }
+                };
+
+            }]);
+        }).call(this);
+    </script>
     <!--1-->
     <script type="text/javascript">
 
@@ -130,7 +157,7 @@
                     $rootScope.iatiActivities = result.iatiActivities;
                     $scope.iatiActivities = [];
                     $timeout(function () {
-                        document.getElementById('btn3FilterBD').click(); //redirect
+                        document.getElementById('btn2FilterBD').click(); //redirect
                     });
                 }
                 else {
@@ -312,7 +339,7 @@
         <div>
             <!-- Nav tabs -->
             <ul navigation class="nav nav-tabs" role="tablist"></ul>
-
+            <span us-spinner="{radius:30, width:8, length: 16}"></span>
             <!-- Tab panes -->
             <div ng-view class="tab-content">
             </div>

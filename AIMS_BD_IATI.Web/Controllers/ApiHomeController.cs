@@ -85,7 +85,7 @@ namespace AIMS_BD_IATI.Web.Controllers
             return Ok(_iatiactivities);
         }
 
-        [HttpPost]
+        [AcceptVerbs("GET","POST")]
         public ProjectMapModel SubmitActivities([FromUri]string orgId,List<iatiactivity> _iatiactivities)
         {
             var relevantActivies = _iatiactivities.n().FindAll(f => f.IsRelevant == true);
