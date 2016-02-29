@@ -5,26 +5,34 @@
     <title>Mockups - IATI-AIMS importing</title>
     <link href="../Content/bootstrap.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
-
-    <script src="../Scripts/jquery-1.10.2.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-    <script src="../Scripts/angular-drag-and-drop-lists.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>-->
-
-    <script src="../Scripts/spin.min.js"></script>
-    <script src="../Scripts/spinner.js"></script>
+    <link href="../Content/ui-grid.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/bootstrap-theme.min.css">
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/prism.css">
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/demo-framework.css">
+
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script src="../Scripts/jquery-ui.min.js"></script>
+
+    <script src="../Scripts/bootstrap.js"></script>
+
+    <script src="../Scripts/angular.min.js"></script>
+    <script src="../Scripts/angular-route.min.js"></script>
+
+    <script src="../Scripts/ui-grid.min.js"></script>
+
+    <script src="../Scripts/angular-drag-and-drop-lists.min.js"></script>
     <script src="../Content/AngularDragAndDrop/vendor/prism.js"></script>
+
+    <script src="../Scripts/spin.min.js"></script>
+    <script src="../Scripts/spinner.js"></script>
+
+
     <script type="text/javascript">
 
     </script>
 
     <script type="text/javascript">
-        var iatiDataImporterApp = angular.module("iatiDataImporter", ["ngRoute", 'dndLists', 'ngLoadingSpinner']);
+        var iatiDataImporterApp = angular.module("iatiDataImporter", ["ngRoute", 'dndLists', 'ngLoadingSpinner', 'ui.grid']);
 
         iatiDataImporterApp.config(function ($routeProvider) {
             $routeProvider
@@ -170,8 +178,9 @@
 
     <!--3-->
     <script type="text/javascript">
-
+        
         iatiDataImporterApp.controller("FilterBDController", function ($rootScope, $scope, $http, $location, $timeout) {
+          
             $scope.iatiActivities = $rootScope.iatiActivities;
 
             //$http({
@@ -285,7 +294,15 @@
         }
     </style>
 
+    <style>
+        .sortorder:after {
+            content: '\25b2';
+        }
 
+        .sortorder.reverse:after {
+            content: '\25bc';
+        }
+    </style>
     <style>
         .animate-repeat {
             line-height: 30px;
@@ -348,9 +365,6 @@
 
     </div>
 
-    <script src="../Scripts/jquery-1.10.2.min.js"></script>
-    <script src="../Scripts/bootstrap.js"></script>
-    <script src="../Scripts/jquery-ui.min.js"></script>
 
 
 </body>
