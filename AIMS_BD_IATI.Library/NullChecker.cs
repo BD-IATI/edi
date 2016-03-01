@@ -54,8 +54,8 @@ namespace AIMS_BD_IATI.Library
         {
             if (input == null)
             {
-                Type elementType = typeof(T).GetElementType();
-                Array array = Array.CreateInstance(elementType, 1);
+                //Type elementType = typeof(T).GetElementType();
+                Array array = Array.CreateInstance(typeof(T), 1);
                 input = (T[])array;
             }
             return input;

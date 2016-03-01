@@ -14,24 +14,36 @@
             <form class="form-horizontal">
                 <div class="row">
                     <div class="col-md-offset-1 col-md-10">
-                        <table class="table table-striped">
+                        <table st-table="model.iatiActivities" class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Activity ID</th>
-                                    <th>Activity Title</th>
-                                    <th>% to Bangladesh</th>
-                                    <th>Aid type</th>
-                                    <th>Status</th>
-                                    <th>Relevant</th>
+                                    <th st-sort="IatiIdentifier" style="min-width:120px">
+                                        Activity ID
+                                    </th>
+                                    <th st-sort="Title" style="min-width:200px">
+                                        Activity Title
+                                    </th>
+                                    <th st-sort="PercentToBD" style="min-width:120px">
+                                        % to BD
+                                    </th>
+                                    <th st-sort="AidType" style="min-width:100px">
+                                        Aid type
+                                    </th>
+                                    <th st-sort="ActivityStatus" style="min-width:100px">
+                                        Status
+                                    </th>
+                                    <th st-sort="IsRelevant" style="min-width:110px">
+                                        Relevant
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="activity in iatiActivities">
-                                    <td><code>{{activity.iatiidentifier.Value}}</code></td>
-                                    <td>{{activity.title.narrative[0].Value}}</td>
+                                <tr ng-repeat="activity in model.iatiActivities">
+                                    <td><code>{{activity.IatiIdentifier}}</code></td>
+                                    <td>{{activity.Title}}</td>
                                     <td>{{activity.PercentToBD}}%</td>
-                                    <td>{{activity.defaultaidtype.name}}(<code>{{activity.defaultaidtype.code}}</code>)</td>
-                                    <td>{{activity.activitystatus.name}}</td>
+                                    <td>{{activity.AidType}}(<code>{{activity.AidTypeCode}}</code>)</td>
+                                    <td>{{activity.ActivityStatus}}</td>
                                     <td><input type="checkbox" ng-model="activity.IsRelevant"></td>
                                 </tr>
                             </tbody>

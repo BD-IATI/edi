@@ -63,7 +63,7 @@ namespace AIMS_BD_IATI.DAL
 
                 iatiActivity.iatiidentifier = new iatiidentifier { Value = getIdentifer(project) };
 
-                iatiActivity.title = new textRequiredType { narrative = getNarativeArray(project.Title) };
+                iatiActivity.title = new textRequiredType { narrative = Statix.getNarativeArray(project.Title) };
 
                 iatiActivity.activitydate = new activitydate[4];
                 iatiActivity.activitydate[0] = new activitydate { type = "1", isodate = project.PlannedProjectStartDate ?? default(DateTime) };
@@ -71,13 +71,13 @@ namespace AIMS_BD_IATI.DAL
                 iatiActivity.activitydate[2] = new activitydate { type = "3", isodate = project.PlannedProjectCompletionDate ?? default(DateTime) };
                 iatiActivity.activitydate[3] = new activitydate { type = "4", isodate = project.RevisedProjectCompletionDate ?? default(DateTime) };
 
-                iatiActivity.description = new iatiactivityDescription[1] { new iatiactivityDescription { narrative = getNarativeArray(project.Objective) } };
+                iatiActivity.description = new iatiactivityDescription[1] { new iatiactivityDescription { narrative =Statix.getNarativeArray(project.Objective) } };
 
                 iatiActivity.defaultaidtype = new defaultaidtype { code = project.tblAssistanceType.n().IATICode };
 
                 iatiActivity.reportingorg = new reportingorg
                 {
-                    narrative = getNarativeArray(project.tblFundSource.n().FundSourceName),
+                    narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName),
                     @ref = project.tblFundSource.n().IATICode,
                     type = project.tblFundSource.n().tblFundSourceCategory.n().IATICode
                 };
@@ -87,14 +87,14 @@ namespace AIMS_BD_IATI.DAL
 
                 iatiActivity.participatingorg[0] = new participatingorg
                 {
-                    narrative = getNarativeArray(project.tblFundSource.n().FundSourceGroup),
+                    narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceGroup),
                     role = "1",
                     @ref = project.tblFundSource.n().IATICode,
                     type = "10"
                 };
                 iatiActivity.participatingorg[1] = new participatingorg
                 {
-                    narrative = getNarativeArray(project.tblFundSource.n().FundSourceName),
+                    narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName),
                     role = "3",
                     @ref = project.tblFundSource.n().IATICode,
                     type = "10"
@@ -109,7 +109,7 @@ namespace AIMS_BD_IATI.DAL
                 //};
 
                 iatiActivity.recipientcountry = new recipientcountry[1];
-                iatiActivity.recipientcountry[0] = new recipientcountry { code = "BD", narrative = getNarativeArray("Bangladesh") };
+                iatiActivity.recipientcountry[0] = new recipientcountry { code = "BD", narrative = Statix.getNarativeArray("Bangladesh") };
 
                 iatiactivities.Add(iatiActivity);
             }
@@ -124,10 +124,7 @@ namespace AIMS_BD_IATI.DAL
                 : project.IatiIdentifier;
         }
 
-        public narrative[] getNarativeArray(string val)
-        {
-            return new narrative[1] { new narrative { lang = "en", Value = val } };
-        }
+
 
     }
 

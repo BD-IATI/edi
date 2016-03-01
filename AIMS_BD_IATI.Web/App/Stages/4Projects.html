@@ -11,21 +11,21 @@
             <div class="row">
                 <div class="col-md-offset-1 col-md-10">
                     <h3>IATI activities matched to the AIMS</h3>
-                    <table class="table">
+                    <table st-table="models.MatchedProjects" class="table table-striped">
                         <thead>
                             <tr>
-                                <th>IATI Project ID</th>
-                                <th>IATI Project Title</th>
-                                <th>AIMS Project ID</th>
-                                <th>AIMS Project Title</th>
+                                <th st-sort="iatiActivity.IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="iatiActivity.Title">IATI Project Title</th>
+                                <th st-sort="aimsProjects.IatiIdentifier">AIMS Project ID</th>
+                                <th st-sort="aimsprojects.title">AIMS Project Title</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="m in models.MatchedProjects" class="table-striped">
-                                <td><code>{{m.iatiActivity.iatiidentifier.Value}}</code></td>
-                                <td>{{m.iatiActivity.title.narrative[0].Value}}</td>
-                                <td><code>{{m.aimsProjects.iatiidentifier.Value}}</code></td>
-                                <td>{{m.aimsProjects.title.narrative[0].Value}}</td>
+                                <td><code>{{m.iatiActivity.IatiIdentifier}}</code></td>
+                                <td>{{m.iatiActivity.Title}}</td>
+                                <td><code>{{m.aimsProjects.IatiIdentifier}}</code></td>
+                                <td>{{m.aimsProjects.Title}}</td>
                             </tr>
 
                         </tbody>
@@ -36,18 +36,18 @@
             <div class="row">
                 <div class="col-md-offset-1 col-md-10">
                     <h3>IATI activities not found in the AIMS</h3>
-                    <table class="table" ng-show="models.IatiActivitiesNotInAims.length > 0">
+                    <table st-table="models.IatiActivitiesNotInAims" class="table" ng-show="models.IatiActivitiesNotInAims.length > 0">
                         <thead>
                             <tr>
-                                <th>IATI Project ID</th>
-                                <th>IATI Project Title</th>
+                                <th st-sort="IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="Title">IATI Project Title</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="active"></tr>
                             <tr ng-repeat="activity in models.IatiActivitiesNotInAims" class="table-striped">
-                                <td><code>{{activity.iatiidentifier.Value}}</code></td>
-                                <td>{{activity.title.narrative[0].Value}}</td>
+                                <td><code>{{activity.IatiIdentifier}}</code></td>
+                                <td>{{activity.Title}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -64,18 +64,18 @@
             <div class="row">
                 <div class="col-md-offset-1 col-md-10">
                     <h3>AIMS projects not found in IATI</h3>
-                    <table class="table" ng-show="models.AimsProjectsNotInIati.length > 0">
+                    <table st-table="models.AimsProjectsNotInIati" class="table" ng-show="models.AimsProjectsNotInIati.length > 0">
                         <thead>
                             <tr>
-                                <th>IATI Project ID</th>
-                                <th>IATI Project Title</th>
+                                <th st-sort="IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="Title">IATI Project Title</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="active"></tr>
                             <tr ng-repeat="activity in models.AimsProjectsNotInIati" class="table-striped">
-                                <td><code>{{activity.iatiidentifier.Value}}</code></td>
-                                <td>{{activity.title.narrative[0].Value}}</td>
+                                <td><code>{{activity.IatiIdentifier}}</code></td>
+                                <td>{{activity.Title}}</td>
                             </tr>
                         </tbody>
                     </table>

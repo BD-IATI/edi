@@ -5,20 +5,19 @@
     <title>Mockups - IATI-AIMS importing</title>
     <link href="../Content/bootstrap.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
-    <link href="../Content/ui-grid.min.css" rel="stylesheet" />
+    <!--<link href="../Content/ui-grid.min.css" rel="stylesheet" />-->
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/bootstrap-theme.min.css">
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/prism.css">
     <link rel="stylesheet" href="../Content/AngularDragAndDrop/demo-framework.css">
 
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
-    <script src="../Scripts/jquery-ui.min.js"></script>
-
-    <script src="../Scripts/bootstrap.js"></script>
+    <!--<script src="../Scripts/jquery-ui.min.js"></script>-->
+    <script src="../Scripts/bootstrap.min.js"></script>
 
     <script src="../Scripts/angular.min.js"></script>
     <script src="../Scripts/angular-route.min.js"></script>
 
-    <script src="../Scripts/ui-grid.min.js"></script>
+    <!--<script src="../Scripts/ui-grid.min.js"></script>-->
 
     <script src="../Scripts/angular-drag-and-drop-lists.min.js"></script>
     <script src="../Content/AngularDragAndDrop/vendor/prism.js"></script>
@@ -26,13 +25,14 @@
     <script src="../Scripts/spin.min.js"></script>
     <script src="../Scripts/spinner.js"></script>
 
+    <script src="../Scripts/SmartTable/smart-table.min.js"></script>
 
     <script type="text/javascript">
 
     </script>
 
     <script type="text/javascript">
-        var iatiDataImporterApp = angular.module("iatiDataImporter", ["ngRoute", 'dndLists', 'ngLoadingSpinner', 'ui.grid']);
+        var iatiDataImporterApp = angular.module("iatiDataImporter", ["ngRoute", 'dndLists', 'ngLoadingSpinner', 'smart-table']);
 
         iatiDataImporterApp.config(function ($routeProvider) {
             $routeProvider
@@ -128,9 +128,15 @@
     <!--1-->
     <script type="text/javascript">
 
-        iatiDataImporterApp.controller("BeginImportController", function ($rootScope, $scope, $http, $location) {
-            $rootScope.models = [];
-            $rootScope.iatiActivities = [];
+        iatiDataImporterApp.controller("BeginImportController", function ($rootScope, $scope, $http) {
+            $rootScope.models = {
+                selected: false,
+                IatiActivities: [],
+                MatchedProjects: [],
+                IatiActivitiesNotInAims: [],
+                AimsProjectsNotInIati: [],
+                NewProjectsToAddInAims: []
+            };
 
             $rootScope.selectedFundSource = null;
 
@@ -150,26 +156,21 @@
     <!--2-->
     <script type="text/javascript">
 
-        iatiDataImporterApp.controller("HierarchyController", function ($rootScope, $scope, $http, $location, $timeout) {
-            $scope.iatiActivities = [];
-            //$rootScope.iatiActivities = $scope.iatiActivities;
+        iatiDataImporterApp.controller("HierarchyController", function ($rootScope, $scope, $http, $timeout) {
             $rootScope.HasRelatedActivity = false;
             $http({
                 method: 'GET',
-                url: '../api/ApiHome/GetProjectHierarchyData',
+                url: '../api/ApiHome/GetHierarchyData',
                 dataType: 'json',
                 params: { dp: $rootScope.selectedFundSource }
             }).success(function (result) {
-                $rootScope.HasRelatedActivity = result.HasRelatedActivity;
-                if ($rootScope.HasRelatedActivity == false) {
-                    $rootScope.iatiActivities = result.iatiActivities;
-                    $scope.iatiActivities = [];
+                if (result.SampleIatiActivity == null || result.SampleIatiActivity == undefined) {
                     $timeout(function () {
                         document.getElementById('btn2FilterBD').click(); //redirect
                     });
                 }
                 else {
-                    $rootScope.iatiActivities = $scope.iatiActivities = result.iatiActivities;
+                    $rootScope.hierarchyModel = $scope.model = result;
                 }
             });
 
@@ -179,22 +180,19 @@
     <!--3-->
     <script type="text/javascript">
         
-        iatiDataImporterApp.controller("FilterBDController", function ($rootScope, $scope, $http, $location, $timeout) {
-          
-            $scope.iatiActivities = $rootScope.iatiActivities;
-
-            //$http({
-            //    url: '../api/ApiHome/SubmitHierarchy',
-            //    method: 'POST',
-            //    data: JSON.stringify($rootScope.iatiActivities),
-            //    dataType: 'json'
-            //}).then(function (result) {
-            //    $scope.iatiActivities = result;
-            //    //deferred.resolve(result);
-            //},
-            //function (response) {
-            //    //deferred.reject(response);
-            //});
+        iatiDataImporterApp.controller("FilterBDController", function ($rootScope, $scope, $http) {
+            $http({
+                url: '../api/ApiHome/SubmitHierarchy',
+                method: 'POST',
+                data: JSON.stringify($rootScope.hierarchyModel),
+                dataType: 'json'
+            }).then(function (result) {
+                $rootScope.filterBDModel = $scope.model = result.data;
+                //deferred.resolve(result);
+            },
+            function (response) {
+                //deferred.reject(response);
+            });
 
 
         });
@@ -204,30 +202,14 @@
     <script type="text/javascript">
 
         iatiDataImporterApp.controller("ShowProjectsController", function ($rootScope, $scope, $http, $location, $timeout) {
-            //$scope.iatiActivities = $rootScope.iatiActivities;
-            $scope.models = {
-                selected : false,
-                MatchedProjects : [],
-                IatiActivitiesNotInAims : [],
-                AimsProjectsNotInIati : [],
-                NewProjectsToAddInAims : []
-            };
-            $rootScope.models = $scope.models;
-            //$scope.MatchedProjects = [];
-            //$scope.IatiActivityNotInAims = [];
-            //$scope.AimsProjectNotInIati = [];
 
             $http({
                 url: '../api/ApiHome/SubmitActivities?orgId='+$rootScope.selectedFundSource,
                 method: 'POST',
-                data: JSON.stringify($rootScope.iatiActivities),
+                data: JSON.stringify($rootScope.filterBDModel.iatiActivities),
                 dataType: 'json'
             }).then(function (result) {
                 $rootScope.models = $scope.models = result.data;
-                //$rootScope.MatchedProjects = $scope.MatchedProjects = result.data.MatchedProjects;
-                //$rootScope.IatiActivityNotInAims = $scope.IatiActivityNotInAims = result.data.IatiActivityNotInAims;
-                //$scope.AimsProjectNotInIati = result.data.AimsProjectNotInIati;
-
                 //deferred.resolve(result);
             },
             function (response) {
@@ -301,6 +283,14 @@
 
         .sortorder.reverse:after {
             content: '\25bc';
+        }
+
+        .st-sort-ascent:after {
+            content: '\25B2';
+        }
+
+        .st-sort-descent:after {
+            content: '\25BC';
         }
     </style>
     <style>

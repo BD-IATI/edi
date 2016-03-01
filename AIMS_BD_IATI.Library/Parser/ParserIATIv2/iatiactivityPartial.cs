@@ -1,44 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
-    public class IatiIgnoreAttribute : Attribute
-    {
 
-    }
     public class iatiactivityContainer
     {
+        public string DP { get; set; }
         public iatiactivityContainer()
         {
+            DP = "";
             iatiActivities = new List<iatiactivity>();
             NewProjects = new List<iatiactivity>();
         }
         public List<iatiactivity> iatiActivities { get; set; }
         public List<iatiactivity> NewProjects { get; set; }
 
-        public bool HasRelatedActivity { get { return iatiActivities.Exists(e => e.relatedIatiActivities.Count > 0); } }
+        public bool HasRelatedActivity { get { return iatiActivities.Exists(e => e.relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
+
 
     }
+
     public partial class iatiactivity
     {
+
         public iatiactivity()
         {
             relatedIatiActivities = new List<iatiactivity>();
             MatchedProjects = new List<iatiactivity>();
         }
+
+
         [XmlIgnore]
         public List<iatiactivity> relatedIatiActivities { get; set; }
         [XmlIgnore]
         public List<iatiactivity> MatchedProjects { get; set; }
-        [XmlIgnore]
-        public string SelectedHierarchy { get; set; }
-        [XmlIgnore]
-        public string AidType { get; set; }
+        //[XmlIgnore]
+        //public string SelectedHierarchy { get; set; }
 
         [XmlIgnore]
         public decimal PercentToBD
@@ -66,6 +71,162 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
         }
 
+        #region Wrappers
+
+        [XmlIgnore]
+        public string IatiIdentifier
+        {
+            get
+            {
+                return iatiidentifier.n().Value;
+            }
+
+            set
+            {
+                iatiidentifier.n().Value = value;
+            }
+        }
+        [XmlIgnore]
+        public string Title
+        {
+            get
+            {
+                return title.n().narrative.n(0).Value;
+            }
+            set
+            {
+                title.n().narrative = Statix.getNarativeArray(value);
+            }
+        }
+        [XmlIgnore]
+        public string Description
+        {
+            get
+            {
+                return description.n(0).narrative.n(0).Value;
+            }
+            set
+            {
+                description.n(0).narrative = Statix.getNarativeArray(value);
+            }
+        }
+        [XmlIgnore]
+        public string ReportingOrg
+        {
+            get
+            {
+                return reportingorg.n().narrative.n(0).Value;
+            }
+            set
+            {
+                reportingorg.n().narrative = Statix.getNarativeArray(value);
+            }
+        }
+
+        //[XmlIgnore]
+        public string AidType
+        {
+            get
+            {
+                string code;
+                if (defaultaidtype == null) // for initializing
+                    code = AidTypeCode; 
+
+                return defaultaidtype.n().name;
+                //return "Undefined";
+            }
+            set
+            {
+                defaultaidtype = new defaultaidtype { name = value };
+            }
+        }
+        [XmlIgnore]
+        public string AidTypeCode
+        {
+            get
+            {
+                if (defaultaidtype != null)
+                {
+                    return defaultaidtype.code;
+                }
+                else
+                {
+                    defaultaidtype = new defaultaidtype();
+                    if (transaction != null)
+                    {
+                        var commitmentTrans = transaction.Where(c => c.transactiontype.n().code == "2");
+
+                        var kk = from t in commitmentTrans
+                                 group t by new { t.aidtype, t.value } into g
+                                 select new
+                                 {
+                                     g.Key.aidtype,
+                                     Sum = g.Sum(s => s.value.n().Value)
+                                 };
+
+                        defaultaidtype.code = kk.n().Max(m => m.Sum).ToString();
+                    }
+                    else
+                    {
+                        var allChildAticitiesTrans = new List<transaction>();
+                        foreach (var ra in relatedIatiActivities)
+                        {
+                            if (ra.transaction != null)
+                            {
+                                foreach (var item in ra.transaction)
+                                {
+                                    if (item.aidtype == null)
+                                        item.aidtype = new transactionAidtype { code = ra.defaultaidtype.n().code };
+                                    allChildAticitiesTrans.Add(item);
+
+                                }
+                            }
+
+                        }
+
+                        var commitmentTrans = allChildAticitiesTrans.FindAll(c => c.transactiontype.n().code == "2");
+
+                        var kk = (from t in commitmentTrans
+                                  group t by new { t.aidtype, t.value } into g
+                                  select new
+                                  {
+                                      g.Key.aidtype,
+                                      Sum = g.Sum(s => s.value.n().Value)
+                                  }).ToList();
+
+                        var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
+
+                        defaultaidtype.code = dominatingAidType.n().aidtype.n().code;
+
+
+                        //defaultaidtype.code = "A01";
+
+                    }
+
+                    return defaultaidtype.code;
+                }
+            }
+            set
+            {
+                defaultaidtype = new Parser.ParserIATIv2.defaultaidtype { code = value };
+            }
+        }
+
+        [XmlIgnore]
+        public string ActivityStatus
+        {
+            get
+            {
+                return activitystatus.n().name;
+            }
+            set
+            {
+                activitystatus.n().name = value;
+            }
+
+        }
+
+        #region activitydate
         [XmlIgnore]
         public DateTime PlannedStartDate
         {
@@ -101,7 +262,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 var sdate = activitydate.n().FirstOrDefault(f => f.type == "4");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
-        } //4
+        } //4 
+        #endregion
+        #endregion
 
     }
 
@@ -130,6 +293,26 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 else
                     return "";
             }
+            set
+            {
+                if (value == "General budget support") code = "A01";
+                else if (value == "Sector budget support") code = "A02";
+                else if (value == "Core support to NGOs, other private bodies, PPPs and research institutes") code = "B01";
+                else if (value == "Core contributions to multilateral institutions") code = "B02";
+                else if (value == "Contributions to specific-purpose programmes and funds managed by international organisations (multilateral, INGO)") code = "B03";
+                else if (value == "Basket funds/pooled funding") code = "B04";
+                else if (value == "Project-type interventions") code = "C01";
+                else if (value == "Donor country personnel") code = "D01";
+                else if (value == "Other technical assistance") code = "D02";
+                else if (value == "Scholarships/training in donor country") code = "E01";
+                else if (value == "Imputed student costs") code = "E02";
+                else if (value == "Debt relief") code = "F01";
+                else if (value == "Administrative costs not included elsewhere") code = "G01";
+                else if (value == "Development awareness") code = "H01";
+                else if (value == "Refugees in donor countries") code = "H02";
+                else
+                    code = "";
+            }
 
         }
     }
@@ -149,9 +332,30 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 else
                     return "";
             }
+            set
+            {
+                if (value == "Pipeline/identification") code = "1";
+                else if (value == "Implementation") code = "2";
+                else if (value == "Completion") code = "3";
+                else if (value == "Post-completion") code = "4";
+                else if (value == "Cancelled") code = "5";
+                else if (value == "Suspended") code = "6";
+                else
+                    code = "";
+            }
+
 
         }
+
+
+
     }
+
+
+
+
+
+
 }
 
 

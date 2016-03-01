@@ -117,11 +117,11 @@
                                         dnd-selected="models.selected = item"
                                         ng-class="{'selected': models.selected === item}">
 
-                                        <h3 class="project-title">{{item.title.narrative[0].Value}}</h3>
-                                        <p><code>{{item.iatiidentifier.Value}}</code></p>
-                                        <p><span class="label label-primary">Reported by: {{item.reportingorg.narrative[0].Value}}</span></p>
-                                        <p title="{{item.description[0].narrative[0].Value}}">
-                                            {{item.description[0].narrative[0].Value | limitTo:200}} ...
+                                        <h3 class="project-title">{{item.Title}}</h3>
+                                        <p><code>{{item.IatiIdentifier}}</code></p>
+                                        <p><span class="label label-primary">Reported by: {{item.ReportingOrg}}</span></p>
+                                        <p title="{{item.Description}}">
+                                            {{item.Description | limitTo:200}} ...
                                         </p>
 
                                         <dl class="dl-horizontal">
@@ -145,9 +145,9 @@
                     <div ng-repeat="m in models.AimsProjectsNotInIati">
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h3 class="project-title">{{m.title.narrative[0].Value}}</h3>
-                                <p><code>{{item.iatiidentifier.Value}}</code></p>
-                                <p><span class="label label-primary">Reported by: {{item.reportingorg.narrative[0].Value}}</span></p>
+                                <h3 class="project-title">{{m.Title}}</h3>
+                                <p><code>{{item.IatiIdentifier}}</code></p>
+                                <p><span class="label label-primary">Reported by: {{item.ReportingOrg}}</span></p>
 
                                 <dl class="dl-horizontal">
                                     <dt>Start date</dt>
@@ -175,8 +175,8 @@
                                         dnd-effect-allowed="move"
                                         dnd-selected="models.selected = item"
                                         ng-class="{'selected': models.selected === item}"
-                                        title="{{item.description[0].narrative[0].Value}}">
-                                        {{item.title.narrative[0].Value}}
+                                        title="{{item.Description}}">
+                                        {{item.Title}}
 
                                     </li>
                                 </ul>
@@ -209,8 +209,8 @@
                                         dnd-effect-allowed="move"
                                         dnd-selected="models.selected = item"
                                         ng-class="{'selected': models.selected === item}"
-                                        title="{{item.description[0].narrative[0].Value}}">
-                                        {{item.title.narrative[0].Value}}
+                                        title="{{item.Description}}">
+                                        {{item.Title}}
 
                                     </li>
                                 </ul>

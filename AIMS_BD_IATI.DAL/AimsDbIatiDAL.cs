@@ -60,30 +60,8 @@ namespace AIMS_BD_IATI.DAL
                 result.Add(activity);
             }
 
-            var parentActivities = result.FindAll(x => x.hierarchy == 1);
-            var returnResult = new iatiactivityContainer();
-            foreach (var pa in parentActivities)
-            {
-                if (pa.relatedactivity != null)
-                {
-                    pa.SelectedHierarchy = "Hierarchy1";
-                    foreach (var ra in pa.relatedactivity.Where(r=>r.type == "2"))
-                    {
-                        //load related activities
-                        var ha = result.Find(f => f.iatiidentifier.Value == ra.@ref);
 
-                        if (ha != null)
-                        {
-                            pa.relatedIatiActivities.Add(ha);
-                        }
-                    }
-                }
-
-
-            }
-            returnResult.iatiActivities = parentActivities;
-
-            return returnResult;
+            return new iatiactivityContainer { iatiActivities= result, DP = dp };
         }
 
 

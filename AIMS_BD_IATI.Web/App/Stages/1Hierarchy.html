@@ -11,9 +11,9 @@
             </p>
             <hr>
             <!--<div ng-repeat="activity in iatiActivities">
-                <input type="text" ng-model="activity.iatiidentifier.Value" />
-                       {{activity.iatiidentifier.Value}} -
-                       {{activity.title.narrative[0].Value}}>
+                <input type="text" ng-model="activity.IatiIdentifier" />
+                       {{activity.IatiIdentifier}} -
+                       {{activity.Title}}>
             </div>-->
             <form class="form-horizontal">
                 <div class="row">
@@ -28,16 +28,45 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="success" ng-repeat-start="activity in iatiActivities">
+                                <tr class="success">
                                     <td>1</td>
                                     <td>
-                                        <code>{{activity.iatiidentifier.Value}}</code> {{activity.title.narrative[0].Value}}
+                                        <code>{{model.SampleIatiActivity.IatiIdentifier}}</code> {{model.SampleIatiActivity.Title}}
+                                    </td>
+
+                                    <td>{{model.H1Percent}}</td>
+                                    <td>
+                                        <div class="radio">
+                                            <input type="radio" name="{{model.SampleIatiActivity.IatiIdentifier}}" value="1" ng-model="model.SelectedHierarchy">
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr ng-repeat-end>
+                                    <td>2</td>
+                                    <td>
+                                        <p ng-repeat="ra in model.SampleIatiActivity.relatedIatiActivities track by $index">
+                                            <code>{{ra.IatiIdentifier}}</code> {{ra.Title}}
+                                        </p>
+                                    </td>
+                                    <td>{{model.H2Percent}}</td>
+                                    <td>
+                                        <div class="radio">
+                                            <input type="radio" name="{{model.SampleIatiActivity.IatiIdentifier}}" value="2" ng-model="model.SelectedHierarchy">
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!--<tr class="success" ng-repeat-start="activity in iatiActivities">
+                                    <td>1</td>
+                                    <td>
+                                        <code>{{activity.IatiIdentifier}}</code> {{activity.Title}}
                                     </td>
 
                                     <td>70%</td>
                                     <td>
                                         <div class="radio">
-                                            <input type="radio" name="{{activity.iatiidentifier.Value}}" value="Hierarchy1" ng-model="activity.SelectedHierarchy">
+                                            <input type="radio" name="{{activity.IatiIdentifier}}" value="Hierarchy1" ng-model="activity.SelectedHierarchy">
                                         </div>
                                     </td>
                                 </tr>
@@ -46,16 +75,16 @@
                                     <td>2</td>
                                     <td>
                                         <p ng-repeat="ra in activity.relatedIatiActivities track by $index">
-                                            <code>{{ra.iatiidentifier.Value}}</code> {{ra.title.narrative[0].Value}}
+                                            <code>{{ra.IatiIdentifier}}</code> {{ra.Title}}
                                         </p>
                                     </td>
                                     <td>0%</td>
                                     <td>
                                         <div class="radio">
-                                            <input type="radio" name="{{activity.iatiidentifier.Value}}" value="Hierarchy2" ng-model="activity.SelectedHierarchy">
+                                            <input type="radio" name="{{activity.IatiIdentifier}}" value="Hierarchy2" ng-model="activity.SelectedHierarchy">
                                         </div>
                                     </td>
-                                </tr>
+                                </tr>-->
                             </tbody>
                         </table>
                     </div>

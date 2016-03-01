@@ -18,7 +18,7 @@ namespace AIMS_BD_IATI.Web.Controllers
     [RoutePrefix("api/ApiHome")]
     public class ApiHomeController : ApiController
     {
-        public iatiactivityContainer iatiactivities
+        public iatiactivityContainer s_activitiesContainer
         {
             get
             {
@@ -28,72 +28,134 @@ namespace AIMS_BD_IATI.Web.Controllers
             }
             set { HttpContext.Current.Session["iatiactivityContainer"] = value; }
         }
-
-        static List<IatiProject> iatiProjects = new List<IatiProject>
-        { 
-            new IatiProject { title = "Tomato Soup", description = "Groceries"}, 
-            new IatiProject { title = "Yo-yo", description = "Toys" }, 
-            new IatiProject { title = "Hammer", description = "Dhaka, BD" } 
-        };
-
-        static List<AimsProject> aimsProjects = new List<AimsProject>
-        { 
-            new AimsProject { title = "SoupTomatoooooooooo ", description = "Groceries", matchedProjects = new List<IatiProject>()}, 
-            new AimsProject { title = "-yoYo", description = "Toys", matchedProjects = new List<IatiProject>() }, 
-            new AimsProject { title = "merHam", description = "Dhaka, BD", matchedProjects = new List<IatiProject>() } 
-        };
-
-
-        RootObject DataModel = new RootObject() { iatiProjects = iatiProjects, aimsProjects = aimsProjects };
-
-        public iatiactivityContainer GetProjectHierarchyData(string dp)
+        public HeirarchyModel s_heirarchyModel
         {
-            //if (iatiactivities == null)
-            iatiactivities = new AimsDbIatiDAL().GetActivities(dp);
-
-            return iatiactivities;
+            get
+            {
+                return HttpContext.Current.Session["HeirarchyModel"] == null ?
+                    null
+                    : (HeirarchyModel)HttpContext.Current.Session["HeirarchyModel"];
+            }
+            set { HttpContext.Current.Session["HeirarchyModel"] = value; }
         }
 
-        //[HttpGet]
-        public RootObject GetData()
-        {
-            return DataModel;
-        }
         public List<DropdownItem> GetFundSources()
         {
             return new AimsDAL().getFundSourcesDropdownData();
         }
 
-        [HttpPost]
-        public async Task<IHttpActionResult> PostData(RootObject dataModel)
+        public HeirarchyModel GetHierarchyData(string dp)
         {
-            return Ok(DataModel);
+            bool isDPChanged = s_activitiesContainer.n().DP != dp;
+
+            if (s_heirarchyModel == null) s_heirarchyModel = new HeirarchyModel();
+            if (isDPChanged)
+            {
+                s_activitiesContainer = new AimsDbIatiDAL().GetActivities(dp);
+
+                if (s_activitiesContainer.HasRelatedActivity)
+                {
+                    var H1Acts = s_activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 1);
+                    var H2Acts = s_activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 2);
+
+                    var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(dp);
+
+                    var matchedH1 = (decimal)(from a in AimsProjects
+                                              join i in H1Acts on a.IatiIdentifier equals i.IatiIdentifier
+                                              select a).Count();
+
+                    var matchedH2 = (decimal)(from a in AimsProjects
+                                              join i in H2Acts on a.IatiIdentifier equals i.IatiIdentifier
+                                              select a).Count();
+
+
+                    s_heirarchyModel.H1Percent = H1Acts.Count > 0 ? Math.Round((decimal)(matchedH1 / H1Acts.Count) * 100, 2) : 0;
+                    s_heirarchyModel.H2Percent = H2Acts.Count > 0 ? Math.Round((decimal)(matchedH2 / H2Acts.Count) * 100, 2) : 0;
+
+
+
+                    #region Populate relatedActivities of the first activity as sample data
+                    var parentActivities = s_activitiesContainer.iatiActivities.FindAll(x => x.hierarchy == 1);
+                    foreach (var pa in parentActivities)
+                    {
+                        if (pa.relatedactivity != null)
+                        {
+                            foreach (var ra in pa.relatedactivity.Where(r => r.type == "2"))
+                            {
+                                //load related activities
+                                var ha = s_activitiesContainer.iatiActivities.Find(f => f.iatiidentifier.Value == ra.@ref);
+
+                                if (ha != null)
+                                {
+                                    pa.relatedIatiActivities.Add(ha);
+                                }
+                            }
+                            s_heirarchyModel.SampleIatiActivity = pa;
+                            break; //we have to show only one hierarchycal project as a sample
+                        }
+                    }
+                    #endregion
+                    s_heirarchyModel.SelectedHierarchy = 1;
+                }
+                else
+                {
+                    s_heirarchyModel = new HeirarchyModel();
+                }
+            }
+            return s_heirarchyModel;
         }
+
+
+
+
         [HttpPost]
-        public async Task<IHttpActionResult> SubmitHierarchy(List<iatiactivity> _iatiactivities)
+        public FilterBDModel SubmitHierarchy(HeirarchyModel heirarchyModel)
         {
-            //var SelectedHierarchy1Activities = _iatiactivities.n().FindAll(f => f.SelectedHierarchy == "Heirarchy1");
-            //foreach (var activity in SelectedHierarchy1Activities)
-            //{
-            //    if  (activity.defaultaidtype == null)
-            //    {
+            var returnResult = new FilterBDModel();
 
-            //        //activity.defaultaidtype.code == activity.relatedIatiActivities.Max(m=>m.transaction.Sum(s=>s..value.Value))
-            //    }
-            //}
+            if (heirarchyModel.n().SampleIatiActivity == null)
+            {
+                returnResult.iatiActivities = s_activitiesContainer.iatiActivities;
+            }
+            else
+            {
+                returnResult.iatiActivities = s_activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == heirarchyModel.SelectedHierarchy);
 
-            return Ok(_iatiactivities);
+                if (heirarchyModel.SelectedHierarchy == 1)
+                {
+                    foreach (var pa in returnResult.iatiActivities)
+                    {
+                        pa.relatedIatiActivities.Clear();
+                        if (pa.relatedactivity != null)
+                        {
+                            foreach (var ra in pa.relatedactivity.Where(r => r.type == "2"))
+                            {
+                                //load related activities
+                                var ha = s_activitiesContainer.iatiActivities.Find(f => f.iatiidentifier.Value == ra.@ref);
+
+                                if (ha != null)
+                                {
+                                    pa.relatedIatiActivities.Add(ha);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            return returnResult;
         }
 
-        [AcceptVerbs("GET","POST")]
-        public ProjectMapModel SubmitActivities([FromUri]string orgId,List<iatiactivity> _iatiactivities)
+        [AcceptVerbs("GET", "POST")]
+        public ProjectMapModel SubmitActivities([FromUri]string orgId, List<iatiactivity> _iatiactivities)
         {
             var relevantActivies = _iatiactivities.n().FindAll(f => f.IsRelevant == true);
 
             var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(orgId);
 
             var MatchedProjects = (from i in relevantActivies
-                                   from a in AimsProjects.Where(k=>i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value)) 
+                                   from a in AimsProjects.Where(k => i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value))
                                    orderby i.iatiidentifier.Value
 
                                    select i).ToList();
@@ -102,7 +164,7 @@ namespace AIMS_BD_IATI.Web.Controllers
             var MatchedProjects2 = (from i in relevantActivies
                                     from a in AimsProjects.Where(k => i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value))
                                     orderby i.iatiidentifier.Value
-                                    select new MatchedProject
+                                    select new ProjectMapModel.MatchedProject
                                     {
                                         iatiActivity = i,
                                         aimsProjects = a
@@ -122,16 +184,24 @@ namespace AIMS_BD_IATI.Web.Controllers
                 NewProjectsToAddInAims = new List<iatiactivity>()
             };
         }
-        //[HttpPut]
-        //public async Task<IHttpActionResult> PutEmployee(EmployeeModel employee)
-        //{
-        //    employee.Id = 22;
-        //    emp.Add(employee);
-        //    return Ok(employee);
-        //}
+
     }
 
-
+    public class HeirarchyModel
+    {
+        public HeirarchyModel()
+        {
+            SampleIatiActivity = new iatiactivity();
+        }
+        public iatiactivity SampleIatiActivity { get; set; }
+        public decimal H1Percent { get; set; }
+        public decimal H2Percent { get; set; }
+        public int SelectedHierarchy { get; set; }
+    }
+    public class FilterBDModel
+    {
+        public List<iatiactivity> iatiActivities { get; set; }
+    }
     public class ProjectMapModel
     {
         public object selected { get; set; }
@@ -140,42 +210,12 @@ namespace AIMS_BD_IATI.Web.Controllers
         public List<iatiactivity> IatiActivitiesNotInAims { get; set; }
         public List<iatiactivity> AimsProjectsNotInIati { get; set; }
         public List<iatiactivity> NewProjectsToAddInAims { get; set; }
-
-
+        public class MatchedProject
+        {
+            public iatiactivity iatiActivity { get; set; }
+            public iatiactivity aimsProjects { get; set; }
+        }
     }
-
-    public class MatchedProject
-    {
-        public iatiactivity iatiActivity { get; set; }
-        public iatiactivity aimsProjects { get; set; }
-    }
-
-
-    public class IatiProject
-    {
-        public string title { get; set; }
-        public string description { get; set; }
-        public string startDate { get; set; }
-        public string endDate { get; set; }
-    }
-
-    public class AimsProject
-    {
-        public string title { get; set; }
-        public string description { get; set; }
-        public string startDate { get; set; }
-        public string endDate { get; set; }
-        public IList<IatiProject> matchedProjects { get; set; }
-    }
-
-    public class RootObject
-    {
-        public object selected { get; set; }
-        public IList<IatiProject> iatiProjects { get; set; }
-        public IList<AimsProject> aimsProjects { get; set; }
-    }
-
-
 
 }
 
