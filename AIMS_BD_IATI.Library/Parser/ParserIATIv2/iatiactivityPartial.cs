@@ -21,8 +21,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             NewProjects = new List<iatiactivity>();
         }
         public List<iatiactivity> iatiActivities { get; set; }
-        public List<iatiactivity> NewProjects { get; set; }
         public List<iatiactivity> RelevantActivities { get { return iatiActivities.n().FindAll(f => f.IsRelevant == true); } }
+        public List<iatiactivity> NewProjects { get; set; }
 
         public bool HasRelatedActivity { get { return iatiActivities.Exists(e => e.relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
 
@@ -51,7 +51,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var rc = recipientcountry.FirstOrDefault(f => f.code == "BD");
+                var rc = recipientcountry.n().FirstOrDefault(f => f.n().code == "BD");
                 return rc == null ? 0 : rc.percentage;
             }
         }
@@ -79,7 +79,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return ownedBy ?? participatingorg.n().FirstOrDefault(f=>f.role == "4").n().AimsFundSourceId;
+                return ownedBy == null || ownedBy == 0? participatingorg.n().FirstOrDefault(f=>f.n().role == "4").n().AimsFundSourceId : ownedBy;
             }
             set
             {
@@ -172,14 +172,17 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                         var commitmentTrans = transaction.Where(c => c.transactiontype.n().code == "2");
 
                         var kk = from t in commitmentTrans
-                                 group t by new { t.aidtype, t.value } into g
+                                 group t by new { t.aidtype.code, t.value } into g
                                  select new
                                  {
-                                     g.Key.aidtype,
+                                     g.Key.code,
                                      Sum = g.Sum(s => s.value.n().Value)
                                  };
 
-                        defaultaidtype.code = kk.n().Max(m => m.Sum).ToString();
+                        var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
+
+                        defaultaidtype.code = dominatingAidType == null ? "" : dominatingAidType.code;
+
                     }
                     else
                     {
@@ -202,16 +205,16 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                         var commitmentTrans = allChildAticitiesTrans.FindAll(c => c.transactiontype.n().code == "2");
 
                         var kk = (from t in commitmentTrans
-                                  group t by new { t.aidtype, t.value } into g
+                                  group t by new { t.aidtype.code, t.value } into g
                                   select new
                                   {
-                                      g.Key.aidtype,
+                                      g.Key.code,
                                       Sum = g.Sum(s => s.value.n().Value)
                                   }).ToList();
 
                         var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
 
-                        defaultaidtype.code = dominatingAidType.n().aidtype.n().code;
+                        defaultaidtype.code = dominatingAidType ==null?"": dominatingAidType.code;
 
 
                         //defaultaidtype.code = "A01";
@@ -247,7 +250,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var sdate = activitydate.n().FirstOrDefault(f => f.type == "1");
+                var sdate = activitydate.n().FirstOrDefault(f => f.n().type == "1");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //1
@@ -256,7 +259,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var sdate = activitydate.n().FirstOrDefault(f => f.type == "2");
+                var sdate = activitydate.n().FirstOrDefault(f => f.n().type == "2");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //2
@@ -265,7 +268,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var sdate = activitydate.n().FirstOrDefault(f => f.type == "3");
+                var sdate = activitydate.n().FirstOrDefault(f => f.n().type == "3");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //3
@@ -274,7 +277,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var sdate = activitydate.n().FirstOrDefault(f => f.type == "4");
+                var sdate = activitydate.n().FirstOrDefault(f => f.n().type == "4");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //4 

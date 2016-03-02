@@ -157,6 +157,7 @@
     <script type="text/javascript">
 
         iatiDataImporterApp.controller("HierarchyController", function ($rootScope, $scope, $http, $timeout) {
+
             $rootScope.HasRelatedActivity = false;
             $http({
                 method: 'GET',
@@ -164,7 +165,7 @@
                 dataType: 'json',
                 params: { dp: $rootScope.selectedFundSource }
             }).success(function (result) {
-                if (result.SampleIatiActivity == null || result.SampleIatiActivity == undefined) {
+                if (result == null || result == undefined) {
                     $timeout(function () {
                         document.getElementById('btn2FilterBD').click(); //redirect
                     });
@@ -179,36 +180,41 @@
 
     <!--2-->
     <script type="text/javascript">
-        
-        iatiDataImporterApp.controller("FilterBDController", function ($rootScope, $scope, $http) {
-            $http({
-                url: '../api/ApiHome/SubmitHierarchy',
-                method: 'POST',
-                data: JSON.stringify($rootScope.hierarchyModel),
-                dataType: 'json'
-            }).then(function (result) {
-                $rootScope.filterBDModel = $scope.model = result.data;
-                //deferred.resolve(result);
-            },
-            function (response) {
-                //deferred.reject(response);
+        //(function () {
+        //    "use strict";
+            iatiDataImporterApp.controller("FilterBDController", function ($rootScope, $scope, $http) {
+
+
+                $http({
+                    url: '../api/ApiHome/SubmitHierarchy',
+                    method: 'POST',
+                    data: JSON.stringify($rootScope.hierarchyModel),
+                    dataType: 'json'
+                }).then(function (result) {
+                    $rootScope.filterBDModel = $scope.model = result.data;
+                    //deferred.resolve(result);
+                },
+                function (response) {
+                    //deferred.reject(response);
+                });
+
+
             });
-
-
-        });
+        //});
     </script>
 
     <!--3-->
     <script type="text/javascript">
 
-        iatiDataImporterApp.controller("FilterDPController", function ($rootScope, $scope, $http, $location, $timeout) {
+        iatiDataImporterApp.controller("FilterDPController", function ($rootScope, $scope, $http) {
             $scope.ImplementingOrgs = [];
             $scope.RelevantActivities = [];
 
             $http({
                 url: '../api/ApiHome/GetAllImplementingOrg',
-                method: 'GET',
-                dataType: 'json'
+                method: 'POST',
+                dataType: 'json',
+                data: JSON.stringify($rootScope.filterBDModel)
             }).then(function (result) {
                 $scope.ImplementingOrgs = result.data.Orgs;
                 $scope.FundSources = result.data.FundSources;
@@ -241,10 +247,10 @@
     <!--4-->
     <script type="text/javascript">
 
-        iatiDataImporterApp.controller("ShowProjectsController", function ($rootScope, $scope, $http, $location, $timeout) {
+        iatiDataImporterApp.controller("ShowProjectsController", function ($rootScope, $scope, $http) {
 
             $http({
-                url: '../api/ApiHome/SubmitActivities?orgId=' + $rootScope.selectedFundSource,
+                url: '../api/ApiHome/SubmitActivities',
                 method: 'POST',
                 data: JSON.stringify($rootScope.RelevantActivities),
                 dataType: 'json'

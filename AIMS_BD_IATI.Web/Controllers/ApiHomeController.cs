@@ -51,10 +51,10 @@ namespace AIMS_BD_IATI.Web.Controllers
         {
             bool isDPChanged = s_activitiesContainer.n().DP != dp;
 
-            if (s_heirarchyModel == null) s_heirarchyModel = new HeirarchyModel();
             if (isDPChanged)
             {
                 s_activitiesContainer = new AimsDbIatiDAL().GetActivities(dp);
+                if (s_heirarchyModel == null) s_heirarchyModel = new HeirarchyModel();
 
                 if (s_activitiesContainer.HasRelatedActivity)
                 {
@@ -102,7 +102,7 @@ namespace AIMS_BD_IATI.Web.Controllers
                 }
                 else
                 {
-                    s_heirarchyModel = new HeirarchyModel();
+                    s_heirarchyModel = null;
                 }
             }
             return s_heirarchyModel;
@@ -116,13 +116,13 @@ namespace AIMS_BD_IATI.Web.Controllers
         {
             var returnResult = new FilterBDModel();
 
-            if (heirarchyModel.n().SampleIatiActivity == null)
+            if (heirarchyModel == null)
             {
                 returnResult.iatiActivities = s_activitiesContainer.iatiActivities;
             }
             else
             {
-                returnResult.iatiActivities = s_activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == heirarchyModel.SelectedHierarchy);
+                returnResult.iatiActivities = s_activitiesContainer.iatiActivities.FindAll(f => f.n().hierarchy == heirarchyModel.n().SelectedHierarchy);
 
                 if (heirarchyModel.SelectedHierarchy == 1)
                 {
@@ -150,11 +150,14 @@ namespace AIMS_BD_IATI.Web.Controllers
             return returnResult;
         }
 
-
-        public object GetAllImplementingOrg()
+        [HttpPost]
+        public object GetAllImplementingOrg(FilterBDModel filterDBModel)
         {
+            if (filterDBModel != null)
+                s_activitiesContainer.iatiActivities = filterDBModel.iatiActivities;
+
             var iOrgs = new List<participatingorg>();
-            s_activitiesContainer.iatiActivities.ForEach(e => iOrgs.AddRange(e.participatingorg.n().Where(w => w.role == "4").ToList()));
+            s_activitiesContainer.RelevantActivities.ForEach(e => iOrgs.AddRange(e.participatingorg.n().Where(w => w.role == "4").ToList()));
 
             var oo = iOrgs.DistinctBy(l => l.@ref);
 
@@ -171,7 +174,7 @@ namespace AIMS_BD_IATI.Web.Controllers
 
             var iOrgs = new List<participatingorg>();
             s_activitiesContainer.RelevantActivities.ForEach(e => iOrgs.AddRange(e.participatingorg.n().Where(w => w.role == "4").ToList()));
-            
+
             foreach (var iOrg in _iOrgs)
             {
                 iOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e => e.AimsFundSourceId = iOrg.AimsFundSourceId);
@@ -181,11 +184,10 @@ namespace AIMS_BD_IATI.Web.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
-        public ProjectMapModel SubmitActivities([FromUri]string orgId, List<iatiactivity> _iatiactivities)
+        public ProjectMapModel SubmitActivities(List<iatiactivity> relevantActivies)
         {
-            var relevantActivies = _iatiactivities.n().FindAll(f => f.IsRelevant == true);
 
-            var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(orgId);
+            var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(s_activitiesContainer.n().DP);
 
             var MatchedProjects = (from i in relevantActivies
                                    from a in AimsProjects.Where(k => i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value))

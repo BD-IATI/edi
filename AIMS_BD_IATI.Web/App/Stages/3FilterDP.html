@@ -24,18 +24,18 @@
                 <div class="row">
                     <div class="col-md-offset-1 col-md-10">
                         <h3>Categorise organisations</h3>
-                        <table class="table table-striped">
+                        <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class=" table table-striped">
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Org ID</th>
-                                    <th>Org name</th>
+                                    <th st-sort="ref">Org ID</th>
+                                    <th st-sort="narrative[0].Value">Org name</th>
                                     <th>Registered in AIMS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="org in ImplementingOrgs">
-                                    <td></td>
+                                <tr ng-repeat="org in iOrgs">
+                                    <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
                                     <td><code>{{org.ref}}</code></td>
                                     <td>{{org.narrative[0].Value}}</td>
                                     <td>
@@ -52,27 +52,27 @@
                                 </tr>
 
                                 <!--<tr>
-                                    <td><span class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
-                                    <td><code>11000</code></td>
-                                    <td>Deutsche Gesellschaft fuer Internationale Zusammenarbeit (GIZ) GmbH</td>
-                                    <td>
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <select class="form-control" id="wbSelect">
-                                                    <option>NOT REGISTERED</option>
-                                                    <option value="CA-3">Canada, DFATD</option>
-                                                    <option value="DFID">DFID</option>
-                                                    <option value="DE-1">Germany, GIZ</option>
-                                                    <option value="44002">World Bank</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>-->
+                <td><span class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
+                <td><code>11000</code></td>
+                <td>Deutsche Gesellschaft fuer Internationale Zusammenarbeit (GIZ) GmbH</td>
+                <td>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <select class="form-control" id="wbSelect">
+                                <option>NOT REGISTERED</option>
+                                <option value="CA-3">Canada, DFATD</option>
+                                <option value="DFID">DFID</option>
+                                <option value="DE-1">Germany, GIZ</option>
+                                <option value="44002">World Bank</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>-->
                             </tbody>
                         </table>
                         <p class="well">
-                            NB: the third organisation is flagged
+                            NB: Some organisations may be flagged
                             because it has a ref <code>11000</code>,
                             "donor governments". However, the specific organisation
                             cannot be selected, because <code>11000</code> is
@@ -98,7 +98,7 @@
                     <div class="col-md-offset-1 col-md-10">
                         <h3>Own DP vs other DPs' projects</h3>
 
-                        <table st-table="RelevantActivities" class="table table-striped">
+                        <table st-table="RelevantActivities" st-safe-src="RelevantActivities" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th st-sort="IatiIdentifier" style="min-width:120px">
@@ -113,6 +113,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="activity in RelevantActivities">
+
                                     <td><code>{{activity.IatiIdentifier}}</code></td>
                                     <td>{{activity.Title}}</td>
                                     <td>
