@@ -41,9 +41,12 @@ namespace AIMS_BD_IATI.Web.Controllers
 
         public List<DropdownItem> GetFundSources()
         {
-            return new AimsDAL().getFundSourcesDropdownData();
+            return new AimsDAL().GetFundSourcesDropdownData();
         }
-
+        public IEnumerable<object> GetAllFundSources()
+        {
+            return new AimsDAL().GetAllFundSources();
+        }
         public HeirarchyModel GetHierarchyData(string dp)
         {
             bool isDPChanged = s_activitiesContainer.n().DP != dp;
@@ -145,6 +148,36 @@ namespace AIMS_BD_IATI.Web.Controllers
             }
 
             return returnResult;
+        }
+
+
+        public object GetAllImplementingOrg()
+        {
+            var iOrgs = new List<participatingorg>();
+            s_activitiesContainer.iatiActivities.ForEach(e => iOrgs.AddRange(e.participatingorg.n().Where(w => w.role == "4").ToList()));
+
+            var oo = iOrgs.DistinctBy(l => l.@ref);
+
+            return new
+            {
+                Orgs = oo.OrderBy(o => o.@ref),
+                FundSources = GetAllFundSources()
+            };
+        }
+
+        [HttpPost]
+        public List<iatiactivity> FilterDP(List<participatingorg> _iOrgs)
+        {
+
+            var iOrgs = new List<participatingorg>();
+            s_activitiesContainer.RelevantActivities.ForEach(e => iOrgs.AddRange(e.participatingorg.n().Where(w => w.role == "4").ToList()));
+            
+            foreach (var iOrg in _iOrgs)
+            {
+                iOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e => e.AimsFundSourceId = iOrg.AimsFundSourceId);
+            }
+
+            return s_activitiesContainer.RelevantActivities;
         }
 
         [AcceptVerbs("GET", "POST")]

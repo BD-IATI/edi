@@ -8,7 +8,7 @@ namespace AIMS_BD_IATI.Library
 {
     public class DropdownItem
     {
-        public string ID { get; set; }
+        public dynamic ID { get; set; }
         public string Name { get; set; }
     }
 }

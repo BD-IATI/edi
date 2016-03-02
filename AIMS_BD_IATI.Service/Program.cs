@@ -43,7 +43,7 @@ namespace AIMS_BD_IATI.Service
 
             //Get list of FundSource from AIMS DB
             AimsDAL _AimsDAL = new AimsDAL();
-            var fundSources = _AimsDAL.getFundSources();
+            var fundSources = _AimsDAL.GetFundSources();
 
             foreach (var fundSource in fundSources)
             {

@@ -22,6 +22,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
         public List<iatiactivity> iatiActivities { get; set; }
         public List<iatiactivity> NewProjects { get; set; }
+        public List<iatiactivity> RelevantActivities { get { return iatiActivities.n().FindAll(f => f.IsRelevant == true); } }
 
         public bool HasRelatedActivity { get { return iatiActivities.Exists(e => e.relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
 
@@ -71,6 +72,20 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
         }
 
+        [XmlIgnore]
+        private int? ownedBy;
+        [XmlIgnore]
+        public int? AimsFundSourceId
+        {
+            get
+            {
+                return ownedBy ?? participatingorg.n().FirstOrDefault(f=>f.role == "4").n().AimsFundSourceId;
+            }
+            set
+            {
+                ownedBy = value;
+            }
+        }
         #region Wrappers
 
         [XmlIgnore]
@@ -130,7 +145,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             {
                 string code;
                 if (defaultaidtype == null) // for initializing
-                    code = AidTypeCode; 
+                    code = AidTypeCode;
 
                 return defaultaidtype.n().name;
                 //return "Undefined";
@@ -351,6 +366,18 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     }
 
+    public partial class participatingorg
+    {
+        [XmlIgnore]
+        public int AimsFundSourceId
+        {
+            get;
+            set;
+        }
+
+
+
+    }
 
 
 

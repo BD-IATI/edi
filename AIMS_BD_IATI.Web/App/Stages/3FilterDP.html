@@ -24,7 +24,7 @@
                 <div class="row">
                     <div class="col-md-offset-1 col-md-10">
                         <h3>Categorise organisations</h3>
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th></th>
@@ -34,42 +34,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr ng-repeat="org in ImplementingOrgs">
                                     <td></td>
-                                    <td><code>44001</code></td>
-                                    <td>IBRD (HSBC)  C/O THE WORLD BANK</td>
+                                    <td><code>{{org.ref}}</code></td>
+                                    <td>{{org.narrative[0].Value}}</td>
                                     <td>
                                         <div class="form-group">
                                             <div class="col-sm-12">
-                                                <select class="form-control" id="wbSelect">
-                                                    <option>NOT REGISTERED</option>
-                                                    <option value="CA-3">Canada, DFATD</option>
-                                                    <option value="DFID">DFID</option>
-                                                    <option value="44002" selected="">World Bank</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><code>12000</code></td>
-                                    <td>Bangladesh Primary Education Development Programme 3 Ministry of Finance</td>
-                                    <td>
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <select class="form-control" id="wbSelect">
-                                                    <option selected="">NOT REGISTERED</option>
-                                                    <option value="CA-3">Canada, DFATD</option>
-                                                    <option value="DFID">DFID</option>
-                                                    <option value="44002">World Bank</option>
+                                                <select class="form-control"
+                                                        ng-model="org.AimsFundSourceId"
+                                                        ng-options="item.ID as item.Name for item in FundSources">
+                                                    <option value="">Select one...</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
 
-                                <tr>
+                                <!--<tr>
                                     <td><span class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
                                     <td><code>11000</code></td>
                                     <td>Deutsche Gesellschaft fuer Internationale Zusammenarbeit (GIZ) GmbH</td>
@@ -86,7 +68,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                </tr>
+                                </tr>-->
                             </tbody>
                         </table>
                         <p class="well">
@@ -105,7 +87,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-1 col-md-10">
-                        <button type="submit" class="btn btn-default">Filter DP's projects</button>
+                        <button ng-click="FilterDP()" class="btn btn-default">Filter DP's projects</button>
                     </div>
                 </div>
             </form>
@@ -115,42 +97,31 @@
                 <div class="row">
                     <div class="col-md-offset-1 col-md-10">
                         <h3>Own DP vs other DPs' projects</h3>
-                        <table class="table">
+
+                        <table st-table="RelevantActivities" class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Project ID</th>
-                                    <th>Project Title</th>
+                                    <th st-sort="IatiIdentifier" style="min-width:120px">
+                                        Activity ID
+                                    </th>
+                                    <th st-sort="Title" style="min-width:200px">
+                                        Activity Title
+                                    </th>
                                     <th>Owned by</th>
+
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="active">
-                                    <td><code>GB-1-107368</code></td>
-                                    <td>Rural Electrification Development Project</td>
+                                <tr ng-repeat="activity in RelevantActivities">
+                                    <td><code>{{activity.IatiIdentifier}}</code></td>
+                                    <td>{{activity.Title}}</td>
                                     <td>
                                         <div class="form-group">
                                             <div class="col-sm-12">
-                                                <select class="form-control" id="project1Select">
-                                                    <option>NOT REGISTERED</option>
-                                                    <option value="CA-3">Canada, DFATD</option>
-                                                    <option value="DFID">DFID</option>
-                                                    <option value="44002" selected="">World Bank</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td><code>GB-1-202123</code></td>
-                                    <td>Bangladesh Education Development Programme</td>
-                                    <td>
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <select class="form-control" id="project2Select">
-                                                    <option value="CA-3">Canada, DFATD</option>
-                                                    <option value="DFID" selected="">DFID</option>
-                                                    <option value="44002">World Bank</option>
+                                                <select class="form-control"
+                                                        ng-model="activity.AimsFundSourceId"
+                                                        ng-options="item.ID as item.Name for item in FundSources">
+                                                    <option value="">Select one...</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -158,6 +129,8 @@
                                 </tr>
                             </tbody>
                         </table>
+
+
                     </div>
                 </div>
                 <div class="form-group">

@@ -12,7 +12,7 @@ namespace AIMS_BD_IATI.DAL
     {
         AIMS_DBEntities dbContext = new AIMS_DBEntities();
 
-        public List<tblFundSource> getFundSources()
+        public List<tblFundSource> GetFundSources()
         {
             var fundSources = from fundSource in dbContext.tblFundSources
                               where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
@@ -20,8 +20,7 @@ namespace AIMS_BD_IATI.DAL
 
             return fundSources.ToList();
         }
-
-        public List<DropdownItem> getFundSourcesDropdownData()
+        public List<DropdownItem> GetFundSourcesDropdownData()
         {
             var fundSources = from fundSource in dbContext.tblFundSources
                               where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
@@ -32,7 +31,20 @@ namespace AIMS_BD_IATI.DAL
 
             return fundSources.ToList();
         }
-        public List<tblProjectInfo> getProjects(string dp)
+        public IEnumerable<object> GetAllFundSources()
+        {
+            var fundSources = from fundSource in dbContext.tblFundSources
+                              //where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
+                              select new
+                              {
+                                  ID = fundSource.Id,
+                                  Name = fundSource.FundSourceName
+                              };
+
+            return fundSources;
+        }
+
+        public List<tblProjectInfo> GetProjects(string dp)
         {
 
             var projects = from project in dbContext.tblProjectInfoes.Include("tblFundSources")
