@@ -42,8 +42,8 @@
                                         <div class="form-group">
                                             <div class="col-sm-12">
                                                 <select class="form-control"
-                                                        ng-model="org.AimsFundSourceId"
-                                                        ng-options="item.ID as item.Name for item in FundSources">
+                                                        ng-model="org.FundSourceIDnIATICode"
+                                                        ng-options="item.IDnIATICode as item.Name for item in FundSources">
                                                     <option value="">Select one...</option>
                                                 </select>
                                             </div>
@@ -51,7 +51,7 @@
                                     </td>
                                 </tr>
 
-                                <!--<tr>
+           <!--<tr>
                 <td><span class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
                 <td><code>11000</code></td>
                 <td>Deutsche Gesellschaft fuer Internationale Zusammenarbeit (GIZ) GmbH</td>
@@ -98,7 +98,7 @@
                     <div class="col-md-offset-1 col-md-10">
                         <h3>Own DP vs other DPs' projects</h3>
 
-                        <table st-table="RelevantActivities" st-safe-src="RelevantActivities" class="table table-striped">
+                        <table st-table="rActivities" st-safe-src="RelevantActivities" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th st-sort="IatiIdentifier" style="min-width:120px">
@@ -112,7 +112,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="activity in RelevantActivities">
+                                <tr ng-repeat="activity in rActivities">
 
                                     <td><code>{{activity.IatiIdentifier}}</code></td>
                                     <td>{{activity.Title}}</td>
@@ -120,8 +120,8 @@
                                         <div class="form-group">
                                             <div class="col-sm-12">
                                                 <select class="form-control"
-                                                        ng-model="activity.AimsFundSourceId"
-                                                        ng-options="item.ID as item.Name for item in FundSources">
+                                                        ng-model="activity.FundSourceIDnIATICode"
+                                                        ng-options="item.IDnIATICode as item.Name for item in FundSources">
                                                     <option value="">Select one...</option>
                                                 </select>
                                             </div>

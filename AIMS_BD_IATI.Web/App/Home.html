@@ -135,10 +135,9 @@
                 MatchedProjects: [],
                 IatiActivitiesNotInAims: [],
                 AimsProjectsNotInIati: [],
-                NewProjectsToAddInAims: []
+                NewProjectsToAddInAims: [],
+                ProjectsOwnedByOther:[]
             };
-
-            $rootScope.selectedFundSource = null;
 
             $scope.FundSources = [];
 
@@ -160,10 +159,10 @@
 
             $rootScope.HasRelatedActivity = false;
             $http({
-                method: 'GET',
+                method: 'POST',
                 url: '../api/ApiHome/GetHierarchyData',
                 dataType: 'json',
-                params: { dp: $rootScope.selectedFundSource }
+                data: JSON.stringify($rootScope.selectedFundSource)
             }).success(function (result) {
                 if (result == null || result == undefined) {
                     $timeout(function () {
@@ -192,6 +191,7 @@
                     dataType: 'json'
                 }).then(function (result) {
                     $rootScope.filterBDModel = $scope.model = result.data;
+                    $rootScope.hierarchyModel = null;
                     //deferred.resolve(result);
                 },
                 function (response) {
@@ -218,6 +218,7 @@
             }).then(function (result) {
                 $scope.ImplementingOrgs = result.data.Orgs;
                 $scope.FundSources = result.data.FundSources;
+                $rootScope.filterBDModel = null;
                 //deferred.resolve(result);
             },
             function (response) {
@@ -256,6 +257,7 @@
                 dataType: 'json'
             }).then(function (result) {
                 $rootScope.models = $scope.models = result.data;
+                $rootScope.RelevantActivities = null;
                 //deferred.resolve(result);
             },
             function (response) {

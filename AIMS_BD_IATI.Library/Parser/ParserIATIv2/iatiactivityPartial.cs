@@ -31,6 +31,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     public partial class iatiactivity
     {
+        public static List<FundSourceLookupItem> FundSources { get; set; }
 
         public iatiactivity()
         {
@@ -73,19 +74,48 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         [XmlIgnore]
-        private int? ownedBy;
+        private string ownedBy;
         [XmlIgnore]
-        public int? AimsFundSourceId
+
+        public string FundSourceIDnIATICode
         {
             get
             {
-                return ownedBy == null || ownedBy == 0 ? participatingorg.n().FirstOrDefault(f => f.n().role == "4").n().AimsFundSourceId : ownedBy;
+                return string.IsNullOrWhiteSpace(ownedBy) ? participatingorg.n().FirstOrDefault(f => f.n().role == "4").n().FundSourceIDnIATICode : ownedBy;
             }
             set
             {
                 ownedBy = value;
             }
         }
+        [XmlIgnore]
+
+        public int AimsFundSourceId
+        {
+            get { return string.IsNullOrWhiteSpace(FundSourceIDnIATICode) ? 0 : Convert.ToInt32(FundSourceIDnIATICode.Split('~')[0]); }
+        }
+        [XmlIgnore]
+
+        public string FundSource
+        {
+            get
+            {
+                FundSourceLookupItem r;
+                if (FundSources != null)
+                    r = FundSources.FirstOrDefault(f => f.ID == AimsFundSourceId);
+                else
+                    r = new FundSourceLookupItem();
+
+                return r == null ? "" : r.Name;
+            }
+        }
+        [XmlIgnore]
+
+        public string IATICode
+        {
+            get { return string.IsNullOrWhiteSpace(FundSourceIDnIATICode) ? "" : FundSourceIDnIATICode.Split('~')[1]; }
+        }
+
         #region Wrappers
 
         [XmlIgnore]
@@ -374,11 +404,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     public partial class participatingorg
     {
         [XmlIgnore]
-        public int AimsFundSourceId
-        {
-            get;
-            set;
-        }
+        public string FundSourceIDnIATICode { get; set; }
+
 
 
 

@@ -19,11 +19,11 @@
 
                                 <select class="form-control" id="beginDPselect"
                                         ng-model="$root.selectedFundSource"
-                                        ng-options="item.ID as item.Name for item in FundSources">
+                                        ng-options="item as item.Name for item in FundSources">
                                     <option value="">Select one...</option>
                                 </select>
 
-                                <p ng-bind="$root.selectedFundSource"></p>
+                                <p ng-bind="$root.selectedFundSource.ID"></p>
                             
                             </div>
                         </div>

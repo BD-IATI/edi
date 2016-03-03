@@ -39,30 +39,44 @@ namespace AIMS_BD_IATI.Web.Controllers
             set { HttpContext.Current.Session["HeirarchyModel"] = value; }
         }
 
-        public List<DropdownItem> GetFundSources()
+        public List<FundSourceLookupItem> FundSources
+        {
+            get
+            {
+                return HttpContext.Current.Session["FundSources"] == null ?
+                    new List<FundSourceLookupItem>()
+                    : (List<FundSourceLookupItem>)HttpContext.Current.Session["FundSources"];
+            }
+            set { HttpContext.Current.Session["FundSources"] = value; }
+        }
+
+        public List<DPLookupItem> GetFundSources()
         {
             return new AimsDAL().GetFundSourcesDropdownData();
         }
-        public IEnumerable<object> GetAllFundSources()
+        public List<FundSourceLookupItem> GetAllFundSources()
         {
-            return new AimsDAL().GetAllFundSources();
+            FundSources = new AimsDAL().GetAllFundSources();
+            return FundSources;
         }
-        public HeirarchyModel GetHierarchyData(string dp)
+
+        [AcceptVerbs("GET", "POST")]
+        public HeirarchyModel GetHierarchyData(DPLookupItem dp)
         {
-            bool isDPChanged = s_activitiesContainer.n().DP != dp;
+            bool isDPChanged = s_activitiesContainer.n().DP != dp.ID;
 
             if (isDPChanged)
             {
                 s_heirarchyModel = new HeirarchyModel();
 
-                s_activitiesContainer = new AimsDbIatiDAL().GetActivities(dp);
+                s_activitiesContainer = new AimsDbIatiDAL().GetActivities(dp.ID);
 
                 if (s_activitiesContainer.HasRelatedActivity)
                 {
                     var H1Acts = s_activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 1);
                     var H2Acts = s_activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 2);
 
-                    var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(dp);
+                    var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(dp.ID);
 
                     var matchedH1 = (decimal)(from a in AimsProjects
                                               join i in H1Acts on a.IatiIdentifier equals i.IatiIdentifier
@@ -178,7 +192,7 @@ namespace AIMS_BD_IATI.Web.Controllers
 
             foreach (var iOrg in _iOrgs)
             {
-                iOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e => e.AimsFundSourceId = iOrg.AimsFundSourceId);
+                iOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e => e.FundSourceIDnIATICode = iOrg.FundSourceIDnIATICode);
             }
 
             return s_activitiesContainer.RelevantActivities;
@@ -187,6 +201,11 @@ namespace AIMS_BD_IATI.Web.Controllers
         [AcceptVerbs("GET", "POST")]
         public ProjectMapModel SubmitActivities(List<iatiactivity> relevantActivies)
         {
+            iatiactivity.FundSources = FundSources;
+
+            var ProjectsOwnedByOther = relevantActivies.FindAll(f => f.IATICode != s_activitiesContainer.DP);
+
+            relevantActivies.RemoveAll(f => f.IATICode != s_activitiesContainer.DP);
 
             var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(s_activitiesContainer.n().DP);
 
@@ -211,13 +230,13 @@ namespace AIMS_BD_IATI.Web.Controllers
 
             var AimsProjectNotInIati = AimsProjects.ExceptBy(MatchedProjects, f => f.iatiidentifier.Value).ToList();
 
-
             return new ProjectMapModel
             {
                 MatchedProjects = MatchedProjects2,
                 IatiActivitiesNotInAims = IatiActivityNotInAims,
                 AimsProjectsNotInIati = AimsProjectNotInIati,
-                NewProjectsToAddInAims = new List<iatiactivity>()
+                NewProjectsToAddInAims = new List<iatiactivity>(),
+                ProjectsOwnedByOther = ProjectsOwnedByOther
             };
         }
 
@@ -246,6 +265,7 @@ namespace AIMS_BD_IATI.Web.Controllers
         public List<iatiactivity> IatiActivitiesNotInAims { get; set; }
         public List<iatiactivity> AimsProjectsNotInIati { get; set; }
         public List<iatiactivity> NewProjectsToAddInAims { get; set; }
+        public List<iatiactivity> ProjectsOwnedByOther { get; set; }
         public class MatchedProject
         {
             public iatiactivity iatiActivity { get; set; }

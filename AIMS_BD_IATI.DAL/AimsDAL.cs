@@ -20,43 +20,32 @@ namespace AIMS_BD_IATI.DAL
 
             return fundSources.ToList();
         }
-        public List<DropdownItem> GetFundSourcesDropdownData()
+        public List<DPLookupItem> GetFundSourcesDropdownData()
         {
             var fundSources = from fundSource in dbContext.tblFundSources
                               where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
-                              select new DropdownItem { 
+                              select new DPLookupItem { 
                                 ID = fundSource.IATICode,
-                                Name = fundSource.FundSourceName
+                                Name = fundSource.FundSourceName,
+                                AimsFundSourceId = fundSource.Id
                               };
 
             return fundSources.ToList();
         }
-        public IEnumerable<object> GetAllFundSources()
+        public List<FundSourceLookupItem> GetAllFundSources()
         {
-            var fundSources = from fundSource in dbContext.tblFundSources
+            var fundSources = (from fundSource in dbContext.tblFundSources
                               //where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
-                              select new
+                              select new FundSourceLookupItem
                               {
                                   ID = fundSource.Id,
-                                  Name = fundSource.FundSourceName
-                              };
+                                  Name = fundSource.FundSourceName,
+                                  IATICode = fundSource.IATICode
+                              }).ToList();
 
             return fundSources;
         }
 
-        public List<tblProjectInfo> GetProjects(string dp)
-        {
-
-            var projects = from project in dbContext.tblProjectInfoes.Include("tblFundSources")
-                           join fundSource in dbContext.tblFundSources on project.FundSourceId equals fundSource.Id
-                           //&& fundSource.IATICode equals fun
-                           where fundSource.IATICode == dp
-
-                           select project
-                           ;
-
-            return projects.ToList();
-        }
 
         public List<iatiactivity> getAIMSDataInIATIFormat(string dp)
         {
