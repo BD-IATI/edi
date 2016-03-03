@@ -79,7 +79,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return ownedBy == null || ownedBy == 0? participatingorg.n().FirstOrDefault(f=>f.n().role == "4").n().AimsFundSourceId : ownedBy;
+                return ownedBy == null || ownedBy == 0 ? participatingorg.n().FirstOrDefault(f => f.n().role == "4").n().AimsFundSourceId : ownedBy;
             }
             set
             {
@@ -152,7 +152,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
             set
             {
-                defaultaidtype = new defaultaidtype { name = value };
+                if (!string.IsNullOrWhiteSpace(value))
+                    defaultaidtype = new defaultaidtype { name = value };
             }
         }
         [XmlIgnore]
@@ -172,16 +173,16 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                         var commitmentTrans = transaction.Where(c => c.transactiontype.n().code == "2");
 
                         var kk = from t in commitmentTrans
-                                 group t by new { t.aidtype.code, t.value } into g
+                                 group t by new { t.aidtype, t.value } into g
                                  select new
                                  {
-                                     g.Key.code,
+                                     g.Key.aidtype,
                                      Sum = g.Sum(s => s.value.n().Value)
                                  };
 
                         var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
 
-                        defaultaidtype.code = dominatingAidType == null ? "" : dominatingAidType.code;
+                        defaultaidtype.code = dominatingAidType == null ? "" : dominatingAidType.aidtype == null ? "" : dominatingAidType.aidtype.code;
 
                     }
                     else
@@ -205,16 +206,16 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                         var commitmentTrans = allChildAticitiesTrans.FindAll(c => c.transactiontype.n().code == "2");
 
                         var kk = (from t in commitmentTrans
-                                  group t by new { t.aidtype.code, t.value } into g
+                                  group t by new { t.aidtype, t.value } into g
                                   select new
                                   {
-                                      g.Key.code,
+                                      g.Key.aidtype,
                                       Sum = g.Sum(s => s.value.n().Value)
                                   }).ToList();
 
                         var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
 
-                        defaultaidtype.code = dominatingAidType ==null?"": dominatingAidType.code;
+                        defaultaidtype.code = dominatingAidType == null ? "" : dominatingAidType.aidtype == null ? "" : dominatingAidType.aidtype.code;
 
 
                         //defaultaidtype.code = "A01";
@@ -226,7 +227,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
             set
             {
-                defaultaidtype = new Parser.ParserIATIv2.defaultaidtype { code = value };
+                if (!string.IsNullOrWhiteSpace(value))
+                    defaultaidtype = new Parser.ParserIATIv2.defaultaidtype { code = value };
             }
         }
 

@@ -53,8 +53,9 @@ namespace AIMS_BD_IATI.Web.Controllers
 
             if (isDPChanged)
             {
+                s_heirarchyModel = new HeirarchyModel();
+
                 s_activitiesContainer = new AimsDbIatiDAL().GetActivities(dp);
-                if (s_heirarchyModel == null) s_heirarchyModel = new HeirarchyModel();
 
                 if (s_activitiesContainer.HasRelatedActivity)
                 {
