@@ -1,0 +1,386 @@
+<!-- saved from url=(0037)http://test.brough.io/bd/sprint2.htm? -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>Mockups - IATI-AIMS importing</title>
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/style.css" rel="stylesheet" />
+    <!--<link href="../Content/ui-grid.min.css" rel="stylesheet" />-->
+    <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../Content/AngularDragAndDrop/vendor/prism.css">
+    <link rel="stylesheet" href="../Content/AngularDragAndDrop/demo-framework.css">
+
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <!--<script src="../Scripts/jquery-ui.min.js"></script>-->
+    <script src="../Scripts/bootstrap.min.js"></script>
+
+    <script src="../Scripts/angular.min.js"></script>
+    <script src="../Scripts/angular-route.min.js"></script>
+
+    <!--<script src="../Scripts/ui-grid.min.js"></script>-->
+
+    <script src="../Scripts/angular-drag-and-drop-lists.min.js"></script>
+    <script src="../Content/AngularDragAndDrop/vendor/prism.js"></script>
+
+    <script src="../Scripts/spin.min.js"></script>
+    <script src="../Scripts/spinner.js"></script>
+
+    <script src="../Scripts/SmartTable/smart-table.min.js"></script>
+
+    <script type="text/javascript">
+
+    </script>
+
+    <script type="text/javascript">
+        var iatiDataImporterApp = angular.module("iatiDataImporter", ["ngRoute", 'dndLists', 'ngLoadingSpinner', 'smart-table']);
+
+        iatiDataImporterApp.config(function ($routeProvider) {
+            $routeProvider
+                .when('/0Begin', {
+                    templateUrl: 'Stages/0Begin.html',
+                    controller: 'BeginImportController'
+                })
+                .when('/1Hierarchy', {
+                    templateUrl: 'Stages/1Hierarchy.html',
+                    controller: 'HierarchyController'
+                })
+                .when('/2FilterBD', {
+                    templateUrl: 'Stages/2FilterBD.html',
+                    controller: 'FilterBDController'
+                })
+                .when('/3FilterDP', {
+                    templateUrl: 'Stages/3FilterDP.html',
+                    controller: 'FilterDPController'
+                })
+                .when('/4Projects', {
+                    templateUrl: 'Stages/4Projects.html',
+                    controller: 'ShowProjectsController'
+                })
+                .when('/5Match', {
+                    templateUrl: 'Stages/5Match.html',
+                    controller: 'ProjectMappingController'
+                })
+                .otherwise({ redirectTo: '/0Begin' });
+        })
+
+        iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
+            return {
+                template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +
+                          '    <a>{{option.label}}</a>' + //'    <a ng-href="{{option.href}}">{{option.label}}</a>'
+                          '</li>',
+                link: function (scope, element, attr) {
+                    scope.options = [
+                        { label: "Begin import", href: "#/0Begin" },
+                        { label: "1. Hierarchy", href: "#/1Hierarchy" },
+                        { label: "2. Filter Bangladesh-relevant activities", href: "#/2FilterBD" },
+                        { label: "3. Filter DP activities", href: "#/3FilterDP" },
+                        { label: "4. Show projects", href: "#/4Projects" },
+                        { label: "5. Match unmatched projects", href: "#/5Match" }
+                    ];
+
+                    scope.isActive = function (option) {
+                        return option.href.indexOf(scope.location) === 1;
+                    };
+
+                    $rootScope.$on("$locationChangeSuccess", function (event, next, current) {
+                        scope.location = $location.path();
+                    });
+                }
+            };
+        });
+
+        //iatiDataImporterApp.animation('.slide', [function () {
+        //    return {
+        //        enter: function (element, doneFn) {
+        //            $(element).slideUp(1000, doneFn);
+        //        }
+        //    }
+        //}]);
+
+        //$(function () {
+        //    alert("dfasd");
+        //    $('.tab-content').hide();
+        //})
+
+        (function () {
+            iatiDataImporterApp.directive('usSpinner', ['$http', '$rootScope', function ($http, $rootScope) {
+                return {
+                    link: function (scope, elm, attrs) {
+                        $rootScope.spinnerActive = false;
+                        scope.isLoading = function () {
+                            return $http.pendingRequests.length > 0;
+                        };
+
+                        scope.$watch(scope.isLoading, function (loading) {
+                            $rootScope.spinnerActive = loading;
+                            if (loading) {
+                                elm.removeClass('ng-hide');
+                            } else {
+                                elm.addClass('ng-hide');
+                            }
+                        });
+                    }
+                };
+
+            }]);
+        }).call(this);
+    </script>
+    <!--0-->
+    <script type="text/javascript">
+
+        iatiDataImporterApp.controller("BeginImportController", function ($rootScope, $scope, $http) {
+            $rootScope.models = {
+                selected: false,
+                IatiActivities: [],
+                MatchedProjects: [],
+                IatiActivitiesNotInAims: [],
+                AimsProjectsNotInIati: [],
+                NewProjectsToAddInAims: [],
+                ProjectsOwnedByOther:[]
+            };
+
+            $scope.FundSources = [];
+
+            $http({
+                method: 'GET',
+                url: '../api/ApiHome/GetFundSources',
+                //data: { applicationId: 3 }
+            }).success(function (result) {
+                $scope.FundSources = result;
+            });
+
+        });
+    </script>
+
+    <!--1-->
+    <script type="text/javascript">
+
+        iatiDataImporterApp.controller("HierarchyController", function ($rootScope, $scope, $http, $timeout) {
+
+            $rootScope.HasRelatedActivity = false;
+            $http({
+                method: 'POST',
+                url: '../api/ApiHome/GetHierarchyData',
+                dataType: 'json',
+                data: JSON.stringify($rootScope.selectedFundSource)
+            }).success(function (result) {
+                if (result == null || result == undefined) {
+                    $timeout(function () {
+                        document.getElementById('btn2FilterBD').click(); //redirect
+                    });
+                }
+                else {
+                    $rootScope.hierarchyModel = $scope.model = result;
+                }
+            });
+
+        });
+    </script>
+
+    <!--2-->
+    <script type="text/javascript">
+        //(function () {
+        //    "use strict";
+            iatiDataImporterApp.controller("FilterBDController", function ($rootScope, $scope, $http) {
+
+
+                $http({
+                    url: '../api/ApiHome/SubmitHierarchy',
+                    method: 'POST',
+                    data: JSON.stringify($rootScope.hierarchyModel),
+                    dataType: 'json'
+                }).then(function (result) {
+                    $rootScope.filterBDModel = $scope.model = result.data;
+                    $rootScope.hierarchyModel = null;
+                    //deferred.resolve(result);
+                },
+                function (response) {
+                    //deferred.reject(response);
+                });
+
+
+            });
+        //});
+    </script>
+
+    <!--3-->
+    <script type="text/javascript">
+
+        iatiDataImporterApp.controller("FilterDPController", function ($rootScope, $scope, $http) {
+            $scope.ImplementingOrgs = [];
+            $scope.RelevantActivities = [];
+
+            $http({
+                url: '../api/ApiHome/GetAllImplementingOrg',
+                method: 'POST',
+                dataType: 'json',
+                data: JSON.stringify($rootScope.filterBDModel)
+            }).then(function (result) {
+                $scope.ImplementingOrgs = result.data.Orgs;
+                $scope.FundSources = result.data.FundSources;
+                $rootScope.filterBDModel = null;
+                //deferred.resolve(result);
+            },
+            function (response) {
+                //deferred.reject(response);
+            });
+
+            $scope.FilterDP = function () {
+
+                $http({
+                    url: '../api/ApiHome/FilterDP',
+                    method: 'POST',
+                    data: JSON.stringify($scope.ImplementingOrgs),
+                    dataType: 'json'
+                }).then(function (result) {
+                    $rootScope.RelevantActivities = $scope.RelevantActivities = result.data;
+                    //deferred.resolve(result);
+                },
+                function (response) {
+                    //deferred.reject(response);
+                });
+                    
+            };
+
+        });
+    </script>
+
+    <!--4-->
+    <script type="text/javascript">
+
+        iatiDataImporterApp.controller("ShowProjectsController", function ($rootScope, $scope, $http) {
+
+            $http({
+                url: '../api/ApiHome/SubmitActivities',
+                method: 'POST',
+                data: JSON.stringify($rootScope.RelevantActivities),
+                dataType: 'json'
+            }).then(function (result) {
+                $rootScope.models = $scope.models = result.data;
+                $rootScope.RelevantActivities = null;
+                //deferred.resolve(result);
+            },
+            function (response) {
+                //deferred.reject(response);
+            });
+
+        });
+    </script>
+    <!--5-->
+    <script type="text/javascript">
+
+        iatiDataImporterApp.controller("ProjectMappingController", function ($rootScope, $scope, $http) {
+            $scope.models = $rootScope.models;
+
+            //(function startup() {
+
+            //    $http({
+            //        url: '../api/ApiHome/GetData',
+            //        method: 'GET',
+            //        dataType: 'json'
+            //    }).then(function (result) {
+            //        $scope.models = result.data;
+            //        //deferred.resolve(result);
+            //    },
+            //        function (response) {
+            //            //deferred.reject(response);
+            //        });
+
+            //})();
+
+            $scope.Commands = {
+                saveData: function () {
+                    console.log(JSON.stringify($scope.models));
+                    $http({
+                        url: '../api/ApiHome/PostData',
+                        method: 'POST',
+                        data: JSON.stringify($scope.models),
+                        dataType: 'json'
+                    }).then(function (result) {
+                        //deferred.resolve(result);
+                    },
+                    function (response) {
+                        //deferred.reject(response);
+                    });
+
+                }
+
+            };
+
+            //// Model to JSON for demo purpose
+            //$scope.$watch('models', function (model) {
+            //    $scope.modelAsJson = angular.toJson(model, true);
+            //}, true);
+
+        });
+
+
+    </script>
+
+    <style>
+        .btnFooter {
+            text-align: right;
+        }
+    </style>
+
+    <style>
+        .sortorder:after {
+            content: '\25b2';
+        }
+
+        .sortorder.reverse:after {
+            content: '\25bc';
+        }
+
+        .st-sort-ascent:after {
+            content: '\25B2';
+        }
+
+        .st-sort-descent:after {
+            content: '\25BC';
+        }
+    </style>
+    <style>
+        .tab-pane {
+            margin: 0px 15px;
+        }
+        </style>
+</head>
+<body ng-app="iatiDataImporter">
+    <header>
+        <nav id="main" class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <span class="navbar-brand">AIMS IATI Import</span>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <!--<li><a href="http://test.brough.io/bd/sprint2.htm?#home">Sprint 2</a></li>-->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div>
+            <!-- Nav tabs -->
+            <ul navigation class="nav nav-tabs" role="tablist"></ul>
+            <span us-spinner="{radius:30, width:8, length: 16}"></span>
+            <!-- Tab panes -->
+            <div ng-view class="tab-content">
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</body>
+</html>

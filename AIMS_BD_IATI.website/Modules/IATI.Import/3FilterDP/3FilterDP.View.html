@@ -1,0 +1,148 @@
+﻿<div role="tabpanel" class="tab-pane active" id="filterDP">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 3. Filter for DP's own projects </h2>
+            <p class="lead">
+                Some of the activities published at headquarters
+                level may relate to other DP's projects – for
+                example, DP A may provide contributions to DP B's project.
+                Both DP A and DP B can publish separate activities, but
+                they need to be mapped together. To determine which projects are likely
+                implemented by another DP registered in the AIMS, we have
+                tried to filter out projects by using the name of the
+                implementing organisation.
+            </p>
+            <p class="lead">
+                Please determine whether the following
+                organisations are registered in the AIMS or not. We have
+                flagged organisations we'd like you to pay close attention
+                to with a <span class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span>
+                symbol. You can then see how projects are categorised below.
+            </p>
+            <hr>
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-10">
+                        <h3>Categorise organisations</h3>
+                        <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class=" table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th st-sort="ref">Org ID</th>
+                                    <th st-sort="narrative[0].Value">Org name</th>
+                                    <th>Registered in AIMS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="org in iOrgs">
+                                    <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
+                                    <td><code>{{org.ref}}</code></td>
+                                    <td>{{org.narrative[0].Value}}</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <select class="form-control"
+                                                        ng-model="org.FundSourceIDnIATICode"
+                                                        ng-options="item.IDnIATICode as item.Name for item in FundSources">
+                                                    <option value="">Select one...</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+           <!--<tr>
+                <td><span class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
+                <td><code>11000</code></td>
+                <td>Deutsche Gesellschaft fuer Internationale Zusammenarbeit (GIZ) GmbH</td>
+                <td>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <select class="form-control" id="wbSelect">
+                                <option>NOT REGISTERED</option>
+                                <option value="CA-3">Canada, DFATD</option>
+                                <option value="DFID">DFID</option>
+                                <option value="DE-1">Germany, GIZ</option>
+                                <option value="44002">World Bank</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>-->
+                            </tbody>
+                        </table>
+                        <p class="well">
+                            NB: Some organisations may be flagged
+                            because it has a ref <code>11000</code>,
+                            "donor governments". However, the specific organisation
+                            cannot be selected, because <code>11000</code> is
+                            not specific enough.
+                        </p>
+                        <p class="well">
+                            Additional thought: we could ask the
+                            user to categorise implementing organisations as
+                            government vs non government at this stage.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-1 col-md-10">
+                        <button ng-click="FilterDP()" class="btn btn-default">Filter DP's projects</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-10">
+                        <h3>Own DP vs other DPs' projects</h3>
+
+                        <table st-table="rActivities" st-safe-src="RelevantActivities" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th st-sort="IatiIdentifier" style="min-width:120px">
+                                        Activity ID
+                                    </th>
+                                    <th st-sort="Title" style="min-width:200px">
+                                        Activity Title
+                                    </th>
+                                    <th>Owned by</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="activity in rActivities">
+
+                                    <td><code>{{activity.IatiIdentifier}}</code></td>
+                                    <td>{{activity.Title}}</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <select class="form-control"
+                                                        ng-model="activity.FundSourceIDnIATICode"
+                                                        ng-options="item.IDnIATICode as item.Name for item in FundSources">
+                                                    <option value="">Select one...</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-1 col-md-10 btnFooter">
+                        <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
+                        <a class="btn btn-default" ng-href="#/4Projects">Next</a>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

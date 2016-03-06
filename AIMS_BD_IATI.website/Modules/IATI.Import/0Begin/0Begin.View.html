@@ -1,0 +1,44 @@
+﻿
+<div role="tabpanel" class="tab-pane active" id="begin">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Select a DP to begin import</h2>
+            <p class="lead">
+                Select a DP from the drop-down box below to
+                begin import of IATI data into the AIMS. No data will be
+                imported at this stage.
+            </p>
+            <hr>
+
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="beginDPselect" class="col-sm-2 control-label">Development Partner</label>
+                            <div class="col-sm-8">
+
+                                <select class="form-control" id="beginDPselect"
+                                        ng-model="$root.selectedFundSource"
+                                        ng-options="item as item.Name for item in FundSources">
+                                    <option value="">Select one...</option>
+                                </select>
+
+                                <p ng-bind="$root.selectedFundSource.ID"></p>
+                            
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="selectedFundSource != null">
+                            <div class="col-md-offset-1 col-md-10 btnFooter">
+                                <a class="btn btn-default" ng-href="#/1Hierarchy">Next</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+

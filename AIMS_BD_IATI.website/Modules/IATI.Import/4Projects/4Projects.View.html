@@ -1,0 +1,130 @@
+﻿<div role="tabpanel" class="tab-pane active" id="projects">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><span class="glyphicon glyphicon-link" aria-hidden="true"></span> 4. Match IATI projects to AIMS</h2>
+            <p class="lead">
+                Based on your answers to the preceding questions,
+                we have mapped your IATI activities against the AIMS in
+                the following way.
+            </p>
+            <hr>
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10">
+                    <h3>IATI activities matched to the AIMS</h3>
+                    <table st-table="MatchedProjects" st-safe-src="models.MatchedProjects" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th st-sort="iatiActivity.IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="iatiActivity.Title">IATI Project Title</th>
+                                <th st-sort="aimsProjects.IatiIdentifier">AIMS Project ID</th>
+                                <th st-sort="aimsprojects.title">AIMS Project Title</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="m in MatchedProjects" class="table-striped">
+                                <td><code>{{m.iatiActivity.IatiIdentifier}}</code></td>
+                                <td>{{m.iatiActivity.Title}}</td>
+                                <td><code>{{m.aimsProjects.IatiIdentifier}}</code></td>
+                                <td>{{m.aimsProjects.Title}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10">
+                    <h3>IATI activities not found in the AIMS</h3>
+                    <table st-table="IatiActivitiesNotInAims" st-safe-src="models.IatiActivitiesNotInAims" class="table" ng-show="models.IatiActivitiesNotInAims.length > 0">
+                        <thead>
+                            <tr>
+                                <th st-sort="IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="Title">IATI Project Title</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="active"></tr>
+                            <tr ng-repeat="activity in IatiActivitiesNotInAims" class="table-striped">
+                                <td><code>{{activity.IatiIdentifier}}</code></td>
+                                <td>{{activity.Title}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert alert-success" ng-hide="models.IatiActivitiesNotInAims.length > 0">
+                        Great news! All IATI activities
+                        were found in this DP's AIMS data.
+                    </div>
+
+                </div>
+            </div>
+
+            <hr>
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10">
+                    <h3>AIMS projects not found in IATI</h3>
+                    <table st-table="AimsProjectsNotInIati" st-safe-src="models.AimsProjectsNotInIati" class="table" ng-show="models.AimsProjectsNotInIati.length > 0">
+                        <thead>
+                            <tr>
+                                <th st-sort="IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="Title">IATI Project Title</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="active"></tr>
+                            <tr ng-repeat="activity in AimsProjectsNotInIati" class="table-striped">
+                                <td><code>{{activity.IatiIdentifier}}</code></td>
+                                <td>{{activity.Title}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert alert-success" ng-hide="models.AimsProjectsNotInIati.length > 0">
+                        Great news! All AIMS
+                        projects were found in this DP's IATI data.
+                    </div>
+
+                </div>
+            </div>
+
+            <hr>
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10">
+                    <h3>Projects owned by other DPs</h3>
+                    <table st-table="ProjectsOwnedByOther" st-safe-src="models.ProjectsOwnedByOther" class="table" ng-show="models.AimsProjectsNotInIati.length > 0">
+                        <thead>
+                            <tr>
+                                <th st-sort="IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="Title">IATI Project Title</th>
+                                <th>Owned by</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="active"></tr>
+                            <tr ng-repeat="activity in ProjectsOwnedByOther" class="table-striped">
+                                <td><code>{{activity.IatiIdentifier}}</code></td>
+                                <td>{{activity.Title}}</td>
+                                <td>{{activity.FundSource}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert alert-success" ng-hide="models.ProjectsOwnedByOther.length > 0">
+                        Great news! There is no other DP's project.
+                    </div>
+
+                </div>
+            </div>
+            <hr>
+
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-10 btnFooter">
+                    <a class="btn btn-default" ng-href="#/3FilterDP">Back</a>
+                    <a class="btn btn-default" ng-href="#/5Match">Next</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
