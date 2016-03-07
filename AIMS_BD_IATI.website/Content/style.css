@@ -1,0 +1,64 @@
+body { padding-top: 70px; }
+
+/* Navigation */
+
+.navbar-default {
+  background-color: #78b800;
+  color: #ffffff;
+}
+.navbar-default .navbar-brand, .navbar-default .navbar-brand:focus, 
+.navbar-default .navbar-brand:hover,  .navbar-default .navbar-nav > li > a {
+  color: #ffffff;
+}
+.navbar-default .dropdown-menu, .navbar-default .dropdown-menu > li > a {
+  color: #000000;
+}
+nav li {
+    font-weight:bold;
+}
+
+/* Projects */
+.project-entry {
+    border: 2px solid #bbb;
+    padding:2px;
+    margin:10px;
+    border-radius: 4px;
+    box-shadow:2px 2px #eeeeee;
+
+    -webkit-transform: translate(0px, 0px);
+            transform: translate(0px, 0px);
+
+    transition: background-color 0.3s;
+}
+/* Step 1 */
+.project-entry-iati {
+  z-index:1;
+  cursor: move;
+}
+.drop-target {
+  background-color: #78b800;
+}
+/* Step 2*/
+.input-group {
+  margin:2px;
+}
+
+/* Event Log - right hand side */
+.event-log {
+  padding: 0px;
+  display:none;
+}
+.event-log h4 {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.event-log-item {
+  display: block;
+  opacity: 0;
+  background-color: #dff0d8;
+  padding: 4px;
+  margin-bottom:2px;
+}
+.navbar-default .navbar-nav > li > a.step2-button {
+  color: #777;
+}
