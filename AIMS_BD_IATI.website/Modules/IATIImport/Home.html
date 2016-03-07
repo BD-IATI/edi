@@ -1,0 +1,136 @@
+<!-- saved from url=(0037)http://test.brough.io/bd/sprint2.htm? -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>Mockups - IATI-AIMS importing</title>
+    <link href="../../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../../Content/style.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../../Content/AngularDragAndDrop/vendor/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../../Content/AngularDragAndDrop/vendor/prism.css">
+    <link rel="stylesheet" href="../../Content/AngularDragAndDrop/demo-framework.css">
+
+    <script src="../../Scripts/jquery-2.2.1.min.js"></script>
+    <script src="../../Scripts/bootstrap.min.js"></script>
+
+    <script src="../../Scripts/angular.min.js"></script>
+    <script src="../../Scripts/angular-route.min.js"></script>
+
+    <script src="../../Scripts/AngularDragAndDrop/angular-drag-and-drop-lists.min.js"></script>
+    <script src="../../Content/AngularDragAndDrop/vendor/prism.js"></script>
+
+    <script src="../../Scripts/spin.min.js"></script>
+    <script src="../../Scripts/spinner.js"></script>
+
+    <script src="../../Scripts/smart-table.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+
+    <script src="IATIImportApp.js"></script>
+    <script src="0Begin/0BeginController.js"></script>
+    <script src="1Hierarchy/1HierarchyController.js"></script>
+    <script src="2FilterBD/2FilterBDController.js"></script>
+    <script src="3FilterDP/3FilterDPController.js"></script>
+    <script src="4Projects/4ProjectsController.js"></script>
+    <script src="5Match/5MatchController.js"></script>
+
+
+    <!--0-->
+    <script type="text/javascript">
+
+    </script>
+
+    <!--1-->
+    <script type="text/javascript">
+
+    </script>
+
+    <!--2-->
+    <script type="text/javascript">
+
+    </script>
+
+    <!--3-->
+    <script type="text/javascript">
+
+    </script>
+
+    <!--4-->
+    <script type="text/javascript">
+
+    </script>
+    <!--5-->
+    <script type="text/javascript">
+
+
+
+    </script>
+
+    <style>
+        .btnFooter {
+            text-align: right;
+        }
+    </style>
+
+    <style>
+        .sortorder:after {
+            content: '\25b2';
+        }
+
+        .sortorder.reverse:after {
+            content: '\25bc';
+        }
+
+        .st-sort-ascent:after {
+            content: '\25B2';
+        }
+
+        .st-sort-descent:after {
+            content: '\25BC';
+        }
+    </style>
+    <style>
+        .tab-pane {
+            margin: 0px 15px;
+        }
+    </style>
+</head>
+<body ng-app="iatiDataImporter">
+    <header>
+        <nav id="main" class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <span class="navbar-brand">AIMS IATI Import</span>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <!--<li><a href="http://test.brough.io/bd/sprint2.htm?#home">Sprint 2</a></li>-->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div>
+            <!-- Nav tabs -->
+            <ul navigation class="nav nav-tabs" role="tablist"></ul>
+            <span us-spinner="{radius:30, width:8, length: 16}"></span>
+            <!-- Tab panes -->
+            <div ng-view class="tab-content">
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</body>
+</html>

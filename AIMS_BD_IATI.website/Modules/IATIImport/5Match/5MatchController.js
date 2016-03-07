@@ -1,0 +1,24 @@
+﻿angular.module('iatiDataImporter').controller("5MatchController", function ($rootScope, $scope, $http) {
+    $scope.models = $rootScope.models;
+
+    $scope.Commands = {
+        saveData: function () {
+            console.log(JSON.stringify($scope.models));
+            $http({
+                url: apiprefix + '/api/ApiHome/PostData',
+                method: 'POST',
+                data: JSON.stringify($scope.models),
+                dataType: 'json'
+            }).then(function (result) {
+                //deferred.resolve(result);
+            },
+            function (response) {
+                //deferred.reject(response);
+            });
+
+        }
+
+    };
+
+
+});
