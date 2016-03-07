@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.DAL", "AIMS_BD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.Web", "AIMS_BD_IATI.Web\AIMS_BD_IATI.Web.csproj", "{39E178E8-8BF0-4C5D-B610-2A10F3247A27}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AIMS_BD_IATI.website", "http://localhost:4118", "{A1C78BEC-7231-4970-B959-2E9FD87BD257}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AIMS_BD_IATI.website", "http://localhost/AIMS_BD_IATI.website/", "{A1C78BEC-7231-4970-B959-2E9FD87BD257}"
 	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "true"
+		UseIISExpress = "false"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_4118"
 		Debug.AspNetCompiler.PhysicalPath = "AIMS_BD_IATI.website\"
@@ -31,6 +31,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AIMS_BD_IATI.website", "htt
 		Release.AspNetCompiler.Debug = "False"
 		SlnRelativePath = "AIMS_BD_IATI.website\"
 		DefaultWebSiteLanguage = "Visual C#"
+		StartServerOnDebug = "false"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.WebAPI", "AIMS_DB_IATI.WebAPI\AIMS_BD_IATI.WebAPI.csproj", "{7DED54C5-0325-48BA-9908-F51B485EB0EF}"

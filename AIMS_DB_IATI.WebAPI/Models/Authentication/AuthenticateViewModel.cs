@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace AngularWebAPI.WebAPI.Models.Authentication
+namespace AIMS_BD_IATI.WebAPIAPI.Models.Authentication
 {
     public class AuthenticateViewModel
     {

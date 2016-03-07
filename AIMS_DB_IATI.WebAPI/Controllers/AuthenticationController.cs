@@ -1,4 +1,4 @@
-﻿using AngularWebAPI.WebAPI.Models.Authentication;
+﻿using AIMS_BD_IATI.WebAPIAPI.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace AngularWebAPI.WebAPI.Controllers
+namespace AIMS_BD_IATI.WebAPIAPI.Controllers
 {
     public class AuthenticationController : ApiController
     {

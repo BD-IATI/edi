@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Web;
 
-namespace AngularWebAPI.WebAPI.Modules
+namespace AIMS_BD_IATI.WebAPIAPI.Modules
 {
     public class BasicAuthHttpModule : IHttpModule
     {

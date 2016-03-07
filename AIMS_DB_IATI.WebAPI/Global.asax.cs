@@ -8,13 +8,14 @@ using System.Web.Http;
 using System.Web.Routing;
 using System.Web.SessionState;
 
-namespace AngularWebAPI.WebAPI
+namespace AIMS_BD_IATI.WebAPIAPI
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
             //JSON Media-Type Formatter ref: http://www.asp.net/web-api/overview/formats-and-model-binding/json-and-xml-serialization
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DynamicContractResolver(); //DefaultContractResolver
 

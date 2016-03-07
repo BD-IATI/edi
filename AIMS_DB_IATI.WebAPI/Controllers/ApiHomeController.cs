@@ -13,7 +13,7 @@ using System.Web;
 using System.Web.Http;
 using MoreLinq;
 
-namespace AIMS_BD_IATI.Web.Controllers
+namespace AIMS_BD_IATI.WebAPI.Controllers
 {
     [RoutePrefix("api/ApiHome")]
     public class ApiHomeController : ApiController

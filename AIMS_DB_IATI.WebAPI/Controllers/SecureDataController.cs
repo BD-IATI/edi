@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace AngularWebAPI.WebAPI.Controllers
+namespace AIMS_BD_IATI.WebAPIAPI.Controllers
 {
     [Authorize]
     public class SecureDataController : ApiController
