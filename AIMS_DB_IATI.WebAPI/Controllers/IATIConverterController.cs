@@ -13,8 +13,8 @@ using System.Net.Http.Formatting;
 
 namespace AIMS_BD_IATI.WebAPI.Controllers
 {
-    [RoutePrefix("api/ApiIatiConverter")]
-    public class ApiIatiConverterController : ApiController
+    [RoutePrefix("api/IATIConverter")]
+    public class IATIConverterController : ApiController
     {
         /// <summary>
         /// Convert Data from v1.05 to v2.02

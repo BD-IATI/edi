@@ -2,7 +2,7 @@
 
 
 var iatiDataImporterApp = angular.module('iatiDataImporter',
-    ['Authentication','ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table']);
+    ['Authentication', 'ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table']);
 
 iatiDataImporterApp.config(function ($routeProvider) {
     $routeProvider
@@ -34,6 +34,10 @@ iatiDataImporterApp.config(function ($routeProvider) {
             templateUrl: '5Match/5MatchView.html',
             controller: '5MatchController'
         })
+        .when('/6GeneralPreferences', {
+            templateUrl: '6GeneralPreferences/6GeneralPreferencesView.html',
+            controller: '6GeneralPreferencesController'
+        })
         .otherwise({ redirectTo: '/0Begin' });
 })
 
@@ -49,7 +53,8 @@ iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
                 { label: "2. Filter Bangladesh-relevant activities", href: "#/2FilterBD" },
                 { label: "3. Filter DP activities", href: "#/3FilterDP" },
                 { label: "4. Show projects", href: "#/4Projects" },
-                { label: "5. Match unmatched projects", href: "#/5Match" }
+                { label: "5. Match unmatched projects", href: "#/5Match" },
+                { label: "6. Set general import preferences", href: "#/6GeneralPreferences" }
             ];
 
             scope.isActive = function (option) {

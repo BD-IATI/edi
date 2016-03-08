@@ -61,7 +61,12 @@ namespace AIMS_BD_IATI.DAL
             }
 
 
-            return new iatiactivityContainer { iatiActivities= result, DP = dp };
+            return new iatiactivityContainer
+            {
+                DP = dp,
+                iatiActivities = result,
+                AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(dp)
+            };
         }
 
 

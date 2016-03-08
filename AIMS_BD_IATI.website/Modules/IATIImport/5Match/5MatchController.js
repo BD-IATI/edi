@@ -5,7 +5,7 @@
         saveData: function () {
             console.log(JSON.stringify($scope.models));
             $http({
-                url: apiprefix + '/api/ApiHome/PostData',
+                url: apiprefix + '/api/IATIImport/PostData',
                 method: 'POST',
                 data: JSON.stringify($scope.models),
                 dataType: 'json'

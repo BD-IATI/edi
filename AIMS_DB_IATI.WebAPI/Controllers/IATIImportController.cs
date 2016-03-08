@@ -12,11 +12,12 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using MoreLinq;
+using AIMS_DB_IATI.WebAPI.Models.IATIImport;
 
 namespace AIMS_BD_IATI.WebAPI.Controllers
 {
-    [RoutePrefix("api/ApiHome")]
-    public class ApiHomeController : ApiController
+    [RoutePrefix("api/IATIImport")]
+    public class IATIImportController : ApiController
     {
         public iatiactivityContainer s_activitiesContainer
         {
@@ -76,7 +77,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                     var H1Acts = s_activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 1);
                     var H2Acts = s_activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 2);
 
-                    var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(dp.ID);
+                    var AimsProjects = s_activitiesContainer.AimsProjects;
 
                     var matchedH1 = (decimal)(from a in AimsProjects
                                               join i in H1Acts on a.IatiIdentifier equals i.IatiIdentifier
@@ -122,9 +123,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             }
             return s_heirarchyModel;
         }
-
-
-
 
         [HttpPost]
         public FilterBDModel SubmitHierarchy(HeirarchyModel heirarchyModel)
@@ -172,13 +170,21 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 s_activitiesContainer.iatiActivities = filterDBModel.iatiActivities;
 
             var iOrgs = new List<participatingorg>();
-            s_activitiesContainer.RelevantActivities.ForEach(e => iOrgs.AddRange(e.participatingorg.n().Where(w => w.role == "4").ToList()));
+            foreach (var activity in s_activitiesContainer.RelevantActivities)
+            {
+                iOrgs.AddRange(activity.participatingorg.n().Where(w => w.role == "4").ToList());
 
-            var oo = iOrgs.DistinctBy(l => l.@ref);
+                foreach (var relatedActivity in activity.relatedIatiActivities)
+                {
+                    iOrgs.AddRange(relatedActivity.participatingorg.n().Where(w => w.role == "4").ToList());
+                }
+            }
+
+
 
             return new
             {
-                Orgs = oo.OrderBy(o => o.@ref),
+                Orgs = iOrgs.DistinctBy(l => l.@ref).OrderBy(o => o.@ref),
                 FundSources = GetAllFundSources()
             };
         }
@@ -240,38 +246,53 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             };
         }
 
+        public List<GeneralPreferencesModel> GetGeneralPreferences()
+        {
+            var returnModel = new List<GeneralPreferencesModel>();
+
+            var firstMatchedActivity = (from a in s_activitiesContainer.AimsProjects
+                                        join i in s_activitiesContainer.RelevantActivities on a.IatiIdentifier equals i.IatiIdentifier
+                                        select i).FirstOrDefault();
+
+            if (firstMatchedActivity != null)
+            {
+                var activity = firstMatchedActivity;
+
+                var project = s_activitiesContainer.AimsProjects.Find(f => f.IatiIdentifier == activity.IatiIdentifier);
+
+                returnModel.Add(new GeneralPreferencesModel
+                {
+                    OrgId = activity.ReportingOrg,
+                    Field = "title",
+                    IATIValue = activity.Title,
+                    AIMSValue = project.Title,
+                    Source = "IATI",
+                });
+
+                returnModel.Add(new GeneralPreferencesModel
+                {
+                    OrgId = activity.ReportingOrg,
+                    Field = "description",
+                    IATIValue = activity.Description,
+                    AIMSValue = project.Description,
+                    Source = "IATI",
+                });
+
+                returnModel.Add(new GeneralPreferencesModel
+                {
+                    OrgId = activity.ReportingOrg,
+                    Field = "activitystatus",
+                    IATIValue = activity.ActivityStatus,
+                    AIMSValue = project.ActivityStatus,
+                    Source = "IATI",
+                });
+            }
+
+            return returnModel;
+        }
+
     }
 
-    public class HeirarchyModel
-    {
-        public HeirarchyModel()
-        {
-            SampleIatiActivity = new iatiactivity();
-        }
-        public iatiactivity SampleIatiActivity { get; set; }
-        public decimal H1Percent { get; set; }
-        public decimal H2Percent { get; set; }
-        public int SelectedHierarchy { get; set; }
-    }
-    public class FilterBDModel
-    {
-        public List<iatiactivity> iatiActivities { get; set; }
-    }
-    public class ProjectMapModel
-    {
-        public object selected { get; set; }
-
-        public List<MatchedProject> MatchedProjects { get; set; }
-        public List<iatiactivity> IatiActivitiesNotInAims { get; set; }
-        public List<iatiactivity> AimsProjectsNotInIati { get; set; }
-        public List<iatiactivity> NewProjectsToAddInAims { get; set; }
-        public List<iatiactivity> ProjectsOwnedByOther { get; set; }
-        public class MatchedProject
-        {
-            public iatiactivity iatiActivity { get; set; }
-            public iatiactivity aimsProjects { get; set; }
-        }
-    }
 
 }
 

@@ -3,7 +3,7 @@
     $scope.RelevantActivities = [];
 
     $http({
-        url: apiprefix + '/api/ApiHome/GetAllImplementingOrg',
+        url: apiprefix + '/api/IATIImport/GetAllImplementingOrg',
         method: 'POST',
         dataType: 'json',
         data: JSON.stringify($rootScope.filterBDModel)
@@ -20,7 +20,7 @@
     $scope.FilterDP = function () {
 
         $http({
-            url: apiprefix + '/api/ApiHome/FilterDP',
+            url: apiprefix + '/api/IATIImport/FilterDP',
             method: 'POST',
             data: JSON.stringify($scope.ImplementingOrgs),
             dataType: 'json'

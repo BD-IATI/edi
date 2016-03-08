@@ -1,7 +1,7 @@
 ﻿angular.module('iatiDataImporter').controller("4ProjectsController", function ($rootScope, $scope, $http) {
 
     $http({
-        url: apiprefix + '/api/ApiHome/SubmitActivities',
+        url: apiprefix + '/api/IATIImport/SubmitActivities',
         method: 'POST',
         data: JSON.stringify($rootScope.RelevantActivities),
         dataType: 'json'

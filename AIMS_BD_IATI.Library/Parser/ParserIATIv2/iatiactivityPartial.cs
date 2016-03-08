@@ -23,6 +23,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public List<iatiactivity> iatiActivities { get; set; }
         public List<iatiactivity> RelevantActivities { get { return iatiActivities.n().FindAll(f => f.IsRelevant == true); } }
         public List<iatiactivity> NewProjects { get; set; }
+        public List<iatiactivity> AimsProjects { get; set; }
 
         public bool HasRelatedActivity { get { return iatiActivities.Exists(e => e.relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
 
@@ -168,7 +169,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
         }
 
-        //[XmlIgnore]
+        [XmlIgnore]
         public string AidType
         {
             get

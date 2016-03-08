@@ -3,7 +3,7 @@
     $rootScope.HasRelatedActivity = false;
     $http({
         method: 'POST',
-        url: apiprefix + '/api/ApiHome/GetHierarchyData',
+        url: apiprefix + '/api/IATIImport/GetHierarchyData',
         dataType: 'json',
         data: JSON.stringify($rootScope.selectedFundSource)
     }).success(function (result) {

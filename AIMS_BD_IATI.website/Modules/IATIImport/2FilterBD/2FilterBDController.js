@@ -1,7 +1,7 @@
 ﻿angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope, $scope, $http) {
 
     $http({
-        url: apiprefix + '/api/ApiHome/SubmitHierarchy',
+        url: apiprefix + '/api/IATIImport/SubmitHierarchy',
         method: 'POST',
         data: JSON.stringify($rootScope.hierarchyModel),
         dataType: 'json'

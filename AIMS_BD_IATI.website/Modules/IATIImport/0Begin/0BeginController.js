@@ -13,7 +13,7 @@
 
     $http({
         method: 'GET',
-        url: apiprefix + '/api/ApiHome/GetFundSources',
+        url: apiprefix + '/api/IATIImport/GetFundSources',
         //data: { applicationId: 3 }
     }).success(function (result) {
         $scope.FundSources = result;
