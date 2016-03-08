@@ -25,7 +25,7 @@ namespace AIMS_BD_IATI.Service
             }
             catch (Exception ex)
             {
-                Log.Write("ERROR: " + ex.Message);
+                Log.Write("ERROR: " + ex.ToString());
             }
         }
 
