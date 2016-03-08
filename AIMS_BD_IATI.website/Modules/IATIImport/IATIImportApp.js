@@ -1,4 +1,4 @@
-﻿var apiprefix = '../../../AIMS_DB_IATI.WebAPI';
+﻿var apiprefix = '../../../IATIImport';
 
 
 var iatiDataImporterApp = angular.module('iatiDataImporter',
