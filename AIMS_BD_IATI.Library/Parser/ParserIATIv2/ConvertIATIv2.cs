@@ -278,25 +278,34 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         private static narrative[] getNarrativeArray(dynamic activityItem)
         {
+            narrative[] narrativeArray = new narrative[1];
             narrative narrative = new narrative();
             narrative.lang = "en";
-            var narrative_value = activityItem.Any[0];
-            narrative.Value = narrative_value != null ? narrative_value.InnerText : "";
 
-            narrative[] narrativeArray = new narrative[1];
-            narrativeArray[0] = narrative;
+            if (activityItem.Any != null)
+            { 
+                var narrative_value = activityItem.Any[0];
+                narrative.Value = narrative_value != null ? narrative_value.InnerText : "";
+
+                narrativeArray[0] = narrative;
+            }
 
             return narrativeArray;
         }
         private static narrative[] getNarrativeArray2(dynamic activityItem)
         {
+            narrative[] narrativeArray = new narrative[1];
             narrative narrative = new narrative();
             narrative.lang = "en";
-            var narrative_value = activityItem.Text[0];
-            narrative.Value = narrative_value; //!= null ? narrative_value.InnerText : "";
 
-            narrative[] narrativeArray = new narrative[1];
-            narrativeArray[0] = narrative;
+            if (activityItem.Text != null)
+            {
+                var narrative_value = activityItem.Text[0];
+                narrative.Value = narrative_value; //!= null ? narrative_value.InnerText : "";
+
+
+                narrativeArray[0] = narrative;
+            }
 
             return narrativeArray;
         }
