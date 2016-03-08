@@ -22,10 +22,13 @@ namespace AIMS_BD_IATI.DAL
                 {
                     a.Organization_Id = activity.Organization_Id;
                     a.IATI_Identifier = activity.IATI_Identifier;
-                    a.Last_Downloaded = DateTime.Now;
+
                     a.Previous_Downloaded = a.Last_Downloaded;
-                    a.Last_XML = activity.Last_XML;
+                    a.Last_Downloaded = DateTime.Now;
+                    
                     a.Previous_XML = a.Last_XML;
+                    a.Last_XML = activity.Last_XML;
+                    
                     a.Hierarchy = activity.Hierarchy;
                     a.Parent_Hierarchy = activity.Parent_Hierarchy;
                 }

@@ -43,7 +43,7 @@ namespace AIMS_BD_IATI.Service
 
             //Get list of FundSource from AIMS DB
             AimsDAL _AimsDAL = new AimsDAL();
-            var fundSources = _AimsDAL.GetFundSources();
+            var fundSources = _AimsDAL.GetFundSources(); //.FindAll(q => q.IATICode == "41114|XM-DAC-41114");
 
             foreach (var fundSource in fundSources)
             {
@@ -60,7 +60,7 @@ namespace AIMS_BD_IATI.Service
                 returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
 
                 var iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
-                if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value == "1.05")
+                if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value.StartsWith("1.0")) //1.04, 1.05
                 {
                     //Parser v1.05
                     parserIATI = new ParserIATIv1();
