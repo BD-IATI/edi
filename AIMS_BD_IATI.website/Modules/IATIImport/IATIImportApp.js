@@ -1,5 +1,9 @@
 ﻿var apiprefix = '../../../AIMS_DB_IATI.WebAPI';
-var iatiDataImporterApp = angular.module('iatiDataImporter', ['ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table']);
+
+
+var iatiDataImporterApp = angular.module('iatiDataImporter',
+    ['Authentication','ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table']);
+
 iatiDataImporterApp.config(function ($routeProvider) {
     $routeProvider
         .when('/login', {

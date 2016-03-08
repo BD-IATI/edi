@@ -14,9 +14,9 @@
                     <table st-table="MatchedProjects" st-safe-src="models.MatchedProjects" class="table table-striped">
                         <thead>
                             <tr>
-                                <th st-sort="iatiActivity.IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="iatiActivity.IatiIdentifier" style="min-width:140px">IATI Project ID</th>
                                 <th st-sort="iatiActivity.Title">IATI Project Title</th>
-                                <th st-sort="aimsProjects.IatiIdentifier">AIMS Project ID</th>
+                                <th st-sort="aimsProjects.IatiIdentifier" style="min-width:140px">AIMS Project ID</th>
                                 <th st-sort="aimsprojects.title">AIMS Project Title</th>
                             </tr>
                         </thead>
@@ -39,7 +39,7 @@
                     <table st-table="IatiActivitiesNotInAims" st-safe-src="models.IatiActivitiesNotInAims" class="table" ng-show="models.IatiActivitiesNotInAims.length > 0">
                         <thead>
                             <tr>
-                                <th st-sort="IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="IatiIdentifier" style="min-width:140px">IATI Project ID</th>
                                 <th st-sort="Title">IATI Project Title</th>
                             </tr>
                         </thead>
@@ -67,7 +67,7 @@
                     <table st-table="AimsProjectsNotInIati" st-safe-src="models.AimsProjectsNotInIati" class="table" ng-show="models.AimsProjectsNotInIati.length > 0">
                         <thead>
                             <tr>
-                                <th st-sort="IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="IatiIdentifier" style="min-width:140px">IATI Project ID</th>
                                 <th st-sort="Title">IATI Project Title</th>
                             </tr>
                         </thead>
@@ -95,7 +95,7 @@
                     <table st-table="ProjectsOwnedByOther" st-safe-src="models.ProjectsOwnedByOther" class="table" ng-show="models.AimsProjectsNotInIati.length > 0">
                         <thead>
                             <tr>
-                                <th st-sort="IatiIdentifier">IATI Project ID</th>
+                                <th st-sort="IatiIdentifier" style="min-width:140px">IATI Project ID</th>
                                 <th st-sort="Title">IATI Project Title</th>
                                 <th>Owned by</th>
                             </tr>
