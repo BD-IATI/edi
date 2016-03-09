@@ -110,25 +110,25 @@
                                     transfer the object that was assigned to it. If an element was
                                     dragged away, you have to remove it from the original list
                                     yourself using the dnd-moved attribute -->
-                                    <li ng-repeat="m in models.IatiActivitiesNotInAims"
+                                    <li ng-repeat="item in models.IatiActivitiesNotInAims"
                                         dnd-draggable="item"
                                         dnd-moved="models.IatiActivitiesNotInAims.splice($index, 1)"
                                         dnd-effect-allowed="move"
                                         dnd-selected="models.selected = item"
                                         ng-class="{'selected': models.selected === item}">
 
-                                        <h3 class="project-title">{{m.Title}}</h3>
-                                        <p><code>{{m.IatiIdentifier}}</code></p>
-                                        <p><span class="label label-primary">Reported by: {{m.ReportingOrg}}</span></p>
-                                        <p title="{{m.Description}}">
-                                            {{m.Description | limitTo:200}} <span ng-show="m.Description.length > 0" ng-hide="m.Description.length == 0">...</span>
+                                        <h3 class="project-title">{{item.Title}}</h3>
+                                        <p><code>{{item.IatiIdentifier}}</code></p>
+                                        <p><span class="label label-primary">Reported by: {{item.ReportingOrg}}</span></p>
+                                        <p title="{{item.Description}}">
+                                            {{item.Description | limitTo:200}} <span ng-show="item.Description.length > 0" ng-hide="item.Description.length == 0">...</span>
                                         </p>
 
                                         <dl class="dl-horizontal">
                                             <dt>Start date</dt>
-                                            <dd>{{m.ActualStartDate | date:"dd MMMM yyyy"}}</dd>
+                                            <dd>{{item.ActualStartDate | date:"dd MMMM yyyy"}}</dd>
                                             <dt>Planned End date</dt>
-                                            <dd>{{m.PlannedEndDate | date:"dd MMMM yyyy"}}</dd>
+                                            <dd>{{item.PlannedEndDate | date:"dd MMMM yyyy"}}</dd>
                                         </dl>
 
                                     </li>

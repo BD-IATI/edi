@@ -47,7 +47,7 @@ namespace AIMS_BD_IATI.DAL
             var q = from a in dbContext.Activities
                     where a.Organization_Id == dp
                     orderby a.IATI_Identifier
-                    select a;
+                    select a.Last_XML;
 
             var result = new List<iatiactivity>();
             var activity = new iatiactivity();
@@ -55,7 +55,7 @@ namespace AIMS_BD_IATI.DAL
 
             foreach (var a in q)
             {
-                using (TextReader reader = new StringReader(a.Last_XML))
+                using (TextReader reader = new StringReader(a))
                 {
                     activity = (iatiactivity)serializer.Deserialize(reader);
 
