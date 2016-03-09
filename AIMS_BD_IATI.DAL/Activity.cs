@@ -14,14 +14,15 @@ namespace AIMS_BD_IATI.DAL
     
     public partial class Activity
     {
-        public int RecordId { get; set; }
-        public string Organization_Id { get; set; }
-        public string IATI_Identifier { get; set; }
-        public Nullable<System.DateTime> Last_Downloaded { get; set; }
-        public Nullable<System.DateTime> Previous_Downloaded { get; set; }
-        public string Last_XML { get; set; }
-        public string Previous_XML { get; set; }
+        public int Id { get; set; }
+        public string OrgId { get; set; }
+        public string IatiIdentifier { get; set; }
+        public string IatiActivity { get; set; }
+        public string IatiActivityPrev { get; set; }
         public Nullable<int> Hierarchy { get; set; }
-        public Nullable<int> Parent_Hierarchy { get; set; }
+        public Nullable<int> ParentHierarchy { get; set; }
+        public string ImplementingOrgId { get; set; }
+        public Nullable<System.DateTime> DownloadDate { get; set; }
+        public Nullable<System.DateTime> DownloadDatePrev { get; set; }
     }
 }

@@ -104,16 +104,15 @@ namespace AIMS_BD_IATI.Service
             {
                 var Activity = new Activity();
 
-                Activity.Organization_Id = organization_Id;// iatiactivityItem.reportingorg.n().@ref;
-                Activity.IATI_Identifier = iatiactivityItem.iatiidentifier.n().Value;
+                Activity.OrgId = Activity.ImplementingOrgId = organization_Id;// iatiactivityItem.reportingorg.n().@ref;
+                Activity.IatiIdentifier = iatiactivityItem.iatiidentifier.n().Value;
                 Activity.Hierarchy = iatiactivityItem.hierarchy;
 
-                //Activity.Last_XML = iatiactivity.ToXmlString();
                 using (StringWriter ww = new StringWriter())
                 {
                     var ss = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity), new XmlRootAttribute("iati-activity"));
                     ss.Serialize(ww, iatiactivityItem);
-                    Activity.Last_XML = ww.ToString();
+                    Activity.IatiActivity = ww.ToString();
                 }
                 Activities.Add(Activity);
                 Console.Write("\r Activity Counter: {0}   ", counter++);

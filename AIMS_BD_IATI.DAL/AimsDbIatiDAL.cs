@@ -17,20 +17,22 @@ namespace AIMS_BD_IATI.DAL
         {
             foreach (var activity in activities)
             {
-                var a = dbContext.Activities.FirstOrDefault(x => x.IATI_Identifier == activity.IATI_Identifier);
+                var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier);
                 if (a != null)
                 {
-                    a.Organization_Id = activity.Organization_Id;
-                    a.IATI_Identifier = activity.IATI_Identifier;
+                    a.OrgId = activity.OrgId;
+                    a.IatiIdentifier = activity.IatiIdentifier;
 
-                    a.Previous_Downloaded = a.Last_Downloaded;
-                    a.Last_Downloaded = DateTime.Now;
-                    
-                    a.Previous_XML = a.Last_XML;
-                    a.Last_XML = activity.Last_XML;
-                    
+                    a.IatiActivityPrev = a.IatiActivity;
+                    a.IatiActivity = activity.IatiActivity;
+
                     a.Hierarchy = activity.Hierarchy;
-                    a.Parent_Hierarchy = activity.Parent_Hierarchy;
+                    a.ParentHierarchy = activity.ParentHierarchy;
+
+                    a.ImplementingOrgId = activity.ImplementingOrgId;
+
+                    a.DownloadDatePrev = a.DownloadDate;
+                    a.DownloadDate = DateTime.Now;
                 }
                 else
                 {
@@ -45,9 +47,9 @@ namespace AIMS_BD_IATI.DAL
         public iatiactivityContainer GetActivities(string dp)
         {
             var q = from a in dbContext.Activities
-                    where a.Organization_Id == dp
-                    orderby a.IATI_Identifier
-                    select a.Last_XML;
+                    where a.OrgId == dp
+                    orderby a.IatiIdentifier
+                    select a.IatiActivity;
 
             var result = new List<iatiactivity>();
             var activity = new iatiactivity();

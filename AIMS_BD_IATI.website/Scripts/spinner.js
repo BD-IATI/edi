@@ -15,6 +15,7 @@
                     $rootScope.spinnerActive = loading;
                     if (loading) {
                         elm.removeClass('ng-hide');
+                        elm.focus();
                     } else {
                         elm.addClass('ng-hide');
                     }

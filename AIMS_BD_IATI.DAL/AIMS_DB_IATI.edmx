@@ -7,17 +7,18 @@
     <Schema Namespace="AIMS_DB_IATIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Activity">
           <Key>
-            <PropertyRef Name="RecordId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="RecordId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Organization_Id" Type="varchar" MaxLength="50" />
-          <Property Name="IATI_Identifier" Type="varchar" MaxLength="50" />
-          <Property Name="Last_Downloaded" Type="datetime" />
-          <Property Name="Previous_Downloaded" Type="datetime" />
-          <Property Name="Last_XML" Type="xml" />
-          <Property Name="Previous_XML" Type="xml" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrgId" Type="varchar" MaxLength="50" />
+          <Property Name="IatiIdentifier" Type="varchar" MaxLength="50" />
+          <Property Name="IatiActivity" Type="xml" />
+          <Property Name="IatiActivityPrev" Type="xml" />
           <Property Name="Hierarchy" Type="int" />
-          <Property Name="Parent_Hierarchy" Type="int" />
+          <Property Name="ParentHierarchy" Type="int" />
+          <Property Name="ImplementingOrgId" Type="varchar" MaxLength="50" />
+          <Property Name="DownloadDate" Type="datetime" />
+          <Property Name="DownloadDatePrev" Type="datetime" />
         </EntityType>
         <EntityContainer Name="AIMS_DB_IATIModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
@@ -31,17 +32,18 @@
         </EntityContainer>
         <EntityType Name="Activity">
           <Key>
-            <PropertyRef Name="RecordId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="RecordId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Organization_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IATI_Identifier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Last_Downloaded" Type="DateTime" Precision="3" />
-          <Property Name="Previous_Downloaded" Type="DateTime" Precision="3" />
-          <Property Name="Last_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Previous_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IatiIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IatiActivity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IatiActivityPrev" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Hierarchy" Type="Int32" />
-          <Property Name="Parent_Hierarchy" Type="Int32" />
+          <Property Name="ParentHierarchy" Type="Int32" />
+          <Property Name="ImplementingOrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DownloadDate" Type="DateTime" Precision="3" />
+          <Property Name="DownloadDatePrev" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -52,15 +54,16 @@
           <EntitySetMapping Name="Activities">
             <EntityTypeMapping TypeName="AIMS_DB_IATIModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
-                <ScalarProperty Name="Parent_Hierarchy" ColumnName="Parent_Hierarchy" />
+                <ScalarProperty Name="DownloadDatePrev" ColumnName="DownloadDatePrev" />
+                <ScalarProperty Name="DownloadDate" ColumnName="DownloadDate" />
+                <ScalarProperty Name="ImplementingOrgId" ColumnName="ImplementingOrgId" />
+                <ScalarProperty Name="ParentHierarchy" ColumnName="ParentHierarchy" />
                 <ScalarProperty Name="Hierarchy" ColumnName="Hierarchy" />
-                <ScalarProperty Name="Previous_XML" ColumnName="Previous_XML" />
-                <ScalarProperty Name="Last_XML" ColumnName="Last_XML" />
-                <ScalarProperty Name="Previous_Downloaded" ColumnName="Previous_Downloaded" />
-                <ScalarProperty Name="Last_Downloaded" ColumnName="Last_Downloaded" />
-                <ScalarProperty Name="IATI_Identifier" ColumnName="IATI_Identifier" />
-                <ScalarProperty Name="Organization_Id" ColumnName="Organization_Id" />
-                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="IatiActivityPrev" ColumnName="IatiActivityPrev" />
+                <ScalarProperty Name="IatiActivity" ColumnName="IatiActivity" />
+                <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
+                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
