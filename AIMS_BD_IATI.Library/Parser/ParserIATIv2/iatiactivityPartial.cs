@@ -53,8 +53,20 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var rc = recipientcountry.n().FirstOrDefault(f => f.n().code == "BD");
-                return rc == null ? 0 : rc.percentage;
+                if (recipientcountry != null)
+                {
+                    var bd = recipientcountry.n().FirstOrDefault(f => f.n().code == "BD");
+
+                    if (recipientcountry.Count() == 1)
+                        return 100;
+                    else if (bd != null)
+                        return bd.percentage;
+                    else
+                        return 0;
+                }
+                else
+                    return 0;
+
             }
         }
 
