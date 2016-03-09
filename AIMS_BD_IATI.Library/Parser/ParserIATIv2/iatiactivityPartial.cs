@@ -43,10 +43,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         [XmlIgnore]
         public List<iatiactivity> relatedIatiActivities { get; set; }
+
         [XmlIgnore]
         public List<iatiactivity> MatchedProjects { get; set; }
-        //[XmlIgnore]
-        //public string SelectedHierarchy { get; set; }
 
         [XmlIgnore]
         public decimal PercentToBD
@@ -70,6 +69,53 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
         }
 
+        #region Financial Data
+        [XmlIgnore]
+        public decimal TotalCommitment
+        {
+            get
+            {
+                return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("C"));
+            }
+        }
+        [XmlIgnore]
+        public decimal TotalDisbursment
+        {
+            get
+            {
+                return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("D"));
+            }
+        }
+
+        private decimal GetTotal(transaction[] _transaction, string transactiontypecode)
+        {
+            var tobj = _transaction.Where(p => p.transactiontype.n().code == transactiontypecode);
+            return tobj == null ? 0 : tobj.Sum(s => s.value.n().Value); ;
+        }
+
+
+        private decimal GetTotalTransactionAmt(string transactiontypecode)
+        {
+            decimal total = 0;
+
+            if (transaction != null)
+            {
+                total = GetTotal(transaction, transactiontypecode);
+            }
+            else
+            {
+                foreach (var ra in relatedIatiActivities)
+                {
+                    if (ra.transaction != null)
+                    {
+                        total = GetTotal(ra.transaction, transactiontypecode);
+                    }
+                }
+            }
+            return total;
+        } 
+        #endregion
+
         [XmlIgnore]
         private bool? isRelevant;
         [XmlIgnore]
@@ -78,7 +124,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             //ToDo add AidType criteria
             get
             {
-                return isRelevant ?? PercentToBD >= 20 && activitystatus.code == "2";
+                return isRelevant ?? PercentToBD >= 20 && activitystatus.n().code == "2";
             }
             set
             {

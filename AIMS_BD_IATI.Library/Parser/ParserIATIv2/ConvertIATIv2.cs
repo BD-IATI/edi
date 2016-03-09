@@ -276,7 +276,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             return objDestinaiton;
         }
 
-        private static narrative[] getNarrativeArray(dynamic activityItem)
+        public static narrative[] getNarrativeArray(dynamic activityItem)
         {
             narrative[] narrativeArray = new narrative[1];
             narrative narrative = new narrative();
@@ -292,7 +292,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             return narrativeArray;
         }
-        private static narrative[] getNarrativeArray2(dynamic activityItem)
+        public static narrative[] getNarrativeArray2(dynamic activityItem)
         {
             narrative[] narrativeArray = new narrative[1];
             narrative narrative = new narrative();
@@ -309,7 +309,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             return narrativeArray;
         }
-        private static narrative[] getNarrativeArrayStr(string ttext)
+        public static narrative[] getNarrativeArrayStr(string ttext)
         {
             narrative narrative = new narrative();
             narrative.lang = "en";
@@ -320,7 +320,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             return narrativeArray;
         }
-        private static string getOrgRoleCode(string roleName)
+        public static string getOrgRoleCode(string roleName)
         {
             if (roleName.ToLower() == "funding")
                 return "1";
@@ -333,7 +333,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             return "";
         }
-        private static string getActivityDateCode(string name)
+        public static string getActivityDateCode(string name)
         {
             //http://iatistandard.org/201/codelists/ActivityDateType/
             //1	Planned start
@@ -354,7 +354,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
 
         }
-        private static string gettransactionCode(string name)
+        public static string gettransactionCode(string name)
         {
             //http://iatistandard.org/205/codelists/TransactionType/
             //2 C	    Commitment	        

@@ -40,6 +40,17 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             set { HttpContext.Current.Session["HeirarchyModel"] = value; }
         }
 
+        public ProjectFieldMapModel s_GeneralPreferences
+        {
+            get
+            {
+                return HttpContext.Current.Session["GeneralPreferences"] == null ?
+                    null
+                    : (ProjectFieldMapModel)HttpContext.Current.Session["GeneralPreferences"];
+            }
+            set { HttpContext.Current.Session["GeneralPreferences"] = value; }
+        }
+
         public List<FundSourceLookupItem> FundSources
         {
             get
@@ -55,11 +66,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             return new AimsDAL().GetFundSourcesDropdownData();
         }
+        
+        
         public List<FundSourceLookupItem> GetAllFundSources()
         {
             FundSources = new AimsDAL().GetAllFundSources();
             return FundSources;
         }
+
 
         [AcceptVerbs("GET", "POST")]
         public HeirarchyModel GetHierarchyData(DPLookupItem dp)
@@ -246,47 +260,42 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             };
         }
 
-        public List<GeneralPreferencesModel> GetGeneralPreferences()
+        public ProjectFieldMapModel GetGeneralPreferences()
         {
-            var returnModel = new List<GeneralPreferencesModel>();
 
-            var firstMatchedActivity = (from a in s_activitiesContainer.AimsProjects
+            var returnModel = (from a in s_activitiesContainer.AimsProjects
                                         join i in s_activitiesContainer.RelevantActivities on a.IatiIdentifier equals i.IatiIdentifier
-                                        select i).FirstOrDefault();
+                                        select new ProjectFieldMapModel { 
+                                         aimsProject = a,
+                                         iatiActivity = i
+                                        }).FirstOrDefault();
 
-            if (firstMatchedActivity != null)
+            if (returnModel != null)
             {
-                var activity = firstMatchedActivity;
-
-                var project = s_activitiesContainer.AimsProjects.Find(f => f.IatiIdentifier == activity.IatiIdentifier);
-
-                returnModel.Add(new GeneralPreferencesModel
+                returnModel.Fields.Add(new FieldMap
                 {
-                    OrgId = activity.ReportingOrg,
                     Field = "title",
-                    IATIValue = activity.Title,
-                    AIMSValue = project.Title,
-                    Source = "IATI",
+                    AIMSValue = returnModel.aimsProject.Title,
+                    IATIValue = returnModel.iatiActivity.Title,
                 });
-
-                returnModel.Add(new GeneralPreferencesModel
+                returnModel.Fields.Add(new FieldMap
                 {
-                    OrgId = activity.ReportingOrg,
                     Field = "description",
-                    IATIValue = activity.Description,
-                    AIMSValue = project.Description,
-                    Source = "IATI",
+                    AIMSValue = returnModel.aimsProject.Description,
+                    IATIValue = returnModel.iatiActivity.Description,
+                });
+                returnModel.Fields.Add(new FieldMap
+                {
+                    Field = "activitystatus",
+                    AIMSValue = returnModel.aimsProject.ActivityStatus,
+                    IATIValue = returnModel.iatiActivity.ActivityStatus,
                 });
 
-                returnModel.Add(new GeneralPreferencesModel
-                {
-                    OrgId = activity.ReportingOrg,
-                    Field = "activitystatus",
-                    IATIValue = activity.ActivityStatus,
-                    AIMSValue = project.ActivityStatus,
-                    Source = "IATI",
-                });
+
             }
+
+
+            s_GeneralPreferences = returnModel;
 
             return returnModel;
         }

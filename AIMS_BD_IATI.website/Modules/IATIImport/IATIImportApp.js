@@ -38,6 +38,10 @@ iatiDataImporterApp.config(function ($routeProvider) {
             templateUrl: '6GeneralPreferences/6GeneralPreferencesView.html',
             controller: '6GeneralPreferencesController'
         })
+        .when('/7ReviewAdjustment', {
+            templateUrl: '7ReviewAdjustment/7ReviewAdjustmentView.html',
+            controller: '7ReviewAdjustmentController'
+        })
         .otherwise({ redirectTo: '/0Begin' });
 })
 
@@ -54,7 +58,8 @@ iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
                 { label: "3. Filter DP activities", href: "#/3FilterDP" },
                 { label: "4. Show projects", href: "#/4Projects" },
                 { label: "5. Match unmatched projects", href: "#/5Match" },
-                { label: "6. Set general import preferences", href: "#/6GeneralPreferences" }
+                { label: "6. Set general import preferences", href: "#/6GeneralPreferences" },
+                { label: "7. Review and adjust import preferences", href: "#/7ReviewAdjustment" }
             ];
 
             scope.isActive = function (option) {

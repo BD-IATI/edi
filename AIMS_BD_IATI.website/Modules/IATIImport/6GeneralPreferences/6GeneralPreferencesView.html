@@ -39,10 +39,10 @@
                     <h3>AIMS</h3>
                 </div>
             </div>
-            <div class="row" ng-repeat="m in model">
+            <div class="row" ng-repeat="m in model.Fields">
                 <div class="col-md-12">
                     <div class="row field-selector">
-                        <div class="col-md-4 col-md-offset-1 field alert alert-success" ng-class="m.IATICSS">
+                        <div class="col-md-4 col-md-offset-1 field alert alert-success" ng-click="FieldClick($event,m)" data-text="IATI">
                             <p>
                                 <span class="label label-default">{{m.Field}}</span>
                             </p>
@@ -50,7 +50,7 @@
                                 {{m.IATIValue}}
                             </p>
                         </div>
-                        <div class="col-md-4 col-md-offset-1 field alert alert-danger" ng-class="m.AIMSCSS">
+                        <div class="col-md-4 col-md-offset-1 field alert alert-danger" ng-click="FieldClick($event,m)" data-text="AIMS">
                             <p>
                                 <span class="label label-default">{{m.Field}}</span>
                             </p>
@@ -76,27 +76,19 @@
                                     <dd>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                                USD 45,000
+                                                USD {{model.iatiActivity.TotalCommitment}}
                                             </div>
                                         </div>
                                     </dd>
                                     <dt>Disbursements</dt>
                                     <dd>
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="95.55" aria-valuemin="0" aria-valuemax="100" style="width: 95.55%;">
-                                                USD 43,000
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="{{(model.iatiActivity.TotalDisbursment / model.iatiActivity.TotalCommitment) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{(model.iatiActivity.TotalDisbursment / model.iatiActivity.TotalCommitment) * 100; }}%;">
+                                                USD {{model.iatiActivity.TotalDisbursment}}
                                             </div>
                                         </div>
                                     </dd>
                                 </dl>
-
-                            <p class="well">
-                                NB: we may want to show some nice graph or
-                                something here to show the breakdown of
-                                transactions. Nothing too complicated though.
-                                Perhaps just a breakdown per year? But we can
-                                think about this later.
-                            </p>
                             </p>
                         </div>
                         <div class="col-md-4 col-md-offset-1 field alert alert-danger">
@@ -110,26 +102,20 @@
                                     <dd>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                                USD 45,000
+                                                USD {{model.aimsProject.TotalCommitment}}
                                             </div>
                                         </div>
                                     </dd>
                                     <dt>Disbursements</dt>
                                     <dd>
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="66.67" aria-valuemin="0" aria-valuemax="100" style="width: 66.67%;">
-                                                USD 30,000
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="{{(model.aimsProject.TotalDisbursment / model.aimsProject.TotalCommitment) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{(model.aimsProject.TotalDisbursment / model.aimsProject.TotalCommitment) * 100; }}%;">
+                                                USD {{model.aimsProject.TotalDisbursment}}
                                             </div>
                                         </div>
                                     </dd>
                                 </dl>
-                            <p class="well">
-                                NB: we may want to show some nice graph or
-                                something here to show the breakdown of
-                                transactions. Nothing too complicated though.
-                                Perhaps just a breakdown per year? But we can
-                                think about this later.
-                            </p>
+
                             </p>
                         </div>
                     </div>
@@ -156,15 +142,6 @@
 </div>
 
 <script type="text/javascript">
-    alert("sdfg");
-    function fadeHalf(event, el) {
-        $(el.helper).addClass("drag-active");
-        $(el.helper).css("opacity", 0.5);
-    }
-    function fadeOpaque(event, el) {
-        $(el.helper).removeClass("drag-active");
-        $(el.helper).css("opacity", 1);
-    }
     $(".field-selector .field").click(function (e) {
         if ($(this).hasClass("alert-success")) {
             $(this).removeClass("alert-success")
