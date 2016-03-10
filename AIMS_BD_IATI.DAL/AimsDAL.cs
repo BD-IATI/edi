@@ -12,6 +12,12 @@ namespace AIMS_BD_IATI.DAL
     {
         AIMS_DBEntities dbContext = new AIMS_DBEntities();
 
+        private string getIdentifer(tblProjectInfo project)
+        {
+            return string.IsNullOrWhiteSpace(project.IatiIdentifier) ?
+                project.DPProjectNo //project.DPProjectNo.n().StartsWith(project.tblFundSource.n().IATICode) ? project.DPProjectNo : project.tblFundSource.n().IATICode + "-" + project.DPProjectNo
+                : project.IatiIdentifier;
+        }
         public List<tblFundSource> GetFundSources()
         {
             var fundSources = from fundSource in dbContext.tblFundSources
@@ -46,7 +52,11 @@ namespace AIMS_BD_IATI.DAL
             return fundSources;
         }
 
-
+        /// <summary>
+        /// Convert AIMS to IATI
+        /// </summary>
+        /// <param name="dp">Managing/Lead/Implementing Development Partner's IATI Organization Code</param>
+        /// <returns></returns>
         public List<iatiactivity> GetAIMSDataInIATIFormat(string dp)
         {
 
@@ -113,20 +123,95 @@ namespace AIMS_BD_IATI.DAL
                 iatiActivity.recipientcountry = new recipientcountry[1];
                 iatiActivity.recipientcountry[0] = new recipientcountry { code = "BD", narrative = Statix.getNarativeArray("Bangladesh") };
 
+                //Transaction
+                List<transaction> transactions = new List<transaction>();
+
+                //Commitment
+                var commitments = project.tblProjectFundingCommitments.ToList();
+                foreach (var commitment in commitments)
+                {
+                    transaction tr = new transaction();
+                    tr.transactiontype = new transactionTransactiontype{ code = ConvertIATIv2.gettransactionCode("C")};
+                    var date = commitment.CommitmentAgreementSignDate ?? project.AgreementSignDate;
+                    tr.transactiondate = new transactionTransactiondate { isodate = date };
+                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(commitment.CommittedAmountInUSD) }; //commitment.tblCurrency.IATICode
+
+                    tr.description = new textRequiredType { narrative = ConvertIATIv2.getNarrativeArrayStr(commitment.Remarks) };
+                    tr.providerorg = new transactionProviderorg { @ref = commitment.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = ConvertIATIv2.getNarrativeArrayStr(commitment.tblFundSource.n().FundSourceName) };
+                    tr.receiverorg = new transactionReceiverorg { receiveractivityid = project.IatiIdentifier, @ref = project.tblFundSource.n().IATICode, narrative = ConvertIATIv2.getNarrativeArrayStr(project.tblFundSource.n().FundSourceName) }; //type="23"
+
+                    //<disbursement-channel code="1" />
+                    tr.disbursementchannel = new transactionDisbursementchannel { code = Statix.DisbursementChannel }; //Money is disbursed directly to the implementing institution and managed through a separate bank account
+
+                    //<sector vocabulary="2" code="111" />
+
+                    //<recipient-country code="AF" />  <!--Note: only a recipient-region OR a recipient-country is expected-->
+                    tr.recipientcountry = new transactionRecipientcountry { code = Statix.RecipientCountry };
+
+                    //<recipient-region code="456" vocabulary="1" />
+
+                    //<flow-type code="10" />
+                    tr.flowtype = new transactionFlowtype { code = Statix.FlowType };
+
+                    //<finance-type code="110" /> //110= Aid grant excluding debt reorganisation, 410 = Aid loan excluding debt reorganisation
+                    tr.financetype = new transactionFinancetype { code = commitment.tblAidCategory.n().IATICode };
+
+                    //<aid-type code="A01" /> 
+                    tr.aidtype = new transactionAidtype { code = project.tblAssistanceType.n().IATICode };
+
+                    //<tied-status code="3" />
+                    tr.tiedstatus = new transactionTiedstatus { code = project.tblAIDEffectivenessIndicators.Where(q => q.AEISurveyYear == date.Year).ToList().n(0).tblAIDEffectivenessResourceTiedType.n().IATICode };
+
+                    transactions.Add(tr);
+                }
+
+                //Actual Disbusement
+                var actualDisbursements = project.tblProjectFundingActualDisbursements.ToList();
+                foreach (var actualDisbursement in actualDisbursements)
+                {
+                    transaction tr = new transaction();
+                    tr.transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("D") };
+                    var date = actualDisbursement.DisbursementToDate ?? actualDisbursement.DisbursementDate;
+                    tr.transactiondate = new transactionTransactiondate { isodate = date };
+                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(actualDisbursement.DisbursedAmountInUSD) }; //actualDisbursement.tblCurrency.IATICode
+
+                    tr.description = new textRequiredType { narrative = ConvertIATIv2.getNarrativeArrayStr(actualDisbursement.Remarks) };
+                    tr.providerorg = new transactionProviderorg { @ref = actualDisbursement.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = ConvertIATIv2.getNarrativeArrayStr(actualDisbursement.tblFundSource.n().FundSourceName) };
+                    tr.receiverorg = new transactionReceiverorg { receiveractivityid = project.IatiIdentifier, @ref = project.tblFundSource.n().IATICode, narrative = ConvertIATIv2.getNarrativeArrayStr(project.tblFundSource.n().FundSourceName) }; //type="23"
+
+                    //<disbursement-channel code="1" />
+                    tr.disbursementchannel = new transactionDisbursementchannel { code = Statix.DisbursementChannel };
+
+                    //<sector vocabulary="2" code="111" />
+
+                    //<recipient-country code="AF" />  <!--Note: only a recipient-region OR a recipient-country is expected-->
+                    tr.recipientcountry = new transactionRecipientcountry { code = Statix.RecipientCountry };
+
+                    //<recipient-region code="456" vocabulary="1" />
+
+                    //<flow-type code="10" />
+                    tr.flowtype = new transactionFlowtype { code = Statix.FlowType };
+
+                    //<finance-type code="110" /> //110= Aid grant excluding debt reorganisation, 410 = Aid loan excluding debt reorganisation
+                    tr.financetype = new transactionFinancetype { code = actualDisbursement.tblAidCategory.n().IATICode };
+
+                    //<aid-type code="A01" /> 
+                    tr.aidtype = new transactionAidtype { code = project.tblAssistanceType.n().IATICode };
+
+                    //<tied-status code="3" />
+                    tr.tiedstatus = new transactionTiedstatus { code = project.tblAIDEffectivenessIndicators.Where(q => q.AEISurveyYear == date.Year).ToList().n(0).tblAIDEffectivenessResourceTiedType.n().IATICode };
+
+                    transactions.Add(tr);
+                }
+
+                //Assign all transaction
+                iatiActivity.transaction = transactions.ToArray();
+
                 iatiactivities.Add(iatiActivity);
             }
 
             return iatiactivities;
         }
-
-        private string getIdentifer(tblProjectInfo project)
-        {
-            return string.IsNullOrWhiteSpace(project.IatiIdentifier) ?
-                project.DPProjectNo //project.DPProjectNo.n().StartsWith(project.tblFundSource.n().IATICode) ? project.DPProjectNo : project.tblFundSource.n().IATICode + "-" + project.DPProjectNo
-                : project.IatiIdentifier;
-        }
-
-
 
     }
 
