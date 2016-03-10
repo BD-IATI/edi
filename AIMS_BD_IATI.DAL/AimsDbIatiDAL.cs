@@ -70,7 +70,7 @@ namespace AIMS_BD_IATI.DAL
             {
                 DP = dp,
                 iatiActivities = result,
-                AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(dp)
+                AimsProjects = new AimsDAL().GetAIMSDataInIATIFormat(dp)
             };
         }
 

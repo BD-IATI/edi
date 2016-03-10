@@ -48,7 +48,7 @@ iatiDataImporterApp.config(function ($routeProvider) {
 iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
     return {
         template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +
-                  '    <a>{{option.label}}</a>' + //'    <a ng-href="{{option.href}}">{{option.label}}</a>'
+                  '    <a ng-href="{{option.href}}">{{option.label}}</a>' + //'    <a>{{option.label}}</a>' + //
                   '</li>',
         link: function (scope, element, attr) {
             scope.options = [

@@ -47,7 +47,7 @@ namespace AIMS_BD_IATI.DAL
         }
 
 
-        public List<iatiactivity> getAIMSDataInIATIFormat(string dp)
+        public List<iatiactivity> GetAIMSDataInIATIFormat(string dp)
         {
 
             var projects = (from project in dbContext.tblProjectInfoes

@@ -3,7 +3,6 @@
 
     $scope.Commands = {
         saveData: function () {
-            console.log(JSON.stringify($scope.models));
             $http({
                 url: apiprefix + '/api/IATIImport/PostData',
                 method: 'POST',

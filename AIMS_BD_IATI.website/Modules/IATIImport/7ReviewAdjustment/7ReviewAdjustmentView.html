@@ -1,4 +1,4 @@
-﻿<div role="tabpanel" class="tab-pane" id="review">
+﻿<div role="tabpanel" class="tab-pane active" id="review">
     <div class="row">
         <div class="col-md-12">
             <h2>
@@ -23,24 +23,25 @@
             <hr />
         </div>
     </div>
-    <div class="row">
+    <div class="row" ng-repeat="m in models.MatchedProjects">
         <div class="col-md-12">
-            <h3>Water Management Improvement Project <a class="btn btn-sm btn-default"><i class="glyphicon glyphicon-pencil"></i></a></h3>
+            <h3>{{m.iatiActivity.Title}} <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></h3>
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="61" aria-valuemin="0" aria-valuemax="100" style="width: 61%;">
-                    <strong>IATI</strong>: USD 61,000
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{((m.iatiActivity.TotalDisbursment + 1) / (m.iatiActivity.TotalCommitment + 1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((m.iatiActivity.TotalDisbursment+1) / (m.iatiActivity.TotalCommitment+1)) * 100; }}%;">
+                    <strong>IATI</strong>: USD {{m.iatiActivity.TotalDisbursment}} out of {{m.iatiActivity.TotalCommitment}}
                 </div>
             </div>
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                    <strong>AIMS</strong>: USD 60,000
+                <div class="progress-bar" ng-class="isDiffGT5(m) ? 'progress-bar-danger' : ''" role="progressbar" aria-valuenow="{{((m.aimsProject.TotalDisbursment+1) / (m.aimsProject.TotalCommitment+1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((model.aimsProject.TotalDisbursment+1) / (model.aimsProject.TotalCommitment+1)) * 100; }}%;">
+                    <strong>AIMS</strong>: USD {{m.aimsProject.TotalDisbursment}} out of {{m.aimsProject.TotalCommitment}}
                 </div>
             </div>
         </div>
     </div>
+    demo
     <div class="row">
         <div class="col-md-12">
-            <h3>Chittagong Water Supply Improvement <a class="btn btn-sm btn-default"><i class="glyphicon glyphicon-pencil"></i></a></h3>
+            <h3>Chittagong Water Supply Improvement <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></h3>
             <div class="progress">
                 <div class="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" style="width: 55%;">
                     <strong>IATI</strong>: USD 55,000
@@ -55,4 +56,118 @@
     </div>
     <hr />
     <a class="btn btn-success">Import projects &raquo;</a>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Project-specific adjustments</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row field-selector">
+                        <div class="col-md-4 col-md-offset-1">
+                            <h3>IATI</h3>
+                        </div>
+                        <div class="col-md-4 col-md-offset-1">
+                            <h3>AIMS</h3>
+                        </div>
+                    </div>
+                    <div class="row" ng-repeat="m in model.Fields">
+                        <div class="col-md-12">
+                            <div class="row field-selector">
+                                <div class="col-md-4 col-md-offset-1 field alert alert-success" ng-click="FieldClick($event,m)" data-text="IATI">
+                                    <p>
+                                        <span class="label label-default">{{m.Field}}</span>
+                                    </p>
+                                    <p class="lead">
+                                        {{m.IATIValue}}
+                                    </p>
+                                </div>
+                                <div class="col-md-4 col-md-offset-1 field alert alert-danger" ng-click="FieldClick($event,m)" data-text="AIMS">
+                                    <p>
+                                        <span class="label label-default">{{m.Field}}</span>
+                                    </p>
+                                    <p class="lead">
+                                        {{m.AIMSValue}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row field-selector">
+                                <div class="col-md-4 col-md-offset-1 field alert alert-success">
+                                    <p>
+                                        <span class="label label-default">Financial data</span>
+                                    </p>
+                                    <p>
+                                        <br />
+                                        <dl class="dl-horizontal">
+                                            <dt>Commitments</dt>
+                                            <dd>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                                        USD {{model.iatiActivity.TotalCommitment}}
+                                                    </div>
+                                                </div>
+                                            </dd>
+                                            <dt>Disbursements</dt>
+                                            <dd>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{(model.iatiActivity.TotalDisbursment / model.iatiActivity.TotalCommitment) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{(model.iatiActivity.TotalDisbursment / model.iatiActivity.TotalCommitment) * 100; }}%;">
+                                                        USD {{model.iatiActivity.TotalDisbursment}}
+                                                    </div>
+                                                </div>
+                                            </dd>
+                                        </dl>
+                                    </p>
+                                </div>
+                                <div class="col-md-4 col-md-offset-1 field alert alert-danger">
+                                    <p>
+                                        <span class="label label-default">Financial data</span>
+                                    </p>
+                                    <p>
+                                        <br />
+                                        <dl class="dl-horizontal">
+                                            <dt>Commitments</dt>
+                                            <dd>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                                        USD {{model.aimsProject.TotalCommitment}}
+                                                    </div>
+                                                </div>
+                                            </dd>
+                                            <dt>Disbursements</dt>
+                                            <dd>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{(model.aimsProject.TotalDisbursment / model.aimsProject.TotalCommitment) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{(model.aimsProject.TotalDisbursment / model.aimsProject.TotalCommitment) * 100; }}%;">
+                                                        USD {{model.aimsProject.TotalDisbursment}}
+                                                    </div>
+                                                </div>
+                                            </dd>
+                                        </dl>
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>

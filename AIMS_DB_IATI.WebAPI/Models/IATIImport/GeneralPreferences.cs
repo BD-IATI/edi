@@ -15,11 +15,39 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         string financialDataSource;
         public string FinancialDataSource { get {return financialDataSource??"IATI" ;} set { financialDataSource = value; } }
 
-        public ProjectFieldMapModel()
+        public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject)
         {
             Fields = new List<FieldMap>();
+            iatiActivity  = _iatiActivity;
+            aimsProject = _aimsProject;
+
+            if (iatiActivity != null && aimsProject != null)
+            {
+                Fields.Add(new FieldMap
+                {
+                    Field = "title",
+                    AIMSValue = aimsProject.Title,
+                    IATIValue = iatiActivity.Title,
+                });
+                Fields.Add(new FieldMap
+                {
+                    Field = "description",
+                    AIMSValue = aimsProject.Description,
+                    IATIValue = iatiActivity.Description,
+                });
+                Fields.Add(new FieldMap
+                {
+                    Field = "activitystatus",
+                    AIMSValue = aimsProject.ActivityStatus,
+                    IATIValue = iatiActivity.ActivityStatus,
+                });
+
+
+            }
+
         }
     }
+
     public class FieldMap
     {
         public string Field { get; set; }
@@ -30,32 +58,4 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
 
     }
 
-
-
-    public class GeneralPreferencesModel
-    {
-        public string OrgId { get; set; }
-        public string Field { get; set; }
-        public string Source { get; set; }
-        public string AIMSValue { get; set; }
-        public string IATIValue { get; set; }
-        public bool IsSourceAims
-        {
-            get
-            {
-                return Source == "AIMS" ? true : false;
-            }
-            set
-            {
-                Source = value ? "AIMS" : "IATI";
-            }
-
-        }
-    }
-
-    public class ProjectPreferenceModel : GeneralPreferencesModel
-    {
-        public string IATIIdentifier { get; set; }
-
-    }
 }

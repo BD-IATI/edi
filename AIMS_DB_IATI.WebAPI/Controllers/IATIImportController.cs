@@ -66,8 +66,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             return new AimsDAL().GetFundSourcesDropdownData();
         }
-        
-        
+
+
         public List<FundSourceLookupItem> GetAllFundSources()
         {
             FundSources = new AimsDAL().GetAllFundSources();
@@ -227,7 +227,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             relevantActivies.RemoveAll(f => f.IATICode != s_activitiesContainer.DP);
 
-            var AimsProjects = new AimsDAL().getAIMSDataInIATIFormat(s_activitiesContainer.n().DP);
+            var AimsProjects = new AimsDAL().GetAIMSDataInIATIFormat(s_activitiesContainer.n().DP);
 
             var MatchedProjects = (from i in relevantActivies
                                    from a in AimsProjects.Where(k => i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value))
@@ -235,15 +235,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
                                    select i).ToList();
 
-            //for showing mathced projects side by side
+            //for showing mathced projects side by side And field mapping later
             var MatchedProjects2 = (from i in relevantActivies
                                     from a in AimsProjects.Where(k => i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value))
                                     orderby i.iatiidentifier.Value
-                                    select new ProjectMapModel.MatchedProject
-                                    {
-                                        iatiActivity = i,
-                                        aimsProjects = a
-                                    }).ToList();
+                                    select new ProjectFieldMapModel(i,a)
+                                    ).ToList();
 
             var IatiActivityNotInAims = relevantActivies.Except(MatchedProjects).ToList();
 
@@ -264,42 +261,23 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
 
             var returnModel = (from a in s_activitiesContainer.AimsProjects
-                                        join i in s_activitiesContainer.RelevantActivities on a.IatiIdentifier equals i.IatiIdentifier
-                                        select new ProjectFieldMapModel { 
-                                         aimsProject = a,
-                                         iatiActivity = i
-                                        }).FirstOrDefault();
-
-            if (returnModel != null)
-            {
-                returnModel.Fields.Add(new FieldMap
-                {
-                    Field = "title",
-                    AIMSValue = returnModel.aimsProject.Title,
-                    IATIValue = returnModel.iatiActivity.Title,
-                });
-                returnModel.Fields.Add(new FieldMap
-                {
-                    Field = "description",
-                    AIMSValue = returnModel.aimsProject.Description,
-                    IATIValue = returnModel.iatiActivity.Description,
-                });
-                returnModel.Fields.Add(new FieldMap
-                {
-                    Field = "activitystatus",
-                    AIMSValue = returnModel.aimsProject.ActivityStatus,
-                    IATIValue = returnModel.iatiActivity.ActivityStatus,
-                });
-
-
-            }
-
+                               join i in s_activitiesContainer.RelevantActivities on a.IatiIdentifier equals i.IatiIdentifier
+                               select new ProjectFieldMapModel(i,a)).FirstOrDefault();
 
             s_GeneralPreferences = returnModel;
 
             return returnModel;
         }
 
+        public List<ProjectFieldMapModel> GetProjectsToMap()
+        {
+
+            var returnModels = (from a in s_activitiesContainer.AimsProjects
+                                join i in s_activitiesContainer.RelevantActivities on a.IatiIdentifier equals i.IatiIdentifier
+                                select new ProjectFieldMapModel(i,a)).ToList();
+
+            return returnModels;
+        }
     }
 
 
