@@ -12,6 +12,26 @@ namespace AIMS_BD_IATI.Library
 {
     public static class Statix
     {
+        public static string RecipientCountry { get { return "BD"; } }
+        public static string Currency { get { return "USD"; } }
+        /// <summary>
+        /// "1", //Money is disbursed through central Ministry of Finance or Treasury
+        /// "2", //Money is disbursed directly to the implementing institution and managed through a separate bank account
+        /// "3", //Aid in kind: Donors utilise third party agencies, e.g. NGOs or management companies
+        /// "4" //Aid in kind: Donors manage funds themselves
+        /// </summary>
+        public static string DisbursementChannel { get { return "2"; } }
+
+        /// <summary>
+        /// ODA = "10", //Official Development Assistance
+        /// OOF = "20", //Other Official Flows
+        /// Private_grants = "30", //made by NGOs and other civil society organisations (e.e. philantropic foundations) based //in/ the reporting DAC country
+        /// Private_Market = "35", //Private market
+        /// Non_flow = "40", //e.g. GNI
+        /// Other_flows = "50" //e.g. non-ODA component of peacebuilding operations)
+        /// </summary>
+        public static string FlowType { get { return "10"; } }
+
         public static narrative[] getNarativeArray(string val)
         {
             return new narrative[1] { new narrative { lang = "en", Value = val } };
