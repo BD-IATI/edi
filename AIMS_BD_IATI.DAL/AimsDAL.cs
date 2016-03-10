@@ -136,9 +136,9 @@ namespace AIMS_BD_IATI.DAL
                     tr.transactiondate = new transactionTransactiondate { isodate = date };
                     tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(commitment.CommittedAmountInUSD) }; //commitment.tblCurrency.IATICode
 
-                    tr.description = new textRequiredType { narrative = ConvertIATIv2.getNarrativeArrayStr(commitment.Remarks) };
-                    tr.providerorg = new transactionProviderorg { @ref = commitment.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = ConvertIATIv2.getNarrativeArrayStr(commitment.tblFundSource.n().FundSourceName) };
-                    tr.receiverorg = new transactionReceiverorg { receiveractivityid = project.IatiIdentifier, @ref = project.tblFundSource.n().IATICode, narrative = ConvertIATIv2.getNarrativeArrayStr(project.tblFundSource.n().FundSourceName) }; //type="23"
+                    tr.description = new textRequiredType { narrative = Statix.getNarativeArray(commitment.Remarks) };
+                    tr.providerorg = new transactionProviderorg { @ref = commitment.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = Statix.getNarativeArray(commitment.tblFundSource.n().FundSourceName) };
+                    tr.receiverorg = new transactionReceiverorg { receiveractivityid = project.IatiIdentifier, @ref = project.tblFundSource.n().IATICode, narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName) }; //type="23"
 
                     //<disbursement-channel code="1" />
                     tr.disbursementchannel = new transactionDisbursementchannel { code = Statix.DisbursementChannel }; //Money is disbursed directly to the implementing institution and managed through a separate bank account
@@ -175,9 +175,9 @@ namespace AIMS_BD_IATI.DAL
                     tr.transactiondate = new transactionTransactiondate { isodate = date };
                     tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(actualDisbursement.DisbursedAmountInUSD) }; //actualDisbursement.tblCurrency.IATICode
 
-                    tr.description = new textRequiredType { narrative = ConvertIATIv2.getNarrativeArrayStr(actualDisbursement.Remarks) };
-                    tr.providerorg = new transactionProviderorg { @ref = actualDisbursement.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = ConvertIATIv2.getNarrativeArrayStr(actualDisbursement.tblFundSource.n().FundSourceName) };
-                    tr.receiverorg = new transactionReceiverorg { receiveractivityid = project.IatiIdentifier, @ref = project.tblFundSource.n().IATICode, narrative = ConvertIATIv2.getNarrativeArrayStr(project.tblFundSource.n().FundSourceName) }; //type="23"
+                    tr.description = new textRequiredType { narrative = Statix.getNarativeArray(actualDisbursement.Remarks) };
+                    tr.providerorg = new transactionProviderorg { @ref = actualDisbursement.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = Statix.getNarativeArray(actualDisbursement.tblFundSource.n().FundSourceName) };
+                    tr.receiverorg = new transactionReceiverorg { receiveractivityid = project.IatiIdentifier, @ref = project.tblFundSource.n().IATICode, narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName) }; //type="23"
 
                     //<disbursement-channel code="1" />
                     tr.disbursementchannel = new transactionDisbursementchannel { code = Statix.DisbursementChannel };

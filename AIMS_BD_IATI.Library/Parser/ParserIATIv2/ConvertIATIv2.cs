@@ -251,7 +251,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                                     var otheridentifier = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.otheridentifier)activityItem;
 
-                                    narrative[] arrynarrative = getNarrativeArrayStr(otheridentifier.ownername);
+                                    narrative[] arrynarrative = Statix.getNarativeArray(otheridentifier.ownername);
 
                                     var targetotheridentifier = desActivity.otheridentifier[otherIdentifierCounter];
 
@@ -309,17 +309,17 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             return narrativeArray;
         }
-        public static narrative[] getNarrativeArrayStr(string ttext)
-        {
-            narrative narrative = new narrative();
-            narrative.lang = "en";
-            narrative.Value = ttext;
+        //public static narrative[] getNarrativeArrayStr(string ttext)
+        //{
+        //    narrative narrative = new narrative();
+        //    narrative.lang = "en";
+        //    narrative.Value = ttext;
 
-            narrative[] narrativeArray = new narrative[1];
-            narrativeArray[0] = narrative;
+        //    narrative[] narrativeArray = new narrative[1];
+        //    narrativeArray[0] = narrative;
 
-            return narrativeArray;
-        }
+        //    return narrativeArray;
+        //}
         public static string getOrgRoleCode(string roleName)
         {
             if (roleName.ToLower() == "funding")
