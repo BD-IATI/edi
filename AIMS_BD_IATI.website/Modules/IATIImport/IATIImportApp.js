@@ -45,6 +45,31 @@ iatiDataImporterApp.config(function ($routeProvider) {
         .otherwise({ redirectTo: '/0Begin' });
 })
 
+iatiDataImporterApp.run(['$rootScope', function ($rootScope) {
+
+ $rootScope.FieldClick = function (e,field) {
+        var tJqObj = $(e.currentTarget);
+
+        if (field.Source == 'IATI')
+        {
+            field.Source = 'AIMS';
+        }
+        else
+        {
+            field.Source = 'IATI';
+        }
+
+        //if (tJqObj.hasClass("alert-success")) {
+        //    tJqObj.removeClass("alert-success").addClass("alert-danger");
+        //    tJqObj.siblings().removeClass("alert-danger").addClass("alert-success");
+        //} else {
+        //    tJqObj.removeClass("alert-danger").addClass("alert-success");
+        //    tJqObj.siblings().removeClass("alert-success").addClass("alert-danger");
+        //}
+    }
+
+}]);
+
 iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
     return {
         template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +

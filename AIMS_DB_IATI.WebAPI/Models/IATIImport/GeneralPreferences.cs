@@ -12,8 +12,8 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         public iatiactivity iatiActivity { get; set; }
         public iatiactivity aimsProject { get; set; }
         public List<FieldMap> Fields { get; set; }
-        string financialDataSource;
-        public string FinancialDataSource { get {return financialDataSource??"IATI" ;} set { financialDataSource = value; } }
+        //string financialDataSource;
+        //public string FinancialDataSource { get {return financialDataSource??"IATI" ;} set { financialDataSource = value; } }
 
         public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject)
         {
@@ -42,6 +42,13 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
                     IATIValue = iatiActivity.ActivityStatus,
                 });
 
+                Fields.Add(new FieldMap
+                {
+                    Field = "transaction",
+                    AIMSValue = new { TotalCommitment = aimsProject.TotalCommitment, TotalDisbursment = aimsProject.TotalDisbursment },
+                    IATIValue = new { TotalCommitment = iatiActivity.TotalCommitment, TotalDisbursment = iatiActivity.TotalDisbursment },
+                });
+
 
             }
 
@@ -53,8 +60,8 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         public string Field { get; set; }
         string source;
         public string Source { get { return source ?? "IATI"; } set { source = value; } }
-        public string AIMSValue { get; set; }
-        public string IATIValue { get; set; }
+        public object AIMSValue { get; set; }
+        public object IATIValue { get; set; }
 
     }
 
