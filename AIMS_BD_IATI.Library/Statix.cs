@@ -13,7 +13,11 @@ namespace AIMS_BD_IATI.Library
     public static class Statix
     {
         public static string RecipientCountry { get { return "BD"; } }
+        public static string RecipientCountryName { get { return "Bangladesh"; } }
         public static string Currency { get { return "USD"; } }
+        public static string Language { get { return "en"; } }
+        public static string DocumentURL { get { return "http://aims.erd.gov.bd/AIMS/ProjectInfo/DownloadAttachment?Id="; } }
+
         /// <summary>
         /// "1", //Money is disbursed through central Ministry of Finance or Treasury
         /// "2", //Money is disbursed directly to the implementing institution and managed through a separate bank account
