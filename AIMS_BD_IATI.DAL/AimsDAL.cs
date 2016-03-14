@@ -34,7 +34,7 @@ namespace AIMS_BD_IATI.DAL
                               orderby fundSource.FundSourceName
                               select new DPLookupItem { 
                                 ID = fundSource.IATICode,
-                                Name = fundSource.FundSourceName + " (" + fundSource.IATICode ?? "" + ")",
+                                Name = fundSource.FundSourceName + " (" + (fundSource.Acronym ?? "") + ")",
                                 AimsFundSourceId = fundSource.Id
                               };
 
@@ -48,7 +48,7 @@ namespace AIMS_BD_IATI.DAL
                               select new FundSourceLookupItem
                               {
                                   ID = fundSource.Id,
-                                  Name = fundSource.FundSourceName + " (" + fundSource.IATICode ?? "" + ")",
+                                  Name = fundSource.FundSourceName + " (" + (fundSource.Acronym ?? "") + ")",
                                   IATICode = fundSource.IATICode
                               }).ToList();
 
