@@ -22,6 +22,7 @@ namespace AIMS_BD_IATI.DAL
         {
             var fundSources = from fundSource in dbContext.tblFundSources
                               where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
+                              orderby fundSource.FundSourceName
                               select fundSource;
 
             return fundSources.ToList();
@@ -30,9 +31,10 @@ namespace AIMS_BD_IATI.DAL
         {
             var fundSources = from fundSource in dbContext.tblFundSources
                               where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
+                              orderby fundSource.FundSourceName
                               select new DPLookupItem { 
                                 ID = fundSource.IATICode,
-                                Name = fundSource.FundSourceName,
+                                Name = fundSource.FundSourceName + " (" + (fundSource.Acronym ?? "") + ")",
                                 AimsFundSourceId = fundSource.Id
                               };
 
@@ -42,10 +44,11 @@ namespace AIMS_BD_IATI.DAL
         {
             var fundSources = (from fundSource in dbContext.tblFundSources
                               //where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
+                              orderby fundSource.FundSourceName
                               select new FundSourceLookupItem
                               {
                                   ID = fundSource.Id,
-                                  Name = fundSource.FundSourceName,
+                                  Name = fundSource.FundSourceName + " (" + (fundSource.Acronym ?? "") + ")",
                                   IATICode = fundSource.IATICode
                               }).ToList();
 
