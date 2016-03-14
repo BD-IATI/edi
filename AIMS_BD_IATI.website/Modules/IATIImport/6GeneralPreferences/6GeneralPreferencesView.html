@@ -6,6 +6,14 @@
     .field-selector {
         text-align: center;
     }
+
+    .popover {
+        max-width: 400px;
+    }
+
+        .popover > .arrow {
+            left: 90% !important;
+        }
 </style>
 <div role="tabpanel" class="tab-pane active" id="preferences">
     <div class="row">
@@ -52,8 +60,27 @@
     <div class="form-group">
         <div class="col-md-offset-1 col-md-10 btnFooter">
             <a class="btn btn-default" ng-href="#/5Match">Back</a>
-            <a class="btn btn-default" ng-href="#/7ReviewAdjustment">Next</a>
+            <button ng-show="IsModelChanged"
+                    type="button"
+                    class="btn btn-default"
+                    popover-title="Save Preferences"
+                    uib-popover-template="'myPopoverTemplate.html'"
+                    popover-append-to-body="true"
+                    popover-placement="auto">
+                Next...
+            </button>
+            <a ng-show="!IsModelChanged" id="btn7ReviewAdjustment" class="btn btn-default" ng-href="#/7ReviewAdjustment">Next</a>
         </div>
     </div>
 </div>
 
+
+<script type="text/ng-template" id="myPopoverTemplate.html">
+    <div>
+        <div>Would you like to save this preferences for next time?</div>
+        <br />
+
+        <button type="button" ng-click="SaveAndNext()" class="btn btn-default">Save and next</button>
+        <button type="button" ng-click="NextWithoutSaving()" class="btn btn-default">Next without saving</button>
+    </div>
+</script>

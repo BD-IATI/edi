@@ -62,12 +62,13 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             set { HttpContext.Current.Session["FundSources"] = value; }
         }
 
+        [HttpGet]
         public List<DPLookupItem> GetFundSources()
         {
             return new AimsDAL().GetFundSourcesDropdownData();
         }
 
-
+        [HttpGet]
         public List<FundSourceLookupItem> GetAllFundSources()
         {
             s_FundSources = new AimsDAL().GetAllFundSources();
@@ -186,11 +187,37 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             var iOrgs = new List<participatingorg>();
             foreach (var activity in s_activitiesContainer.RelevantActivities)
             {
-                iOrgs.AddRange(activity.participatingorg.n().Where(w => w.role == "4").ToList());
-
-                foreach (var relatedActivity in activity.relatedIatiActivities)
+                var h1Acts = activity.participatingorg.n().Where(w => w.role == "4").ToList();
+                if (h1Acts.Count > 0)
                 {
-                    iOrgs.AddRange(relatedActivity.participatingorg.n().Where(w => w.role == "4").ToList());
+                    iOrgs.AddRange(h1Acts);
+                }
+                else
+                {
+                    participatingorg dominatingParticipatingorg = null;
+                    decimal highestCommitment = 0;
+                    foreach (var relatedActivity in activity.relatedIatiActivities) // for h2Acts
+                    {
+                        var h2Acts = relatedActivity.participatingorg.n().Where(w => w.role == "4").ToList();
+                        iOrgs.AddRange(h2Acts);
+
+                        //getting dominating participating org
+                        var tc = relatedActivity.TotalCommitment;
+                        if (tc > highestCommitment)
+                        {
+                            highestCommitment = tc;
+                            dominatingParticipatingorg = h2Acts.FirstOrDefault();
+                        }
+                    }
+
+                    //set dominating participating org to h1activity
+                    if (dominatingParticipatingorg != null)
+                    {
+                        List<participatingorg> participatingorgs = activity.participatingorg.n().ToList();
+                        participatingorgs.Add(dominatingParticipatingorg);
+                        activity.participatingorg = participatingorgs.ToArray();
+                    }
+
                 }
             }
 
@@ -260,20 +287,85 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             };
         }
 
+        [HttpGet]
         public ProjectFieldMapModel GetGeneralPreferences()
         {
+            var savedPreferences = new AimsDbIatiDAL().GetFieldMappingPreferenceGeneral();
 
             var returnModel = (from a in s_activitiesContainer.AimsProjects
                                join i in s_activitiesContainer.RelevantActivities on a.IatiIdentifier equals i.IatiIdentifier
-                               select new ProjectFieldMapModel(i, a)).FirstOrDefault();
+                               select new ProjectFieldMapModel(i, a, savedPreferences)).FirstOrDefault();
 
+            if (returnModel == null)
+            {
+                List<FieldMap> flds = new List<FieldMap>();
+                foreach (var item in savedPreferences)
+                {
+                    FieldMap fld = new FieldMap
+                    {
+                        Field = item.FieldName,
+                        IsSourceIATI = item.IsSourceIATI,
+                        AIMSValue = "No matched projects",
+                        IATIValue = "No matched activities"
+                    };
+                    flds.Add(fld);
+                }
+                returnModel = new ProjectFieldMapModel { Fields = flds };
+            }
             s_GeneralPreferences = returnModel;
 
             return returnModel;
         }
 
         [AcceptVerbs("GET", "POST")]
+        public int? SaveGeneralPreferences(ProjectFieldMapModel generalPreferences)
+        {
+            if (generalPreferences == null) return null;
+            s_GeneralPreferences = generalPreferences;
 
+            List<FieldMappingPreferenceGeneral> entities = new List<FieldMappingPreferenceGeneral>();
+
+            foreach (var fieldMap in generalPreferences.Fields)
+            {
+                var entity = new FieldMappingPreferenceGeneral
+                {
+                    FieldName = fieldMap.Field,
+                    OrgId = s_activitiesContainer.DP,
+                    IsSourceIATI = fieldMap.IsSourceIATI
+                };
+
+
+                entities.Add(entity);
+            }
+
+            return new AimsDbIatiDAL().SaveFieldMappingPreferenceGeneral(entities);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public int? SaveActivityPreferences(ProjectFieldMapModel activityPreferences)
+        {
+            if (activityPreferences == null) return null;
+
+            List<FieldMappingPreferenceActivity> entities = new List<FieldMappingPreferenceActivity>();
+
+            foreach (var fieldMap in activityPreferences.Fields)
+            {
+                var entity = new FieldMappingPreferenceActivity
+                {
+                    FieldName = fieldMap.Field,
+                    IATIIdentifier = activityPreferences.iatiActivity.IatiIdentifier,
+                    //ProjectId = activityPreferences.aimsProject.ProjectId,
+                    IsSourceIATI = fieldMap.IsSourceIATI
+                };
+
+
+                entities.Add(entity);
+            }
+
+            return new AimsDbIatiDAL().SaveFieldMappingPreferenceActivity(entities);
+        }
+
+        [HttpPost]
         public ProjectMapModel GetProjectsToMap(ProjectFieldMapModel GeneralPreference)
         {
             if (GeneralPreference != null)

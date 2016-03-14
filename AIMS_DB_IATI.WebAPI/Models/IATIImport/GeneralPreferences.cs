@@ -1,24 +1,26 @@
-﻿using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+﻿using AIMS_BD_IATI.DAL;
+using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using AIMS_BD_IATI.Library;
 
 namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
 {
     public class ProjectFieldMapModel
     {
-        public string OrgId { get; set; }
+        //public string OrgId { get; set; }
         public iatiactivity iatiActivity { get; set; }
         public iatiactivity aimsProject { get; set; }
         public List<FieldMap> Fields { get; set; }
-        //string financialDataSource;
-        //public string FinancialDataSource { get {return financialDataSource??"IATI" ;} set { financialDataSource = value; } }
-
-        public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject)
+        public ProjectFieldMapModel()
         {
             Fields = new List<FieldMap>();
-            iatiActivity  = _iatiActivity;
+        }
+        public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject) : this()
+        {
+            iatiActivity = _iatiActivity;
             aimsProject = _aimsProject;
 
             if (iatiActivity != null && aimsProject != null)
@@ -53,6 +55,25 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
             }
 
         }
+
+        public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject,
+            List<FieldMappingPreferenceGeneral> generalPreferences)
+            : this(_iatiActivity, _aimsProject)
+        {
+            foreach (var preference in generalPreferences)
+            {
+                Fields.Find(f => f.Field == preference.FieldName).n().IsSourceIATI = preference.IsSourceIATI;
+            }
+        }
+        public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject,
+            List<FieldMappingPreferenceActivity> activityPreferences)
+            : this(_iatiActivity, _aimsProject)
+        {
+            foreach (var preference in activityPreferences)
+            {
+                Fields.Find(f => f.Field == preference.FieldName).n().IsSourceIATI = preference.IsSourceIATI;
+            }
+        }
     }
 
     public class FieldMap
@@ -61,7 +82,10 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         public bool IsSourceIATI { get; set; }
         public object AIMSValue { get; set; }
         public object IATIValue { get; set; }
-
+        public FieldMap()
+        {
+            IsSourceIATI = true;
+        }
     }
 
 }

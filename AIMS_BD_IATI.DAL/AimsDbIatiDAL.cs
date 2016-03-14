@@ -13,7 +13,7 @@ namespace AIMS_BD_IATI.DAL
     {
         AIMS_DB_IATIEntities dbContext = new AIMS_DB_IATIEntities();
 
-        public int SaveAtivity(List<Activity> activities)
+        public int SaveAtivities(List<Activity> activities)
         {
             foreach (var activity in activities)
             {
@@ -74,6 +74,70 @@ namespace AIMS_BD_IATI.DAL
             };
         }
 
+        public int SaveFieldMappingPreferenceGeneral(List<FieldMappingPreferenceGeneral> fieldMaps)
+        {
+            foreach (var fieldMap in fieldMaps)
+            {
+                var a = dbContext.FieldMappingPreferenceGenerals.FirstOrDefault(x => x.OrgId == fieldMap.OrgId 
+                                                                                    && x.FundSourceId == fieldMap.FundSourceId 
+                                                                                    && x.FieldName == fieldMap.FieldName);
+                if (a != null)
+                {
+                    a.OrgId = fieldMap.OrgId;
+                    a.FundSourceId = fieldMap.FundSourceId;
+                    a.FieldName = fieldMap.FieldName;
+                    a.IsSourceIATI = fieldMap.IsSourceIATI;
+                }
+                else
+                {
+                    dbContext.FieldMappingPreferenceGenerals.Add(fieldMap);
+                }
+
+            }
+
+            return dbContext.SaveChanges();
+        }
+
+
+        public int SaveFieldMappingPreferenceActivity(List<FieldMappingPreferenceActivity> fieldMaps)
+        {
+            foreach (var fieldMap in fieldMaps)
+            {
+                var a = dbContext.FieldMappingPreferenceActivities.FirstOrDefault(x => x.IATIIdentifier == fieldMap.IATIIdentifier
+                                                                                    //&& x.ProjectId == fieldMap.ProjectId
+                                                                                    && x.FieldName == fieldMap.FieldName);
+                if (a != null)
+                {
+                    a.IATIIdentifier = fieldMap.IATIIdentifier;
+                    a.ProjectId = fieldMap.ProjectId;
+                    a.FieldName = fieldMap.FieldName;
+                    a.IsSourceIATI = fieldMap.IsSourceIATI;
+                }
+                else
+                {
+                    dbContext.FieldMappingPreferenceActivities.Add(fieldMap);
+                }
+
+            }
+
+            return dbContext.SaveChanges();
+        }
+
+        public List<FieldMappingPreferenceGeneral> GetFieldMappingPreferenceGeneral()
+        {
+            var q = (from fieldMap in dbContext.FieldMappingPreferenceGenerals
+                     select fieldMap).ToList();
+
+            return q;
+        }
+
+        public List<FieldMappingPreferenceActivity> GetFieldMappingPreferenceActivity()
+        {
+            var q = (from fieldMap in dbContext.FieldMappingPreferenceActivities
+                     select fieldMap).ToList();
+
+            return q;
+        }
 
 
     }

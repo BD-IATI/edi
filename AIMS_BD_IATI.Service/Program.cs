@@ -118,7 +118,7 @@ namespace AIMS_BD_IATI.Service
                 Console.Write("\r Activity Counter: {0}   ", counter++);
             }
 
-            var c = new AimsDbIatiDAL().SaveAtivity(Activities);
+            var c = new AimsDbIatiDAL().SaveAtivities(Activities);
             Log.Write("INFO: " + "All activities are stored in Database");
         }
 
