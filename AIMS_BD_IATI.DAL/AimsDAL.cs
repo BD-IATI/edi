@@ -77,6 +77,8 @@ namespace AIMS_BD_IATI.DAL
 
                 iatiActivity.title = new textRequiredType { narrative = Statix.getNarativeArray(project.Title) };
 
+                iatiActivity.activitystatus = new activitystatus { code = project.tblImplementationStatu.IATICode }; //ToDo Code to be add
+
                 iatiActivity.activitydate = new activitydate[4];
                 iatiActivity.activitydate[0] = new activitydate { type = "1", isodate = project.PlannedProjectStartDate ?? default(DateTime) };
                 iatiActivity.activitydate[1] = new activitydate { type = "2", isodate = project.ActualProjectStartDate ?? default(DateTime) };
@@ -123,6 +125,7 @@ namespace AIMS_BD_IATI.DAL
                 iatiActivity.recipientcountry = new recipientcountry[1];
                 iatiActivity.recipientcountry[0] = new recipientcountry { code = "BD", narrative = Statix.getNarativeArray("Bangladesh") };
 
+                #region Transaction
                 //Transaction
                 List<transaction> transactions = new List<transaction>();
 
@@ -131,7 +134,7 @@ namespace AIMS_BD_IATI.DAL
                 foreach (var commitment in commitments)
                 {
                     transaction tr = new transaction();
-                    tr.transactiontype = new transactionTransactiontype{ code = ConvertIATIv2.gettransactionCode("C")};
+                    tr.transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("C") };
                     var date = commitment.CommitmentAgreementSignDate ?? project.AgreementSignDate;
                     tr.transactiondate = new transactionTransactiondate { isodate = date };
                     tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(commitment.CommittedAmountInUSD) }; //commitment.tblCurrency.IATICode
@@ -205,7 +208,8 @@ namespace AIMS_BD_IATI.DAL
                 }
 
                 //Assign all transaction
-                iatiActivity.transaction = transactions.ToArray();
+                iatiActivity.transaction = transactions.ToArray(); 
+                #endregion
 
                 iatiactivities.Add(iatiActivity);
             }

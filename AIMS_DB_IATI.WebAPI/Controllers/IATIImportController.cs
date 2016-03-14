@@ -290,7 +290,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 {
                     var generalFieldSource = s_GeneralPreferences.Fields.Find(f => f.Field == field.Field);
                     if (field.Field == generalFieldSource.Field)
-                        field.Source = generalFieldSource.Source;
+                        field.IsSourceIATI = generalFieldSource.IsSourceIATI;
                 }
             }
 

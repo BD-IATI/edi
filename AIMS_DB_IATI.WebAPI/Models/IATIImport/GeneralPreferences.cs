@@ -58,8 +58,7 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
     public class FieldMap
     {
         public string Field { get; set; }
-        string source;
-        public string Source { get { return source ?? "IATI"; } set { source = value; } }
+        public bool IsSourceIATI { get; set; }
         public object AIMSValue { get; set; }
         public object IATIValue { get; set; }
 
