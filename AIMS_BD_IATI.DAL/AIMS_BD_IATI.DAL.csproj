@@ -90,6 +90,12 @@
     <Compile Include="CommonConfigType.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="FieldMappingPreferenceActivity.cs">
+      <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FieldMappingPreferenceGeneral.cs">
+      <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tblAgreementType.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>

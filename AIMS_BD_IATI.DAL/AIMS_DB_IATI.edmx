@@ -20,8 +20,30 @@
           <Property Name="DownloadDate" Type="datetime" />
           <Property Name="DownloadDatePrev" Type="datetime" />
         </EntityType>
+        <EntityType Name="FieldMappingPreferenceActivity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IATIIdentifier" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProjectId" Type="int" />
+          <Property Name="FieldName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsSourceIATI" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FieldMappingPreferenceGeneral">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrgId" Type="nvarchar" MaxLength="100" />
+          <Property Name="FundSourceId" Type="int" />
+          <Property Name="FieldName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsSourceIATI" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="AIMS_DB_IATIModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FieldMappingPreferenceActivity" EntityType="Self.FieldMappingPreferenceActivity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FieldMappingPreferenceGeneral" EntityType="Self.FieldMappingPreferenceGeneral" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -29,6 +51,8 @@
       <Schema Namespace="AIMS_DB_IATIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="AIMS_DB_IATIEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Activities" EntityType="AIMS_DB_IATIModel.Activity" />
+          <EntitySet Name="FieldMappingPreferenceActivities" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceActivity" />
+          <EntitySet Name="FieldMappingPreferenceGenerals" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral" />
         </EntityContainer>
         <EntityType Name="Activity">
           <Key>
@@ -44,6 +68,26 @@
           <Property Name="ImplementingOrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DownloadDate" Type="DateTime" Precision="3" />
           <Property Name="DownloadDatePrev" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="FieldMappingPreferenceActivity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IATIIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectId" Type="Int32" />
+          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsSourceIATI" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FieldMappingPreferenceGeneral">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrgId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FundSourceId" Type="Int32" />
+          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsSourceIATI" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -62,6 +106,28 @@
                 <ScalarProperty Name="IatiActivityPrev" ColumnName="IatiActivityPrev" />
                 <ScalarProperty Name="IatiActivity" ColumnName="IatiActivity" />
                 <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
+                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FieldMappingPreferenceActivities">
+            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.FieldMappingPreferenceActivity">
+              <MappingFragment StoreEntitySet="FieldMappingPreferenceActivity">
+                <ScalarProperty Name="IsSourceIATI" ColumnName="IsSourceIATI" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="IATIIdentifier" ColumnName="IATIIdentifier" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FieldMappingPreferenceGenerals">
+            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral">
+              <MappingFragment StoreEntitySet="FieldMappingPreferenceGeneral">
+                <ScalarProperty Name="IsSourceIATI" ColumnName="IsSourceIATI" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="FundSourceId" ColumnName="FundSourceId" />
                 <ScalarProperty Name="OrgId" ColumnName="OrgId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
