@@ -2,13 +2,13 @@
 
 
 var iatiDataImporterApp = angular.module('iatiDataImporter',
-    ['Authentication', 'ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table', 'ngAnimate', 'ui.bootstrap']);
+    ['Authentication','ngCookies', 'ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table', 'ngAnimate', 'ui.bootstrap']);
 
 iatiDataImporterApp.config(function ($routeProvider) {
     $routeProvider
         .when('/login', {
             controller: 'LoginController',
-            templateUrl: 'modules/authentication/views/login.html'
+            templateUrl: '../Authentication/LoginView.html'
         })
         .when('/0Begin', {
             templateUrl: '0Begin/0BeginView.html',
@@ -42,26 +42,38 @@ iatiDataImporterApp.config(function ($routeProvider) {
             templateUrl: '7ReviewAdjustment/7ReviewAdjustmentView.html',
             controller: '7ReviewAdjustmentController'
         })
-        .otherwise({ redirectTo: '/0Begin' });
+        .otherwise({ redirectTo: '/login' });
 })
 
-iatiDataImporterApp.run(['$rootScope', function ($rootScope) {
+iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http',
+    function ($rootScope, $location, $cookieStore, $http) {
+        // keep user logged in after page refresh
+        $rootScope.globals = $cookieStore.get('globals') || {};
+        if ($rootScope.globals.currentUser) {
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+        }
 
- //$rootScope.FieldClick = function (e,field) {
- //       var tJqObj = $(e.currentTarget);
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // redirect to login page if not logged in
+            if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
+                $location.path('/#/login');
+            }
+        });
+    }]);
 
- //       field.IsSourceIATI = !field.IsSourceIATI
 
-        //if (tJqObj.hasClass("alert-success")) {
-        //    tJqObj.removeClass("alert-success").addClass("alert-danger");
-        //    tJqObj.siblings().removeClass("alert-danger").addClass("alert-success");
-        //} else {
-        //    tJqObj.removeClass("alert-danger").addClass("alert-success");
-        //    tJqObj.siblings().removeClass("alert-success").addClass("alert-danger");
-        //}
-    //}
 
-}]);
+
+
+
+
+
+
+
+
+
+
+
 
 iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
     return {

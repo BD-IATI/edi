@@ -1,4 +1,5 @@
 ﻿'use strict';
+
 angular.module('Authentication', []);
 
 angular.module('Authentication')
@@ -9,7 +10,7 @@ angular.module('Authentication')
         var service = {};
 
         service.Login = function (username, password, callback) {
-            $http.post('/api/authenticate', { username: username, password: password })
+            $http.post(apiprefix + '/authenticate', { username: username, password: password })
                 .success(function (response) {
                     callback(response);
                 });

@@ -1,4 +1,4 @@
-﻿using AIMS_BD_IATI.WebAPIAPI.Models.Authentication;
+﻿using AIMS_BD_IATI.WebAPI.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +6,12 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace AIMS_BD_IATI.WebAPIAPI.Controllers
+namespace AIMS_BD_IATI.WebAPI.Controllers
 {
     public class AuthenticationController : ApiController
     {
         [Route("authenticate")]
+        [AcceptVerbs("GET", "POST")]
         public IHttpActionResult Authenticate(AuthenticateViewModel viewModel)
         {
             /* REPLACE THIS WITH REAL AUTHENTICATION

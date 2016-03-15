@@ -17,6 +17,7 @@ using AIMS_DB_IATI.WebAPI.Models.IATIImport;
 namespace AIMS_BD_IATI.WebAPI.Controllers
 {
     [RoutePrefix("api/IATIImport")]
+    [Authorize]
     public class IATIImportController : ApiController
     {
         public iatiactivityContainer s_activitiesContainer

@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading;
 using System.Web;
 
-namespace AIMS_BD_IATI.WebAPIAPI.Modules
+namespace AIMS_BD_IATI.WebAPI.Modules
 {
     public class BasicAuthHttpModule : IHttpModule
     {
-        private const string Realm = "AngularWebAPI";
+        private const string Realm = "AIMS_BD_IATI";
 
         public void Init(HttpApplication context)
         {

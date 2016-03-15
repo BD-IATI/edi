@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace AIMS_BD_IATI.WebAPIAPI.Models.Authentication
+namespace AIMS_BD_IATI.WebAPI.Models.Authentication
 {
     public class AuthenticateViewModel
     {
