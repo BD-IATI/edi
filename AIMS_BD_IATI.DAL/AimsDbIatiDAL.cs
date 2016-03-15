@@ -29,13 +29,14 @@ namespace AIMS_BD_IATI.DAL
                     a.Hierarchy = activity.Hierarchy;
                     a.ParentHierarchy = activity.ParentHierarchy;
 
-                    a.AssignedOrgId = activity.AssignedOrgId;
+                    //a.AssignedOrgId = activity.AssignedOrgId;
+                    //a.AssignedDate = DateTime.Now;
 
                     a.DownloadDatePrev = a.DownloadDate;
-                    a.DownloadDate = DateTime.Now;
                 }
                 else
                 {
+                    activity.DownloadDate = DateTime.Now;
                     dbContext.Activities.Add(activity);
                 }
 
@@ -44,6 +45,21 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
+        public int UpdateAtivities(List<iatiactivity> activities)
+        {
+            foreach (var activity in activities)
+            {
+                var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier);
+                if (a != null)
+                {
+                    a.AssignedOrgId = activity.IATICode;
+                    a.AssignedDate = DateTime.Now;
+
+                }
+            }
+
+            return dbContext.SaveChanges();
+        }
         public iatiactivityContainer GetActivities(string dp)
         {
             var q = from a in dbContext.Activities

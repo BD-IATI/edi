@@ -258,6 +258,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
+        public int? UpdateActivity(List<iatiactivity> activities)
+        {
+            return new AimsDbIatiDAL().UpdateAtivities(activities);
+        }
+
+        [AcceptVerbs("GET", "POST")]
         public ProjectMapModel SubmitActivities(List<iatiactivity> relevantActivies)
         {
             if (relevantActivies == null)

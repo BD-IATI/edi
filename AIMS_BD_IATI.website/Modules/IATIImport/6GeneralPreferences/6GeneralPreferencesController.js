@@ -27,8 +27,11 @@
         //deferred.reject(response);
     });
 
-
     }
+    $scope.NextWithoutSaving = function () {
+        document.getElementById('btn7ReviewAdjustment').click(); //redirect
+    }
+
 
     $scope.IsModelChanged = false;
 
@@ -40,7 +43,4 @@
         catch(ee){}
     },true);
 
-    $scope.NextWithoutSaving = function () {
-        document.getElementById('btn7ReviewAdjustment').click(); //redirect
-    }
 });

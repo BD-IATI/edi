@@ -113,13 +113,23 @@
                             </tbody>
                         </table>
 
-                        
+
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-1 col-md-10 btnFooter">
                         <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
-                        <a ng-hide="RelevantActivities.length == 0" class="btn btn-default" ng-href="#/4Projects">Next</a>
+
+                        <button ng-hide="RelevantActivities.length == 0"
+                                type="button"
+                                class="btn btn-default"
+                                popover-title="Assign other DP's project'"
+                                uib-popover-template="'myPopoverTemplate.html'"
+                                popover-append-to-body="true"
+                                popover-placement="auto">
+                            Next...
+                        </button>
+                        <a id="btn4Projects" ng-hide class="btn btn-default" ng-href="#/4Projects">Next</a>
                     </div>
                 </div>
 
@@ -128,3 +138,14 @@
         </div>
     </div>
 </div>
+
+
+<script type="text/ng-template" id="myPopoverTemplate.html">
+    <div>
+        <div>Would you like to assign the other DP's project so that they can know it?</div>
+        <br />
+
+        <button type="button" ng-click="SaveAndNext()" class="btn btn-default">Save and next</button>
+        <button type="button" ng-click="NextWithoutSaving()" class="btn btn-default">Next without saving</button>
+    </div>
+</script>
