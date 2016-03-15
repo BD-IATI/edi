@@ -131,9 +131,10 @@ namespace AIMS_BD_IATI.DAL
             return q;
         }
 
-        public List<FieldMappingPreferenceActivity> GetFieldMappingPreferenceActivity()
+        public List<FieldMappingPreferenceActivity> GetFieldMappingPreferenceActivity(string iatiIdentifier)
         {
             var q = (from fieldMap in dbContext.FieldMappingPreferenceActivities
+                     where fieldMap.IATIIdentifier == iatiIdentifier
                      select fieldMap).ToList();
 
             return q;

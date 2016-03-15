@@ -8,7 +8,10 @@
     });
 
     $scope.isDiffGT5 = function (mkl) {
-        return ((mkl.iatiActivity.TotalDisbursment + 1) / (mkl.aimsProject.TotalDisbursment + 1)) * 100 > 5;
+        var iatiPercent = ((mkl.iatiActivity.TotalDisbursment + 1) / (mkl.iatiActivity.TotalCommitment + 1)) * 100;
+        var aimsPercent = ((mkl.aimsProject.TotalDisbursment + 1) / (mkl.aimsProject.TotalCommitment + 1)) * 100;
+
+        return Math.abs(iatiPercent - aimsPercent) > 5;
     }
 
     $scope.OpenProjectSpecificAdjustment = function (MatchedProject) {

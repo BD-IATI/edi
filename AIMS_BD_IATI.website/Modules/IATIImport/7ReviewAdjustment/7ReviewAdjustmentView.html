@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="progress">
-                <div class="progress-bar" ng-class="isDiffGT5(m) ? 'progress-bar-danger' : ''" role="progressbar" aria-valuenow="{{((m.aimsProject.TotalDisbursment+1) / (m.aimsProject.TotalCommitment+1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((model.aimsProject.TotalDisbursment+1) / (model.aimsProject.TotalCommitment+1)) * 100; }}%;">
+                <div class="progress-bar" ng-class="isDiffGT5(m) ? 'progress-bar-danger' : ''" role="progressbar" aria-valuenow="{{((m.aimsProject.TotalDisbursment+1) / (m.aimsProject.TotalCommitment+1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((m.aimsProject.TotalDisbursment+1) / (m.aimsProject.TotalCommitment+1)) * 100; }}%;">
                     <strong>AIMS</strong>: USD {{m.aimsProject.TotalDisbursment}} out of {{m.aimsProject.TotalCommitment}}
                 </div>
             </div>

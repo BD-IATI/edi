@@ -51,6 +51,17 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             set { HttpContext.Current.Session["GeneralPreferences"] = value; }
         }
 
+        public ProjectMapModel s_ProjectMapModel
+        {
+            get
+            {
+                return HttpContext.Current.Session["ProjectMapModel"] == null ?
+                    null
+                    : (ProjectMapModel)HttpContext.Current.Session["ProjectMapModel"];
+            }
+            set { HttpContext.Current.Session["ProjectMapModel"] = value; }
+        }
+
         public List<FundSourceLookupItem> s_FundSources
         {
             get
@@ -277,7 +288,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             var AimsProjectNotInIati = AimsProjects.ExceptBy(MatchedProjects, f => f.iatiidentifier.Value).ToList();
 
-            return new ProjectMapModel
+            s_ProjectMapModel = new ProjectMapModel
             {
                 MatchedProjects = MatchedProjects2,
                 IatiActivitiesNotInAims = IatiActivityNotInAims,
@@ -285,6 +296,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 NewProjectsToAddInAims = new List<iatiactivity>(),
                 ProjectsOwnedByOther = ProjectsOwnedByOther
             };
+            return s_ProjectMapModel;
         }
 
         [HttpGet]
@@ -292,9 +304,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             var savedPreferences = new AimsDbIatiDAL().GetFieldMappingPreferenceGeneral();
 
-            var returnModel = (from a in s_activitiesContainer.AimsProjects
-                               join i in s_activitiesContainer.RelevantActivities on a.IatiIdentifier equals i.IatiIdentifier
-                               select new ProjectFieldMapModel(i, a, savedPreferences)).FirstOrDefault();
+            var returnModel = (from a in s_ProjectMapModel.MatchedProjects
+                               select new ProjectFieldMapModel(a.iatiActivity, a.aimsProject, savedPreferences)).FirstOrDefault();
 
             if (returnModel == null)
             {
@@ -371,25 +382,32 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (GeneralPreference != null)
                 s_GeneralPreferences = GeneralPreference;
 
-            var returnModels = (from a in s_activitiesContainer.AimsProjects
-                                join i in s_activitiesContainer.RelevantActivities on a.IatiIdentifier equals i.IatiIdentifier
-                                select new ProjectFieldMapModel(i, a)).ToList();
-
-
-            foreach (var mapModel in returnModels)
+            foreach (var mapModel in s_ProjectMapModel.MatchedProjects)
             {
+                var activityPreference = new AimsDbIatiDAL().GetFieldMappingPreferenceActivity(mapModel.iatiActivity.IatiIdentifier);
                 foreach (var field in mapModel.Fields)
                 {
-                    var generalFieldSource = s_GeneralPreferences.Fields.Find(f => f.Field == field.Field);
-                    if (field.Field == generalFieldSource.Field)
-                        field.IsSourceIATI = generalFieldSource.IsSourceIATI;
+                    //get GetFieldMappingPreferenceActivity for this field
+                    var activityFieldSource = activityPreference.Find(f => f.FieldName == field.Field);
+                    if (activityFieldSource != null)
+                    {
+                        field.IsSourceIATI = activityFieldSource.IsSourceIATI;
+                    }
+                    else // apply general preferences
+                    {
+                        var generalFieldSource = s_GeneralPreferences.Fields.Find(f => f.Field == field.Field);
+                        if (generalFieldSource != null)
+                            field.IsSourceIATI = generalFieldSource.IsSourceIATI;
+
+                    }
                 }
+
             }
 
 
             return new ProjectMapModel
             {
-                MatchedProjects = returnModels,
+                MatchedProjects = s_ProjectMapModel.MatchedProjects,
                 IatiActivitiesNotInAims = null,
                 AimsProjectsNotInIati = null,
                 NewProjectsToAddInAims = null,
