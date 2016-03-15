@@ -25,8 +25,8 @@ namespace AIMS_BD_IATI.DAL
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<FieldMappingPreferenceActivity> FieldMappingPreferenceActivities { get; set; }
         public virtual DbSet<FieldMappingPreferenceGeneral> FieldMappingPreferenceGenerals { get; set; }
+        public virtual DbSet<Activity> Activities { get; set; }
     }
 }

@@ -21,7 +21,8 @@ namespace AIMS_BD_IATI.DAL
         public string IatiActivityPrev { get; set; }
         public Nullable<int> Hierarchy { get; set; }
         public Nullable<int> ParentHierarchy { get; set; }
-        public string ImplementingOrgId { get; set; }
+        public string AssignedOrgId { get; set; }
+        public Nullable<System.DateTime> AssignedDate { get; set; }
         public Nullable<System.DateTime> DownloadDate { get; set; }
         public Nullable<System.DateTime> DownloadDatePrev { get; set; }
     }

@@ -10,13 +10,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OrgId" Type="varchar" MaxLength="50" />
-          <Property Name="IatiIdentifier" Type="varchar" MaxLength="50" />
+          <Property Name="OrgId" Type="nvarchar" MaxLength="50" />
+          <Property Name="IatiIdentifier" Type="nvarchar" MaxLength="50" />
           <Property Name="IatiActivity" Type="xml" />
           <Property Name="IatiActivityPrev" Type="xml" />
           <Property Name="Hierarchy" Type="int" />
           <Property Name="ParentHierarchy" Type="int" />
-          <Property Name="ImplementingOrgId" Type="varchar" MaxLength="50" />
+          <Property Name="AssignedOrgId" Type="nvarchar" MaxLength="50" />
+          <Property Name="AssignedDate" Type="datetime" />
           <Property Name="DownloadDate" Type="datetime" />
           <Property Name="DownloadDatePrev" Type="datetime" />
         </EntityType>
@@ -50,25 +51,10 @@
     <edmx:ConceptualModels>
       <Schema Namespace="AIMS_DB_IATIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="AIMS_DB_IATIEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Activities" EntityType="AIMS_DB_IATIModel.Activity" />
           <EntitySet Name="FieldMappingPreferenceActivities" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceActivity" />
           <EntitySet Name="FieldMappingPreferenceGenerals" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral" />
+          <EntitySet Name="Activities" EntityType="AIMS_DB_IATIModel.Activity" />
         </EntityContainer>
-        <EntityType Name="Activity">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IatiIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IatiActivity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IatiActivityPrev" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Hierarchy" Type="Int32" />
-          <Property Name="ParentHierarchy" Type="Int32" />
-          <Property Name="ImplementingOrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DownloadDate" Type="DateTime" Precision="3" />
-          <Property Name="DownloadDatePrev" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="FieldMappingPreferenceActivity">
           <Key>
             <PropertyRef Name="Id" />
@@ -89,28 +75,28 @@
           <Property Name="FieldName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="IsSourceIATI" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IatiIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IatiActivity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IatiActivityPrev" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Hierarchy" Type="Int32" />
+          <Property Name="ParentHierarchy" Type="Int32" />
+          <Property Name="AssignedOrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AssignedDate" Type="DateTime" Precision="3" />
+          <Property Name="DownloadDate" Type="DateTime" Precision="3" />
+          <Property Name="DownloadDatePrev" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="AIMS_DB_IATIModelStoreContainer" CdmEntityContainer="AIMS_DB_IATIEntities">
-          <EntitySetMapping Name="Activities">
-            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.Activity">
-              <MappingFragment StoreEntitySet="Activity">
-                <ScalarProperty Name="DownloadDatePrev" ColumnName="DownloadDatePrev" />
-                <ScalarProperty Name="DownloadDate" ColumnName="DownloadDate" />
-                <ScalarProperty Name="ImplementingOrgId" ColumnName="ImplementingOrgId" />
-                <ScalarProperty Name="ParentHierarchy" ColumnName="ParentHierarchy" />
-                <ScalarProperty Name="Hierarchy" ColumnName="Hierarchy" />
-                <ScalarProperty Name="IatiActivityPrev" ColumnName="IatiActivityPrev" />
-                <ScalarProperty Name="IatiActivity" ColumnName="IatiActivity" />
-                <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
-                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FieldMappingPreferenceActivities">
             <EntityTypeMapping TypeName="AIMS_DB_IATIModel.FieldMappingPreferenceActivity">
               <MappingFragment StoreEntitySet="FieldMappingPreferenceActivity">
@@ -128,6 +114,23 @@
                 <ScalarProperty Name="IsSourceIATI" ColumnName="IsSourceIATI" />
                 <ScalarProperty Name="FieldName" ColumnName="FieldName" />
                 <ScalarProperty Name="FundSourceId" ColumnName="FundSourceId" />
+                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Activities">
+            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.Activity">
+              <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="DownloadDatePrev" ColumnName="DownloadDatePrev" />
+                <ScalarProperty Name="DownloadDate" ColumnName="DownloadDate" />
+                <ScalarProperty Name="AssignedDate" ColumnName="AssignedDate" />
+                <ScalarProperty Name="AssignedOrgId" ColumnName="AssignedOrgId" />
+                <ScalarProperty Name="ParentHierarchy" ColumnName="ParentHierarchy" />
+                <ScalarProperty Name="Hierarchy" ColumnName="Hierarchy" />
+                <ScalarProperty Name="IatiActivityPrev" ColumnName="IatiActivityPrev" />
+                <ScalarProperty Name="IatiActivity" ColumnName="IatiActivity" />
+                <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
                 <ScalarProperty Name="OrgId" ColumnName="OrgId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

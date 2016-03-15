@@ -29,7 +29,7 @@ namespace AIMS_BD_IATI.DAL
                     a.Hierarchy = activity.Hierarchy;
                     a.ParentHierarchy = activity.ParentHierarchy;
 
-                    a.ImplementingOrgId = activity.ImplementingOrgId;
+                    a.AssignedOrgId = activity.AssignedOrgId;
 
                     a.DownloadDatePrev = a.DownloadDate;
                     a.DownloadDate = DateTime.Now;
