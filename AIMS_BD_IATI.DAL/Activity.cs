@@ -18,12 +18,14 @@ namespace AIMS_BD_IATI.DAL
         public string OrgId { get; set; }
         public string IatiIdentifier { get; set; }
         public string IatiActivity { get; set; }
+        public Nullable<System.DateTime> DownloadDate { get; set; }
         public string IatiActivityPrev { get; set; }
+        public Nullable<System.DateTime> DownloadDatePrev { get; set; }
         public Nullable<int> Hierarchy { get; set; }
         public Nullable<int> ParentHierarchy { get; set; }
         public string AssignedOrgId { get; set; }
         public Nullable<System.DateTime> AssignedDate { get; set; }
-        public Nullable<System.DateTime> DownloadDate { get; set; }
-        public Nullable<System.DateTime> DownloadDatePrev { get; set; }
+        public Nullable<int> MappedProjectId { get; set; }
+        public Nullable<int> MappedTrustFundId { get; set; }
     }
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="b9f5ca70-cc99-4171-9cdc-0cd6d2bc4209" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://tvllap14:1000/AIMSUserService/AIMSUserManagementService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AIMSUserManagementService.disco" MetadataType="Disco" ID="5629ac82-fc39-4141-b13f-29b08e97151c" SourceId="1" SourceUrl="http://tvllap14:1000/AIMSUserService/AIMSUserManagementService.svc?disco" />
+    <MetadataFile FileName="AIMSUserManagementService.xsd" MetadataType="Schema" ID="304d7b13-bbaa-4bb5-9fc7-8ab015db1dde" SourceId="1" SourceUrl="http://tvllap14:1000/AIMSUserService/AIMSUserManagementService.svc?xsd=xsd3" />
+    <MetadataFile FileName="AIMSUserManagementService1.xsd" MetadataType="Schema" ID="48196596-fca5-4734-8c39-8a8177222b81" SourceId="1" SourceUrl="http://tvllap14:1000/AIMSUserService/AIMSUserManagementService.svc?xsd=xsd1" />
+    <MetadataFile FileName="AIMSUserManagementService2.xsd" MetadataType="Schema" ID="d06cb2b5-ceda-42c0-a4db-082313571d01" SourceId="1" SourceUrl="http://tvllap14:1000/AIMSUserService/AIMSUserManagementService.svc?xsd=xsd0" />
+    <MetadataFile FileName="AIMSUserManagementService3.xsd" MetadataType="Schema" ID="01c667fa-b938-450c-971e-bbaae73e4c2a" SourceId="1" SourceUrl="http://tvllap14:1000/AIMSUserService/AIMSUserManagementService.svc?xsd=xsd2" />
+    <MetadataFile FileName="AIMSUserManagementService.wsdl" MetadataType="Wsdl" ID="360e7eb7-359b-487e-bb4a-2642a79bd79b" SourceId="1" SourceUrl="http://tvllap14:1000/AIMSUserService/AIMSUserManagementService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

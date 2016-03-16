@@ -10,18 +10,23 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 {
     public class AuthenticationController : ApiController
     {
+        public IMembershipService MembershipService
+        {
+            get;
+            private set;
+        }
+
         [Route("authenticate")]
         [AcceptVerbs("GET", "POST")]
         public IHttpActionResult Authenticate(AuthenticateViewModel viewModel)
         {
-            /* REPLACE THIS WITH REAL AUTHENTICATION
-            ----------------------------------------------*/
-            if (!(viewModel.Username == "test" && viewModel.Password == "test"))
+            MembershipService = new AccountMembershipService();
+            if (MembershipService.ValidateUser(viewModel.Username, viewModel.Password))
             {
-                return Ok(new { success = false, message = "User code or password is incorrect" });
+                return Ok(new { success = true });
             }
 
-            return Ok(new { success = true });
+            return Ok(new { success = false, message = "User Id or password is incorrect" });
         }
     }
 }

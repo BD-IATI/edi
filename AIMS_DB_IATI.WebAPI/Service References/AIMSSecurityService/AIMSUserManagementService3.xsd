@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Entity" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Entity" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://tvllap14:1000/AIMSUserService/AIMSUserManagementService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" />
+  <xs:complexType name="User">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q1:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApplicationId" type="xs:int" />
+          <xs:element minOccurs="0" name="ChangePasswordAtFirstLogin" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Comment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="EmailAddress" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EmpId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FailedPasswordAttemptCount" type="xs:int" />
+          <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="GroupId" type="xs:int" />
+          <xs:element minOccurs="0" name="IsLockedOut" type="xs:boolean" />
+          <xs:element minOccurs="0" name="LastLockoutDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="LastLoginDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastPasswordChangedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="LoginId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="NeverExperied" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Status" type="xs:boolean" />
+          <xs:element minOccurs="0" name="UpdatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UpdatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="UserId" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="User" nillable="true" type="tns:User" />
+  <xs:complexType name="ArrayOfRole">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Role" nillable="true" type="tns:Role" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRole" nillable="true" type="tns:ArrayOfRole" />
+  <xs:complexType name="Role">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q2:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApplicationId" type="xs:int" />
+          <xs:element minOccurs="0" name="ApplicationTitle" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsAssignedRole" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ModuleId" type="xs:int" />
+          <xs:element minOccurs="0" name="ModuleTitle" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RoleId" type="xs:int" />
+          <xs:element minOccurs="0" name="RoleName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserGroupId" type="xs:int" />
+          <xs:element minOccurs="0" name="UserId" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Role" nillable="true" type="tns:Role" />
+  <xs:complexType name="ArrayOfUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" type="tns:User" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUser" nillable="true" type="tns:ArrayOfUser" />
+  <xs:complexType name="ArrayOfUserRoleInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserRoleInfo" nillable="true" type="tns:UserRoleInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserRoleInfo" nillable="true" type="tns:ArrayOfUserRoleInfo" />
+  <xs:complexType name="UserRoleInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q3:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RoleId" type="xs:int" />
+          <xs:element minOccurs="0" name="UserId" type="xs:int" />
+          <xs:element minOccurs="0" name="UserRoleId" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UserRoleInfo" nillable="true" type="tns:UserRoleInfo" />
+  <xs:complexType name="UserGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q4:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApplicationId" type="xs:int" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="GroupId" type="xs:int" />
+          <xs:element minOccurs="0" name="GroupName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ModuleId" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UserGroup" nillable="true" type="tns:UserGroup" />
+  <xs:complexType name="ArrayOfUserGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserGroup" nillable="true" type="tns:UserGroup" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserGroup" nillable="true" type="tns:ArrayOfUserGroup" />
+  <xs:complexType name="ArrayOfRoleGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RoleGroup" nillable="true" type="tns:RoleGroup" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRoleGroup" nillable="true" type="tns:ArrayOfRoleGroup" />
+  <xs:complexType name="RoleGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q5:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApplicationId" type="xs:int" />
+          <xs:element minOccurs="0" name="RoleGroupsId" type="xs:int" />
+          <xs:element minOccurs="0" name="RoleGroupsTitle" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RoleGroup" nillable="true" type="tns:RoleGroup" />
+  <xs:complexType name="ArrayOfMenu">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Menu" nillable="true" type="tns:Menu" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMenu" nillable="true" type="tns:ArrayOfMenu" />
+  <xs:complexType name="Menu">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q6="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q6:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApplicationId" type="xs:int" />
+          <xs:element minOccurs="0" name="ApplicationName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsAddAssigned" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsAssignedMenu" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsCancelAssigned" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsDeleteAssigned" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsEditAssigned" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsPrintAssigned" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsViewAssigned" type="xs:boolean" />
+          <xs:element minOccurs="0" name="LoginId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MenuCaption" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MenuCaptionBng" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MenuId" type="xs:int" />
+          <xs:element minOccurs="0" name="MenuName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ModuleId" type="xs:int" />
+          <xs:element minOccurs="0" name="ModuleName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PageUrl" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ParentMenuId" type="xs:int" />
+          <xs:element minOccurs="0" name="ParentMenuName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RoleId" type="xs:int" />
+          <xs:element minOccurs="0" name="SerialNo" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Menu" nillable="true" type="tns:Menu" />
+  <xs:complexType name="ArrayOfRight">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Right" nillable="true" type="tns:Right" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRight" nillable="true" type="tns:ArrayOfRight" />
+  <xs:complexType name="Right">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q7="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q7:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApplicationId" type="xs:int" />
+          <xs:element minOccurs="0" name="ApplicationName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsAssignedRight" type="xs:boolean" />
+          <xs:element minOccurs="0" name="LoginId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ModuleId" type="xs:int" />
+          <xs:element minOccurs="0" name="ModuleName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RightId" type="xs:int" />
+          <xs:element minOccurs="0" name="RightName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RightTitle" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RoleId" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Right" nillable="true" type="tns:Right" />
+  <xs:complexType name="ArrayOfCompany">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Company" nillable="true" type="tns:Company" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCompany" nillable="true" type="tns:ArrayOfCompany" />
+  <xs:complexType name="Company">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q8="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q8:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ApplicationId" type="xs:int" />
+          <xs:element minOccurs="0" name="CompanyID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CompanyName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="LoginId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UpdatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UpdatedDate" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Company" nillable="true" type="tns:Company" />
+  <xs:complexType name="ArrayOfDepartment">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Department" nillable="true" type="tns:Department" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDepartment" nillable="true" type="tns:ArrayOfDepartment" />
+  <xs:complexType name="Department">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q9="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q9:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="strCompanyId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="strDepartment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="strDepartmentID" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Department" nillable="true" type="tns:Department" />
+  <xs:complexType name="ArrayOfEmployee">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Employee" nillable="true" type="tns:Employee" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEmployee" nillable="true" type="tns:ArrayOfEmployee" />
+  <xs:complexType name="Employee">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q10="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q10:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApplicationId" type="xs:int" />
+          <xs:element minOccurs="0" name="Company" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CompanyId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Department" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Designation" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EmpId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EmpName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserPassword" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="strDepartmentID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="strDesignationID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="strEmail" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Employee" nillable="true" type="tns:Employee" />
+  <xs:complexType name="ArrayOfApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Application" nillable="true" type="tns:Application" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfApplication" nillable="true" type="tns:ArrayOfApplication" />
+  <xs:complexType name="Application">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q11="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q11:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApplicationId" type="xs:int" />
+          <xs:element minOccurs="0" name="ApplicationName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ApplicationTitle" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Application" nillable="true" type="tns:Application" />
+  <xs:complexType name="ArrayOfModule">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Module" nillable="true" type="tns:Module" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfModule" nillable="true" type="tns:ArrayOfModule" />
+  <xs:complexType name="Module">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q12="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary" base="q12:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApplicationId" type="xs:int" />
+          <xs:element minOccurs="0" name="ApplicationName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ModuleId" type="xs:int" />
+          <xs:element minOccurs="0" name="ModuleName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ModuleTitle" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Module" nillable="true" type="tns:Module" />
+</xs:schema>
