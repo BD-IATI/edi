@@ -60,6 +60,8 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -88,6 +90,58 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
+    <None Include="Service References\AIMSSecurityService\AIMSUserManagementService.wsdl" />
+    <None Include="Service References\AIMSSecurityService\AIMSUserManagementService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AIMSSecurityService\AIMSUserManagementService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AIMSSecurityService\AIMSUserManagementService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AIMSSecurityService\AIMSUserManagementService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.Company.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.Department.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\AIMSSecurityService\AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserRoleInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -97,6 +151,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <None Include="Service References\AIMSSecurityService\AIMSUserManagementService.disco" />
+    <None Include="Service References\AIMSSecurityService\configuration91.svcinfo" />
+    <None Include="Service References\AIMSSecurityService\configuration.svcinfo" />
+    <None Include="Service References\AIMSSecurityService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +176,11 @@
     <Compile Include="Models\IATIImport\ProjectMapModel.cs" />
     <Compile Include="Modules\BasicAuthHttpModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\AIMSSecurityService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -128,6 +194,12 @@
       <Project>{7864245e-5463-4c47-b5ef-e44fe9748b84}</Project>
       <Name>AIMS_BD_IATI.Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\AIMSSecurityService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
