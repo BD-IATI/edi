@@ -13,13 +13,15 @@
           <Property Name="OrgId" Type="nvarchar" MaxLength="50" />
           <Property Name="IatiIdentifier" Type="nvarchar" MaxLength="50" />
           <Property Name="IatiActivity" Type="xml" />
+          <Property Name="DownloadDate" Type="datetime" />
           <Property Name="IatiActivityPrev" Type="xml" />
+          <Property Name="DownloadDatePrev" Type="datetime" />
           <Property Name="Hierarchy" Type="int" />
           <Property Name="ParentHierarchy" Type="int" />
           <Property Name="AssignedOrgId" Type="nvarchar" MaxLength="50" />
           <Property Name="AssignedDate" Type="datetime" />
-          <Property Name="DownloadDate" Type="datetime" />
-          <Property Name="DownloadDatePrev" Type="datetime" />
+          <Property Name="MappedProjectId" Type="int" />
+          <Property Name="MappedTrustFundId" Type="int" />
         </EntityType>
         <EntityType Name="FieldMappingPreferenceActivity">
           <Key>
@@ -83,13 +85,15 @@
           <Property Name="OrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IatiIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IatiActivity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DownloadDate" Type="DateTime" Precision="3" />
           <Property Name="IatiActivityPrev" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DownloadDatePrev" Type="DateTime" Precision="3" />
           <Property Name="Hierarchy" Type="Int32" />
           <Property Name="ParentHierarchy" Type="Int32" />
           <Property Name="AssignedOrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AssignedDate" Type="DateTime" Precision="3" />
-          <Property Name="DownloadDate" Type="DateTime" Precision="3" />
-          <Property Name="DownloadDatePrev" Type="DateTime" Precision="3" />
+          <Property Name="MappedProjectId" Type="Int32" />
+          <Property Name="MappedTrustFundId" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -122,13 +126,15 @@
           <EntitySetMapping Name="Activities">
             <EntityTypeMapping TypeName="AIMS_DB_IATIModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
-                <ScalarProperty Name="DownloadDatePrev" ColumnName="DownloadDatePrev" />
-                <ScalarProperty Name="DownloadDate" ColumnName="DownloadDate" />
+                <ScalarProperty Name="MappedTrustFundId" ColumnName="MappedTrustFundId" />
+                <ScalarProperty Name="MappedProjectId" ColumnName="MappedProjectId" />
                 <ScalarProperty Name="AssignedDate" ColumnName="AssignedDate" />
                 <ScalarProperty Name="AssignedOrgId" ColumnName="AssignedOrgId" />
                 <ScalarProperty Name="ParentHierarchy" ColumnName="ParentHierarchy" />
                 <ScalarProperty Name="Hierarchy" ColumnName="Hierarchy" />
+                <ScalarProperty Name="DownloadDatePrev" ColumnName="DownloadDatePrev" />
                 <ScalarProperty Name="IatiActivityPrev" ColumnName="IatiActivityPrev" />
+                <ScalarProperty Name="DownloadDate" ColumnName="DownloadDate" />
                 <ScalarProperty Name="IatiActivity" ColumnName="IatiActivity" />
                 <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
                 <ScalarProperty Name="OrgId" ColumnName="OrgId" />
