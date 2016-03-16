@@ -104,7 +104,7 @@ namespace AIMS_BD_IATI.Service
             {
                 var Activity = new Activity();
 
-                Activity.OrgId = Activity.ImplementingOrgId = organization_Id;// iatiactivityItem.reportingorg.n().@ref;
+                Activity.OrgId = Activity.AssignedOrgId = organization_Id;// iatiactivityItem.reportingorg.n().@ref;
                 Activity.IatiIdentifier = iatiactivityItem.iatiidentifier.n().Value;
                 Activity.Hierarchy = iatiactivityItem.hierarchy;
 
