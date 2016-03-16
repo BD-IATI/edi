@@ -56,6 +56,49 @@ namespace AIMS_BD_IATI.DAL
             return fundSources;
         }
 
+        public List<LookupItem> GetProjects(string dp)
+        {
+            var projects = (from project in dbContext.tblProjectInfoes
+                            join fundSource in dbContext.tblFundSources on project.FundSourceId equals fundSource.Id
+                               where fundSource.IATICode == dp
+                            orderby project.Title
+                               select new LookupItem
+                               {
+                                   ID = project.Id,
+                                   Name = project.Title,
+                               }).ToList();
+
+            return projects;
+        }
+        public List<LookupItem> GetTrustFunds(string dp)
+        {
+            var projects = (from trustFund in dbContext.tblTrustFunds
+                            join fundSource in dbContext.tblFundSources on trustFund.TFFundSourceId equals fundSource.Id
+                               where fundSource.IATICode == dp
+                               orderby trustFund.TFIdentifier
+                               select new LookupItem
+                               {
+                                   ID = trustFund.Id,
+                                   Name = trustFund.TFIdentifier,
+                               }).ToList();
+
+            return projects;
+        }
+        public int? UpdateProjects(List<iatiactivity> projects)
+        {
+            foreach (var project in projects)
+            {
+                var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == project.ProjectId);
+                if (p != null)
+                {
+                    p.Title = project.Title;
+                    p.Objective = project.Description;
+                }
+            }
+
+            return dbContext.SaveChanges();
+        }
+
         /// <summary>
         /// Convert AIMS to IATI v2.x
         /// ref:http://iatistandard.org/202/activity-standard/iati-activities/iati-activity
@@ -77,7 +120,7 @@ namespace AIMS_BD_IATI.DAL
             foreach (var project in projects)
             {
                 var iatiActivityObj = new iatiactivity();
-
+                iatiActivityObj.ProjectId = project.Id;
                 //iati-activity
                 iatiActivityObj.lastupdateddatetime = DateTime.Now;
                 iatiActivityObj.lang = "en";

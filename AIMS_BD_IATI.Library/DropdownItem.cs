@@ -21,4 +21,11 @@ namespace AIMS_BD_IATI.Library
         public string IDnIATICode { get { return ID + "~" + IATICode??""; } }
 
     }
+
+    public class LookupItem
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+
+    }
 }

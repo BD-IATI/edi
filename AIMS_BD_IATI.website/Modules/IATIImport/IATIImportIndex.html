@@ -44,6 +44,8 @@
     <script src="6GeneralPreferences/6GeneralPreferencesController.js"></script>
     <script src="7ReviewAdjustment/7ReviewAdjustmentController.js"></script>
     <script src="8ProjectSpecificAdjustment/8ProjectSpecificAdjustmentController.js"></script>
+    <script src="9OtherDPsActivities/9OtherDPsActivitiesController.js"></script>
+    <script src="9TFnCF/9TFnCFController.js"></script>
 
     <!--0-->
     <script type="text/javascript">
@@ -88,6 +90,10 @@
             .popover > .arrow {
                 left: 90% !important;
             }
+
+        .full-modal-window .modal-dialog {
+            width: 95%;
+        }
     </style>
 
     <style>
@@ -138,9 +144,11 @@
     </header>
     <div class="container-fluid">
         <div>
-            <!-- Nav tabs -->
-            <ul navigation class="nav nav-tabs" role="tablist"></ul>
             <span us-spinner="{radius:30, width:8, length: 16, position: 'fixed'}" ></span>
+            <!-- Nav tabs -->
+            <!--<ul ng-hide="globals.currentUser == undefined" navigation class="nav nav-tabs" role="tablist"></ul>-->
+
+
             <!-- Tab panes -->
             <div ng-view class="tab-content">
             </div>

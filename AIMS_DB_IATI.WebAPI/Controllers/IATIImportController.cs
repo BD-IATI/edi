@@ -260,7 +260,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public int? UpdateActivity(List<iatiactivity> activities)
         {
-            return new AimsDbIatiDAL().UpdateAtivities(activities);
+            return new AimsDbIatiDAL().AssignActivities(activities);
         }
 
         [AcceptVerbs("GET", "POST")]
@@ -421,6 +421,51 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 ProjectsOwnedByOther = null
             };
         }
+
+        [HttpGet]
+        public object GetAssignedActivities(string dp)
+        {
+            //var projects = new AimsDAL().GetProjects(dp);
+            var projects = new AimsDAL().GetAIMSDataInIATIFormat(dp);
+            var assignedActivities = new AimsDbIatiDAL().GetAssignActivities(dp);
+            var trustFunds = new AimsDAL().GetTrustFunds(dp);
+            return new
+            {
+                AssignedActivities = assignedActivities,
+                Projects = projects,
+                TrustFunds = trustFunds
+            };
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public int? ImportProjects(ProjectMapModel projectMapModel)
+        {
+            var matchedProjects = projectMapModel.MatchedProjects;
+
+            var margedProjects = new List<iatiactivity>();
+
+            foreach (var matchedProject in matchedProjects)
+            {
+                foreach (var field in matchedProject.Fields)
+                {
+                    if (field.IsSourceIATI)
+                    {
+                        if (field.Field == "title")
+                        {
+                            matchedProject.aimsProject.Title = matchedProject.iatiActivity.Title;
+                        }
+                        if (field.Field == "description")
+                        {
+                            matchedProject.aimsProject.Description = matchedProject.iatiActivity.Description;
+                        }
+                    }
+                }
+                margedProjects.Add(matchedProject.aimsProject);
+            }
+
+            return new AimsDAL().UpdateProjects(margedProjects);
+        }
+
     }
 
 

@@ -45,7 +45,7 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
-        public int UpdateAtivities(List<iatiactivity> activities)
+        public int AssignActivities(List<iatiactivity> activities)
         {
             foreach (var activity in activities)
             {
@@ -60,6 +60,65 @@ namespace AIMS_BD_IATI.DAL
 
             return dbContext.SaveChanges();
         }
+
+
+
+        public List<iatiactivity> GetAssignActivities(string dp)
+        {
+            var q = from a in dbContext.Activities
+                    where a.OrgId != dp && a.AssignedOrgId == dp
+                    orderby a.IatiIdentifier
+                    select a.IatiActivity;
+
+
+            var result = new List<iatiactivity>();
+            var activity = new iatiactivity();
+            var serializer = new XmlSerializer(typeof(iatiactivity));
+
+            foreach (var a in q)
+            {
+                using (TextReader reader = new StringReader(a))
+                {
+                    activity = (iatiactivity)serializer.Deserialize(reader);
+
+                }
+                result.Add(activity);
+
+                if (activity.HasRelatedActivity)
+                {
+                    var relatedActivities = new List<iatiactivity>();
+                    var relatedActivity = new iatiactivity();
+
+                    var ras = from ac in dbContext.Activities
+                              where ac.IatiIdentifier.StartsWith(activity.IatiIdentifier)
+                              select ac.IatiActivity;
+
+                    foreach (var ac in ras)
+                    {
+                        using (TextReader reader = new StringReader(ac))
+                        {
+                            relatedActivity = (iatiactivity)serializer.Deserialize(reader);
+                        }
+                        relatedActivities.Add(relatedActivity);
+                    }
+
+
+                    List<transaction> transactions = new List<transaction>();
+
+                    foreach (var ra in relatedActivities)
+                    {
+                        if (ra.transaction != null)
+                            transactions.AddRange(ra.transaction);
+                    }
+                    activity.transaction = transactions.ToArray();
+                }
+
+            }
+
+
+            return result;
+        }
+
         public iatiactivityContainer GetActivities(string dp)
         {
             var q = from a in dbContext.Activities
@@ -94,8 +153,8 @@ namespace AIMS_BD_IATI.DAL
         {
             foreach (var fieldMap in fieldMaps)
             {
-                var a = dbContext.FieldMappingPreferenceGenerals.FirstOrDefault(x => x.OrgId == fieldMap.OrgId 
-                                                                                    && x.FundSourceId == fieldMap.FundSourceId 
+                var a = dbContext.FieldMappingPreferenceGenerals.FirstOrDefault(x => x.OrgId == fieldMap.OrgId
+                                                                                    && x.FundSourceId == fieldMap.FundSourceId
                                                                                     && x.FieldName == fieldMap.FieldName);
                 if (a != null)
                 {
@@ -120,7 +179,7 @@ namespace AIMS_BD_IATI.DAL
             foreach (var fieldMap in fieldMaps)
             {
                 var a = dbContext.FieldMappingPreferenceActivities.FirstOrDefault(x => x.IATIIdentifier == fieldMap.IATIIdentifier
-                                                                                    //&& x.ProjectId == fieldMap.ProjectId
+                    //&& x.ProjectId == fieldMap.ProjectId
                                                                                     && x.FieldName == fieldMap.FieldName);
                 if (a != null)
                 {

@@ -36,5 +36,14 @@
         //});
     };
 
+    $scope.ImportProjects = function () {
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/IATIImport/ImportProjects',
+            data: JSON.stringify($scope.models)
+        }).success(function (result) {
+            aler("Projects are imported.");
+        });
 
+    }
 });

@@ -40,6 +40,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             MatchedProjects = new List<iatiactivity>();
         }
 
+        public bool HasRelatedActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
+
+        [XmlIgnore]
+        public int ProjectId { get; set; } //AIMS ProjectId
+        [XmlIgnore]
+        public int MappedProjectId { get; set; }
+        [XmlIgnore]
+        public int MappedTrustFundId { get; set; }
 
         [XmlIgnore]
         public List<iatiactivity> relatedIatiActivities { get; set; }
@@ -93,7 +101,6 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             return tobj == null ? 0 : tobj.Sum(s => s.value.n().Value); ;
         }
 
-
         private decimal GetTotalTransactionAmt(string transactiontypecode)
         {
             decimal total = 0;
@@ -113,7 +120,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 }
             }
             return total;
-        } 
+        }
         #endregion
 
         [XmlIgnore]
@@ -132,6 +139,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
         }
 
+        #region for filter other DP's projects
         [XmlIgnore]
         private string ownedBy;
         [XmlIgnore]
@@ -173,7 +181,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public string IATICode
         {
             get { return string.IsNullOrWhiteSpace(FundSourceIDnIATICode) ? "" : FundSourceIDnIATICode.Split('~')[1]; }
-        }
+        } 
+        #endregion
 
         #region Wrappers
 

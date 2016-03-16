@@ -1,0 +1,57 @@
+﻿<div role="tabpanel" class="tab-pane active" id="other-dps">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>
+                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+                Activities from other DPs
+            </h2>
+            <p class="lead">
+                Other DPs have assigned the following
+                activities to you. This most likely means they think their
+                activities are contributions to projects that you manage.
+            </p>
+            <p class="lead">
+                Please map these activities against your own projects.
+                Doing this will allow other DPs to be acknowledged as
+                contributors to projects you manage. You can decide later
+                how (or whether) you want to show this data. For now, we
+                just want to establish the relationship.
+            </p>
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Activity title</th>
+                        <th>Reported by</th>
+                        <th>Map to project</th>
+                        <th style="min-width: 150px;">Map to trust fund</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="activity in AssignedActivities">
+                        <td>{{activity.Title}}</td>
+                        <td>{{activity.ReportingOrg}}</td>
+                        <td>
+                            <select class="form-control"
+                                    ng-model="activity.MappedProjectId"
+                                    ng-options="item.ProjectId as item.Title for item in Projects">
+                                <option value="">Select one...</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control"
+                                    ng-model="activity.MappedTrustFundId"
+                                    ng-options="item.ID as item.Name for item in TrustFunds">
+                                <option value="">Select one...</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input ng-click="OpenTFnCF(activity)" class="btn btn-primary" value="Map" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
