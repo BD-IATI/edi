@@ -42,7 +42,7 @@
             url: apiprefix + '/api/IATIImport/ImportProjects',
             data: JSON.stringify($scope.models)
         }).success(function (result) {
-            aler("Projects are imported.");
+            alert("Projects are imported.");
         });
 
     }
