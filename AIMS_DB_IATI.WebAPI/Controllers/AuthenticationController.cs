@@ -20,6 +20,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public IHttpActionResult Authenticate(AuthenticateViewModel viewModel)
         {
+            //Check Security Service
             MembershipService = new AccountMembershipService();
             if (MembershipService.ValidateUser(viewModel.Username, viewModel.Password))
             {
