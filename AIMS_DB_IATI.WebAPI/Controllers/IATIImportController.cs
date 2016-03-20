@@ -438,6 +438,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             };
         }
 
+        [HttpGet]
+        public List<transaction> GetTrustFundDetails(int trustFundId)
+        {
+            return new AimsDAL().GetTrustFundDetails(trustFundId);
+
+        }
         [AcceptVerbs("GET", "POST")]
         public int? ImportProjects(ProjectMapModel projectMapModel)
         {

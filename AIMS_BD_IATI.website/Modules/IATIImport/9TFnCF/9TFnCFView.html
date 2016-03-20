@@ -3,7 +3,7 @@
     <h4 class="modal-title">Trust Funds and Co-financing</h4>
 </div>
 <div class="modal-body">
-    <div role="tabpanel" class="tab-pane active" id="co-financing">
+    <div ng-hide="Activity.MappedProjectId == 0 || Activity.MappedProjectId == null" role="tabpanel" class="tab-pane active" id="co-financing">
     <div class="row">
         <div class="col-md-12">
             <h2>
@@ -88,7 +88,7 @@
     </div>
 </div>
 
-<div ng-hide="Activity.MappedTrustFundId == 0" role="tabpanel" class="tab-pane active" id="trust-funds">
+<div ng-hide="Activity.MappedTrustFundId == 0 || Activity.MappedTrustFundId == null" role="tabpanel" class="tab-pane active" id="trust-funds">
     <div class="row">
         <div class="col-md-12">
             <h2>
@@ -119,24 +119,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Canada</td>
-                        <td>20,000</td>
-                        <td><i>Cumulative, to date</i></td>
+                    <tr ng-repeat="trn in TrustFundDetails | filter : { transactiontype: {code : '2'} }">
+                        <td>{{trn.providerorg.narrative[0].Value}}</td>
+                        <td>{{trn.value.Value}}</td>
+                        <td>Cumulative, to date</td>
                         <td>AIMS</td>
                         <td></td>
                     </tr>
-                    <tr class="warning">
-                        <td>Netherlands</td>
-                        <td>50,000</td>
-                        <td>2016-01-01</td>
+                    <tr class="warning" ng-repeat="trn in Activity.transaction | filter : { transactiontype: {code : '2'} }">
+                        <td>{{trn.providerorg.narrative[0].Value}}</td>
+                        <td>{{trn.value.Value}}</td>
+                        <td>{{trn.transactiondate.isodate | date:'yyyy-MM-dd'}}</td>
                         <td>IATI</td>
-                        <td>
-                            <a class="btn btn-sm btn-default" href="#">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </a>
-                        </td>
+                        <td><input type="checkbox" ></td>
                     </tr>
+
                 </tbody>
             </table>
         </div>

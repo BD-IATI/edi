@@ -60,13 +60,13 @@ namespace AIMS_BD_IATI.DAL
         {
             var projects = (from project in dbContext.tblProjectInfoes
                             join fundSource in dbContext.tblFundSources on project.FundSourceId equals fundSource.Id
-                               where fundSource.IATICode == dp
+                            where fundSource.IATICode == dp
                             orderby project.Title
-                               select new LookupItem
-                               {
-                                   ID = project.Id,
-                                   Name = project.Title,
-                               }).ToList();
+                            select new LookupItem
+                            {
+                                ID = project.Id,
+                                Name = project.Title,
+                            }).ToList();
 
             return projects;
         }
@@ -74,16 +74,45 @@ namespace AIMS_BD_IATI.DAL
         {
             var projects = (from trustFund in dbContext.tblTrustFunds
                             join fundSource in dbContext.tblFundSources on trustFund.TFFundSourceId equals fundSource.Id
-                               where fundSource.IATICode == dp
-                               orderby trustFund.TFIdentifier
-                               select new LookupItem
-                               {
-                                   ID = trustFund.Id,
-                                   Name = trustFund.TFIdentifier,
-                               }).ToList();
+                            where fundSource.IATICode == dp
+                            orderby trustFund.TFIdentifier
+                            select new LookupItem
+                            {
+                                ID = trustFund.Id,
+                                Name = trustFund.TFIdentifier,
+                            }).ToList();
 
             return projects;
         }
+
+        public List<transaction> GetTrustFundDetails(int trustFundId)
+        {
+            var trustFunds = (from trustFund in dbContext.tblTrustFunds
+                              join trustFundDetail in dbContext.tblTrustFundDetails on trustFund.Id equals trustFundDetail.TrustFundId
+                              join fundSource in dbContext.tblFundSources on trustFundDetail.TFDFundSourceId equals fundSource.Id
+
+                              where trustFund.Id == trustFundId
+
+                              orderby trustFund.TFIdentifier
+                              select new
+                              {
+                                  FundSourceName = fundSource.FundSourceName,
+                                  Amount = trustFundDetail.TFDAmountInUSD,
+                              }).ToList();
+
+            var transactions = new List<transaction>();
+            foreach (var trustFund in trustFunds)
+            {
+                transactions.Add(new transaction
+                {
+                    transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("C") },
+                    providerorg = new transactionProviderorg { narrative = Statix.getNarativeArray(trustFund.FundSourceName) },
+                    value = new currencyType { currency = Statix.Currency, Value = trustFund.Amount ?? 0 },
+                });
+            }
+            return transactions;
+        }
+
         public int? UpdateProjects(List<iatiactivity> projects)
         {
             foreach (var project in projects)
@@ -111,7 +140,7 @@ namespace AIMS_BD_IATI.DAL
             var projects = (from project in dbContext.tblProjectInfoes
                             join fundSource in dbContext.tblFundSources on project.FundSourceId equals fundSource.Id
                             where fundSource.IATICode == dp
-                            && (project.IatiIdentifier != null || project.IatiIdentifier.Length > 0 
+                            && (project.IatiIdentifier != null || project.IatiIdentifier.Length > 0
                                 || project.DPProjectNo != null || project.DPProjectNo.Length > 0)
                             select project);
 
@@ -146,7 +175,7 @@ namespace AIMS_BD_IATI.DAL
                 //title
                 iatiActivityObj.title = new textRequiredType { narrative = Statix.getNarativeArray(project.Title) };
                 //description
-                iatiActivityObj.description = new iatiactivityDescription[1] { new iatiactivityDescription { narrative =Statix.getNarativeArray(project.Objective) } };
+                iatiActivityObj.description = new iatiactivityDescription[1] { new iatiactivityDescription { narrative = Statix.getNarativeArray(project.Objective) } };
 
                 //participating-org
                 List<participatingorg> participatingorgList = new List<participatingorg>();
@@ -200,7 +229,7 @@ namespace AIMS_BD_IATI.DAL
                     telephone = new List<contactinfoTelephone> { new contactinfoTelephone { Value = project.FocalPointDPContactTelephone } }.ToArray(),
                     email = new List<contactinfoEmail> { new contactinfoEmail { Value = project.FocalPointDPContactEmail } }.ToArray(),
                     website = new List<contactinfoWebsite> { new contactinfoWebsite { Value = project.FocalPointDPContactAddress } }.ToArray(),
-                    mailingaddress = new List<textRequiredType>{ new textRequiredType { narrative = Statix.getNarativeArray(project.FocalPointDPContactAddress) } }.ToArray()
+                    mailingaddress = new List<textRequiredType> { new textRequiredType { narrative = Statix.getNarativeArray(project.FocalPointDPContactAddress) } }.ToArray()
                 });
                 contactinfoList.Add(new contactinfo //GoB
                 {
@@ -220,7 +249,7 @@ namespace AIMS_BD_IATI.DAL
 
                 //recipient-country
                 List<recipientcountry> recipientcountryList = new List<recipientcountry>();
-                recipientcountryList.Add(new recipientcountry{ code = Statix.RecipientCountry, narrative = Statix.getNarativeArray(Statix.RecipientCountryName), percentage = 100});
+                recipientcountryList.Add(new recipientcountry { code = Statix.RecipientCountry, narrative = Statix.getNarativeArray(Statix.RecipientCountryName), percentage = 100 });
                 iatiActivityObj.recipientcountry = recipientcountryList.ToArray();
 
                 //recipient-region
@@ -244,7 +273,7 @@ namespace AIMS_BD_IATI.DAL
                 //default-aid-type
                 iatiActivityObj.defaultaidtype = new defaultaidtype { code = project.tblAssistanceType.n().IATICode };
 
-               //default-tied-status
+                //default-tied-status
 
                 //budget
 
@@ -252,19 +281,20 @@ namespace AIMS_BD_IATI.DAL
                 List<planneddisbursement> planneddisbursementList = new List<planneddisbursement>();
                 var planneddisbursements = project.tblProjectFundingPlannedDisbursements.ToList();
                 foreach (var pd in planneddisbursements)
-	            {
-		             planneddisbursementList.Add(new planneddisbursement{
+                {
+                    planneddisbursementList.Add(new planneddisbursement
+                    {
                         type = "1", //1=Origin, 2=Revised 
-                        periodstart = new planneddisbursementPeriodstart{ isodate = pd.PlannedDisbursementPeriodFromDate ?? DateTime.MinValue },
-                        periodend = new planneddisbursementPeriodend{ isodate = pd.PlannedDisbursementPeriodToDate ?? DateTime.MinValue},
-                        value = new currencyType { currency = Statix.Currency, Value = pd.PlannedDisburseAmountInUSD ?? 0, valuedate = pd.PlannedDisbursementPeriodFromDate ?? DateTime.MinValue},
+                        periodstart = new planneddisbursementPeriodstart { isodate = pd.PlannedDisbursementPeriodFromDate ?? DateTime.MinValue },
+                        periodend = new planneddisbursementPeriodend { isodate = pd.PlannedDisbursementPeriodToDate ?? DateTime.MinValue },
+                        value = new currencyType { currency = Statix.Currency, Value = pd.PlannedDisburseAmountInUSD ?? 0, valuedate = pd.PlannedDisbursementPeriodFromDate ?? DateTime.MinValue },
                         //provider-org
                         //receiver-org
                     });
-	            }
-               
+                }
+
                 iatiActivityObj.planneddisbursement = planneddisbursementList.ToArray();
-                
+
                 //capital-spend
 
                 #region Transaction
@@ -389,29 +419,30 @@ namespace AIMS_BD_IATI.DAL
                 }
 
                 //Assign all transaction
-                iatiActivityObj.transaction = transactions.ToArray(); 
+                iatiActivityObj.transaction = transactions.ToArray();
                 #endregion
 
                 //document-link
                 List<documentlink> documentlinkList = new List<documentlink>();
-                var documents =  project.tblProjectAttachments.ToList();
+                var documents = project.tblProjectAttachments.ToList();
                 foreach (var document in documents)
-	            {
+                {
                     List<documentlinkLanguage> documentlinkLanguageList = new List<documentlinkLanguage>();
-                    documentlinkLanguageList.Add(new documentlinkLanguage{ code = Statix.Language});
+                    documentlinkLanguageList.Add(new documentlinkLanguage { code = Statix.Language });
 
                     List<documentlinkCategory> documentlinkCategoryList = new List<documentlinkCategory>();
-                    documentlinkCategoryList.Add(new documentlinkCategory{ code = document.tblDocumentCategory.n().IATICode });
+                    documentlinkCategoryList.Add(new documentlinkCategory { code = document.tblDocumentCategory.n().IATICode });
 
-		            documentlinkList.Add(new documentlink{ 
-                        url = document.AttachmentFileURL ?? Statix.DocumentURL+document.Id, 
-                            //format = 
-                            title = new textRequiredType{ narrative = Statix.getNarativeArray(document.AttachmentTitle) },
-                            language = documentlinkLanguageList.ToArray(),
-                            category = documentlinkCategoryList.ToArray()
-                    } );
-	            }
-                iatiActivityObj.documentlink =  documentlinkList.ToArray();
+                    documentlinkList.Add(new documentlink
+                    {
+                        url = document.AttachmentFileURL ?? Statix.DocumentURL + document.Id,
+                        //format = 
+                        title = new textRequiredType { narrative = Statix.getNarativeArray(document.AttachmentTitle) },
+                        language = documentlinkLanguageList.ToArray(),
+                        category = documentlinkCategoryList.ToArray()
+                    });
+                }
+                iatiActivityObj.documentlink = documentlinkList.ToArray();
 
                 //related-activity
 
