@@ -67,7 +67,7 @@
                                      aria-valuemin="0" aria-valuemax="100"
                                      aria-valuenow="{{(m.IATIValue.TotalDisbursment / m.IATIValue.TotalCommitment) * 100}}"
                                      style="width:{{(m.IATIValue.TotalDisbursment / m.IATIValue.TotalCommitment) * 100; }}%;">
-                                    USD {{m.IATIValue.TotalDisbursment}}
+                                    {{model.iatiActivity.defaultcurrency}} {{m.IATIValue.TotalDisbursment}}
                                 </div>
                             </div>
                         </dd>
