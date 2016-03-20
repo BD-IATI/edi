@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace AIMS_BD_IATI.WebAPI.Controllers
@@ -29,5 +30,15 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             return Ok(new { success = false, message = "User Id or password is incorrect" });
         }
+
+        [Route("logout")]
+        [HttpGet]
+        public bool Logout()
+        {
+            HttpContext.Current.Session.Clear();
+            HttpContext.Current.Session.Abandon();
+            return true;
+        }
+
     }
 }
