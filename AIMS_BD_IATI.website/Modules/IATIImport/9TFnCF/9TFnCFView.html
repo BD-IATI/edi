@@ -1,0 +1,153 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()">&times;</button>
+    <h4 class="modal-title">Trust Funds and Co-financing</h4>
+</div>
+<div class="modal-body">
+    <div role="tabpanel" class="tab-pane active" id="co-financing">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>
+                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+                Co-financing
+            </h2>
+            <p class="lead">
+                For co-financed projects, we need to
+                establish which data should be retained - commitments and
+                disbursements from all reporting organisations or only
+                from one.
+            </p>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>{{Activity.Title}}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Commitments</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>DP</th>
+                        <th>Value (USD)</th>
+                        <th>Date</th>
+                        <th>Source</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="trn in Project.transaction | filter : { transactiontype: {code : '2'} }">
+                        <td>{{trn.providerorg.narrative[0].Value}}</td>
+                        <td>{{trn.value.Value}}</td>
+                        <td>{{trn.transactiondate.isodate | date:'yyyy-MM-dd'}}</td>
+                        <td>AIMS</td>
+                        <td></td>
+                    </tr>
+                    <tr class="warning" ng-repeat="trn in Activity.transaction | filter : { transactiontype: {code : '2'} }">
+                        <td>{{trn.providerorg.narrative[0].Value}}</td>
+                        <td>{{trn.value.Value}}</td>
+                        <td>{{trn.transactiondate.isodate | date:'yyyy-MM-dd'}}</td>
+                        <td>IATI</td>
+                        <td><input type="checkbox" ></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h4>Disbursements</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>DP</th>
+                        <th>Value (USD)</th>
+                        <th>Date</th>
+                        <th>Source</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="trn in Project.transaction | filter : { transactiontype: {code : '3'} }">
+                        <td>{{trn.providerorg.narrative[0].Value}}</td>
+                        <td>{{trn.value.Value}}</td>
+                        <td>{{trn.transactiondate.isodate | date:'yyyy-MM-dd'}}</td>
+                        <td>AIMS</td>
+                        <td></td>
+                    </tr>
+                    <tr class="warning" ng-repeat="trn in Activity.transaction | filter : { transactiontype: {code : '3'} }">
+                        <td>{{trn.providerorg.narrative[0].Value}}</td>
+                        <td>{{trn.value.Value}}</td>
+                        <td>{{trn.transactiondate.isodate | date:'yyyy-MM-dd'}}</td>
+                        <td>IATI</td>
+                        <td><input type="checkbox" ></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div ng-hide="Activity.MappedTrustFundId == 0" role="tabpanel" class="tab-pane active" id="trust-funds">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>
+                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+                Trust Funds
+            </h2>
+            <p class="lead">
+                For Trust Funds, we just need to establish
+                the commitments from each DP. You can remove any
+                incorrect commitments reported by other IATI DPs below.
+                New commitments are marked
+                <span class="label label-warning">yellow</span>.
+            </p>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Trust Fund TF015113</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>DP</th>
+                        <th>Commitments (USD)</th>
+                        <th>Date</th>
+                        <th>Source</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Canada</td>
+                        <td>20,000</td>
+                        <td><i>Cumulative, to date</i></td>
+                        <td>AIMS</td>
+                        <td></td>
+                    </tr>
+                    <tr class="warning">
+                        <td>Netherlands</td>
+                        <td>50,000</td>
+                        <td>2016-01-01</td>
+                        <td>IATI</td>
+                        <td>
+                            <a class="btn btn-sm btn-default" href="#">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="Save()">Save</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
+
+
