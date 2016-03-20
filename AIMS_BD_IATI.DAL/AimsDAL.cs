@@ -120,6 +120,9 @@ namespace AIMS_BD_IATI.DAL
             foreach (var project in projects)
             {
                 var iatiActivityObj = new iatiactivity();
+
+                iatiActivityObj.IsDataSourceAIMS = true;
+
                 iatiActivityObj.ProjectId = project.Id;
                 //iati-activity
                 iatiActivityObj.lastupdateddatetime = DateTime.Now;

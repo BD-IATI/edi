@@ -33,6 +33,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     public partial class iatiactivity
     {
         public static List<FundSourceLookupItem> FundSources { get; set; }
+        public bool IsDataSourceAIMS { get; set; }
 
         public iatiactivity()
         {
@@ -91,7 +92,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("D"));
+                return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("D")) 
+                    + (IsDataSourceAIMS == false ? GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("E")) : 0);
             }
         }
 

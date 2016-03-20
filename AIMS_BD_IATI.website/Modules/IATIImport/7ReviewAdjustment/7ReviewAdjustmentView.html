@@ -28,7 +28,7 @@
             <h3>{{m.iatiActivity.Title}} <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)"><i class="glyphicon glyphicon-pencil"></i></a></h3>
             <div class="progress">
                 <div class="progress-bar" role="progressbar" aria-valuenow="{{((m.iatiActivity.TotalDisbursment + 1) / (m.iatiActivity.TotalCommitment + 1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((m.iatiActivity.TotalDisbursment+1) / (m.iatiActivity.TotalCommitment+1)) * 100; }}%;">
-                    <strong>IATI</strong>: USD {{m.iatiActivity.TotalDisbursment}} out of {{m.iatiActivity.TotalCommitment}}
+                    <strong>IATI</strong>: {{m.iatiActivity.defaultcurrency}}  {{m.iatiActivity.TotalDisbursment}} out of {{m.iatiActivity.TotalCommitment}}
                 </div>
             </div>
             <div class="progress">
