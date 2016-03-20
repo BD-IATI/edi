@@ -38,9 +38,9 @@ namespace AIMS_BD_IATI.WebAPI.Modules
             var username = credentialsArray[0];
             var password = credentialsArray[1];
 
-            /* REPLACE THIS WITH REAL AUTHENTICATION
-            ----------------------------------------------*/
-            if (!(username == "test" && password == "test"))
+            //Check Security Service
+            AIMS_BD_IATI.WebAPI.Models.Authentication.AccountMembershipService MembershipService = new AIMS_BD_IATI.WebAPI.Models.Authentication.AccountMembershipService();
+            if (!MembershipService.ValidateUser(username, password))
             {
                 return false;
             }
