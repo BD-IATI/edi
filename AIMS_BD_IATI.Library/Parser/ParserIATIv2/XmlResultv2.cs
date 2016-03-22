@@ -8,8 +8,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
     /// <summary>
     /// The "XmlResult" is wrapper class of "iatiactivities" which was generated using following steps:
-    /// 1. "iati-activities-schema.xsd" file was downloaded from "http://iatistandard.org/201/schema/downloads/iati-activities-schema.xsd"
-    /// 2. "iati-common.xsd" file was downloaded from "http://iatistandard.org/201/schema/downloads/iati-common.xsd"
+    /// 1. "iati-activities-schema.xsd" file was downloaded from "http://iatistandard.org/202/schema/downloads/iati-activities-schema.xsd"
+    /// 2. "iati-common.xsd" file was downloaded from "http://iatistandard.org/202/schema/downloads/iati-common.xsd"
     /// 3. "iati-activities-schema.cs" was generated using following Visual Studio 2013 commad tool: 
     ///     "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\Shortcuts\Developer Command Prompt for VS2013"
     /// 4. Put the "iati-activities-schema.xsd" and "iati-common.xsd" file in the same directory like D:

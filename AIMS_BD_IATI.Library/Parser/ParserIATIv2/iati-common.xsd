@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="2.01">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="2.02">
 
   <xsd:annotation>
     <xsd:documentation xml:lang="en">
       International Aid Transparency Initiative: Common Markup Components
 
-      Release 2.01, 2014-10-21
+      Release 2.02, 2015-12-07
 
       This schema is not meant to be used on its own: it contains
       common shared markup components for the IATI activities and
@@ -17,8 +16,7 @@
   </xsd:annotation>
 
   <!-- for xml:lang -->
-  <xsd:import namespace="http://www.w3.org/XML/1998/namespace"
-              schemaLocation="xml.xsd"/>
+  <xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
 
   <!--
       Common elements.
@@ -63,7 +61,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="narrative" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="narrative" minOccurs="1" maxOccurs="unbounded"/>
         <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
       <xsd:anyAttribute processContents="lax" namespace="##other"/>
@@ -160,7 +158,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element ref="narrative" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="narrative" minOccurs="0" maxOccurs="unbounded"/>
       <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
     <xsd:anyAttribute processContents="lax" namespace="##other"/>
@@ -174,7 +172,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element ref="narrative" minOccurs="1" maxOccurs="unbounded" />
+      <xsd:element ref="narrative" minOccurs="1" maxOccurs="unbounded"/>
       <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
     <xsd:anyAttribute processContents="lax" namespace="##other"/>
