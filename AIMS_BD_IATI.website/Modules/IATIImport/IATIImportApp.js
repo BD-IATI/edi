@@ -50,6 +50,18 @@ iatiDataImporterApp.config(function ($routeProvider) {
             templateUrl: '9TFnCF/9TFnCFView.html',
             controller: '9TFnCFController'
         })
+        .when('/Dashboard', {
+            templateUrl: 'Dashboard/DashboardView.html',
+            controller: 'DashboardController'
+        })
+        .when('/MergeConflictAlert', {
+            templateUrl: 'MergeConflictAlert/MergeConflictAlertView.html',
+            controller: 'MergeConflictAlertController'
+        })
+        .when('/Transaction', {
+            templateUrl: 'Transaction/TransactionView.html',
+            controller: 'TransactionController'
+        })
         .otherwise({ redirectTo: '/login' });
 })
 

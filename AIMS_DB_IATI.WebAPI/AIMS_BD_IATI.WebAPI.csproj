@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\IATIImportController.cs" />
     <Compile Include="Controllers\IATIConverterController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Models\IATIImport\GeneralPreferences.cs" />
     <Compile Include="Models\IATIImport\HeirarchyModel.cs" />
     <Compile Include="Models\IATIImport\ProjectMapModel.cs" />
+    <Compile Include="Models\Sessions.cs" />
     <Compile Include="Modules\BasicAuthHttpModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\AIMSSecurityService\Reference.cs">
