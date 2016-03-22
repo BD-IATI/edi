@@ -1,4 +1,4 @@
-﻿angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http,$timeout) {
+﻿angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout) {
     $scope.ImplementingOrgs = [];
     $scope.RelevantActivities = [];
 
@@ -35,11 +35,6 @@
     };
 
 
-
-
-
-
-
     $scope.SaveAndNext = function () {
         $http({
             method: 'POST',
@@ -62,7 +57,9 @@
 
     }
     $scope.NextWithoutSaving = function () {
-        document.getElementById('btn4Projects').click(); //redirect
+        $timeout(function () {
+            document.getElementById('btn4Projects').click(); //redirect
+        });
     }
 
 });

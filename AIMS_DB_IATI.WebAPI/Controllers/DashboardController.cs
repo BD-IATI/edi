@@ -10,9 +10,9 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
 
     public class DashboardController : ApiController
     {
-        public GetDashboardData()
+        public object GetDashboardData()
         {
-
+            return null;
         }
     }
 }

@@ -10,57 +10,10 @@ iatiDataImporterApp.config(function ($routeProvider) {
             controller: 'LoginController',
             templateUrl: '../Authentication/LoginView.html'
         })
-        .when('/0Begin', {
-            templateUrl: '0Begin/0BeginView.html',
-            controller: '0BeginController'
-        })
-        .when('/1Hierarchy', {
-            templateUrl: '1Hierarchy/1HierarchyView.html',
-            controller: '1HierarchyController'
-        })
-        .when('/2FilterBD', {
-            templateUrl: '2FilterBD/2FilterBDView.html',
-            controller: '2FilterBDController'
-        })
-        .when('/3FilterDP', {
-            templateUrl: '3FilterDP/3FilterDPView.html',
-            controller: '3FilterDPController'
-        })
-        .when('/4Projects', {
-            templateUrl: '4Projects/4ProjectsView.html',
-            controller: '4ProjectsController'
-        })
-        .when('/5Match', {
-            templateUrl: '5Match/5MatchView.html',
-            controller: '5MatchController'
-        })
-        .when('/6GeneralPreferences', {
-            templateUrl: '6GeneralPreferences/6GeneralPreferencesView.html',
-            controller: '6GeneralPreferencesController'
-        })
-        .when('/7ReviewAdjustment', {
-            templateUrl: '7ReviewAdjustment/7ReviewAdjustmentView.html',
-            controller: '7ReviewAdjustmentController'
-        })
-        .when('/9OtherDPsActivities', {
-            templateUrl: '9OtherDPsActivities/9OtherDPsActivitiesView.html',
-            controller: '9OtherDPsActivitiesController'
-        })
-        .when('/9TFnCF', {
-            templateUrl: '9TFnCF/9TFnCFView.html',
-            controller: '9TFnCFController'
-        })
-        .when('/Dashboard', {
-            templateUrl: 'Dashboard/DashboardView.html',
-            controller: 'DashboardController'
-        })
-        .when('/MergeConflictAlert', {
-            templateUrl: 'MergeConflictAlert/MergeConflictAlertView.html',
-            controller: 'MergeConflictAlertController'
-        })
-        .when('/Transaction', {
-            templateUrl: 'Transaction/TransactionView.html',
-            controller: 'TransactionController'
+        .when('/:name*', {
+            templateUrl: function(params){
+                return params.name + '/' + params.name + 'View.html';
+            }
         })
         .otherwise({ redirectTo: '/login' });
 })
