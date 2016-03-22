@@ -11,6 +11,7 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
     public class ProjectFieldMapModel
     {
         //public string OrgId { get; set; }
+        public bool IsManuallyMapped { get; set; }
         public iatiactivity iatiActivity { get; set; }
         public iatiactivity aimsProject { get; set; }
         public List<FieldMap> Fields { get; set; }
@@ -65,6 +66,7 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
                 Fields.Find(f => f.Field == preference.FieldName).n().IsSourceIATI = preference.IsSourceIATI;
             }
         }
+
         public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject,
             List<FieldMappingPreferenceActivity> activityPreferences)
             : this(_iatiActivity, _aimsProject)

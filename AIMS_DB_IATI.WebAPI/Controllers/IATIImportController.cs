@@ -306,7 +306,25 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             };
             return s_ProjectMapModel;
         }
+        [AcceptVerbs("GET", "POST")]
+        public bool SubmitManualMatching(List<iatiactivity> projects)
+        {
+            s_ProjectMapModel.AimsProjectsNotInIati = projects;
 
+            s_ProjectMapModel.MatchedProjects.RemoveAll(r => r.IsManuallyMapped);
+
+            //add manually matched projects
+            foreach (var project in s_ProjectMapModel.AimsProjectsNotInIati)
+            {
+                if (project.MatchedProjects.Count > 0)
+                {
+                    s_ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(project.MatchedProjects.First(), project) { IsManuallyMapped = true });
+                }
+            }
+
+
+            return true;
+        }
         [HttpGet]
         public ProjectFieldMapModel GetGeneralPreferences()
         {
@@ -390,8 +408,10 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (GeneralPreference != null)
                 s_GeneralPreferences = GeneralPreference;
 
+            //set general or activity preferences
             foreach (var mapModel in s_ProjectMapModel.MatchedProjects)
             {
+
                 var activityPreference = new AimsDbIatiDAL().GetFieldMappingPreferenceActivity(mapModel.iatiActivity.IatiIdentifier);
                 foreach (var field in mapModel.Fields)
                 {
