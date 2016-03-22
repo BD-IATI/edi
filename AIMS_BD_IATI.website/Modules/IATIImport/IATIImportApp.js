@@ -11,7 +11,7 @@ iatiDataImporterApp.config(function ($routeProvider) {
             templateUrl: '../Authentication/LoginView.html'
         })
         .when('/:name*', {
-            templateUrl: function(params){
+            templateUrl: function (params) {
                 return params.name + '/' + params.name + 'View.html';
             }
         })
@@ -31,7 +31,7 @@ iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http',
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in
             if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
-                $location.path('/#/login');
+                $location.path('/login');
             }
         });
     }]);

@@ -171,6 +171,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Authentication\AuthenticateViewModel.cs" />
+    <Compile Include="Models\IATIImport\DashboardModel.cs" />
     <Compile Include="Models\IATIImport\FilterBDModel.cs" />
     <Compile Include="Models\IATIImport\GeneralPreferences.cs" />
     <Compile Include="Models\IATIImport\HeirarchyModel.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AIMS_DB_IATI.WebAPI.Models.IATIImport;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,9 +11,10 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
 
     public class DashboardController : ApiController
     {
-        public object GetDashboardData()
+        public DashboardModel GetDashboardData()
         {
-            return null;
+
+            return new DashboardModel { LastDownloadDate = DateTime.Now.AddDays(-50) };
         }
     }
 }
