@@ -54,7 +54,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             //iatiactivities
             if (objSource != null && objSource.iatiactivities != null && objSource.iatiactivities.Items != null)
             {
-                objSource.iatiactivities.version = (decimal)2.01;
+                objSource.iatiactivities.version = (decimal)2.02;
                 //activity
                 foreach (var item in objSource.iatiactivities.Items)
                 {
@@ -79,7 +79,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                             var desActivity = objDestinaiton.iatiactivities.iatiactivity.FirstOrDefault(q => q.iatiidentifier.Value == srcIatiidentifier);
                             desActivity.AnyAttr[0].Prefix = "";
-                            desActivity.AnyAttr[0].Value = "2.01";
+                            desActivity.AnyAttr[0].Value = "2.02";
 
                             int otherIdentifierCounter = 0;
                             foreach (var activityItem in activity.Items)
@@ -335,7 +335,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
         public static string getActivityDateCode(string name)
         {
-            //http://iatistandard.org/201/codelists/ActivityDateType/
+            //http://iatistandard.org/202/codelists/ActivityDateType/
             //1	Planned start
             //2	Actual start
             //3	Planned End	
