@@ -22,6 +22,9 @@ iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http',
     function ($rootScope, $location, $cookieStore, $http) {
         $rootScope.IsImportFromOtherDP = false;
 
+            $rootScope.getCookie = function(key){ return $cookieStore.get(key) || {}; };
+            $rootScope.putCookie = function(key,val){$cookieStore.put(key,val) || {}; };
+
         // keep user logged in after page refresh
         $rootScope.globals = $cookieStore.get('globals') || {};
         if ($rootScope.globals.currentUser) {

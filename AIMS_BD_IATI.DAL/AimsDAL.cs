@@ -11,6 +11,51 @@ namespace AIMS_BD_IATI.DAL
     public class AimsDAL
     {
         AIMS_DBEntities dbContext = new AIMS_DBEntities();
+        public List<DPLookupItem> GetFundSources(string userId)
+        {
+            var FundSource = new List<DPLookupItem>();
+
+            var userInfo = dbContext.tblUserRegistrationInfoes.FirstOrDefault(f => f.UserId == userId);
+
+            if (userInfo != null && userInfo.UserId != "guest")
+            {
+                if (userInfo.ProjectPermissionType == 0) //0 = All
+                {
+                    FundSource = (from fundSource in dbContext.tblFundSources
+                                  where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
+                                  orderby fundSource.FundSourceName
+                                  select new DPLookupItem
+                                  {
+                                      ID = fundSource.IATICode,
+                                      Name = fundSource.FundSourceName + " (" + (fundSource.Acronym ?? "") + ")",
+                                      AimsFundSourceId = fundSource.Id
+                                  }).ToList();
+                }
+                else
+                {
+                    if (userInfo.ProjectPermissionType == 1) //1= Projectwise
+                    {
+                        FundSource = null;
+                    }
+                    else if (userInfo.ProjectPermissionType == 2)
+                    {
+                        FundSource = (from fundSource in dbContext.tblFundSources
+                                      join permitted in dbContext.tblUserFundSources.Where(permitted => permitted.UserId == userInfo.Id) on fundSource.Id equals permitted.FundSourceId
+                                      where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
+                                      orderby fundSource.FundSourceName
+                                      select new DPLookupItem
+                                      {
+                                          ID = fundSource.IATICode,
+                                          Name = fundSource.FundSourceName + " (" + (fundSource.Acronym ?? "") + ")",
+                                          AimsFundSourceId = fundSource.Id
+                                      }).ToList();
+
+                    }
+                }
+            }
+            return FundSource;
+        }
+
 
         private string getIdentifer(tblProjectInfo project)
         {
@@ -462,6 +507,10 @@ namespace AIMS_BD_IATI.DAL
             return iatiactivities;
         }
 
+        public object GetExchangeRate(DateTime date, string fromCurrency)
+        {
+            return null;
+        }
     }
 
 

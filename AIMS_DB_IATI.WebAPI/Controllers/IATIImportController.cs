@@ -79,7 +79,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [HttpGet]
         public List<DPLookupItem> GetFundSources()
         {
-            return new AimsDAL().GetFundSourcesDropdownData();
+            return new AimsDAL().GetFundSources(Sessions.UserId);
         }
 
         [HttpGet]
@@ -93,7 +93,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public HeirarchyModel GetHierarchyData(DPLookupItem dp)
         {
-            bool isDPChanged =Sessions.activitiesContainer.n().DP != dp.ID;
+            bool isDPChanged = Sessions.activitiesContainer.n().DP != dp.n().ID;
 
             if (isDPChanged)
             {
@@ -329,26 +329,26 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [HttpGet]
         public ProjectFieldMapModel GetGeneralPreferences()
         {
-            var savedPreferences = new AimsDbIatiDAL().GetFieldMappingPreferenceGeneral();
+            var savedPreferences = new AimsDbIatiDAL().GetFieldMappingPreferenceGeneral(Sessions.activitiesContainer.DP);
 
-            var returnModel = (from a in Sessions.ProjectMapModel.MatchedProjects
+            var returnModel = (from a in Sessions.ProjectMapModel.n().MatchedProjects.n()
                                select new ProjectFieldMapModel(a.iatiActivity, a.aimsProject, savedPreferences)).FirstOrDefault();
 
             if (returnModel == null)
             {
-                List<FieldMap> flds = new List<FieldMap>();
-                foreach (var item in savedPreferences)
-                {
-                    FieldMap fld = new FieldMap
-                    {
-                        Field = item.FieldName,
-                        IsSourceIATI = item.IsSourceIATI,
-                        AIMSValue = "No matched projects",
-                        IATIValue = "No matched activities"
-                    };
-                    flds.Add(fld);
-                }
-                returnModel = new ProjectFieldMapModel { Fields = flds };
+                //List<FieldMap> flds = new List<FieldMap>();
+                //foreach (var item in savedPreferences)
+                //{
+                //    FieldMap fld = new FieldMap
+                //    {
+                //        Field = item.FieldName,
+                //        IsSourceIATI = item.IsSourceIATI,
+                //        AIMSValue = item.FieldName,
+                //        IATIValue = item.FieldName
+                //    };
+                //    flds.Add(fld);
+                //}
+                returnModel = new ProjectFieldMapModel(new iatiactivity(),new iatiactivity(),savedPreferences);
             }
            Sessions.GeneralPreferences = returnModel;
 

@@ -1,4 +1,5 @@
 ﻿using AIMS_BD_IATI.WebAPI.Models.Authentication;
+using AIMS_DB_IATI.WebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             MembershipService = new AccountMembershipService();
             if (MembershipService.ValidateUser(viewModel.Username, viewModel.Password))
             {
+                Sessions.UserId = viewModel.Username;
+
+
                 return Ok(new { success = true });
             }
 

@@ -18,7 +18,7 @@
                             <div class="col-sm-8">
 
                                 <select class="form-control" id="beginDPselect"
-                                        ng-model="$root.selectedFundSource"
+                                        ng-model="$root.selectedFundSource" ng-change="$root.putCookie('selectedFundSource',$root.selectedFundSource)"
                                         ng-options="item as item.Name for item in FundSources">
                                     <option value="">Select one...</option>
                                 </select>
@@ -29,8 +29,8 @@
                         </div>
                         <div class="form-group" ng-show="selectedFundSource != null">
                             <div class="col-md-offset-1 col-md-10 btnFooter">
-                                <a class="btn btn-default" ng-href="#/9OtherDPsActivities">Import Other DPs Activities</a>
-                                <a class="btn btn-default" ng-href="#/1Hierarchy">Next</a>
+                                <a hidden ng-href="#/9OtherDPsActivities">Import Other DPs Activities</a>
+                                <a class="btn btn-default" ng-href="#/Dashboard">Next</a>
                             </div>
                         </div>
                     </form>

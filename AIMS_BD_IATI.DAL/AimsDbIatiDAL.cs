@@ -33,6 +33,7 @@ namespace AIMS_BD_IATI.DAL
                     //a.AssignedDate = DateTime.Now;
 
                     a.DownloadDatePrev = a.DownloadDate;
+                    a.DownloadDate = DateTime.Now;
                 }
                 else
                 {
@@ -149,6 +150,8 @@ namespace AIMS_BD_IATI.DAL
             };
         }
 
+
+
         public int SaveFieldMappingPreferenceGeneral(List<FieldMappingPreferenceGeneral> fieldMaps)
         {
             foreach (var fieldMap in fieldMaps)
@@ -198,9 +201,9 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
-        public List<FieldMappingPreferenceGeneral> GetFieldMappingPreferenceGeneral()
+        public List<FieldMappingPreferenceGeneral> GetFieldMappingPreferenceGeneral(string dp)
         {
-            var q = (from fieldMap in dbContext.FieldMappingPreferenceGenerals
+            var q = (from fieldMap in dbContext.FieldMappingPreferenceGenerals.Where(w => w.OrgId == dp)
                      select fieldMap).ToList();
 
             return q;
@@ -215,6 +218,51 @@ namespace AIMS_BD_IATI.DAL
             return q;
         }
 
+        public DateTime? GetLastDownloadDate(string dp)
+        {
+            var q = (from a in dbContext.Activities.Where(a => a.OrgId == dp)
+                     orderby a.DownloadDate descending
+                     select a.DownloadDate).FirstOrDefault();
+
+            return q;
+
+        }
+        public List<ActivityModel> GetDelegatedActivities(string dp)
+        {
+            var q = (from a in dbContext.Activities.Where(a => a.OrgId == dp && a.AssignedOrgId != dp)
+
+                     select new ActivityModel
+                     {                 
+                         IatiIdentifier = a.IatiIdentifier,
+                         AssignedOrgId = a.AssignedOrgId,
+                         AssignedDate = a.AssignedDate
+                     }).ToList();
+
+
+            //var result = ParseActivityXML(q);
+
+
+            return q;
+
+        }
+
+
+        public class ActivityModel
+        {
+            public int Id { get; set; }
+            public string OrgId { get; set; }
+            public string IatiIdentifier { get; set; }
+            public string IatiActivity { get; set; }
+            public Nullable<System.DateTime> DownloadDate { get; set; }
+            public string IatiActivityPrev { get; set; }
+            public Nullable<System.DateTime> DownloadDatePrev { get; set; }
+            public Nullable<int> Hierarchy { get; set; }
+            public Nullable<int> ParentHierarchy { get; set; }
+            public string AssignedOrgId { get; set; }
+            public Nullable<System.DateTime> AssignedDate { get; set; }
+            public Nullable<int> MappedProjectId { get; set; }
+            public Nullable<int> MappedTrustFundId { get; set; }
+        }
 
     }
 }

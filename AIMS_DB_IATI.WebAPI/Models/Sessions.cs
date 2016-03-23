@@ -15,7 +15,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
             get
             {
                 return HttpContext.Current.Session["iatiactivityContainer"] == null ?
-                    null
+                    new iatiactivityContainer()
                     : (iatiactivityContainer)HttpContext.Current.Session["iatiactivityContainer"];
             }
             set { HttpContext.Current.Session["iatiactivityContainer"] = value; }
@@ -36,7 +36,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
             get
             {
                 return HttpContext.Current.Session["GeneralPreferences"] == null ?
-                    null
+                    new ProjectFieldMapModel()
                     : (ProjectFieldMapModel)HttpContext.Current.Session["GeneralPreferences"];
             }
             set { HttpContext.Current.Session["GeneralPreferences"] = value; }
@@ -47,7 +47,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
             get
             {
                 return HttpContext.Current.Session["ProjectMapModel"] == null ?
-                    null
+                    new ProjectMapModel()
                     : (ProjectMapModel)HttpContext.Current.Session["ProjectMapModel"];
             }
             set { HttpContext.Current.Session["ProjectMapModel"] = value; }
@@ -64,5 +64,14 @@ namespace AIMS_DB_IATI.WebAPI.Models
             set { HttpContext.Current.Session["FundSources"] = value; }
         }
 
+
+        public static string UserId
+        {
+            get
+            {
+                return Convert.ToString(HttpContext.Current.Session["UserId"]);
+            }
+            set { HttpContext.Current.Session["UserId"] = value; }
+        }
     }
 }

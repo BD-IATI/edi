@@ -4,7 +4,7 @@
             <h2>IATI Import Module</h2>
             <p class="lead">
                 This module allows you to manage the import
-                of IATI data for <b>DFID</b>.
+                of IATI data for <b ng-bind="$root.getCookie('selectedFundSource').Name"></b>.
             </p>
             <hr />
         </div>
@@ -13,7 +13,7 @@
         <div class="col-md-12">
             <h3>Summary</h3>
             <p>
-                IATI data last downloaded: <b ng-bind="model.LastDownloadDate | date:'yyyy-MM-dd HH:mm:ss Z'"> 21st March, 2016 at 20:00 (one day ago)</b>
+                IATI data last downloaded: <b> <span ng-bind="model.LastDownloadDate | date:'yyyy-MM-dd HH:mm:ss'"> </span> (<span ng-bind="timeSince(model.LastDownloadDate)"></span>)</b>
             </p>
         </div>
     </div>
@@ -21,13 +21,13 @@
         <div class="col-md-6">
             <h4>New activities</h4>
             <p>We found data on <b>6</b> new activities.</p>
-            <p><a class="btn btn-sm btn-success">Begin import &raquo;</a></p>
+            <p><a class="btn btn-sm btn-success" href="#/1Hierarchy">Begin import &raquo;</a></p>
         </div>
         <div class="col-md-6">
             <h4>Options</h4>
             <p>Your import preferences generally favour using IATI data.</p>
             <p>
-                <a class="btn btn-sm btn-default">
+                <a class="btn btn-sm btn-default" ng-click="OpenAdjustImportPreferences()">
                     Adjust import
                     preferences &raquo;
                 </a>
@@ -103,6 +103,18 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr ng-repeat="da in model.DelegatedActivities">
+                        <td ng-bind="da.AssignedDate | date:'yyyy-MM-dd'"></td>
+                        <td><code ng-bind="da.IatiIdentifier"></code></td>
+                        <td ng-bind="da.AssignedOrgId"></td>
+                        <td><a class="btn btn-success"><i class="glyphicon glyphicon-share-alt"></i> Recall</a></td>
+                    </tr>
+                    <!--<tr>
+                        <td>2016-02-15</td>
+                        <td><code>GB-1-12345</code></td>
+                        <td>World Bank</td>
+                        <td><a data-toggle="modal" data-target="#recallExplanation" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Recall not possible</a></td>
+                    </tr>
                     <tr>
                         <td>2016-03-20</td>
                         <td><code>GB-1-23456</code></td>
@@ -114,9 +126,10 @@
                         <td><code>GB-1-12345</code></td>
                         <td>World Bank</td>
                         <td><a data-toggle="modal" data-target="#recallExplanation" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Recall not possible</a></td>
-                    </tr>
+                    </tr>-->
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
