@@ -151,6 +151,7 @@
         <AssociationConnector Association="AIMS_DBModel.FK_tblTrustFundDetail_tblTrustFund" ManuallyRouted="false" />
         <AssociationConnector Association="AIMS_DBModel.FK_tblUserFundSource_tblUserRegistrationInfo" ManuallyRouted="false" />
         <AssociationConnector Association="AIMS_DBModel.FK_tblUserProject_tblUserRegistrationInfo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblExchangeRateBBApi" Width="1.5" PointX="0.75" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

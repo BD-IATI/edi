@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AIMS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AIMS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'AIMS_DB.dbo.CommonConfigType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CommonConfigType">
@@ -307,16 +307,19 @@ warning 6002: The table/view 'AIMS_DB.dbo.CommonConfigType' does not have a prim
           <Property Name="IDate" Type="datetime" Nullable="false" />
           <Property Name="EDate" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'AIMS_DB.dbo.tblExchangeRateBB' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="tblExchangeRateBB">
-          <Property Name="CAL_DATE" Type="datetime" />
-          <Property Name="BASE_CCY_ID" Type="float" />
-          <Property Name="CCY_LONG_NM" Type="nvarchar" MaxLength="255" />
-          <Property Name="FOREX_SELLING" Type="float" />
-          <Property Name="FOREX_BUYING" Type="float" />
-          <Property Name="EXCHANGE_RATE" Type="float" />
-        </EntityType>-->
+        <EntityType Name="tblExchangeRateBBApi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATE" Type="datetime" Nullable="false" />
+          <Property Name="ISO_CURRENCY_CODE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CURRENCY_NAME" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="CURRENCY_PER_TAKA" Type="decimal" Precision="38" Scale="28" />
+          <Property Name="TAKA_PER_CURRENCY" Type="decimal" Precision="38" Scale="28" />
+          <Property Name="DOLLAR_PER_CURRENCY" Type="decimal" Precision="38" Scale="28" />
+          <Property Name="CURRENCY_PER_DOLLAR" Type="decimal" Precision="38" Scale="28" />
+        </EntityType>
         <EntityType Name="tblExchangeRateDetail">
           <Key>
             <PropertyRef Name="Id" />
@@ -2112,6 +2115,7 @@ warning 6013: The table/view 'AIMS_DB.dbo.tblExchangeRateBB' does not have a pri
           <EntitySet Name="tblDocumentCategory" EntityType="Self.tblDocumentCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblDocumentType" EntityType="Self.tblDocumentType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblExchangeRate" EntityType="Self.tblExchangeRate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblExchangeRateBBApi" EntityType="Self.tblExchangeRateBBApi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblExchangeRateDetail" EntityType="Self.tblExchangeRateDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblExecutingAgencyType" EntityType="Self.tblExecutingAgencyType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblFinancialYear" EntityType="Self.tblFinancialYear" Schema="dbo" store:Type="Tables" />
@@ -2499,8 +2503,7 @@ warning 6013: The table/view 'AIMS_DB.dbo.tblExchangeRateBB' does not have a pri
             <End Role="tblUserRegistrationInfo" EntitySet="tblUserRegistrationInfo" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AIMS_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -5146,7 +5149,21 @@ warning 6013: The table/view 'AIMS_DB.dbo.tblExchangeRateBB' does not have a pri
             <End Role="tblUserRegistrationInfo" EntitySet="tblUserRegistrationInfoes" />
             <End Role="tblUserProject" EntitySet="tblUserProjects" />
           </AssociationSet>
+          <EntitySet Name="tblExchangeRateBBApis" EntityType="AIMS_DBModel.tblExchangeRateBBApi" />
         </EntityContainer>
+        <EntityType Name="tblExchangeRateBBApi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ISO_CURRENCY_CODE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CURRENCY_NAME" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CURRENCY_PER_TAKA" Type="Decimal" Precision="38" Scale="28" />
+          <Property Name="TAKA_PER_CURRENCY" Type="Decimal" Precision="38" Scale="28" />
+          <Property Name="DOLLAR_PER_CURRENCY" Type="Decimal" Precision="38" Scale="28" />
+          <Property Name="CURRENCY_PER_DOLLAR" Type="Decimal" Precision="38" Scale="28" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6277,6 +6294,20 @@ warning 6013: The table/view 'AIMS_DB.dbo.tblExchangeRateBB' does not have a pri
                 <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
                 <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
                 <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblExchangeRateBBApis">
+            <EntityTypeMapping TypeName="AIMS_DBModel.tblExchangeRateBBApi">
+              <MappingFragment StoreEntitySet="tblExchangeRateBBApi">
+                <ScalarProperty Name="CURRENCY_PER_DOLLAR" ColumnName="CURRENCY_PER_DOLLAR" />
+                <ScalarProperty Name="DOLLAR_PER_CURRENCY" ColumnName="DOLLAR_PER_CURRENCY" />
+                <ScalarProperty Name="TAKA_PER_CURRENCY" ColumnName="TAKA_PER_CURRENCY" />
+                <ScalarProperty Name="CURRENCY_PER_TAKA" ColumnName="CURRENCY_PER_TAKA" />
+                <ScalarProperty Name="CURRENCY_NAME" ColumnName="CURRENCY_NAME" />
+                <ScalarProperty Name="ISO_CURRENCY_CODE" ColumnName="ISO_CURRENCY_CODE" />
+                <ScalarProperty Name="DATE" ColumnName="DATE" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

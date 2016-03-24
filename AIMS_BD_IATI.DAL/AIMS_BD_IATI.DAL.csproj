@@ -154,6 +154,9 @@
     <Compile Include="tblExchangeRate.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblExchangeRateBBApi.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblExchangeRateDetail.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
