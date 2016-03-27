@@ -6,12 +6,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-
+using AIMS_BD_IATI.Library;
 namespace AIMS_BD_IATI.DAL
 {
     public class AimsDbIatiDAL
     {
         AIMS_DB_IATIEntities dbContext = new AIMS_DB_IATIEntities();
+
+        //static AimsDbIatiDAL()
+        //{
+        //    ExchangeRates = new List<ExchangeRateModel>();
+        //}
+        public AimsDbIatiDAL()
+        {
+            ExchangeRates = new List<ExchangeRateModel>();
+        }
+        List<ExchangeRateModel> ExchangeRates
+        {
+            get;
+            set;
+        }
 
         public int SaveAtivities(List<Activity> activities)
         {
@@ -114,6 +128,8 @@ namespace AIMS_BD_IATI.DAL
                     activity.transaction = transactions.ToArray();
                 }
 
+                SetUSDValue(activity);
+
             }
 
 
@@ -138,6 +154,9 @@ namespace AIMS_BD_IATI.DAL
                     activity = (iatiactivity)serializer.Deserialize(reader);
 
                 }
+
+                if (activity.transaction != null) SetUSDValue(activity);
+
                 result.Add(activity);
             }
 
@@ -148,6 +167,25 @@ namespace AIMS_BD_IATI.DAL
                 iatiActivities = result,
                 AimsProjects = new AimsDAL().GetAIMSDataInIATIFormat(dp)
             };
+        }
+
+        private void SetUSDValue(iatiactivity activity)
+        {
+            foreach (var tr in activity.transaction)
+            {
+                var cur = tr.value.currency ?? activity.defaultcurrency;
+                if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
+                {
+                    ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
+                }
+
+                var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
+
+                var curExchangeRate = exchangeRates.Where(k => k.DATE <= tr.value.valuedate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
+
+                var DOLLAR_PER_CURRENCY = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
+                tr.value.ValueInUSD = tr.value.Value * DOLLAR_PER_CURRENCY;
+            }
         }
 
 
@@ -232,7 +270,7 @@ namespace AIMS_BD_IATI.DAL
             var q = (from a in dbContext.Activities.Where(a => a.OrgId == dp && a.AssignedOrgId != dp)
 
                      select new ActivityModel
-                     {                 
+                     {
                          IatiIdentifier = a.IatiIdentifier,
                          AssignedOrgId = a.AssignedOrgId,
                          AssignedDate = a.AssignedDate
@@ -259,6 +297,7 @@ namespace AIMS_BD_IATI.DAL
             public Nullable<int> Hierarchy { get; set; }
             public Nullable<int> ParentHierarchy { get; set; }
             public string AssignedOrgId { get; set; }
+            public string AssignedOrgName { get; set; }
             public Nullable<System.DateTime> AssignedDate { get; set; }
             public Nullable<int> MappedProjectId { get; set; }
             public Nullable<int> MappedTrustFundId { get; set; }
