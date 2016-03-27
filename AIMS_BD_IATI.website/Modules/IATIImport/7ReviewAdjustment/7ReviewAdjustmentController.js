@@ -9,34 +9,27 @@
 
 
     $scope.disbursmentDiff = function (m) {
-        return ((m.iatiActivity.TotalDisbursment + 1) / (m.aimsProject.TotalDisbursment + 1)) * 100;
+        var numerator = m.iatiActivity.TotalDisbursment >= m.aimsProject.TotalDisbursment ? m.iatiActivity.TotalDisbursment : m.aimsProject.TotalDisbursment;
+
+        var denominator = m.iatiActivity.TotalDisbursment < m.aimsProject.TotalDisbursment ? m.iatiActivity.TotalDisbursment : m.aimsProject.TotalDisbursment;
+
+        return (numerator / denominator) * 100;
     }
     $scope.commitmentDiff = function (m) {
-        return ((m.iatiActivity.TotalCommitment + 1) / (m.aimsProject.TotalCommitment + 1)) * 100;
+        var numerator = m.iatiActivity.TotalCommitment >= m.aimsProject.TotalCommitment ? m.iatiActivity.TotalCommitment : m.aimsProject.TotalCommitment;
+
+        var denominator = m.iatiActivity.TotalCommitment < m.aimsProject.TotalCommitment ? m.iatiActivity.TotalCommitment : m.aimsProject.TotalCommitment;
+
+        return (numerator / denominator) * 100;
+
     }
     $scope.isDiffGT5 = function (mkl) {
-        
-        return Math.abs($scope.disbursmentDiff(mkl) - $scope.commitmentDiff(mkl)) > 5;
+
+        return Math.abs(($scope.disbursmentDiff(mkl) + $scope.disbursmentDiff(mkl)) / 2) > 5;
     }
 
 
-    $scope.myChartOpts = { 
-      seriesDefaults: {
-        // Make this a pie chart.
-        renderer: jQuery.jqplot.PieRenderer, 
-        rendererOptions: {
-          // Put data labels on the pie slices.
-          // By default, labels show the percentage of the slice.
-          showDataLabels: true
-        }
-      }, 
-      legend: { show:true, location: 'e' }
-    };
 
-    $scope.someData = [[
-      ['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
-      ['Out of home', 16],['Commuting', 7], ['Orientation', 9]
-    ]];
 
     $scope.OpenProjectSpecificAdjustment = function (MatchedProject) {
         var modalInstance = $uibModal.open({
@@ -70,4 +63,123 @@
         });
 
     }
+
+
+    //chart
+
+    $scope.series = [{
+        name: 'AIMS',
+        data: [107, 31]
+    }, {
+        name: 'IATI',
+        data: [133, 156]
+    }];
+
 });
+
+
+iatiDataImporterApp.directive('commitmentvsdisbursmentchart', function () {
+    return {
+        restrict: 'EC',
+        template: '<div></div>',
+        replace: true,
+        link: function (scope, elem, attrs) {
+            var renderChart = function () {
+                elem.html('');
+                var series = scope.$eval(attrs.series);
+                //if (angular.isUndefined(attrs.series)) {
+                //    return;
+                //}
+                var aimsCommitment = scope.$eval(attrs.aimsCommitment);
+                var aimsDisbursment = scope.$eval(attrs.aimsDisbursment);
+                var iatiCommitment = scope.$eval(attrs.iatiCommitment);
+                var iatiDisbursment = scope.$eval(attrs.iatiDisbursment);
+
+                var config = {
+                    chart: {
+                        type: 'bar',
+                        height: 100,
+                        //spacing: [0, 0, 0, 0],
+                        margin: [0, 110, 0, 100],
+                    },
+                    title: {
+                        text: 'Comparison for Financial Data',
+                        style: { display: 'none' },
+                        visible: false
+                    },
+                    //subtitle: {
+                    //    text: 'between AIMS and IATI'
+                    //},
+                    xAxis: {
+                        categories: ['Commitment', 'Disbursement'],
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        gridLineWidth: 0,
+                        "startOnTick": true,
+                        title: null,
+                        labels: {
+                            enabled: false
+                        },
+                        visible: false
+
+                    },
+
+                    tooltip: {
+                        valueSuffix: ' USD'
+                    },
+                    plotOptions: {
+                        //bar: {
+                        //    dataLabels: {
+                        //        enabled: true
+                        //    }
+                        //}
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'top',
+                        x: 0,
+                        y: 0,
+                        floating: true,
+                        borderWidth: 0,
+                        backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                        shadow: true
+                    },
+                    credits: {
+                        enabled: false
+                    }
+                };
+
+                //config.series = series;
+                config.series = [{
+                    name: 'AIMS',
+                    data: [aimsCommitment, aimsDisbursment],
+                    color: '#a94442'
+                }, {
+                    name: 'IATI',
+                    data: [iatiCommitment, iatiDisbursment],
+                    color: '#3071a9'
+                }];
+
+                config.chart.renderTo = elem[0];
+
+                var chart = new Highcharts.Chart(config);
+
+                chart.redraw();
+            };
+
+            renderChart();
+            //scope.$watch(attrs.uiChart, function () {
+            //    renderChart();
+            //}, true);
+
+            //scope.$watch(attrs.chartOptions, function () {
+            //    renderChart();
+            //});
+        }
+    };
+});
+

@@ -100,7 +100,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private decimal GetTotal(transaction[] _transaction, string transactiontypecode)
         {
             var tobj = _transaction.Where(p => p.transactiontype.n().code == transactiontypecode);
-            return tobj == null ? 0 : tobj.Sum(s => s.value.n().ValueInUSD); ;
+            return tobj == null ? 0 : Math.Round(tobj.Sum(s => s.value.n().ValueInUSD),2); ;
         }
 
         private decimal GetTotalTransactionAmt(string transactiontypecode)
@@ -111,16 +111,15 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             {
                 total = GetTotal(transaction, transactiontypecode);
             }
-            else
+
+            foreach (var ra in relatedIatiActivities)
             {
-                foreach (var ra in relatedIatiActivities)
+                if (ra.transaction != null)
                 {
-                    if (ra.transaction != null)
-                    {
-                        total = GetTotal(ra.transaction, transactiontypecode);
-                    }
+                    total += GetTotal(ra.transaction, transactiontypecode);
                 }
             }
+
             return total;
         }
         #endregion

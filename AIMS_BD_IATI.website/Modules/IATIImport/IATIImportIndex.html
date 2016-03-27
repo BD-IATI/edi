@@ -11,18 +11,15 @@
     <link rel="stylesheet" href="../../Content/AngularDragAndDrop/vendor/bootstrap-theme.min.css">
     <link rel="stylesheet" href="../../Content/AngularDragAndDrop/vendor/prism.css">
     <link rel="stylesheet" href="../../Content/AngularDragAndDrop/demo-framework.css">
-<link href="../../Scripts/jqPlot/jquery.jqplot.min.css" rel="stylesheet" />
+
 
     <script src="../../Scripts/jquery-2.2.1.min.js"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>
-<script src="../../Scripts/jqPlot/jquery.jqplot.min.js"></script>
-
 
     <script src="../../Scripts/angular.min.js"></script>
     <script src="../../Scripts/angular-route.min.js"></script>
     <script src="../../Scripts/angular-cookies.min.js"></script>
     <script src="../../Scripts/angular-animate.min.js"></script>
-
 
     <script src="../../Scripts/AngularDragAndDrop/angular-drag-and-drop-lists.min.js"></script>
     <script src="../../Content/AngularDragAndDrop/vendor/prism.js"></script>
@@ -34,6 +31,11 @@
 
     <script src="../../Scripts/smart-table.min.js"></script>
 
+    <script src="../../Scripts/highcharts/highcharts.js"></script>
+    <!--<script src="../../Scripts/highcharts/highstock.js"></script>-->
+
+
+    <!--//apps starts here-->
     <script src="../Authentication/AuthenticationServices.js"></script>
     <script src="../Authentication/LoginController.js"></script>
 
@@ -50,9 +52,9 @@
     <script src="9OtherDPsActivities/9OtherDPsActivitiesController.js"></script>
     <script src="9TFnCF/9TFnCFController.js"></script>
 
-<script src="Dashboard/DashboardController.js"></script>
-<script src="MergeConflictAlert/MergeConflictAlertController.js"></script>
-<script src="Transaction/TransactionController.js"></script>
+    <script src="Dashboard/DashboardController.js"></script>
+    <script src="MergeConflictAlert/MergeConflictAlertController.js"></script>
+    <script src="Transaction/TransactionController.js"></script>
 
 
     <!--0-->
@@ -146,17 +148,15 @@
                     </ul>
                     <div style="float:right"><a href="#/login" class="btn-link">Logout</a></div>
                 </div>
-                
+
             </div>
         </nav>
     </header>
     <div class="container-fluid">
         <div>
-            <span us-spinner="{radius:30, width:8, length: 16, position: 'fixed'}" ></span>
+            <span us-spinner="{radius:30, width:8, length: 16, position: 'fixed'}"></span>
             <!-- Nav tabs -->
             <!--<ul ng-hide="globals.currentUser == undefined" navigation class="nav nav-tabs" role="tablist"></ul>-->
-
-
             <!-- Tab panes -->
             <div ng-view class="tab-content">
             </div>

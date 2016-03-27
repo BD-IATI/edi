@@ -22,8 +22,8 @@ iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http',
     function ($rootScope, $location, $cookieStore, $http) {
         $rootScope.IsImportFromOtherDP = false;
 
-            $rootScope.getCookie = function(key){ return $cookieStore.get(key) || {}; };
-            $rootScope.putCookie = function(key,val){$cookieStore.put(key,val) || {}; };
+        $rootScope.getCookie = function (key) { return $cookieStore.get(key) || {}; };
+        $rootScope.putCookie = function (key, val) { $cookieStore.put(key, val) || {}; };
 
         // keep user logged in after page refresh
         $rootScope.globals = $cookieStore.get('globals') || {};
@@ -41,51 +41,57 @@ iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http',
 
 
 
-iatiDataImporterApp.directive('resolveController', ['$controller', function($controller) {
+iatiDataImporterApp.directive('resolveController', ['$controller', function ($controller) {
     return {
-      scope: true,
-      link: function(scope, elem, attrs) {
-        var resolve = scope.$eval(attrs.resolve);
-        angular.extend(resolve, {$scope: scope});
-        $controller(attrs.resolveController, resolve);
-      }
+        scope: true,
+        link: function (scope, elem, attrs) {
+            var resolve = scope.$eval(attrs.resolve);
+            angular.extend(resolve, { $scope: scope });
+            $controller(attrs.resolveController, resolve);
+        }
     };
-  }]);
+}]);
 
-  iatiDataImporterApp.directive('uiChart', function () {
+iatiDataImporterApp.directive('myChartt', function () {
     return {
-      restrict: 'EACM',
-      template: '<div></div>',
-      replace: true,
-      link: function (scope, elem, attrs) {
-        var renderChart = function () {
-          var data = scope.$eval(attrs.uiChart);
-          elem.html('');
-          if (!angular.isArray(data)) {
-            return;
-          }
+        restrict: 'EC',
+        template: '<div></div>',
+        replace: true,
+        link: function (scope, elem, attrs) {
+            var renderChart = function () {
+                var series = scope.$eval(attrs.series);
+                elem.html('');
+                if (angular.isUndefined(attrs.series)) {
+                    return;
+                }
 
-          var opts = {};
-          if (!angular.isUndefined(attrs.chartOptions)) {
-            opts = scope.$eval(attrs.chartOptions);
-            if (!angular.isObject(opts)) {
-              throw 'Invalid ui.chart options attribute';
-            }
-          }
+                var config = {};
+                if (!angular.isUndefined(attrs.config)) {
+                    config = scope.$eval(attrs.config);
+                    if (!angular.isObject(config)) {
+                        throw 'Invalid config attribute';
+                    }
+                }
 
-          elem.jqplot(data, opts);
-        };
+                config.series = series;
 
-        scope.$watch(attrs.uiChart, function () {
-          renderChart();
-        }, true);
+                config.chart.renderTo = elem[0];
 
-        scope.$watch(attrs.chartOptions, function () {
-          renderChart();
-        });
-      }
+                var chart = new Highcharts.Chart(config);
+
+                chart.redraw();
+            };
+
+            scope.$watch(attrs.uiChart, function () {
+                renderChart();
+            }, true);
+
+            scope.$watch(attrs.chartOptions, function () {
+                renderChart();
+            });
+        }
     };
-  });
+});
 
 iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
     return {
