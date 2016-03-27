@@ -7,7 +7,6 @@
         $scope.models = result;
     });
 
-
     $scope.disbursmentDiff = function (m) {
         var numerator = m.iatiActivity.TotalDisbursment >= m.aimsProject.TotalDisbursment ? m.iatiActivity.TotalDisbursment : m.aimsProject.TotalDisbursment;
 
@@ -27,9 +26,6 @@
 
         return Math.abs(($scope.disbursmentDiff(mkl) + $scope.disbursmentDiff(mkl)) / 2) > 5;
     }
-
-
-
 
     $scope.OpenProjectSpecificAdjustment = function (MatchedProject) {
         var modalInstance = $uibModal.open({
@@ -63,17 +59,6 @@
         });
 
     }
-
-
-    //chart
-
-    $scope.series = [{
-        name: 'AIMS',
-        data: [107, 31]
-    }, {
-        name: 'IATI',
-        data: [133, 156]
-    }];
 
 });
 

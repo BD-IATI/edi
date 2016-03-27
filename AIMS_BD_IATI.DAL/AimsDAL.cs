@@ -167,6 +167,8 @@ namespace AIMS_BD_IATI.DAL
                 {
                     p.Title = project.Title;
                     p.Objective = project.Description;
+
+                    
                 }
             }
 

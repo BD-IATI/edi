@@ -52,47 +52,6 @@ iatiDataImporterApp.directive('resolveController', ['$controller', function ($co
     };
 }]);
 
-iatiDataImporterApp.directive('myChartt', function () {
-    return {
-        restrict: 'EC',
-        template: '<div></div>',
-        replace: true,
-        link: function (scope, elem, attrs) {
-            var renderChart = function () {
-                var series = scope.$eval(attrs.series);
-                elem.html('');
-                if (angular.isUndefined(attrs.series)) {
-                    return;
-                }
-
-                var config = {};
-                if (!angular.isUndefined(attrs.config)) {
-                    config = scope.$eval(attrs.config);
-                    if (!angular.isObject(config)) {
-                        throw 'Invalid config attribute';
-                    }
-                }
-
-                config.series = series;
-
-                config.chart.renderTo = elem[0];
-
-                var chart = new Highcharts.Chart(config);
-
-                chart.redraw();
-            };
-
-            scope.$watch(attrs.uiChart, function () {
-                renderChart();
-            }, true);
-
-            scope.$watch(attrs.chartOptions, function () {
-                renderChart();
-            });
-        }
-    };
-});
-
 iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
     return {
         template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +

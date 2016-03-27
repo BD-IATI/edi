@@ -284,6 +284,11 @@ namespace AIMS_BD_IATI.DAL
 
         }
 
+        public int GetNewActivityCount(string dp)
+        {
+            var q = dbContext.Activities.Where(w => w.OrgId == dp && w.MappedProjectId == null && w.MappedTrustFundId == null).Count();
+            return q;
+        }
 
         public class ActivityModel
         {
@@ -302,6 +307,8 @@ namespace AIMS_BD_IATI.DAL
             public Nullable<int> MappedProjectId { get; set; }
             public Nullable<int> MappedTrustFundId { get; set; }
         }
+
+
 
     }
 }

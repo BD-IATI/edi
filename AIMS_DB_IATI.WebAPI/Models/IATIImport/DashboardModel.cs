@@ -11,5 +11,7 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         public DateTime? LastDownloadDate { get; set; }
 
         public List<AIMS_BD_IATI.DAL.AimsDbIatiDAL.ActivityModel> DelegatedActivities { get; set; }
+
+        public int NewActivityCount { get; set; }
     }
 }
