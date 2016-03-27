@@ -155,7 +155,7 @@ namespace AIMS_BD_IATI.DAL
 
                 }
 
-                if (activity.transaction != null) SetUSDValue(activity);
+                SetUSDValue(activity);
 
                 result.Add(activity);
             }
@@ -171,6 +171,7 @@ namespace AIMS_BD_IATI.DAL
 
         private void SetUSDValue(iatiactivity activity)
         {
+            if (activity.transaction != null)
             foreach (var tr in activity.transaction)
             {
                 var cur = tr.value.currency ?? activity.defaultcurrency;
@@ -185,6 +186,23 @@ namespace AIMS_BD_IATI.DAL
 
                 var DOLLAR_PER_CURRENCY = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
                 tr.value.ValueInUSD = tr.value.Value * DOLLAR_PER_CURRENCY;
+            }
+
+            if (activity.budget != null)
+            foreach (var bgt in activity.budget)
+            {
+                var cur = bgt.value.currency ?? activity.defaultcurrency;
+                if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
+                {
+                    ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
+                }
+
+                var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
+
+                var curExchangeRate = exchangeRates.Where(k => k.DATE <= bgt.value.valuedate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
+
+                var DOLLAR_PER_CURRENCY = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
+                bgt.value.ValueInUSD = bgt.value.Value * DOLLAR_PER_CURRENCY;
             }
         }
 

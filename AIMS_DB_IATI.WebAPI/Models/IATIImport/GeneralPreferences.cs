@@ -15,11 +15,14 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         public iatiactivity iatiActivity { get; set; }
         public iatiactivity aimsProject { get; set; }
         public List<FieldMap> Fields { get; set; }
+        public List<FieldMap> TransactionFields { get; set; }
         public ProjectFieldMapModel()
         {
             Fields = new List<FieldMap>();
+            TransactionFields = new List<FieldMap>();
         }
-        public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject) : this()
+        public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject)
+            : this()
         {
             iatiActivity = _iatiActivity;
             aimsProject = _aimsProject;
@@ -45,14 +48,31 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
                     IATIValue = iatiActivity.ActivityStatus,
                 });
 
-                Fields.Add(new FieldMap
+                //Transactions-------------------------------
+                //TransactionFields.Add(new FieldMap
+                //{
+                //    Field = "transaction",
+                //    AIMSValue = new { TotalCommitment = aimsProject.TotalCommitment, TotalDisbursment = aimsProject.TotalDisbursment },
+                //    IATIValue = new { TotalCommitment = iatiActivity.TotalCommitment, TotalDisbursment = iatiActivity.TotalDisbursment },
+                //});
+                TransactionFields.Add(new FieldMap
                 {
-                    Field = "transaction",
-                    AIMSValue = new { TotalCommitment = aimsProject.TotalCommitment, TotalDisbursment = aimsProject.TotalDisbursment },
-                    IATIValue = new { TotalCommitment = iatiActivity.TotalCommitment, TotalDisbursment = iatiActivity.TotalDisbursment },
+                    Field = "commitment",
+                    AIMSValue = aimsProject.TotalCommitment,
+                    IATIValue = iatiActivity.TotalCommitment
                 });
-
-
+                TransactionFields.Add(new FieldMap
+                {
+                    Field = "disbursment",
+                    AIMSValue = aimsProject.TotalDisbursment,
+                    IATIValue = iatiActivity.TotalDisbursment
+                });
+                TransactionFields.Add(new FieldMap
+                {
+                    Field = "planned-disbursment",
+                    AIMSValue = aimsProject.TotalPlannedDisbursment,
+                    IATIValue = iatiActivity.TotalPlannedDisbursment
+                });
             }
 
         }

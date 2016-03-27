@@ -87,6 +87,67 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("C"));
             }
         }
+
+        [XmlIgnore]
+        public decimal TotalPlannedDisbursment
+        {
+            get
+            {
+                return Math.Round( PlannedDisbursments.Sum(s => s.value.n().ValueInUSD),2);
+            }
+        }
+        [XmlIgnore]
+        public List<Parser.ParserIATIv2.budget> PlannedDisbursments
+        {
+            get
+            {
+                var plannedDisbursments = new List<Parser.ParserIATIv2.budget>();
+                if (budget != null)
+                {
+                    plannedDisbursments.AddRange(GetPlannedDisbursments(budget));
+                }
+                else
+                {
+                    foreach (var ra in relatedIatiActivities)
+                    {
+                        if (ra.budget != null)
+                        {
+                            plannedDisbursments.AddRange(GetPlannedDisbursments(ra.budget));
+
+                        }
+                    }
+                }
+                return plannedDisbursments;
+            }
+        }
+
+        private List<Parser.ParserIATIv2.budget> GetPlannedDisbursments(budget[] budgets)
+        {
+            var originalBudgets = budgets.Where(w => w.type == "1").ToList();
+            var revisedBudgets = budgets.Where(w => w.type == "2").ToList();
+
+            foreach (var revisedBudget in revisedBudgets)
+            {
+                originalBudgets.RemoveAll(r =>
+                    (
+                    r.periodstart.n().isodate >= revisedBudget.periodstart.n().isodate && r.periodstart.n().isodate <= revisedBudget.periodend.n().isodate
+                    )
+                    || (r.periodend.n().isodate >= revisedBudget.periodstart.n().isodate && r.periodend.n().isodate <= revisedBudget.periodend.n().isodate
+                    )
+                    ||
+                     (revisedBudget.periodstart.n().isodate >= r.periodstart.n().isodate && revisedBudget.periodend.n().isodate <= r.periodstart.n().isodate
+                     )
+                     || (revisedBudget.periodstart.n().isodate >= r.periodend.n().isodate && revisedBudget.periodend.n().isodate <= r.periodend.n().isodate
+                    )
+                    );
+            }
+            var margedBudgets = new List<budget>();
+            margedBudgets.AddRange(originalBudgets);
+            margedBudgets.AddRange(revisedBudgets);
+            return margedBudgets;
+        }
+
+
         [XmlIgnore]
         public decimal TotalDisbursment
         {
@@ -100,7 +161,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private decimal GetTotal(transaction[] _transaction, string transactiontypecode)
         {
             var tobj = _transaction.Where(p => p.transactiontype.n().code == transactiontypecode);
-            return tobj == null ? 0 : Math.Round(tobj.Sum(s => s.value.n().ValueInUSD),2); ;
+            return tobj == null ? 0 : Math.Round(tobj.Sum(s => s.value.n().ValueInUSD), 2); ;
         }
 
         private decimal GetTotalTransactionAmt(string transactiontypecode)
