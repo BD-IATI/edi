@@ -354,7 +354,7 @@ namespace AIMS_BD_IATI.DAL
                     tr.transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("C") };
                     var date = commitment.CommitmentAgreementSignDate ?? project.AgreementSignDate;
                     tr.transactiondate = new transactionTransactiondate { isodate = date };
-                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(commitment.CommittedAmountInUSD) }; //commitment.tblCurrency.IATICode
+                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(commitment.CommittedAmountInUSD), ValueInUSD= Convert.ToDecimal(commitment.CommittedAmountInUSD)}; //commitment.tblCurrency.IATICode
 
                     tr.description = new textRequiredType { narrative = Statix.getNarativeArray(commitment.Remarks) };
                     tr.providerorg = new transactionProviderorg { @ref = commitment.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = Statix.getNarativeArray(commitment.tblFundSource.n().FundSourceName) };
@@ -393,7 +393,7 @@ namespace AIMS_BD_IATI.DAL
                     tr.transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("D") };
                     var date = actualDisbursement.DisbursementToDate ?? actualDisbursement.DisbursementDate;
                     tr.transactiondate = new transactionTransactiondate { isodate = date };
-                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(actualDisbursement.DisbursedAmountInUSD) }; //actualDisbursement.tblCurrency.IATICode
+                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(actualDisbursement.DisbursedAmountInUSD), ValueInUSD = Convert.ToDecimal(actualDisbursement.DisbursedAmountInUSD) }; //actualDisbursement.tblCurrency.IATICode
 
                     tr.description = new textRequiredType { narrative = Statix.getNarativeArray(actualDisbursement.Remarks) };
                     tr.providerorg = new transactionProviderorg { @ref = actualDisbursement.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = Statix.getNarativeArray(actualDisbursement.tblFundSource.n().FundSourceName) };
@@ -432,7 +432,7 @@ namespace AIMS_BD_IATI.DAL
                     tr.transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("E") };
                     var date = expenditure.ExpenditureReportingPeriodToDate; //?? expenditure.ExpenditureReportingPeriodFromDate;
                     tr.transactiondate = new transactionTransactiondate { isodate = date };
-                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(expenditure.ExpenditureAmountInUSD) }; //expenditure.tblCurrency.IATICode
+                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = expenditure.ExpenditureAmountInUSD??0, ValueInUSD = expenditure.ExpenditureAmountInUSD??0 }; //expenditure.tblCurrency.IATICode
 
                     tr.description = new textRequiredType { narrative = Statix.getNarativeArray(expenditure.Remarks) };
                     tr.providerorg = new transactionProviderorg { @ref = expenditure.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = Statix.getNarativeArray(expenditure.tblFundSource.n().FundSourceName) };
@@ -507,9 +507,21 @@ namespace AIMS_BD_IATI.DAL
             return iatiactivities;
         }
 
-        public object GetExchangeRate(DateTime date, string fromCurrency)
+        public List<ExchangeRateModel> GetExchangesRateToUSD(string fromCurrencyISOcode, DateTime? date = null)
         {
-            return null;
+            var q = (from e in dbContext.tblExchangeRateBBApis.Where(k => k.ISO_CURRENCY_CODE == fromCurrencyISOcode
+                && (date == null ? true : k.DATE == date))
+                     select new ExchangeRateModel
+                     {
+                         ISO_CURRENCY_CODE = e.ISO_CURRENCY_CODE,
+                         DOLLAR_PER_CURRENCY = e.DOLLAR_PER_CURRENCY,
+                         CURRENCY_PER_DOLLAR = e.CURRENCY_PER_DOLLAR,
+                         DATE = e.DATE
+                     })
+                .ToList();
+
+
+            return q;
         }
     }
 
