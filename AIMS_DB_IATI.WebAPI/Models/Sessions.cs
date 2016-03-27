@@ -64,12 +64,25 @@ namespace AIMS_DB_IATI.WebAPI.Models
             set { HttpContext.Current.Session["FundSources"] = value; }
         }
 
+        public static List<ExchangeRateModel> ExchangeRates
+        {
+            get
+            {
+                return HttpContext.Current.Session["ExchangeRates"] == null ?
+                    new List<ExchangeRateModel>()
+                    : (List<ExchangeRateModel>)HttpContext.Current.Session["ExchangeRates"];
+            }
+            set { HttpContext.Current.Session["ExchangeRates"] = value; }
+        }
+
 
         public static string UserId
         {
             get
             {
-                return Convert.ToString(HttpContext.Current.Session["UserId"]);
+                return HttpContext.Current.Session["UserId"] == null ? 
+                    ""
+                    : Convert.ToString(HttpContext.Current.Session["UserId"]);
             }
             set { HttpContext.Current.Session["UserId"] = value; }
         }

@@ -5,7 +5,7 @@
         method: 'POST',
         url: apiprefix + '/api/IATIImport/GetHierarchyData',
         dataType: 'json',
-        data: JSON.stringify($rootScope.getCookie('selectedFundSource').ID)
+        data: JSON.stringify($rootScope.getCookie('selectedFundSource'))
     }).success(function (result) {
         if (result == null || result == undefined) {
             $timeout(function () {

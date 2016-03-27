@@ -41,9 +41,51 @@ iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http',
 
 
 
+iatiDataImporterApp.directive('resolveController', ['$controller', function($controller) {
+    return {
+      scope: true,
+      link: function(scope, elem, attrs) {
+        var resolve = scope.$eval(attrs.resolve);
+        angular.extend(resolve, {$scope: scope});
+        $controller(attrs.resolveController, resolve);
+      }
+    };
+  }]);
 
+  iatiDataImporterApp.directive('uiChart', function () {
+    return {
+      restrict: 'EACM',
+      template: '<div></div>',
+      replace: true,
+      link: function (scope, elem, attrs) {
+        var renderChart = function () {
+          var data = scope.$eval(attrs.uiChart);
+          elem.html('');
+          if (!angular.isArray(data)) {
+            return;
+          }
 
+          var opts = {};
+          if (!angular.isUndefined(attrs.chartOptions)) {
+            opts = scope.$eval(attrs.chartOptions);
+            if (!angular.isObject(opts)) {
+              throw 'Invalid ui.chart options attribute';
+            }
+          }
 
+          elem.jqplot(data, opts);
+        };
+
+        scope.$watch(attrs.uiChart, function () {
+          renderChart();
+        }, true);
+
+        scope.$watch(attrs.chartOptions, function () {
+          renderChart();
+        });
+      }
+    };
+  });
 
 iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
     return {

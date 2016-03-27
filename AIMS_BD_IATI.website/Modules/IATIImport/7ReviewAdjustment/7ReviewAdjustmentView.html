@@ -28,17 +28,76 @@
             background: #e0e0e0;
         }
     </style>
+
+    <div ui-chart="someData" chart-options="myChartOpts" ></div>
+
+    <div class="row" ng-repeat="m in models.MatchedProjects">
+        <div class="col-md-12" ng-class-even="row-even">
+            <h3>{{m.iatiActivity.Title}} <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)"><i class="glyphicon glyphicon-pencil"></i></a><span ng-show="m.IsManuallyMapped" style="float:right; font-size:small" class="alert-danger">Manually Mapped</span></h3>
+            </div>
+        <div class="col-md-6" ng-class-even="row-even">
+            Disbursment
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{((m.iatiActivity.TotalDisbursment + 1) / (m.aimsProject.TotalDisbursment + 1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((m.iatiActivity.TotalDisbursment+1) / (m.aimsProject.TotalDisbursment+1)) * 100; }}%;">
+                    <strong>IATI</strong>: USD {{m.iatiActivity.TotalDisbursment | number:2}}
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" ng-class="isDiffGT5(m) ? 'progress-bar-danger' : ''" role="progressbar" aria-valuenow="{{((m.aimsProject.TotalDisbursment+1) / (m.iatiActivity.TotalDisbursment+1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((m.aimsProject.TotalDisbursment+1) / (m.iatiActivity.TotalDisbursment+1)) * 100; }}%;">
+                    <strong>AIMS</strong>: USD {{m.aimsProject.TotalDisbursment | number:2}} 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-class-even="row-even">
+            Commitment
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{((m.iatiActivity.TotalCommitment + 1) / (m.aimsProject.TotalCommitment + 1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((m.iatiActivity.TotalCommitment+1) / (m.aimsProject.TotalCommitment+1)) * 100; }}%;">
+                    <strong>IATI</strong>: USD {{m.iatiActivity.TotalCommitment | number:2}} 
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" ng-class="isDiffGT5(m) ? 'progress-bar-danger' : ''" role="progressbar" aria-valuenow="{{((m.iatiActivity.TotalCommitment+1) / (m.aimsProject.TotalCommitment+1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((m.aimsProject.TotalCommitment+1) / (m.iatiActivity.TotalCommitment+1)) * 100; }}%;">
+                    <strong>AIMS</strong>: USD {{m.aimsProject.TotalCommitment | number:2}} 
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <hr />
     <div class="row" ng-repeat="m in models.MatchedProjects">
         <div class="col-md-12" ng-class-even="row-even">
             <h3>{{m.iatiActivity.Title}} <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)"><i class="glyphicon glyphicon-pencil"></i></a><span ng-show="m.IsManuallyMapped" style="float:right; font-size:small" class="alert-danger">Manually Mapped</span></h3>
             <div class="progress">
                 <div class="progress-bar" role="progressbar" aria-valuenow="{{((m.iatiActivity.TotalDisbursment + 1) / (m.iatiActivity.TotalCommitment + 1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((m.iatiActivity.TotalDisbursment+1) / (m.iatiActivity.TotalCommitment+1)) * 100; }}%;">
-                    <strong>IATI</strong>: {{m.iatiActivity.defaultcurrency}}  {{m.iatiActivity.TotalDisbursment}} out of {{m.iatiActivity.TotalCommitment}}
+                    <strong>IATI</strong>: USD {{m.iatiActivity.TotalDisbursment | number:2}} out of {{m.iatiActivity.TotalCommitment | number:2}}
                 </div>
             </div>
             <div class="progress">
                 <div class="progress-bar" ng-class="isDiffGT5(m) ? 'progress-bar-danger' : ''" role="progressbar" aria-valuenow="{{((m.aimsProject.TotalDisbursment+1) / (m.aimsProject.TotalCommitment+1)) * 100}}" aria-valuemin="0" aria-valuemax="100" style="width:{{((m.aimsProject.TotalDisbursment+1) / (m.aimsProject.TotalCommitment+1)) * 100; }}%;">
-                    <strong>AIMS</strong>: USD {{m.aimsProject.TotalDisbursment}} out of {{m.aimsProject.TotalCommitment}}
+                    <strong>AIMS</strong>: USD {{m.aimsProject.TotalDisbursment | number:2}} out of {{m.aimsProject.TotalCommitment | number:2}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <hr />
+    <div class="row" ng-repeat="m in models.MatchedProjects">
+        <div class="col-md-12" ng-class-even="row-even">
+            <h3>{{m.iatiActivity.Title}} <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)"><i class="glyphicon glyphicon-pencil"></i></a><span ng-show="m.IsManuallyMapped" style="float:right; font-size:small" class="alert-danger">Manually Mapped</span></h3>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" 
+                     aria-valuenow="{{disbursmentDiff(m)}}" aria-valuemin="0" aria-valuemax="100" 
+                     style="width:{{100}}%;">
+                    <strong>Disbursment</strong>: USD {{m.iatiActivity.TotalDisbursment | number:2}} out of {{m.aimsProject.TotalDisbursment | number:2}}
+                    , {{disbursmentDiff(m)}} %
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" ng-class="isDiffGT5(m) ? 'progress-bar-danger' : ''" role="progressbar" 
+                    aria-valuenow="{{commitmentDiff(m)}}" aria-valuemin="0" aria-valuemax="100" 
+                     style="width:{{100}}%;">
+                    <strong>Commitment</strong>: USD {{m.iatiActivity.TotalCommitment | number:2}} out of {{m.aimsProject.TotalCommitment | number:2}}
+                    , {{commitmentDiff(m)}} %
                 </div>
             </div>
         </div>

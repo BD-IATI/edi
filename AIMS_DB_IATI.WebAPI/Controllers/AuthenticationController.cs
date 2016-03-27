@@ -28,7 +28,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             {
                 Sessions.UserId = viewModel.Username;
 
-
                 return Ok(new { success = true });
             }
 

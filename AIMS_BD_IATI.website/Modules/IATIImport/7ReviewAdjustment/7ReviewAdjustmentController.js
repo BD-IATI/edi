@@ -7,12 +7,36 @@
         $scope.models = result;
     });
 
-    $scope.isDiffGT5 = function (mkl) {
-        var iatiPercent = ((mkl.iatiActivity.TotalDisbursment + 1) / (mkl.iatiActivity.TotalCommitment + 1)) * 100;
-        var aimsPercent = ((mkl.aimsProject.TotalDisbursment + 1) / (mkl.aimsProject.TotalCommitment + 1)) * 100;
 
-        return Math.abs(iatiPercent - aimsPercent) > 5;
+    $scope.disbursmentDiff = function (m) {
+        return ((m.iatiActivity.TotalDisbursment + 1) / (m.aimsProject.TotalDisbursment + 1)) * 100;
     }
+    $scope.commitmentDiff = function (m) {
+        return ((m.iatiActivity.TotalCommitment + 1) / (m.aimsProject.TotalCommitment + 1)) * 100;
+    }
+    $scope.isDiffGT5 = function (mkl) {
+        
+        return Math.abs($scope.disbursmentDiff(mkl) - $scope.commitmentDiff(mkl)) > 5;
+    }
+
+
+    $scope.myChartOpts = { 
+      seriesDefaults: {
+        // Make this a pie chart.
+        renderer: jQuery.jqplot.PieRenderer, 
+        rendererOptions: {
+          // Put data labels on the pie slices.
+          // By default, labels show the percentage of the slice.
+          showDataLabels: true
+        }
+      }, 
+      legend: { show:true, location: 'e' }
+    };
+
+    $scope.someData = [[
+      ['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
+      ['Out of home', 16],['Commuting', 7], ['Orientation', 9]
+    ]];
 
     $scope.OpenProjectSpecificAdjustment = function (MatchedProject) {
         var modalInstance = $uibModal.open({
