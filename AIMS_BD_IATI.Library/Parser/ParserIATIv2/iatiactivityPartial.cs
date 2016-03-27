@@ -92,7 +92,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("D")) 
+                return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("D"))
                     + (IsDataSourceAIMS == false ? GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("E")) : 0);
             }
         }
@@ -100,7 +100,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private decimal GetTotal(transaction[] _transaction, string transactiontypecode)
         {
             var tobj = _transaction.Where(p => p.transactiontype.n().code == transactiontypecode);
-            return tobj == null ? 0 : tobj.Sum(s => s.value.n().Value); ;
+            return tobj == null ? 0 : tobj.Sum(s => s.value.n().ValueInUSD); ;
         }
 
         private decimal GetTotalTransactionAmt(string transactiontypecode)
@@ -183,7 +183,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public string IATICode
         {
             get { return string.IsNullOrWhiteSpace(FundSourceIDnIATICode) ? "" : FundSourceIDnIATICode.Split('~')[1]; }
-        } 
+        }
         #endregion
 
         #region Wrappers
@@ -482,7 +482,20 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     }
 
 
+    public partial class currencyType
+    {
 
+
+
+        [XmlIgnore]
+        public decimal ValueInUSD
+        {
+            get
+            ;
+            set;
+        }
+
+    }
 
 
 }
