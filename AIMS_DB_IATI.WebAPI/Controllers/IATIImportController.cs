@@ -23,7 +23,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
     {
         void SetStatics()
         {
-            iatiactivity.FundSources = Sessions.FundSources; 
+            iatiactivity.FundSources = Sessions.FundSources;
         }
         [HttpGet]
         public List<DPLookupItem> GetFundSources()
@@ -149,6 +149,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (filterDBModel != null)
                 Sessions.activitiesContainer.iatiActivities = filterDBModel.iatiActivities;
 
+            var managingDPs = GetAllFundSources();
+
             var iOrgs = new List<participatingorg>();
             foreach (var activity in Sessions.activitiesContainer.RelevantActivities)
             {
@@ -186,12 +188,25 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 }
             }
 
+            var distictOrgs = iOrgs.DistinctBy(l => l.narrative.n(0).Value).OrderBy(o => o.narrative.n(0).Value);
 
+            foreach (var org in distictOrgs)
+            {
+                //check for matching managing DP from AIMS
+                var managingDP = !string.IsNullOrWhiteSpace(org.@ref) ? managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.n().Contains(org.@ref)) : null;
+
+                //if not found, set to Current DP
+                if (managingDP == null)
+                    managingDP = managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.n().Contains(Sessions.activitiesContainer.DP));
+
+                //Add selected value
+                org.FundSourceIDnIATICode = managingDP == null ? "" : managingDP.IDnIATICode;
+            }
 
             return new
             {
-                Orgs = iOrgs.DistinctBy(l => l.narrative.n(0).Value).OrderBy(o => o.narrative.n(0).Value),
-                FundSources = GetAllFundSources()
+                Orgs = distictOrgs,
+                FundSources = managingDPs
             };
         }
 
@@ -224,7 +239,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             Sessions.ExchangeRates = new AimsDAL().GetExchangesRateToUSD(relevantActivies.n(1).defaultcurrency);
             SetStatics();//since we have no access to session at library project, so we pass it in a static variables
-            
+
             var ProjectsOwnedByOther = relevantActivies.FindAll(f => f.IATICode != Sessions.activitiesContainer.DP);
 
             relevantActivies.RemoveAll(f => f.IATICode != Sessions.activitiesContainer.DP);

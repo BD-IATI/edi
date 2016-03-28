@@ -86,10 +86,16 @@ namespace AIMS_BD_IATI.DAL
 
             return fundSources.ToList();
         }
+        /// <summary>
+        /// Get Managing DPs
+        /// </summary>
+        /// <returns></returns>
         public List<FundSourceLookupItem> GetAllFundSources()
         {
+            var piList = dbContext.tblProjectInfoes.GroupBy(q => q.FundSourceId).Select(x => x.FirstOrDefault().FundSourceId).ToList();
+
             var fundSources = (from fundSource in dbContext.tblFundSources
-                               //where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
+                               where piList.Contains(fundSource.Id)
                                orderby fundSource.FundSourceName
                                select new FundSourceLookupItem
                                {
