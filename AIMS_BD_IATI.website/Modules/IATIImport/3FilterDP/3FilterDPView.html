@@ -103,7 +103,7 @@
                         <button ng-hide="RelevantActivities.length == 0"
                                 type="button"
                                 class="btn btn-default"
-                                popover-title="Assign other DP's project'"
+                                popover-title="Delegate projects to other DPs?"
                                 uib-popover-template="'myPopoverTemplate.html'"
                                 popover-append-to-body="true"
                                 popover-placement="auto">
@@ -122,10 +122,10 @@
 
 <script type="text/ng-template" id="myPopoverTemplate.html">
     <div>
-        <div>Would you like to assign the other DP's project so that they can know it?</div>
+        <div>Some of your projects are managed by other DPs. Would you like to delegate those projects now?</div>
         <br />
 
-        <button type="button" ng-click="SaveAndNext()" class="btn btn-default">Save and next</button>
-        <button type="button" ng-click="NextWithoutSaving()" class="btn btn-default">Next without saving</button>
+        <button type="button" ng-click="SaveAndNext()" class="btn btn-primary">Yes, please delegate them</button>
+        <button type="button" ng-click="NextWithoutSaving()" class="btn btn-default">No, not right now</button>
     </div>
 </script>
