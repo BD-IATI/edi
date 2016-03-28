@@ -3,7 +3,7 @@ body { padding-top: 70px; }
 /* Navigation */
 
 .navbar-default {
-  background-color: #78b800;
+  background: #78b800 !important;
   color: #ffffff;
 }
 .navbar-default .navbar-brand, .navbar-default .navbar-brand:focus, 

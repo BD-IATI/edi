@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <title>Mockups - IATI-AIMS importing</title>
-
+    <title>IATI-AIMS import tool</title>
+    
     <link href="../../Content/ui-bootstrap-csp.css" rel="stylesheet" />
     <link href="../../Content/bootstrap.css" rel="stylesheet" />
     <link href="../../Content/style.css" rel="stylesheet" />
@@ -33,8 +33,6 @@
 
     <script src="../../Scripts/highcharts/highcharts.js"></script>
     <!--<script src="../../Scripts/highcharts/highstock.js"></script>-->
-
-
     <!--//apps starts here-->
     <script src="../Authentication/AuthenticationServices.js"></script>
     <script src="../Authentication/LoginController.js"></script>
@@ -131,7 +129,7 @@
 </head>
 <body ng-app="iatiDataImporter">
     <header>
-        <nav id="main" class="navbar navbar-inverse navbar-fixed-top">
+        <nav id="main" class="navbar navbar-default navbar-fixed-top" >
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-collapse">
@@ -144,21 +142,33 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <!--<li><a href="http://test.brough.io/bd/sprint2.htm?#home">Sprint 2</a></li>-->
+                        <li>
+                            <a href="#/Dashboard" class="btn-link">Dashboard</a>
+                        </li>
                     </ul>
-                    <div style="float:right"><a href="#/login" class="btn-link">Logout</a></div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <!--<li><a href="http://test.brough.io/bd/sprint2.htm?#home">Sprint 2</a></li>-->
+                            <a href="#/login" class="btn-link">Logout</a>
+                        </li>
+                    </ul>
+
                 </div>
 
             </div>
         </nav>
     </header>
     <div class="container-fluid">
-        <div>
+        <div class="row">
             <span us-spinner="{radius:30, width:8, length: 16, position: 'fixed'}"></span>
             <!-- Nav tabs -->
-            <!--<ul ng-hide="globals.currentUser == undefined" navigation class="nav nav-tabs" role="tablist"></ul>-->
+            <div class="col-md-3">
+            <ul ng-hide="globals.currentUser == undefined" navigation class="nav nav-pills nav-stacked" role="tablist"></ul>
             <!-- Tab panes -->
+            </div>
+            <div class="col-md-9">
             <div ng-view class="tab-content">
+            </div>
             </div>
 
         </div>

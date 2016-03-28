@@ -138,6 +138,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             }
 
+            returnResult.iatiActivities = returnResult.iatiActivities.OrderByDescending(k => k.IsRelevant).ToList();
+
             return returnResult;
         }
 
@@ -188,7 +190,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             return new
             {
-                Orgs = iOrgs.DistinctBy(l => l.@ref).OrderBy(o => o.@ref),
+                Orgs = iOrgs.DistinctBy(l => l.narrative.n(0).Value).OrderBy(o => o.narrative.n(0).Value),
                 FundSources = GetAllFundSources()
             };
         }
@@ -230,14 +232,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             var AimsProjects = new AimsDAL().GetAIMSDataInIATIFormat(Sessions.activitiesContainer.n().DP);
 
             var MatchedProjects = (from i in relevantActivies
-                                   from a in AimsProjects.Where(k => i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value))
+                                   from a in AimsProjects.Where(k => i.iatiidentifier.Value.Replace("-", "").EndsWith(k.iatiidentifier.Value.Replace("-", "")))
                                    orderby i.iatiidentifier.Value
 
                                    select i).ToList();
 
             //for showing mathced projects side by side And field mapping later
             var MatchedProjects2 = (from i in relevantActivies
-                                    from a in AimsProjects.Where(k => i.iatiidentifier.Value.EndsWith(k.iatiidentifier.Value))
+                                    from a in AimsProjects.Where(k => i.iatiidentifier.Value.Replace("-", "").EndsWith(k.iatiidentifier.Value.Replace("-", "")))
                                     orderby i.iatiidentifier.Value
                                     select new ProjectFieldMapModel(i, a)
                                     ).ToList();

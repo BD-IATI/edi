@@ -8,12 +8,13 @@
             </p>
             <ul>
                 <li>less than 20% is tagged as Bangladesh</li>
-                <li>projects where the "Aid Type" is core contributions to multilaterals or NGOs</li>
+                <!--<li>projects where the "Aid Type" is core contributions to multilaterals or NGOs</li>-->
+                <li>projects where the Activity Status is "Implementation" only (i.e. not closed projects) </li>
             </ul>
             <hr>
             <form class="form-horizontal">
                 <div class="row">
-                    <div class="col-md-offset-1 col-md-10">
+                    <div class="col-md-12">
                         <table st-table="iatiActivities" st-safe-src="model.iatiActivities" class="table table-striped">
                             <thead>
                                 <tr>
@@ -42,7 +43,7 @@
                                     <td><code>{{activity.IatiIdentifier}}</code></td>
                                     <td>{{activity.Title}}</td>
                                     <td>{{activity.PercentToBD}}%</td>
-                                    <td>{{activity.AidType}}(<code>{{activity.AidTypeCode}}</code>)</td>
+                                    <td>{{activity.AidType}} <code>{{activity.AidTypeCode}}</code></td>
                                     <td>{{activity.ActivityStatus}}</td>
                                     <td><input type="checkbox" ng-model="activity.IsRelevant"></td>
                                 </tr>
@@ -52,7 +53,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-offset-1 col-md-10 btnFooter">
+                    <div class="col-md-12 btnFooter">
                         <a ng-hide="$root.HasRelatedActivity" class="btn btn-default" ng-href="#/0Begin">  Back  </a>
                         <a ng-show="$root.HasRelatedActivity" class="btn btn-default" ng-href="#/1Hierarchy">  Back  </a>
                         <a class="btn btn-default" ng-href="#/3FilterDP">  Next  </a>
