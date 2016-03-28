@@ -190,7 +190,15 @@ namespace AIMS_BD_IATI.DAL
 
                     var valDate = tr.value.valuedate == default(DateTime) ? tr.transactiondate.n().isodate : tr.value.valuedate;
 
-                    var curExchangeRate = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
+                    var nearestPast = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault();
+                    var nearestPastDate = nearestPast == null? default(DateTime) :nearestPast.DATE;
+                    var nearestFuture = exchangeRates.Where(k => k.DATE >= valDate).FirstOrDefault();
+                    var nearestFutureDate = nearestFuture == null ? default(DateTime) : nearestFuture.DATE;
+
+                    var nearestDate = (nearestFutureDate - valDate).TotalDays <= (valDate - nearestPastDate).TotalDays ? nearestFutureDate : nearestPastDate;
+
+
+                    var curExchangeRate = exchangeRates.Where(k => k.DATE == nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
 
                     tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
                     tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
@@ -213,7 +221,14 @@ namespace AIMS_BD_IATI.DAL
 
                     var valDate = tr.value.valuedate;
 
-                    var curExchangeRate = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
+                    var nearestPast = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault();
+                    var nearestPastDate = nearestPast == null ? default(DateTime) : nearestPast.DATE;
+                    var nearestFuture = exchangeRates.Where(k => k.DATE >= valDate).FirstOrDefault();
+                    var nearestFutureDate = nearestFuture == null ? default(DateTime) : nearestFuture.DATE;
+
+                    var nearestDate = (nearestFutureDate - valDate).TotalDays <= (valDate - nearestPastDate).TotalDays ? nearestFutureDate : nearestPastDate;
+
+                    var curExchangeRate = exchangeRates.Where(k => k.DATE >= nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
 
                     tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
                     tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
