@@ -7,7 +7,8 @@
             </h2>
             <p class="lead">
                 Your projects are listed below. We have
-                highlighted those projects where the financial data is
+                highlighted with <span class="label label-danger"><i class="glyphicon glyphicon-asterisk"></i></span>
+                those projects where the financial data is
                 significantly different (5% or greater). You may wish to
                 check those projects in some detail before proceeding
                 &ndash; click the <a class="btn btn-sm btn-default">
@@ -30,11 +31,10 @@
     </style>
     <hr />
     <div class="row" ng-repeat="m in models.MatchedProjects">
-        <div class="col-md-12" ng-class="isDiffGT5(m) ? 'alert-danger' : 'alert-success'" style="padding-bottom: 10px;">
-            <h3>{{m.iatiActivity.Title}} <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)"><i class="glyphicon glyphicon-pencil"></i></a>
-            <a class="btn btn-sm btn-default" ng-click="OpenTransactionDetail(m)"><i class="glyphicon glyphicon-usd"></i></a>
-            <span ng-show="m.IsManuallyMapped" style="float:right; font-size:small" class="alert-danger">Manually Mapped</span></h3>
-
+        <div class="col-md-12" style="padding-bottom: 10px;">
+            <h3><span class="label label-danger" ng-show="isDiffGT5(m)"><i class="glyphicon glyphicon-asterisk"></i></span> {{m.iatiActivity.Title}} 
+              <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)"><i class="glyphicon glyphicon-pencil"></i></a>
+              <span ng-show="m.IsManuallyMapped" style="float:right; font-size:small" class="alert-danger">Manually Mapped</span></h3>
                 <commitmentvsdisbursmentchart aims-Commitment="{{m.aimsProject.TotalCommitment}}" 
                                               aims-Disbursment="{{m.aimsProject.TotalDisbursment}}" 
                                               iati-Commitment="{{m.iatiActivity.TotalCommitment}}" 

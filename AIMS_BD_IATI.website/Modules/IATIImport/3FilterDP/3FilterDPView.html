@@ -3,34 +3,26 @@
         <div class="col-md-12">
             <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 3. Filter for DP's own projects </h2>
             <p class="lead">
-                Some of the activities published at headquarters
-                level may relate to other DP's projects – for
-                example, DP A may provide contributions to DP B's project.
-                Both DP A and DP B can publish separate activities, but
-                they need to be mapped together. To determine which projects are likely
-                implemented by another DP registered in the AIMS, we have
-                tried to filter out projects by using the name of the
-                implementing organisation.
+                In order to avoid double-counting, we need to establish 
+                which of your activities are managed by other DPs.
             </p>
             <p class="lead">
-                Please determine whether the following
-                organisations are registered in the AIMS or not. We have
-                flagged organisations we'd like you to pay close attention
-                to with a <span class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span>
-                symbol. You can then see how projects are categorised below.
+                Please determine which of the following organisations are
+                Managing DPs in the AIMS. Where possible, we have tried to
+                automatically select them for you to review.
             </p>
             <hr>
             <form class="form-horizontal">
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>Categorise organisations</h3>
+                        <h3>Select Managing DP</h3>
                         <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class=" table table-striped">
                             <thead>
                                 <tr>
                                     <th></th>
                                     <th st-sort="ref">Org ID</th>
                                     <th st-sort="narrative[0].Value">Org name</th>
-                                    <th>Registered in AIMS</th>
+                                    <th>Managing DP</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,18 +45,6 @@
 
                             </tbody>
                         </table>
-                        <p class="well">
-                            NB: Some organisations may be flagged
-                            because it has a ref <code>11000</code>,
-                            "donor governments". However, the specific organisation
-                            cannot be selected, because <code>11000</code> is
-                            not specific enough.
-                        </p>
-                        <p class="well">
-                            Additional thought: we could ask the
-                            user to categorise implementing organisations as
-                            government vs non government at this stage.
-                        </p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -78,7 +58,7 @@
             <form class="form-horizontal">
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>Own DP vs other DPs' projects</h3>
+                        <h3>Managing DP by project</h3>
 
                         <table st-table="rActivities" st-safe-src="RelevantActivities" class="table table-striped">
                             <thead>
@@ -89,8 +69,7 @@
                                     <th st-sort="Title" style="min-width:200px">
                                         Activity Title
                                     </th>
-                                    <th>Owned by / Managing DP</th>
-
+                                    <th>Managing DP</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -123,7 +102,7 @@
                         <button ng-hide="RelevantActivities.length == 0"
                                 type="button"
                                 class="btn btn-default"
-                                popover-title="Assign other DP's project'"
+                                popover-title="Delegate projects to other DPs?"
                                 uib-popover-template="'myPopoverTemplate.html'"
                                 popover-append-to-body="true"
                                 popover-placement="auto">
@@ -142,10 +121,10 @@
 
 <script type="text/ng-template" id="myPopoverTemplate.html">
     <div>
-        <div>Would you like to assign the other DP's project so that they can know it?</div>
+        <div>Some of your projects are managed by other DPs. Would you like to delegate those projects now?</div>
         <br />
 
-        <button type="button" ng-click="SaveAndNext()" class="btn btn-default">Save and next</button>
-        <button type="button" ng-click="NextWithoutSaving()" class="btn btn-default">Next without saving</button>
+        <button type="button" ng-click="SaveAndNext()" class="btn btn-primary">Yes, please delegate them</button>
+        <button type="button" ng-click="NextWithoutSaving()" class="btn btn-default">No, not right now</button>
     </div>
 </script>
