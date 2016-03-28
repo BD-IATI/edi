@@ -64,6 +64,21 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3>AIMS projects not found in IATI</h3>
+                    <div class="alert alert-danger" ng-show="models.AimsProjectsNotInIati.length > 0">
+                        <p>Some projects were found in the AIMS, but not in
+                          IATI. We recommend you check the following:</p>
+                        <ul>
+                          <li>ensure you have not delegated projects to
+                            other DPs that you have already entered into
+                            the AIMS</li>
+                          <li>ensure that your project IDs used in the AIMS
+                            are correct and similarly formatted to those
+                            used in your IATI data</li>
+                          <li>if projects still appear to be missing from
+                            your IATI data, please raise this issue with
+                            your colleagues at headquarters level.</li>
+                        </ul>
+                    </div>
                     <table st-table="AimsProjectsNotInIati" st-safe-src="models.AimsProjectsNotInIati" class="table" ng-show="models.AimsProjectsNotInIati.length > 0">
                         <thead>
                             <tr>
