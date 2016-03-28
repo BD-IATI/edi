@@ -49,6 +49,28 @@
         //});
     };
 
+    $scope.OpenTransactionDetail = function (MatchedProject) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            templateUrl: 'Transaction/TransactionView.html',
+            controller: 'TransactionController',
+            size: 'lg',
+            resolve: {
+                MatchedProject: function () {
+
+                    return MatchedProject;
+                }
+            }
+        });
+
+        //modalInstance.result.then(function (selectedItem) {
+        //    $scope.selected = selectedItem;
+        //}, function () {
+        //    //$log.info('Modal dismissed at: ' + new Date());
+        //});
+    };
+
     $scope.ImportProjects = function () {
         $http({
             method: 'POST',

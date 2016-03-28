@@ -41,6 +41,7 @@
                             <tr>
                                 <th st-sort="IatiIdentifier" style="min-width:140px">IATI Project ID</th>
                                 <th st-sort="Title">IATI Project Title</th>
+                                <th st-sort="Title">View</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,6 +49,8 @@
                             <tr ng-repeat="activity in IatiActivitiesNotInAims" class="table-striped">
                                 <td><code>{{activity.IatiIdentifier}}</code></td>
                                 <td>{{activity.Title}}</td>
+                                <td><a href="http://www.d-portal.org/ctrack.html?country=BD#view=act&aid={{activity.IatiIdentifier}}" target="_blank" class="glyphicon glyphicon-search"></a></td>
+                                
                             </tr>
                         </tbody>
                     </table>

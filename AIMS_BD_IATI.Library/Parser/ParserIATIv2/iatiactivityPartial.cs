@@ -87,13 +87,28 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("C"));
             }
         }
-
+        [XmlIgnore]
+        public List<transaction> Disbursments
+        {
+            get
+            {
+                return GetTransactions(ConvertIATIv2.gettransactionCode("D"));
+            }
+        }
+        [XmlIgnore]
+        public List<transaction> Commitments
+        {
+            get
+            {
+                return GetTransactions(ConvertIATIv2.gettransactionCode("C"));
+            }
+        }
         [XmlIgnore]
         public decimal TotalPlannedDisbursment
         {
             get
             {
-                return Math.Round( PlannedDisbursments.Sum(s => s.value.n().ValueInUSD),2);
+                return Math.Round(PlannedDisbursments.Sum(s => s.value.n().ValueInUSD), 2);
             }
         }
         [XmlIgnore]
@@ -182,6 +197,26 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
 
             return total;
+        }
+
+        private List<transaction> GetTransactions(string transactiontypecode)
+        {
+            var Transactions = new List<transaction>();
+
+            if (transaction != null)
+            {
+                Transactions.AddRange(transaction.Where(p => p.transactiontype.n().code == transactiontypecode));
+            }
+
+            foreach (var ra in relatedIatiActivities)
+            {
+                if (ra.transaction != null)
+                {
+                    Transactions.AddRange(ra.transaction.Where(p => p.transactiontype.n().code == transactiontypecode));
+                }
+            }
+
+            return Transactions;
         }
         #endregion
 
@@ -552,6 +587,19 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             ;
+            set;
+        }
+
+        [XmlIgnore]
+        public decimal BBexchangeRateUSD
+        {
+            get;
+            set;
+        }
+        [XmlIgnore]
+        public DateTime BBexchangeRateDate
+        {
+            get;
             set;
         }
 
