@@ -172,38 +172,53 @@ namespace AIMS_BD_IATI.DAL
         private void SetUSDValue(iatiactivity activity)
         {
             if (activity.transaction != null)
-            foreach (var tr in activity.transaction)
-            {
-                var cur = tr.value.currency ?? activity.defaultcurrency;
-                if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
+                foreach (var tr in activity.transaction)
                 {
-                    ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
+                    tr.value.currency = tr.value.currency ?? activity.defaultcurrency;
+
+                    var cur = tr.value.currency;
+
+
+
+                    if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
+                    {
+                        ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
+                    }
+
+
+                    var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
+
+                    var valDate = tr.value.valuedate == default(DateTime) ? tr.transactiondate.n().isodate : tr.value.valuedate;
+
+                    var curExchangeRate = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
+
+                    tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
+                    tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
+                    tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
                 }
-
-                var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
-
-                var curExchangeRate = exchangeRates.Where(k => k.DATE <= tr.value.valuedate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
-
-                var DOLLAR_PER_CURRENCY = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
-                tr.value.ValueInUSD = tr.value.Value * DOLLAR_PER_CURRENCY;
-            }
 
             if (activity.budget != null)
-            foreach (var bgt in activity.budget)
-            {
-                var cur = bgt.value.currency ?? activity.defaultcurrency;
-                if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
+                foreach (var tr in activity.budget)
                 {
-                    ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
+                    tr.value.currency = tr.value.currency ?? activity.defaultcurrency;
+
+                    var cur = tr.value.currency;
+
+                    if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
+                    {
+                        ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
+                    }
+
+                    var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
+
+                    var valDate = tr.value.valuedate;
+
+                    var curExchangeRate = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
+
+                    tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
+                    tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
+                    tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
                 }
-
-                var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
-
-                var curExchangeRate = exchangeRates.Where(k => k.DATE <= bgt.value.valuedate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
-
-                var DOLLAR_PER_CURRENCY = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
-                bgt.value.ValueInUSD = bgt.value.Value * DOLLAR_PER_CURRENCY;
-            }
         }
 
 
