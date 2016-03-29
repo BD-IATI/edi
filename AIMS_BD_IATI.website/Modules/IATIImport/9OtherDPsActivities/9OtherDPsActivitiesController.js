@@ -6,12 +6,12 @@
         url: apiprefix + '/api/IATIImport/GetAssignedActivities',
         params: { dp: $rootScope.selectedFundSource.ID }
     }).success(function (result) {
-        $scope.AssignedActivities = result.AssignedActivities;
-        $scope.Projects = result.Projects;
-        $scope.TrustFunds = result.TrustFunds;
+       $rootScope.AssignedActivities = $scope.AssignedActivities = result.AssignedActivities;
+       $rootScope.Projects = $scope.Projects = result.Projects;
+       $rootScope.TrustFunds = $scope.TrustFunds = result.TrustFunds;
 
-        console.log(result);
     });
+
 
 
     $scope.OpenTFnCF = function (activity) {

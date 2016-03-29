@@ -2,7 +2,7 @@
 
 
 var iatiDataImporterApp = angular.module('iatiDataImporter',
-    ['Authentication', 'ngCookies', 'ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table', 'ngAnimate', 'ui.bootstrap']);
+    ['Authentication', 'ngCookies', 'ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table', 'ngAnimate', 'ui.bootstrap','angular.filter']);
 
 iatiDataImporterApp.config(function ($routeProvider) {
     $routeProvider

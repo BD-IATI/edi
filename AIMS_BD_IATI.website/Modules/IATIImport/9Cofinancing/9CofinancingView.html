@@ -1,5 +1,6 @@
 ﻿<div role="tabpanel" class="tab-pane active" id="co-financing" ng-controller="9CofinancingController">
-    <div class="row">
+
+        <div class="row">
         <div class="col-md-12">
             <h2>
                 <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
@@ -14,93 +15,37 @@
             <hr />
         </div>
     </div>
-    <div class="row">
+    <div class="row" ng-repeat="project in aimsCoFinancedProjects">
         <div class="col-md-12">
-            <h3>Water Management Improvement Project</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Commitments</h4>
-            <table class="table">
+            <h3 ng-bind="project.Title"></h3>
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>DP</th>
-                        <th>Value (USD)</th>
-                        <th>Date</th>
+                        <th>Reporting Org</th>
+                        <th>Commitments (in USD)</th>
+                        <th>Disbursments (in USD)</th>
                         <th>Source</th>
-                        <th>Remove</th>
+                        <th>Include?</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>World Bank</td>
-                        <td>200,000</td>
-                        <td>2015-01-01</td>
+                        <td ng-bind="project.ReportingOrg"></td>
+                        <td ng-bind="project.TotalCommitment | currency"></td>
+                        <td ng-bind="project.TotalDisbursment  | currency"></td>
                         <td>AIMS</td>
                         <td></td>
                     </tr>
-                    <tr>
-                        <td>Canada</td>
-                        <td>20,000</td>
-                        <td>2015-01-01</td>
-                        <td>AIMS</td>
-                        <td></td>
-                    </tr>
-                    <tr class="warning">
-                        <td>Netherlands</td>
-                        <td>50,000</td>
-                        <td>2016-01-01</td>
+                    <tr ng-repeat="(org,prjs) in project.MatchedProjects | groupBy: 'ReportingOrg'">
+                        <td ng-bind="org"></td>
+                        <td ng-bind="GetSumOfCommitments(prjs) | currency"></td>
+                        <td ng-bind="GetSumOfDisbursments(prjs)  | currency"></td>
                         <td>IATI</td>
-                        <td>
-                            <a class="btn btn-sm btn-default" href="#">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-6">
-            <h4>Disbursements</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>DP</th>
-                        <th>Value (USD)</th>
-                        <th>Date</th>
-                        <th>Source</th>
-                        <th>Remove</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>World Bank</td>
-                        <td>300,000</td>
-                        <td>2015-01-01</td>
-                        <td>AIMS</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Canada</td>
-                        <td>20,000</td>
-                        <td>2015-01-01</td>
-                        <td>AIMS</td>
-                        <td></td>
-                    </tr>
-                    <tr class="warning">
-                        <td>Netherlands</td>
-                        <td>50,000</td>
-                        <td>2016-01-01</td>
-                        <td>IATI</td>
-                        <td>
-                            <a class="btn btn-sm btn-default" href="#">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </a>
-                        </td>
+                        <td><input type="checkbox" ng-model="prj.IsCommitmentTake"/></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
 </div>
