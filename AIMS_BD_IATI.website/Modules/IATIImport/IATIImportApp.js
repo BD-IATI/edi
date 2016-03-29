@@ -67,13 +67,13 @@ iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
             else {
                 scope.options = [
                     { label: "Begin import", href: "#/0Begin" },
-                    { label: "1. Hierarchy", href: "#/1Hierarchy" },
+                    { label: "1. Project structure", href: "#/1Hierarchy" },
                     { label: "2. Filter Bangladesh-relevant activities", href: "#/2FilterBD" },
-                    { label: "3. Filter DP activities", href: "#/3FilterDP" },
-                    { label: "4. Show projects", href: "#/4Projects" },
+                    { label: "3. Determine managing DP", href: "#/3FilterDP" },
+                    { label: "4. Review matched projects", href: "#/4Projects" },
                     { label: "5. Match unmatched projects", href: "#/5Match" },
-                    { label: "6. Set general import preferences", href: "#/6GeneralPreferences" },
-                    { label: "7. Review and adjust import preferences", href: "#/7ReviewAdjustment" }
+                    { label: "6. Set import preferences", href: "#/6GeneralPreferences" },
+                    { label: "7. Review and import", href: "#/7ReviewAdjustment" }
                 ];
             }
 
