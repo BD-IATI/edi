@@ -443,6 +443,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             foreach (var matchedProject in matchedProjects)
             {
+                matchedProject.aimsProject.FundSourceIDnIATICode = matchedProject.iatiActivity.FundSourceIDnIATICode;
                 foreach (var field in matchedProject.Fields)
                 {
                     if (field.IsSourceIATI)
@@ -455,12 +456,38 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                         {
                             matchedProject.aimsProject.Description = matchedProject.iatiActivity.Description;
                         }
+
                     }
                 }
+
+                var trns = new List<transaction>();
+                foreach (var field in matchedProject.TransactionFields)
+                {
+
+
+                    if (field.Field == "commitment")
+                    {
+                        if (field.IsSourceIATI)
+                            trns.AddRange(matchedProject.iatiActivity.Commitments);
+                        else
+                            trns.AddRange(matchedProject.aimsProject.Commitments);
+
+                    }
+                    if (field.Field == "disbursment")
+                    {
+                        if (field.IsSourceIATI)
+                            trns.AddRange(matchedProject.iatiActivity.Disbursments);
+                        else
+                            trns.AddRange(matchedProject.aimsProject.Disbursments);
+                    }
+
+                }
+
+                matchedProject.aimsProject.transaction = trns.ToArray();
                 margedProjects.Add(matchedProject.aimsProject);
             }
 
-            return new AimsDAL().UpdateProjects(margedProjects);
+            return new AimsDAL().UpdateProjects(margedProjects,Sessions.UserId);
         }
 
     }

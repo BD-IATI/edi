@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using AIMS_BD_IATI.Library;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace AIMS_BD_IATI.DAL
 {
@@ -164,21 +166,111 @@ namespace AIMS_BD_IATI.DAL
             return transactions;
         }
 
-        public int? UpdateProjects(List<iatiactivity> projects)
+        public int? UpdateProjects(List<iatiactivity> projects, string Iuser)
         {
-            foreach (var project in projects)
+            var aimsCurrencies = from c in dbContext.tblCurrencies
+                                 select new { Id = c.Id, IATICode = c.IATICode };
+
+            var aimsAidCategories = from c in dbContext.tblAidCategories
+                                    select new { Id = c.Id, IATICode = c.IATICode };
+            try
             {
-                var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == project.ProjectId);
-                if (p != null)
+                foreach (var project in projects)
                 {
+                    var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == project.ProjectId);
+                    if (p == null)
+                    {
+                        p = new tblProjectInfo();
+                        p.IDate = DateTime.Now;
+                        p.IUser = Iuser;
+                        dbContext.tblProjectInfoes.Add(p);
+                    }
+
+
                     p.Title = project.Title;
                     p.Objective = project.Description;
 
-                    
+                    var coms = p.tblProjectFundingCommitments.ToList();
+                    foreach (var cc in coms)
+                    {
+                        dbContext.tblProjectFundingCommitments.Remove(cc);
+                    }
+
+                    foreach (var trn in project.Commitments)
+                    {
+
+                        var aimsCommitment = new tblProjectFundingCommitment();
+                        aimsCommitment.IDate = DateTime.Now;
+                        aimsCommitment.IUser = Iuser;
+                        p.tblProjectFundingCommitments.Add(aimsCommitment);
+
+                        //ToDo for co-finance projects it may be different
+                        aimsCommitment.FundSourceId = project.AimsFundSourceId;
+
+                        aimsCommitment.CommitmentAgreementSignDate = trn.transactiondate.n().isodate;
+
+                        var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
+                        aimsCommitment.CommitmentMaidCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
+                        aimsCommitment.CommittedAmount = trn.value.Value;
+
+                        aimsCommitment.CommittedAmountInUSD = trn.value.n().ValueInUSD;
+                        aimsCommitment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "From IATI - " + trn.description.n().narrative.n(0).Value;
+
+                        var aimsAidCategory = trn.financetype == null ? null : aimsAidCategories.FirstOrDefault(f => f.IATICode == trn.financetype.code);
+                        aimsCommitment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
+
+
+                    }
+
+                    var disb = p.tblProjectFundingActualDisbursements.ToList();
+                    foreach (var cc in disb)
+                    {
+                        dbContext.tblProjectFundingActualDisbursements.Remove(cc);
+                    }
+
+                    foreach (var trn in project.Disbursments)
+                    {
+                        var aimsDisbursment = p.tblProjectFundingActualDisbursements.n().FirstOrDefault(f => f.Id == trn.AIMSID);
+
+                            aimsDisbursment = new tblProjectFundingActualDisbursement();
+                            p.tblProjectFundingActualDisbursements.Add(aimsDisbursment);
+                            aimsDisbursment.IDate = DateTime.Now;
+                            aimsDisbursment.IUser = Iuser;
+
+                        //ToDo for co-finance projects it may be different
+                        aimsDisbursment.FundSourceId = project.AimsFundSourceId;
+
+                        aimsDisbursment.DisbursementDate = trn.transactiondate.n().isodate;
+
+                        var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
+                        aimsDisbursment.DisbursedCurrencyId = aimsCurrency == null ? 0 : aimsCurrency.Id;
+                        aimsDisbursment.DisbursedAmount = trn.value.Value;
+
+                        aimsDisbursment.DisbursedAmountInUSD = trn.value.n().ValueInUSD;
+                        aimsDisbursment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "From IATI - " + trn.description.n().narrative.n(0).Value;
+
+                        var aimsAidCategory = trn.financetype == null ? null : aimsAidCategories.FirstOrDefault(f => f.IATICode == trn.financetype.code);
+                        aimsDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
+
+                    }
+                }
+
+                dbContext.SaveChanges();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Trace.TraceInformation("Property: {0} Error: {1}",
+                                                validationError.PropertyName,
+                                                validationError.ErrorMessage);
+                    }
                 }
             }
 
-            return dbContext.SaveChanges();
+            return 1;
         }
 
         /// <summary>
@@ -359,10 +451,11 @@ namespace AIMS_BD_IATI.DAL
                 foreach (var commitment in commitments)
                 {
                     transaction tr = new transaction();
+                    tr.AIMSID = commitment.Id;
                     tr.transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("C") };
                     var date = commitment.CommitmentAgreementSignDate ?? project.AgreementSignDate;
                     tr.transactiondate = new transactionTransactiondate { isodate = date };
-                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(commitment.CommittedAmountInUSD), ValueInUSD= Convert.ToDecimal(commitment.CommittedAmountInUSD)}; //commitment.tblCurrency.IATICode
+                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(commitment.CommittedAmountInUSD), ValueInUSD = Convert.ToDecimal(commitment.CommittedAmountInUSD) }; //commitment.tblCurrency.IATICode
 
                     tr.description = new textRequiredType { narrative = Statix.getNarativeArray(commitment.Remarks) };
                     tr.providerorg = new transactionProviderorg { @ref = commitment.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = Statix.getNarativeArray(commitment.tblFundSource.n().FundSourceName) };
@@ -440,7 +533,7 @@ namespace AIMS_BD_IATI.DAL
                     tr.transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("E") };
                     var date = expenditure.ExpenditureReportingPeriodToDate; //?? expenditure.ExpenditureReportingPeriodFromDate;
                     tr.transactiondate = new transactionTransactiondate { isodate = date };
-                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = expenditure.ExpenditureAmountInUSD??0, ValueInUSD = expenditure.ExpenditureAmountInUSD??0 }; //expenditure.tblCurrency.IATICode
+                    tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = expenditure.ExpenditureAmountInUSD ?? 0, ValueInUSD = expenditure.ExpenditureAmountInUSD ?? 0 }; //expenditure.tblCurrency.IATICode
 
                     tr.description = new textRequiredType { narrative = Statix.getNarativeArray(expenditure.Remarks) };
                     tr.providerorg = new transactionProviderorg { @ref = expenditure.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = Statix.getNarativeArray(expenditure.tblFundSource.n().FundSourceName) };

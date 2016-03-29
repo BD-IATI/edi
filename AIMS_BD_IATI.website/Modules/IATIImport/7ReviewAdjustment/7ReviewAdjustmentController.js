@@ -24,7 +24,7 @@
     }
     $scope.isDiffGT5 = function (mkl) {
 
-        return Math.abs(($scope.disbursmentDiff(mkl) + $scope.commitmentDiff(mkl)) / 2) > 5;
+        return Math.abs(($scope.disbursmentDiff(mkl) - $scope.commitmentDiff(mkl)) / 2) > 5;
     }
 
     $scope.OpenProjectSpecificAdjustment = function (MatchedProject) {

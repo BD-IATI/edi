@@ -103,6 +103,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return GetTransactions(ConvertIATIv2.gettransactionCode("C"));
             }
         }
+
+
         [XmlIgnore]
         public decimal TotalPlannedDisbursment
         {
@@ -627,6 +629,12 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             set;
         }
 
+    }
+
+    public partial class transaction : ITransaction
+    {
+        [XmlIgnore]
+        public int AIMSID { get; set; }
     }
 
 
