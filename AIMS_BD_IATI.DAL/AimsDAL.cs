@@ -190,6 +190,11 @@ namespace AIMS_BD_IATI.DAL
                     p.Title = project.Title;
                     p.Objective = project.Description;
 
+                    var defaultfinancetype = "100";
+                    if (project.defaultfinancetype != null && !string.IsNullOrWhiteSpace(project.defaultfinancetype.code))
+                        defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100"; 
+
+                    #region Commitments
                     var coms = p.tblProjectFundingCommitments.ToList();
                     foreach (var cc in coms)
                     {
@@ -216,12 +221,50 @@ namespace AIMS_BD_IATI.DAL
                         aimsCommitment.CommittedAmountInUSD = trn.value.n().ValueInUSD;
                         aimsCommitment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "From IATI - " + trn.description.n().narrative.n(0).Value;
 
-                        var aimsAidCategory = trn.financetype == null ? null : aimsAidCategories.FirstOrDefault(f => f.IATICode == trn.financetype.code);
+                        //AidCategory
+                        if (trn.financetype != null && trn.financetype.code.Length > 1)
+                            defaultfinancetype = trn.financetype.code.StartsWith("4") ? "400" : "100";
+
+                        var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode == defaultfinancetype);
                         aimsCommitment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
-
-
+                    } 
+                    #endregion
+                    /*
+                    #region PlannedDisbursements
+                    var planDisb = p.tblProjectFundingPlannedDisbursements.ToList();
+                    foreach (var cc in planDisb)
+                    {
+                        dbContext.tblProjectFundingPlannedDisbursements.Remove(cc);
                     }
 
+                    foreach (var trn in project.PlannedDisbursments)
+                    {
+                        var aimsPlanDisbursment = new tblProjectFundingPlannedDisbursement();
+                        p.tblProjectFundingPlannedDisbursements.Add(aimsPlanDisbursment);
+                        aimsPlanDisbursment.IDate = DateTime.Now;
+                        aimsPlanDisbursment.IUser = Iuser;
+
+                        //ToDo for co-finance projects it may be different
+                        aimsPlanDisbursment.FundSourceId = project.AimsFundSourceId;
+
+                        aimsPlanDisbursment.PlannedDisbursementPeriodFromDate = trn.periodstart.n().isodate;
+                        aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend.n().isodate;
+                        
+                        var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
+                        aimsPlanDisbursment.PlannedDisbursementCurrencyId = aimsCurrency == null ? 0 : aimsCurrency.Id;
+                        aimsPlanDisbursment.PlannedDisburseAmount = trn.value.Value;
+
+                        aimsPlanDisbursment.PlannedDisburseAmountInUSD = trn.value.n().ValueInUSD;
+                        //aimsPlanDisbursment.VerificationRemarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "From IATI - " + trn.description.n().narrative.n(0).Value;
+
+                        //AidCategory
+                        var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode.StartsWith(defaultfinancetype));
+                        aimsPlanDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
+                       
+                    }
+                    #endregion
+                    */
+                    #region Disbursements
                     var disb = p.tblProjectFundingActualDisbursements.ToList();
                     foreach (var cc in disb)
                     {
@@ -230,12 +273,10 @@ namespace AIMS_BD_IATI.DAL
 
                     foreach (var trn in project.Disbursments)
                     {
-                        var aimsDisbursment = p.tblProjectFundingActualDisbursements.n().FirstOrDefault(f => f.Id == trn.AIMSID);
-
-                            aimsDisbursment = new tblProjectFundingActualDisbursement();
-                            p.tblProjectFundingActualDisbursements.Add(aimsDisbursment);
-                            aimsDisbursment.IDate = DateTime.Now;
-                            aimsDisbursment.IUser = Iuser;
+                        var aimsDisbursment = new tblProjectFundingActualDisbursement();
+                        p.tblProjectFundingActualDisbursements.Add(aimsDisbursment);
+                        aimsDisbursment.IDate = DateTime.Now;
+                        aimsDisbursment.IUser = Iuser;
 
                         //ToDo for co-finance projects it may be different
                         aimsDisbursment.FundSourceId = project.AimsFundSourceId;
@@ -249,10 +290,15 @@ namespace AIMS_BD_IATI.DAL
                         aimsDisbursment.DisbursedAmountInUSD = trn.value.n().ValueInUSD;
                         aimsDisbursment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "From IATI - " + trn.description.n().narrative.n(0).Value;
 
-                        var aimsAidCategory = trn.financetype == null ? null : aimsAidCategories.FirstOrDefault(f => f.IATICode == trn.financetype.code);
+                        //AidCategory
+                        if(trn.financetype != null && trn.financetype.code.Length > 1)
+                            defaultfinancetype = trn.financetype.code.StartsWith("4") ? "400" : "100";
+
+                        var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode == defaultfinancetype);
                         aimsDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
 
-                    }
+                    } 
+                    #endregion
                 }
 
                 dbContext.SaveChanges();
