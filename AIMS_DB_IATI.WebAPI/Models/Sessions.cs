@@ -86,5 +86,16 @@ namespace AIMS_DB_IATI.WebAPI.Models
             }
             set { HttpContext.Current.Session["UserId"] = value; }
         }
+
+        public static List<iatiactivity> SubmitAssignedActivities
+        {
+            get
+            {
+                return HttpContext.Current.Session["SubmitAssignedActivities"] == null ?
+                    new List<iatiactivity>()
+                    : (List<iatiactivity>)HttpContext.Current.Session["SubmitAssignedActivities"];
+            }
+            set { HttpContext.Current.Session["SubmitAssignedActivities"] = value; }
+        }
     }
 }

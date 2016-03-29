@@ -47,41 +47,48 @@ namespace AIMS_BD_IATI.Service
 
             foreach (var fundSource in fundSources)
             {
-                Log.Write("INFO: " + "Parsing Started...for: " + fundSource.IATICode);
-
-                #region Convert Data from v1.05 to v2.01
-
-                //Parser v2.01
-                parserIATI = new ParserIATIv2();
-                //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=CA-3&stream=True" //"http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
-                //single activity : "http://datastore.iatistandard.org/api/1/access/activity.xml?iati-identifier=CA-3-A035529001
-                //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=CA-3
-                activitiesURL = Common.iati_url + "recipient-country=" + Common.iati_recipient_country + "&reporting-org=" + fundSource.IATICode + "&stream=" + Common.iati_stream;
-                returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
-
-                var iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
-                if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value.StartsWith("1.0")) //1.04, 1.05
+                try
                 {
-                    //Parser v1.05
-                    parserIATI = new ParserIATIv1();
-                    //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=GB-1&stream=True"; //"http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
-                    //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=GB-1 or XM-DAC-12-1
-                    returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
+                    Log.Write("INFO: " + "Parsing Started...for: " + fundSource.IATICode);
 
-                    Log.Write("INFO: " + "Parsing completed!");
+                    #region Convert Data from v1.05 to v2.01
 
-                    //Conversion
-                    ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
-                    returnResult2 = convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
-                    Log.Write("INFO: " + "Convertion completed!");
+                    //Parser v2.01
+                    parserIATI = new ParserIATIv2();
+                    //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=CA-3&stream=True" //"http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
+                    //single activity : "http://datastore.iatistandard.org/api/1/access/activity.xml?iati-identifier=CA-3-A035529001
+                    //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=CA-3
+                    activitiesURL = Common.iati_url + "recipient-country=" + Common.iati_recipient_country + "&reporting-org=" + fundSource.IATICode + "&stream=" + Common.iati_stream;
+                    returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
+
+                    var iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
+                    if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value.StartsWith("1.0")) //1.04, 1.05
+                    {
+                        //Parser v1.05
+                        parserIATI = new ParserIATIv1();
+                        //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=GB-1&stream=True"; //"http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
+                        //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=GB-1 or XM-DAC-12-1
+                        returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
+
+                        Log.Write("INFO: " + "Parsing completed!");
+
+                        //Conversion
+                        ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
+                        returnResult2 = convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
+                        Log.Write("INFO: " + "Convertion completed!");
+                    }
+
+                    #endregion
+
+                    iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
+                    if (iatiactivityArray != null)
+                    {
+                        SaveToDB(fundSource.IATICode, iatiactivityArray);
+                    }
                 }
-
-                #endregion
-
-                iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
-                if (iatiactivityArray != null)
+                catch (Exception ex)
                 {
-                    SaveToDB(fundSource.IATICode, iatiactivityArray);
+                    Log.Write("ERROR: " + ex.ToString());
                 }
             }
         }

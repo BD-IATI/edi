@@ -417,15 +417,34 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         public object GetAssignedActivities(string dp)
         {
             //var projects = new AimsDAL().GetProjects(dp);
-            var projects = new AimsDAL().GetAIMSDataInIATIFormat(dp);
+            Sessions.SubmitAssignedActivities = new AimsDAL().GetAIMSDataInIATIFormat(dp);
             var assignedActivities = new AimsDbIatiDAL().GetAssignActivities(dp);
             var trustFunds = new AimsDAL().GetTrustFunds(dp);
             return new
             {
                 AssignedActivities = assignedActivities,
-                Projects = projects,
+                Projects = Sessions.SubmitAssignedActivities,
                 TrustFunds = trustFunds
             };
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public object SubmitAssignedActivities(List<iatiactivity> assignedActivities)
+        {
+            if (assignedActivities == null) return null;
+
+            var aimsCoFinancedProjects = (from i in assignedActivities
+                                         join a in Sessions.SubmitAssignedActivities on i.MappedProjectId equals a.ProjectId
+                                         
+                                         select a).DistinctBy(d=>d.ProjectId);
+
+            foreach (var project in aimsCoFinancedProjects)
+            {
+                var acts = assignedActivities.FindAll(f=>f.MappedProjectId == project.ProjectId);
+                project.MatchedProjects.AddRange(acts);
+            }
+
+            return aimsCoFinancedProjects;
         }
 
         [HttpGet]
@@ -487,7 +506,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 margedProjects.Add(matchedProject.aimsProject);
             }
 
-            return new AimsDAL().UpdateProjects(margedProjects,Sessions.UserId);
+            return new AimsDAL().UpdateProjects(margedProjects, Sessions.UserId);
         }
 
     }
