@@ -112,14 +112,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
         }
         [XmlIgnore]
-        public List<Parser.ParserIATIv2.budget> PlannedDisbursments
+        public List<Parser.ParserIATIv2.planneddisbursement> PlannedDisbursments
         {
             get
             {
-                var plannedDisbursments = new List<Parser.ParserIATIv2.budget>();
-                if (budget != null)
+                var plannedDisbursments = new List<Parser.ParserIATIv2.planneddisbursement>();
+                if (this.budget != null || IsDataSourceAIMS)
                 {
-                    plannedDisbursments.AddRange(GetPlannedDisbursments(budget));
+                    plannedDisbursments.AddRange(GetPlannedDisbursments(this));
                 }
                 else
                 {
@@ -127,8 +127,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                     {
                         if (ra.budget != null)
                         {
-                            plannedDisbursments.AddRange(GetPlannedDisbursments(ra.budget));
-
+                            plannedDisbursments.AddRange(GetPlannedDisbursments(ra));
                         }
                     }
                 }
@@ -136,30 +135,55 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
         }
 
-        private List<Parser.ParserIATIv2.budget> GetPlannedDisbursments(budget[] budgets)
+        private List<Parser.ParserIATIv2.planneddisbursement> GetPlannedDisbursments(iatiactivity activity)
         {
-            var originalBudgets = budgets.Where(w => w.type == "1").ToList();
-            var revisedBudgets = budgets.Where(w => w.type == "2").ToList();
+            List<planneddisbursement> planneddisbursements = new List<planneddisbursement>();
 
-            foreach (var revisedBudget in revisedBudgets)
+            if (activity.planneddisbursement != null)
             {
-                originalBudgets.RemoveAll(r =>
-                    (
-                    r.periodstart.n().isodate >= revisedBudget.periodstart.n().isodate && r.periodstart.n().isodate <= revisedBudget.periodend.n().isodate
-                    )
-                    || (r.periodend.n().isodate >= revisedBudget.periodstart.n().isodate && r.periodend.n().isodate <= revisedBudget.periodend.n().isodate
-                    )
-                    ||
-                     (revisedBudget.periodstart.n().isodate >= r.periodstart.n().isodate && revisedBudget.periodend.n().isodate <= r.periodstart.n().isodate
-                     )
-                     || (revisedBudget.periodstart.n().isodate >= r.periodend.n().isodate && revisedBudget.periodend.n().isodate <= r.periodend.n().isodate
-                    )
-                    );
+                //get planned disbursements
+                planneddisbursements.AddRange(activity.planneddisbursement);
             }
-            var margedBudgets = new List<budget>();
-            margedBudgets.AddRange(originalBudgets);
-            margedBudgets.AddRange(revisedBudgets);
-            return margedBudgets;
+
+            if (activity.budget != null)
+            {
+                budget[] budgets = activity.budget;
+
+                //get planned from budget
+                var originalBudgets = budgets.Where(w => w.type == "1").ToList();
+                var revisedBudgets = budgets.Where(w => w.type == "2").ToList();
+
+                foreach (var revisedBudget in revisedBudgets)
+                {
+                    originalBudgets.RemoveAll(r =>
+                        (
+                        r.periodstart.n().isodate >= revisedBudget.periodstart.n().isodate && r.periodstart.n().isodate <= revisedBudget.periodend.n().isodate
+                        )
+                        || (r.periodend.n().isodate >= revisedBudget.periodstart.n().isodate && r.periodend.n().isodate <= revisedBudget.periodend.n().isodate
+                        )
+                        ||
+                         (revisedBudget.periodstart.n().isodate >= r.periodstart.n().isodate && revisedBudget.periodend.n().isodate <= r.periodstart.n().isodate
+                         )
+                         || (revisedBudget.periodstart.n().isodate >= r.periodend.n().isodate && revisedBudget.periodend.n().isodate <= r.periodend.n().isodate
+                        )
+                        );
+                }
+                var margedBudgets = new List<budget>();
+                margedBudgets.AddRange(originalBudgets);
+                margedBudgets.AddRange(revisedBudgets);
+
+                foreach (var item in margedBudgets)
+                {
+                    planneddisbursements.Add(new planneddisbursement
+                    {
+                        periodstart = new planneddisbursementPeriodstart { isodate = item.periodstart.n().isodate },
+                        periodend = new planneddisbursementPeriodend { isodate = item.periodend.n().isodate },
+                        value = item.value
+                    });
+                }
+            }
+
+            return planneddisbursements;
         }
 
 

@@ -340,7 +340,7 @@ namespace AIMS_BD_IATI.DAL
                         type = "1", //1=Origin, 2=Revised 
                         periodstart = new planneddisbursementPeriodstart { isodate = pd.PlannedDisbursementPeriodFromDate ?? DateTime.MinValue },
                         periodend = new planneddisbursementPeriodend { isodate = pd.PlannedDisbursementPeriodToDate ?? DateTime.MinValue },
-                        value = new currencyType { currency = Statix.Currency, Value = pd.PlannedDisburseAmountInUSD ?? 0, valuedate = pd.PlannedDisbursementPeriodFromDate ?? DateTime.MinValue },
+                        value = new currencyType { currency = Statix.Currency, Value = pd.PlannedDisburseAmountInUSD ?? 0, valuedate = pd.PlannedDisbursementPeriodFromDate ?? DateTime.MinValue, ValueInUSD = pd.PlannedDisburseAmountInUSD ?? 0 },
                         //provider-org
                         //receiver-org
                     });
