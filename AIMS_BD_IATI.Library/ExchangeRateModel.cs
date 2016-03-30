@@ -15,5 +15,7 @@ namespace AIMS_BD_IATI.Library
         public Nullable<decimal> TAKA_PER_CURRENCY { get; set; }
         public Nullable<decimal> DOLLAR_PER_CURRENCY { get; set; }
         public Nullable<decimal> CURRENCY_PER_DOLLAR { get; set; }
+
+        public Nullable<decimal> TAKA_PER_DOLLAR { get; set; }
     }
 }

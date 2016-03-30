@@ -480,29 +480,34 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 }
 
                 var trns = new List<transaction>();
+                var planDis = new List<planneddisbursement>();
                 foreach (var field in matchedProject.TransactionFields)
                 {
-
-
                     if (field.Field == "commitment")
                     {
                         if (field.IsSourceIATI)
                             trns.AddRange(matchedProject.iatiActivity.Commitments);
                         else
                             trns.AddRange(matchedProject.aimsProject.Commitments);
-
                     }
-                    if (field.Field == "disbursment")
+                    else if (field.Field == "disbursment")
                     {
                         if (field.IsSourceIATI)
                             trns.AddRange(matchedProject.iatiActivity.Disbursments);
                         else
                             trns.AddRange(matchedProject.aimsProject.Disbursments);
                     }
-
+                    else if (field.Field == "planned-disbursment")
+                    {
+                        if (field.IsSourceIATI)
+                            planDis.AddRange(matchedProject.iatiActivity.PlannedDisbursments);
+                        else
+                            planDis.AddRange(matchedProject.aimsProject.PlannedDisbursments);
+                    }
                 }
 
                 matchedProject.aimsProject.transaction = trns.ToArray();
+                matchedProject.aimsProject.planneddisbursement = planDis.ToArray();
                 margedProjects.Add(matchedProject.aimsProject);
             }
 

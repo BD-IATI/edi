@@ -605,29 +605,21 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     public partial class currencyType
     {
-
-
+        [XmlIgnore]
+        public DateTime BBexchangeRateDate { get; set; }
 
         [XmlIgnore]
-        public decimal ValueInUSD
-        {
-            get
-            ;
-            set;
-        }
+        public decimal ValueInUSD { get; set; }
 
         [XmlIgnore]
-        public decimal BBexchangeRateUSD
-        {
-            get;
-            set;
-        }
+        public decimal BBexchangeRateUSD { get; set; }
+
         [XmlIgnore]
-        public DateTime BBexchangeRateDate
-        {
-            get;
-            set;
-        }
+        public decimal ValueInBDT { get; set; }
+
+        [XmlIgnore]
+        public decimal BBexchangeRateBDT { get; set; }
+        
 
     }
 

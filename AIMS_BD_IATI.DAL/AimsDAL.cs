@@ -205,9 +205,10 @@ namespace AIMS_BD_IATI.DAL
                     {
 
                         var aimsCommitment = new tblProjectFundingCommitment();
+                        p.tblProjectFundingCommitments.Add(aimsCommitment);
                         aimsCommitment.IDate = DateTime.Now;
                         aimsCommitment.IUser = Iuser;
-                        p.tblProjectFundingCommitments.Add(aimsCommitment);
+                        aimsCommitment.IsCommitmentTrustFund = false;
 
                         //ToDo for co-finance projects it may be different
                         aimsCommitment.FundSourceId = project.AimsFundSourceId;
@@ -218,8 +219,15 @@ namespace AIMS_BD_IATI.DAL
                         aimsCommitment.CommitmentMaidCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
                         aimsCommitment.CommittedAmount = trn.value.Value;
 
+                        aimsCommitment.CommitmentEffectiveDate = trn.value.n().BBexchangeRateDate;
+                        aimsCommitment.ExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
                         aimsCommitment.CommittedAmountInUSD = trn.value.n().ValueInUSD;
-                        aimsCommitment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "From IATI - " + trn.description.n().narrative.n(0).Value;
+
+                        aimsCommitment.ExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
+                        aimsCommitment.CommittedAmountInBDT = trn.value.n().ValueInBDT;
+                        
+                        aimsCommitment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                        aimsCommitment.VerificationRemarks = "Importerd From IATI: ";
 
                         //AidCategory
                         if (trn.financetype != null && trn.financetype.code.Length > 1)
@@ -229,7 +237,7 @@ namespace AIMS_BD_IATI.DAL
                         aimsCommitment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
                     } 
                     #endregion
-                    /*
+                    
                     #region PlannedDisbursements
                     var planDisb = p.tblProjectFundingPlannedDisbursements.ToList();
                     foreach (var cc in planDisb)
@@ -243,6 +251,7 @@ namespace AIMS_BD_IATI.DAL
                         p.tblProjectFundingPlannedDisbursements.Add(aimsPlanDisbursment);
                         aimsPlanDisbursment.IDate = DateTime.Now;
                         aimsPlanDisbursment.IUser = Iuser;
+                        aimsPlanDisbursment.IsPlannedDisbursementTrustFund = false;
 
                         //ToDo for co-finance projects it may be different
                         aimsPlanDisbursment.FundSourceId = project.AimsFundSourceId;
@@ -254,8 +263,14 @@ namespace AIMS_BD_IATI.DAL
                         aimsPlanDisbursment.PlannedDisbursementCurrencyId = aimsCurrency == null ? 0 : aimsCurrency.Id;
                         aimsPlanDisbursment.PlannedDisburseAmount = trn.value.Value;
 
+                        aimsPlanDisbursment.PlannedDisburseExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
                         aimsPlanDisbursment.PlannedDisburseAmountInUSD = trn.value.n().ValueInUSD;
-                        //aimsPlanDisbursment.VerificationRemarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "From IATI - " + trn.description.n().narrative.n(0).Value;
+
+                        aimsPlanDisbursment.PlannedDisburseExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
+                        aimsPlanDisbursment.PlannedDisburseAmountInBDT = trn.value.n().ValueInBDT;
+
+                        //aimsPlanDisbursment.VerificationRemarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                        aimsPlanDisbursment.VerificationRemarks = "Importerd From IATI: ";
 
                         //AidCategory
                         var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode.StartsWith(defaultfinancetype));
@@ -263,7 +278,7 @@ namespace AIMS_BD_IATI.DAL
                        
                     }
                     #endregion
-                    */
+                    
                     #region Disbursements
                     var disb = p.tblProjectFundingActualDisbursements.ToList();
                     foreach (var cc in disb)
@@ -277,18 +292,26 @@ namespace AIMS_BD_IATI.DAL
                         p.tblProjectFundingActualDisbursements.Add(aimsDisbursment);
                         aimsDisbursment.IDate = DateTime.Now;
                         aimsDisbursment.IUser = Iuser;
+                        aimsDisbursment.IsDisbursedTrustFund = false;
 
                         //ToDo for co-finance projects it may be different
                         aimsDisbursment.FundSourceId = project.AimsFundSourceId;
 
                         aimsDisbursment.DisbursementDate = trn.transactiondate.n().isodate;
+                        aimsDisbursment.DisbursementToDate = trn.transactiondate.n().isodate;
 
                         var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
                         aimsDisbursment.DisbursedCurrencyId = aimsCurrency == null ? 0 : aimsCurrency.Id;
                         aimsDisbursment.DisbursedAmount = trn.value.Value;
 
+                        aimsDisbursment.DisbursedExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
                         aimsDisbursment.DisbursedAmountInUSD = trn.value.n().ValueInUSD;
-                        aimsDisbursment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "From IATI - " + trn.description.n().narrative.n(0).Value;
+
+                        aimsDisbursment.DisbursedExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
+                        aimsDisbursment.DisbursedAmountInBDT = trn.value.n().ValueInBDT;
+
+                        aimsDisbursment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                        aimsDisbursment.VerificationRemarks = "Importerd From IATI: ";
 
                         //AidCategory
                         if(trn.financetype != null && trn.financetype.code.Length > 1)
@@ -660,10 +683,13 @@ namespace AIMS_BD_IATI.DAL
                 && (date == null ? true : k.DATE == date))
                      select new ExchangeRateModel
                      {
+                         DATE = e.DATE,
                          ISO_CURRENCY_CODE = e.ISO_CURRENCY_CODE,
+
                          DOLLAR_PER_CURRENCY = e.DOLLAR_PER_CURRENCY,
                          CURRENCY_PER_DOLLAR = e.CURRENCY_PER_DOLLAR,
-                         DATE = e.DATE
+
+                         TAKA_PER_DOLLAR = e.TAKA_PER_CURRENCY / e.DOLLAR_PER_CURRENCY
                      })
                 .ToList();
 

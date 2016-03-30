@@ -200,9 +200,11 @@ namespace AIMS_BD_IATI.DAL
 
                     var curExchangeRate = exchangeRates.Where(k => k.DATE == nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
 
-                    tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
                     tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
+                    tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
                     tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
+                    tr.value.BBexchangeRateBDT = curExchangeRate.n().TAKA_PER_DOLLAR ?? 0;
+                    tr.value.ValueInBDT = tr.value.ValueInUSD * tr.value.BBexchangeRateBDT;
                 }
 
             if (activity.budget != null)
@@ -230,9 +232,43 @@ namespace AIMS_BD_IATI.DAL
 
                     var curExchangeRate = exchangeRates.Where(k => k.DATE >= nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
 
-                    tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
                     tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
+                    tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
                     tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
+                    tr.value.BBexchangeRateBDT = curExchangeRate.n().TAKA_PER_DOLLAR ?? 0;
+                    tr.value.ValueInBDT = tr.value.ValueInUSD * tr.value.BBexchangeRateBDT;
+                }
+
+            if (activity.planneddisbursement != null)
+                foreach (var tr in activity.planneddisbursement)
+                {
+                    tr.value.currency = tr.value.currency ?? activity.defaultcurrency;
+
+                    var cur = tr.value.currency;
+
+                    if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
+                    {
+                        ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
+                    }
+
+                    var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
+
+                    var valDate = tr.value.valuedate;
+
+                    var nearestPast = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault();
+                    var nearestPastDate = nearestPast == null ? default(DateTime) : nearestPast.DATE;
+                    var nearestFuture = exchangeRates.Where(k => k.DATE >= valDate).FirstOrDefault();
+                    var nearestFutureDate = nearestFuture == null ? default(DateTime) : nearestFuture.DATE;
+
+                    var nearestDate = (nearestFutureDate - valDate).TotalDays <= (valDate - nearestPastDate).TotalDays ? nearestFutureDate : nearestPastDate;
+
+                    var curExchangeRate = exchangeRates.Where(k => k.DATE >= nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
+
+                    tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
+                    tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
+                    tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
+                    tr.value.BBexchangeRateBDT = curExchangeRate.n().TAKA_PER_DOLLAR ?? 0;
+                    tr.value.ValueInBDT = tr.value.ValueInUSD * tr.value.BBexchangeRateBDT;
                 }
         }
 
