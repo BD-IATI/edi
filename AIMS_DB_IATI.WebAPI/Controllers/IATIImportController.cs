@@ -305,19 +305,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             if (returnModel == null)
             {
-                //List<FieldMap> flds = new List<FieldMap>();
-                //foreach (var item in savedPreferences)
-                //{
-                //    FieldMap fld = new FieldMap
-                //    {
-                //        Field = item.FieldName,
-                //        IsSourceIATI = item.IsSourceIATI,
-                //        AIMSValue = item.FieldName,
-                //        IATIValue = item.FieldName
-                //    };
-                //    flds.Add(fld);
-                //}
-                returnModel = new ProjectFieldMapModel(new iatiactivity(), new iatiactivity(), savedPreferences);
+                returnModel = new ProjectFieldMapModel(Sessions.activitiesContainer.n().RelevantActivities.n(0), new iatiactivity(), savedPreferences);
+                foreach (var item in returnModel.Fields)
+                {
+                    item.AIMSValue = "Not found in AIMS";
+                }
             }
             Sessions.GeneralPreferences = returnModel;
 
