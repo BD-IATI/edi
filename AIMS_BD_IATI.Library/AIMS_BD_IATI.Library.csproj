@@ -62,7 +62,7 @@
       <DependentUpon>iati-activities-schema.xsd</DependentUpon>
     </Compile>
     <Compile Include="Parser\ParserIATIv2\iatiactivityPartial.cs" />
-    <Compile Include="Parser\ParserIATIv2\ITransaction.cs" />
+    <Compile Include="Parser\ParserIATIv2\ICurrency.cs" />
     <Compile Include="Parser\ParserIATIv2\ParserIATIv2.cs" />
     <Compile Include="Parser\ParserIATIv2\XmlResultv2.cs" />
     <Compile Include="Parser\IXmlResult.cs" />
