@@ -30,6 +30,32 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     }
 
+    public class TrustFundModel
+    {
+        public int Id { get; set; }
+        public string TFIdentifier { get; set; }
+        public List<transaction> transactionsInAims { get; set; }
+        public List<iatiactivity> iatiactivities { get; set; }
+        public TrustFundModel()
+        {
+            transactionsInAims = new List<transaction>();
+            iatiactivities = new List<iatiactivity>();
+        }
+
+    }
+    public class CFnTFModel
+    {
+        public List<iatiactivity> AimsProjects { get; set; }
+        public List<iatiactivity> AssignedActivities { get; set; }
+        public List<TrustFundModel> TrustFunds { get; set; }
+
+        public CFnTFModel()
+        {
+            AimsProjects = new List<iatiactivity>();
+            AssignedActivities = new List<iatiactivity>();
+            TrustFunds = new List<TrustFundModel>();
+        }
+    }
     public partial class iatiactivity
     {
         public static List<FundSourceLookupItem> FundSources { get; set; }
@@ -87,6 +113,16 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("C"));
             }
         }
+        [XmlIgnore]
+        public decimal TotalDisbursment
+        {
+            get
+            {
+                return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("D"))
+                    + (IsDataSourceAIMS == false ? GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("E")) : 0);
+            }
+        }
+
         [XmlIgnore]
         public List<transaction> Disbursments
         {
@@ -189,15 +225,6 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
 
-        [XmlIgnore]
-        public decimal TotalDisbursment
-        {
-            get
-            {
-                return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("D"))
-                    + (IsDataSourceAIMS == false ? GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("E")) : 0);
-            }
-        }
 
         private decimal GetTotal(transaction[] _transaction, string transactiontypecode)
         {
@@ -619,7 +646,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         [XmlIgnore]
         public decimal BBexchangeRateBDT { get; set; }
-        
+
 
     }
 

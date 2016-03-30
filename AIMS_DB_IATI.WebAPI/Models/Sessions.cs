@@ -87,15 +87,26 @@ namespace AIMS_DB_IATI.WebAPI.Models
             set { HttpContext.Current.Session["UserId"] = value; }
         }
 
-        public static List<iatiactivity> SubmitAssignedActivities
+        public static CFnTFModel CFnTFModel
         {
             get
             {
-                return HttpContext.Current.Session["SubmitAssignedActivities"] == null ?
-                    new List<iatiactivity>()
-                    : (List<iatiactivity>)HttpContext.Current.Session["SubmitAssignedActivities"];
+                return HttpContext.Current.Session["CFnTFModel"] == null ?
+                    new CFnTFModel()
+                    : (CFnTFModel)HttpContext.Current.Session["CFnTFModel"];
             }
-            set { HttpContext.Current.Session["SubmitAssignedActivities"] = value; }
+            set { HttpContext.Current.Session["CFnTFModel"] = value; }
+        }
+
+        public static List<iatiactivity> TrustFunds
+        {
+            get
+            {
+                return HttpContext.Current.Session["AssignedActivities"] == null ?
+                    new List<iatiactivity>()
+                    : (List<iatiactivity>)HttpContext.Current.Session["AssignedActivities"];
+            }
+            set { HttpContext.Current.Session["AssignedActivities"] = value; }
         }
     }
 }

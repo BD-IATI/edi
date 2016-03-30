@@ -78,7 +78,7 @@ namespace AIMS_BD_IATI.DAL
 
 
 
-        public List<iatiactivity> GetAssignActivities(string dp)
+        public CFnTFModel GetAssignActivities(string dp)
         {
             var q = from a in dbContext.Activities
                     where a.OrgId != dp && a.AssignedOrgId == dp
@@ -135,7 +135,11 @@ namespace AIMS_BD_IATI.DAL
             }
 
 
-            return result;
+            return new CFnTFModel
+            {
+                AssignedActivities = result,
+                AimsProjects = new AimsDAL().GetAIMSDataInIATIFormat(dp)
+            };
         }
 
         public iatiactivityContainer GetActivities(string dp)

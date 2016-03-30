@@ -21,6 +21,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
     [Authorize]
     public class IATIImportController : ApiController
     {
+        AimsDAL aimsDAL = new AimsDAL();
+        AimsDbIatiDAL aimsDbIatiDAL = new AimsDbIatiDAL();
+
         void SetStatics()
         {
             iatiactivity.FundSources = Sessions.FundSources;
@@ -28,8 +31,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [HttpGet]
         public List<DPLookupItem> GetFundSources()
         {
-            Sessions.FundSources = new AimsDAL().GetAllFundSources();
-            return new AimsDAL().GetFundSources(Sessions.UserId);
+            Sessions.FundSources = aimsDAL.GetAllFundSources();
+            return aimsDAL.GetFundSources(Sessions.UserId);
         }
 
         [HttpGet]
@@ -48,7 +51,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             {
                 Sessions.heirarchyModel = new HeirarchyModel();
 
-                Sessions.activitiesContainer = new AimsDbIatiDAL().GetActivities(dp.ID);
+                Sessions.activitiesContainer = aimsDbIatiDAL.GetActivities(dp.ID);
 
                 if (Sessions.activitiesContainer.HasRelatedActivity)
                 {
@@ -228,7 +231,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public int? UpdateActivity(List<iatiactivity> activities)
         {
-            return new AimsDbIatiDAL().AssignActivities(activities);
+            return aimsDbIatiDAL.AssignActivities(activities);
         }
 
         [AcceptVerbs("GET", "POST")]
@@ -237,14 +240,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (relevantActivies == null)
                 relevantActivies = Sessions.activitiesContainer.RelevantActivities;
 
-            Sessions.ExchangeRates = new AimsDAL().GetExchangesRateToUSD(relevantActivies.n(1).defaultcurrency);
+            Sessions.ExchangeRates = aimsDAL.GetExchangesRateToUSD(relevantActivies.n(1).defaultcurrency);
             SetStatics();//since we have no access to session at library project, so we pass it in a static variables
 
             var ProjectsOwnedByOther = relevantActivies.FindAll(f => f.IATICode != Sessions.activitiesContainer.DP);
 
             relevantActivies.RemoveAll(f => f.IATICode != Sessions.activitiesContainer.DP);
 
-            var AimsProjects = new AimsDAL().GetAIMSDataInIATIFormat(Sessions.activitiesContainer.n().DP);
+            var AimsProjects = aimsDAL.GetAIMSDataInIATIFormat(Sessions.activitiesContainer.n().DP);
 
             var MatchedProjects = (from i in relevantActivies
                                    from a in AimsProjects.Where(k => i.iatiidentifier.Value.Replace("-", "").EndsWith(k.iatiidentifier.Value.Replace("-", "")))
@@ -296,7 +299,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [HttpGet]
         public ProjectFieldMapModel GetGeneralPreferences()
         {
-            var savedPreferences = new AimsDbIatiDAL().GetFieldMappingPreferenceGeneral(Sessions.activitiesContainer.DP);
+            var savedPreferences = aimsDbIatiDAL.GetFieldMappingPreferenceGeneral(Sessions.activitiesContainer.DP);
 
 
 
@@ -337,7 +340,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 entities.Add(entity);
             }
 
-            return new AimsDbIatiDAL().SaveFieldMappingPreferenceGeneral(entities);
+            return aimsDbIatiDAL.SaveFieldMappingPreferenceGeneral(entities);
         }
 
         [AcceptVerbs("GET", "POST")]
@@ -361,7 +364,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 entities.Add(entity);
             }
 
-            return new AimsDbIatiDAL().SaveFieldMappingPreferenceActivity(entities);
+            return aimsDbIatiDAL.SaveFieldMappingPreferenceActivity(entities);
         }
 
         [HttpPost]
@@ -374,7 +377,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             foreach (var mapModel in Sessions.ProjectMapModel.MatchedProjects)
             {
 
-                var activityPreference = new AimsDbIatiDAL().GetFieldMappingPreferenceActivity(mapModel.iatiActivity.IatiIdentifier);
+                var activityPreference = aimsDbIatiDAL.GetFieldMappingPreferenceActivity(mapModel.iatiActivity.IatiIdentifier);
                 foreach (var field in mapModel.Fields)
                 {
                     //get GetFieldMappingPreferenceActivity for this field
@@ -405,46 +408,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             };
         }
 
-        [HttpGet]
-        public object GetAssignedActivities(string dp)
-        {
-            //var projects = new AimsDAL().GetProjects(dp);
-            Sessions.SubmitAssignedActivities = new AimsDAL().GetAIMSDataInIATIFormat(dp);
-            var assignedActivities = new AimsDbIatiDAL().GetAssignActivities(dp);
-            var trustFunds = new AimsDAL().GetTrustFunds(dp);
-            return new
-            {
-                AssignedActivities = assignedActivities,
-                Projects = Sessions.SubmitAssignedActivities,
-                TrustFunds = trustFunds
-            };
-        }
 
-        [AcceptVerbs("GET", "POST")]
-        public object SubmitAssignedActivities(List<iatiactivity> assignedActivities)
-        {
-            if (assignedActivities == null) return null;
-
-            var aimsCoFinancedProjects = (from i in assignedActivities
-                                         join a in Sessions.SubmitAssignedActivities on i.MappedProjectId equals a.ProjectId
-                                         
-                                         select a).DistinctBy(d=>d.ProjectId);
-
-            foreach (var project in aimsCoFinancedProjects)
-            {
-                var acts = assignedActivities.FindAll(f=>f.MappedProjectId == project.ProjectId);
-                project.MatchedProjects.AddRange(acts);
-            }
-
-            return aimsCoFinancedProjects;
-        }
-
-        [HttpGet]
-        public List<transaction> GetTrustFundDetails(int trustFundId)
-        {
-            return new AimsDAL().GetTrustFundDetails(trustFundId);
-
-        }
         [AcceptVerbs("GET", "POST")]
         public int? ImportProjects(ProjectMapModel projectMapModel)
         {
@@ -503,7 +467,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 margedProjects.Add(matchedProject.aimsProject);
             }
 
-            return new AimsDAL().UpdateProjects(margedProjects, Sessions.UserId);
+            return aimsDAL.UpdateProjects(margedProjects, Sessions.UserId);
         }
 
     }

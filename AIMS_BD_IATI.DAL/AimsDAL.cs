@@ -138,32 +138,40 @@ namespace AIMS_BD_IATI.DAL
             return projects;
         }
 
-        public List<transaction> GetTrustFundDetails(int trustFundId)
+        public TrustFundModel GetTrustFundDetails(int trustFundId)
         {
-            var trustFunds = (from trustFund in dbContext.tblTrustFunds
+            TrustFundModel trustFundModel = new TrustFundModel();
+
+            var trustFundDetails = (from trustFund in dbContext.tblTrustFunds
                               join trustFundDetail in dbContext.tblTrustFundDetails on trustFund.Id equals trustFundDetail.TrustFundId
                               join fundSource in dbContext.tblFundSources on trustFundDetail.TFDFundSourceId equals fundSource.Id
 
                               where trustFund.Id == trustFundId
 
-                              orderby trustFund.TFIdentifier
                               select new
                               {
+                                  Id = trustFund.Id,
+                                  TFIdentifier = trustFund.TFIdentifier,
                                   FundSourceName = fundSource.FundSourceName,
                                   Amount = trustFundDetail.TFDAmountInUSD,
                               }).ToList();
 
-            var transactions = new List<transaction>();
-            foreach (var trustFund in trustFunds)
+            trustFundModel.Id = trustFundDetails.n(0).Id;
+            trustFundModel.TFIdentifier = trustFundDetails.n(0).TFIdentifier;
+
+            foreach (var trustFundDetail in trustFundDetails)
             {
-                transactions.Add(new transaction
+
+                trustFundModel.transactionsInAims.Add(new transaction
                 {
                     transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("C") },
-                    providerorg = new transactionProviderorg { narrative = Statix.getNarativeArray(trustFund.FundSourceName) },
-                    value = new currencyType { currency = Statix.Currency, Value = trustFund.Amount ?? 0 },
+                    providerorg = new transactionProviderorg { narrative = Statix.getNarativeArray(trustFundDetail.FundSourceName) },
+                    value = new currencyType { currency = Statix.Currency, Value = trustFundDetail.Amount ?? 0 },
                 });
             }
-            return transactions;
+
+
+            return trustFundModel;
         }
 
         public int? UpdateProjects(List<iatiactivity> projects, string Iuser)

@@ -3,7 +3,7 @@
 
     $http({
         method: 'GET',
-        url: apiprefix + '/api/IATIImport/GetAssignedActivities',
+        url: apiprefix + '/api/CFnTF/GetAssignedActivities',
         params: { dp: $rootScope.selectedFundSource.ID }
     }).success(function (result) {
        $rootScope.AssignedActivities = $scope.AssignedActivities = result.AssignedActivities;
