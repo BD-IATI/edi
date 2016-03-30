@@ -6,39 +6,39 @@ using System.Text;
 
 namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
-    public interface ITransaction
+    public interface ICurrency
     {
-        transactionTransactiontype transactiontype { get; set; }
+        //transactionTransactiontype transactiontype { get; set; }
 
-        transactionTransactiondate transactiondate { get; set; }
+        //transactionTransactiondate transactiondate { get; set; }
 
         currencyType value { get; set; }
 
-        textRequiredType description { get; set; }
+        //textRequiredType description { get; set; }
 
-        transactionProviderorg providerorg { get; set; }
+        //transactionProviderorg providerorg { get; set; }
 
-        transactionReceiverorg receiverorg { get; set; }
+        //transactionReceiverorg receiverorg { get; set; }
 
-        transactionDisbursementchannel disbursementchannel { get; set; }
+        //transactionDisbursementchannel disbursementchannel { get; set; }
 
-        transactionSector[] sector { get; set; }
+        //transactionSector[] sector { get; set; }
 
-        transactionRecipientcountry recipientcountry { get; set; }
+        //transactionRecipientcountry recipientcountry { get; set; }
 
-        transactionRecipientregion recipientregion { get; set; }
+        //transactionRecipientregion recipientregion { get; set; }
 
-        transactionFlowtype flowtype { get; set; }
+        //transactionFlowtype flowtype { get; set; }
 
-        transactionFinancetype financetype { get; set; }
+        //transactionFinancetype financetype { get; set; }
 
-        transactionAidtype aidtype { get; set; }
+        //transactionAidtype aidtype { get; set; }
 
-        transactionTiedstatus tiedstatus { get; set; }
+        //transactionTiedstatus tiedstatus { get; set; }
 
-        bool humanitarian { get; set; }
+        //bool humanitarian { get; set; }
 
-        bool humanitarianSpecified { get; set; }
+        //bool humanitarianSpecified { get; set; }
 
     }
 }

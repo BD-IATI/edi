@@ -520,7 +520,6 @@ namespace AIMS_BD_IATI.DAL
                 foreach (var commitment in commitments)
                 {
                     transaction tr = new transaction();
-                    tr.AIMSID = commitment.Id;
                     tr.transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("C") };
                     var date = commitment.CommitmentAgreementSignDate ?? project.AgreementSignDate;
                     tr.transactiondate = new transactionTransactiondate { isodate = date };

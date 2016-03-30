@@ -623,10 +623,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     }
 
-    public partial class transaction : ITransaction
+    public partial class transaction : ICurrency
     {
-        [XmlIgnore]
-        public int AIMSID { get; set; }
+    }
+    public partial class planneddisbursement : ICurrency
+    {
+    }
+    public partial class budget : ICurrency
+    {
     }
 
 

@@ -124,11 +124,13 @@ namespace AIMS_BD_IATI.DAL
                     {
                         if (ra.transaction != null)
                             transactions.AddRange(ra.transaction);
+
+                        SetExchangedValues(ra);
                     }
                     activity.transaction = transactions.ToArray();
                 }
 
-                SetUSDValue(activity);
+                SetExchangedValues(activity);
 
             }
 
@@ -155,7 +157,7 @@ namespace AIMS_BD_IATI.DAL
 
                 }
 
-                SetUSDValue(activity);
+                SetExchangedValues(activity);
 
                 result.Add(activity);
             }
@@ -169,107 +171,62 @@ namespace AIMS_BD_IATI.DAL
             };
         }
 
-        private void SetUSDValue(iatiactivity activity)
+        private void SetExchangedValues(iatiactivity activity)
         {
             if (activity.transaction != null)
                 foreach (var tr in activity.transaction)
                 {
-                    tr.value.currency = tr.value.currency ?? activity.defaultcurrency;
-
-                    var cur = tr.value.currency;
-
-
-
-                    if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
-                    {
-                        ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
-                    }
-
-
-                    var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
-
-                    var valDate = tr.value.valuedate == default(DateTime) ? tr.transactiondate.n().isodate : tr.value.valuedate;
-
-                    var nearestPast = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault();
-                    var nearestPastDate = nearestPast == null? default(DateTime) :nearestPast.DATE;
-                    var nearestFuture = exchangeRates.Where(k => k.DATE >= valDate).FirstOrDefault();
-                    var nearestFutureDate = nearestFuture == null ? default(DateTime) : nearestFuture.DATE;
-
-                    var nearestDate = (nearestFutureDate - valDate).TotalDays <= (valDate - nearestPastDate).TotalDays ? nearestFutureDate : nearestPastDate;
-
-
-                    var curExchangeRate = exchangeRates.Where(k => k.DATE == nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
-
-                    tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
-                    tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
-                    tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
-                    tr.value.BBexchangeRateBDT = curExchangeRate.n().TAKA_PER_DOLLAR ?? 0;
-                    tr.value.ValueInBDT = tr.value.ValueInUSD * tr.value.BBexchangeRateBDT;
+                    SetCurrencyExRateAndVal(tr, activity.defaultcurrency, tr.transactiondate.n().isodate);
                 }
 
             if (activity.budget != null)
                 foreach (var tr in activity.budget)
                 {
-                    tr.value.currency = tr.value.currency ?? activity.defaultcurrency;
+                    SetCurrencyExRateAndVal(tr, activity.defaultcurrency);
 
-                    var cur = tr.value.currency;
-
-                    if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
-                    {
-                        ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
-                    }
-
-                    var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
-
-                    var valDate = tr.value.valuedate;
-
-                    var nearestPast = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault();
-                    var nearestPastDate = nearestPast == null ? default(DateTime) : nearestPast.DATE;
-                    var nearestFuture = exchangeRates.Where(k => k.DATE >= valDate).FirstOrDefault();
-                    var nearestFutureDate = nearestFuture == null ? default(DateTime) : nearestFuture.DATE;
-
-                    var nearestDate = (nearestFutureDate - valDate).TotalDays <= (valDate - nearestPastDate).TotalDays ? nearestFutureDate : nearestPastDate;
-
-                    var curExchangeRate = exchangeRates.Where(k => k.DATE >= nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
-
-                    tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
-                    tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
-                    tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
-                    tr.value.BBexchangeRateBDT = curExchangeRate.n().TAKA_PER_DOLLAR ?? 0;
-                    tr.value.ValueInBDT = tr.value.ValueInUSD * tr.value.BBexchangeRateBDT;
                 }
 
             if (activity.planneddisbursement != null)
                 foreach (var tr in activity.planneddisbursement)
                 {
-                    tr.value.currency = tr.value.currency ?? activity.defaultcurrency;
+                    SetCurrencyExRateAndVal(tr, activity.defaultcurrency);
 
-                    var cur = tr.value.currency;
-
-                    if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
-                    {
-                        ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
-                    }
-
-                    var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
-
-                    var valDate = tr.value.valuedate;
-
-                    var nearestPast = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault();
-                    var nearestPastDate = nearestPast == null ? default(DateTime) : nearestPast.DATE;
-                    var nearestFuture = exchangeRates.Where(k => k.DATE >= valDate).FirstOrDefault();
-                    var nearestFutureDate = nearestFuture == null ? default(DateTime) : nearestFuture.DATE;
-
-                    var nearestDate = (nearestFutureDate - valDate).TotalDays <= (valDate - nearestPastDate).TotalDays ? nearestFutureDate : nearestPastDate;
-
-                    var curExchangeRate = exchangeRates.Where(k => k.DATE >= nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
-
-                    tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
-                    tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
-                    tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
-                    tr.value.BBexchangeRateBDT = curExchangeRate.n().TAKA_PER_DOLLAR ?? 0;
-                    tr.value.ValueInBDT = tr.value.ValueInUSD * tr.value.BBexchangeRateBDT;
                 }
+        }
+
+        private void SetCurrencyExRateAndVal(ICurrency tr, string defaultcurrency, DateTime trDate = default(DateTime))
+        {
+            tr.value.currency = tr.value.currency ?? defaultcurrency;
+
+            var cur = tr.value.currency;
+
+
+
+            if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
+            {
+                ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
+            }
+
+
+            var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
+
+            var valDate = tr.value.valuedate == default(DateTime) ? trDate : tr.value.valuedate;
+
+            var nearestPast = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault();
+            var nearestPastDate = nearestPast == null ? default(DateTime) : nearestPast.DATE;
+            var nearestFuture = exchangeRates.Where(k => k.DATE >= valDate).FirstOrDefault();
+            var nearestFutureDate = nearestFuture == null ? default(DateTime) : nearestFuture.DATE;
+
+            var nearestDate = (nearestFutureDate - valDate).TotalDays <= (valDate - nearestPastDate).TotalDays ? nearestFutureDate : nearestPastDate;
+
+
+            var curExchangeRate = exchangeRates.Where(k => k.DATE == nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
+
+            tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
+            tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
+            tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
+            tr.value.BBexchangeRateBDT = curExchangeRate.n().TAKA_PER_DOLLAR ?? 0;
+            tr.value.ValueInBDT = tr.value.ValueInUSD * tr.value.BBexchangeRateBDT;
         }
 
 
