@@ -8,7 +8,7 @@
         <EntityTypeShape EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceActivity" Width="2.375" PointX="2.875" PointY="2.875" />
         <EntityTypeShape EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral" Width="2.375" PointX="2.875" PointY="0.75" />
         <EntityTypeShape EntityType="AIMS_DB_IATIModel.Activity" Width="1.875" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceDelegated" Width="2.5" PointX="2.875" PointY="5" />
+        <EntityTypeShape EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceDelegated" Width="2.375" PointX="2.875" PointY="5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

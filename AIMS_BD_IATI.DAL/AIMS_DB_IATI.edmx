@@ -38,7 +38,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
-          <Property Name="IatiIdentifier" Type="varbinary" MaxLength="50" />
+          <Property Name="IatiIdentifier" Type="nvarchar" MaxLength="50" />
           <Property Name="FieldName" Type="nvarchar" MaxLength="50" />
           <Property Name="IsInclude" Type="bit" />
         </EntityType>
@@ -111,7 +111,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="IatiIdentifier" Type="Binary" MaxLength="50" FixedLength="false" />
+          <Property Name="IatiIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FieldName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsInclude" Type="Boolean" />
         </EntityType>

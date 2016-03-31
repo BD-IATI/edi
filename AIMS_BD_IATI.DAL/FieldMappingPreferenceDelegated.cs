@@ -15,7 +15,7 @@ namespace AIMS_BD_IATI.DAL
     public partial class FieldMappingPreferenceDelegated
     {
         public long Id { get; set; }
-        public byte[] IatiIdentifier { get; set; }
+        public string IatiIdentifier { get; set; }
         public string FieldName { get; set; }
         public Nullable<bool> IsInclude { get; set; }
     }
