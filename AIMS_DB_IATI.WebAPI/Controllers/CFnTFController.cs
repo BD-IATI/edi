@@ -33,9 +33,10 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public object SubmitAssignedActivities(List<iatiactivity> assignedActivities)
         {
-            if (assignedActivities == null) return null;
+            if (assignedActivities == null) return Sessions.CFnTFModel;
             CFnTFModel CFnTFModel = new CFnTFModel();
 
+            #region Co-financed
             CFnTFModel.AimsProjects = (from i in assignedActivities
                                        join a in Sessions.CFnTFModel.AimsProjects on i.MappedProjectId equals a.ProjectId
                                        where i.MappedTrustFundId == default(int)
@@ -45,8 +46,10 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             {
                 var acts = assignedActivities.FindAll(f => f.MappedProjectId == project.ProjectId);
                 project.MatchedProjects.AddRange(acts);
-            }
+            } 
+            #endregion
 
+            #region TrustFund
             var trastFundsActivities = (from i in assignedActivities
                                         where i.MappedProjectId == default(int)
                                           && i.MappedTrustFundId > 0
@@ -63,8 +66,9 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             {
                 var acts = assignedActivities.FindAll(f => f.MappedTrustFundId == TrustFund.Id);
                 TrustFund.iatiactivities.AddRange(acts);
-            }
-
+            } 
+            #endregion
+            Sessions.CFnTFModel = CFnTFModel;
             return CFnTFModel;
         }
 
