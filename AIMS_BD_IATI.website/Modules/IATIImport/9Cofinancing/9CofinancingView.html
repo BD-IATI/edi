@@ -76,23 +76,23 @@
                     <tr>
                         <th>Reporting Org</th>
                         <th>Commitments (in USD)</th>
-                        <th>Disbursments (in USD)</th>
+                        <!--<th>Disbursments (in USD)</th>-->
                         <th>Source</th>
                         <th>Include?</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td ng-bind="trustFund.TFIdentifier"></td>
+                        <td ng-bind="$root.getCookie('selectedFundSource').Name"></td>
                         <td ng-bind="trustFund.TotalCommitment | currency"></td>
-                        <td ng-bind="trustFund.TotalDisbursment  | currency"></td>
+                        <!--<td ng-bind="trustFund.TotalDisbursment  | currency"></td>-->
                         <td>AIMS</td>
                         <td></td>
                     </tr>
                     <tr ng-repeat="(org,prjs) in trustFund.iatiactivities | groupBy: 'ReportingOrg'">
                         <td ng-bind="org"></td>
                         <td ng-bind="GetSumOfCommitments(prjs) | currency"></td>
-                        <td ng-bind="GetSumOfDisbursments(prjs)  | currency"></td>
+                        <!--<td ng-bind="GetSumOfDisbursments(prjs)  | currency"></td>-->
                         <td>IATI</td>
                         <td><input type="checkbox" ng-model="prj.IsCommitmentTake" /></td>
                     </tr>
