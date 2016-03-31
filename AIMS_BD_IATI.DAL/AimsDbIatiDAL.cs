@@ -198,7 +198,7 @@ namespace AIMS_BD_IATI.DAL
                 }
         }
 
-        private void SetCurrencyExRateAndVal(ICurrency tr, string defaultcurrency, DateTime trDate = default(DateTime))
+        public void SetCurrencyExRateAndVal(ICurrency tr, string defaultcurrency, DateTime trDate = default(DateTime))
         {
             tr.value.currency = tr.value.currency ?? defaultcurrency;
 
