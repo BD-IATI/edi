@@ -33,6 +33,15 @@
           <Property Name="FieldName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsSourceIATI" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="FieldMappingPreferenceDelegated">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="IatiIdentifier" Type="varbinary" MaxLength="50" />
+          <Property Name="FieldName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsInclude" Type="bit" />
+        </EntityType>
         <EntityType Name="FieldMappingPreferenceGeneral">
           <Key>
             <PropertyRef Name="Id" />
@@ -46,6 +55,7 @@
         <EntityContainer Name="AIMS_DB_IATIModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FieldMappingPreferenceActivity" EntityType="Self.FieldMappingPreferenceActivity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FieldMappingPreferenceDelegated" EntityType="Self.FieldMappingPreferenceDelegated" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FieldMappingPreferenceGeneral" EntityType="Self.FieldMappingPreferenceGeneral" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -56,6 +66,7 @@
           <EntitySet Name="FieldMappingPreferenceActivities" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceActivity" />
           <EntitySet Name="FieldMappingPreferenceGenerals" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral" />
           <EntitySet Name="Activities" EntityType="AIMS_DB_IATIModel.Activity" />
+          <EntitySet Name="FieldMappingPreferenceDelegateds" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceDelegated" />
         </EntityContainer>
         <EntityType Name="FieldMappingPreferenceActivity">
           <Key>
@@ -94,6 +105,15 @@
           <Property Name="AssignedDate" Type="DateTime" Precision="3" />
           <Property Name="MappedProjectId" Type="Int32" />
           <Property Name="MappedTrustFundId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="FieldMappingPreferenceDelegated">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="IatiIdentifier" Type="Binary" MaxLength="50" FixedLength="false" />
+          <Property Name="FieldName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsInclude" Type="Boolean" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -138,6 +158,16 @@
                 <ScalarProperty Name="IatiActivity" ColumnName="IatiActivity" />
                 <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
                 <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FieldMappingPreferenceDelegateds">
+            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.FieldMappingPreferenceDelegated">
+              <MappingFragment StoreEntitySet="FieldMappingPreferenceDelegated">
+                <ScalarProperty Name="IsInclude" ColumnName="IsInclude" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

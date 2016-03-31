@@ -93,6 +93,9 @@
     <Compile Include="FieldMappingPreferenceActivity.cs">
       <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
     </Compile>
+    <Compile Include="FieldMappingPreferenceDelegated.cs">
+      <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
+    </Compile>
     <Compile Include="FieldMappingPreferenceGeneral.cs">
       <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
     </Compile>
