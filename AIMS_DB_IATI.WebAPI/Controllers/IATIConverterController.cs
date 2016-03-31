@@ -65,7 +65,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         /// <param name="org">Organization IATI Identifier of Managing DP, eg: CA-3</param>
         /// <returns>IATI activity list in XML format</returns>
         [AcceptVerbs("GET", "POST")]
-        public List<AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity> ConvertAIMStoIATI(string org)
+        public AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivities ConvertAIMStoIATI(string org)
         {
             List<AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity> iatiactivityList = new List<Library.Parser.ParserIATIv2.iatiactivity>();
             try
@@ -76,7 +76,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             {
                 
             }
-            return iatiactivityList;
+            return new AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivities { iatiactivity = iatiactivityList.ToArray() };
         }
         
     }
