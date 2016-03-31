@@ -36,6 +36,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public string TFIdentifier { get; set; }
         public List<transaction> transactionsInAims { get; set; }
         public List<iatiactivity> iatiactivities { get; set; }
+        public decimal TotalCommitment { get { return transactionsInAims.Count > 0 ? transactionsInAims.Sum(s => s.value.ValueInUSD) : 0; } }
         public TrustFundModel()
         {
             transactionsInAims = new List<transaction>();
@@ -58,17 +59,22 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     }
     public partial class iatiactivity
     {
-        public static List<FundSourceLookupItem> FundSources { get; set; }
-        public bool IsDataSourceAIMS { get; set; }
-
         public iatiactivity()
         {
             relatedIatiActivities = new List<iatiactivity>();
             MatchedProjects = new List<iatiactivity>();
         }
+        [XmlIgnore]
+        public static List<FundSourceLookupItem> FundSources { get; set; }
+        [XmlIgnore]
+        public bool IsDataSourceAIMS { get; set; }
 
+        [XmlIgnore]
         public bool HasRelatedActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
-
+        [XmlIgnore]
+        public bool IsCofinancedProject { get; set; }
+        [XmlIgnore]
+        public bool IsTrustFundedProject { get; set; }
         [XmlIgnore]
         public int ProjectId { get; set; } //AIMS ProjectId
         [XmlIgnore]
