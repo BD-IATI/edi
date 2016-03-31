@@ -161,13 +161,13 @@ namespace AIMS_BD_IATI.DAL
 
             foreach (var trustFundDetail in trustFundDetails)
             {
-
-                trustFundModel.transactionsInAims.Add(new transaction
-                {
+                var tr = new transaction{
                     transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("C") },
                     providerorg = new transactionProviderorg { narrative = Statix.getNarativeArray(trustFundDetail.FundSourceName) },
                     value = new currencyType { currency = Statix.Currency, Value = trustFundDetail.Amount ?? 0 },
-                });
+                };
+                new AimsDbIatiDAL().SetCurrencyExRateAndVal(tr, Statix.Currency);
+                trustFundModel.transactionsInAims.Add(tr);
             }
 
 
@@ -374,6 +374,8 @@ namespace AIMS_BD_IATI.DAL
 
                 iatiActivityObj.IsDataSourceAIMS = true;
 
+                iatiActivityObj.IsCofinancedProject = project.IsCofundedProject??false;
+
                 iatiActivityObj.ProjectId = project.Id;
                 //iati-activity
                 iatiActivityObj.lastupdateddatetime = DateTime.Now;
@@ -559,6 +561,9 @@ namespace AIMS_BD_IATI.DAL
                     //<tied-status code="3" />
                     tr.tiedstatus = new transactionTiedstatus { code = project.tblAIDEffectivenessIndicators.Where(q => q.AEISurveyYear == date.Year).ToList().n(0).tblAIDEffectivenessResourceTiedType.n().IATICode };
 
+
+                    iatiActivityObj.IsTrustFundedProject = commitment.IsCommitmentTrustFund ?? false;
+                    
                     transactions.Add(tr);
                 }
 
