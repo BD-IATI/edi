@@ -4,7 +4,7 @@
     $http({
         method: 'GET',
         url: apiprefix + '/api/CFnTF/GetAssignedActivities',
-        params: { dp: $rootScope.selectedFundSource.ID }
+        params: { dp: $rootScope.getCookie('selectedFundSource').ID }
     }).success(function (result) {
        $rootScope.AssignedActivities = $scope.AssignedActivities = result.AssignedActivities;
        $rootScope.Projects = $scope.Projects = result.Projects;
