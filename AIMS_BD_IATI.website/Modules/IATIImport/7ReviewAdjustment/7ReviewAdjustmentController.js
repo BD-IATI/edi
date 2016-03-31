@@ -107,7 +107,7 @@ iatiDataImporterApp.directive('commitmentvsdisbursmentchart', function () {
                         type: 'bar',
                         height: 100,
                         //spacing: [0, 0, 0, 0],
-                        margin: [0, 110, 0, 100],
+                        margin: [0, 50, 0, 100],
                     },
                     title: {
                         text: 'Comparison for Financial Data',
