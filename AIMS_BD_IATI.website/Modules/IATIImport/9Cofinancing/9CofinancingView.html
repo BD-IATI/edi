@@ -22,26 +22,35 @@
                 <thead>
                     <tr>
                         <th>Reporting Org</th>
-                        <th>Commitments (in USD)</th>
-                        <th>Disbursments (in USD)</th>
                         <th>Source</th>
-                        <th>Include?</th>
+                        <th>Commitments</th>
+                        <th>Include C?</th>
+                        <th>Disbursments</th>
+                        <th>Include D?</th>
+                        <th>Planned Disbursments</th>
+                        <th>Include PD?</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td ng-bind="project.ReportingOrg"></td>
-                        <td ng-bind="project.TotalCommitment | currency"></td>
-                        <td ng-bind="project.TotalDisbursment  | currency"></td>
                         <td>AIMS</td>
+                        <td ng-bind="project.TotalCommitment | currency"></td>
+                        <td></td>
+                        <td ng-bind="project.TotalDisbursment | currency"></td>
+                        <td></td>
+                        <td ng-bind="project.TotalPlannedDisbursment | currency"></td>
                         <td></td>
                     </tr>
                     <tr ng-repeat="(org,prjs) in project.MatchedProjects | groupBy: 'ReportingOrg'">
                         <td ng-bind="org"></td>
-                        <td ng-bind="GetSumOfCommitments(prjs) | currency"></td>
-                        <td ng-bind="GetSumOfDisbursments(prjs)  | currency"></td>
                         <td>IATI</td>
-                        <td><input type="checkbox" ng-model="prj.IsCommitmentTake" /></td>
+                        <td ng-bind="GetSumOfCommitments(prjs) | currency"></td>
+                        <td><input type="checkbox" ng-model="prjs[0].IsCommitmentIncluded" ng-change="ChangeIsCommitmentIncluded(prjs)"/></td>
+                        <td ng-bind="GetSumOfDisbursments(prjs)  | currency"></td>
+                        <td><input type="checkbox" ng-model="prjs[0].IsDisbursmentIncluded" ng-change="ChangeIsDisbursmentIncluded(prjs)"/></td>
+                        <td ng-bind="GetSumOfPlannedDisbursments(prjs)  | currency"></td>
+                        <td><input type="checkbox" ng-model="prjs[0].IsPlannedDisbursmentIncluded"  ng-change="ChangePlannedDisbursmentIncluded(prjs)"/></td>
                     </tr>
                 </tbody>
             </table>
@@ -74,32 +83,36 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Reporting Org</th>
+                        <th>Funding Org</th>
+                        <th>Source</th>
                         <th>Commitments (in USD)</th>
                         <!--<th>Disbursments (in USD)</th>-->
-                        <th>Source</th>
                         <th>Include?</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td ng-bind="$root.getCookie('selectedFundSource').Name"></td>
-                        <td ng-bind="trustFund.TotalCommitment | currency"></td>
-                        <!--<td ng-bind="trustFund.TotalDisbursment  | currency"></td>-->
+                    <tr ng-repeat="trorg in trustFund.transactionsInAims">
+                        <td ng-bind="trorg.providerorg.narrative[0].Value"></td>
                         <td>AIMS</td>
+                        <td ng-bind="trorg.value.Value | currency"></td>
+                        <!--<td ng-bind="trustFund.TotalDisbursment  | currency"></td>-->
                         <td></td>
                     </tr>
                     <tr ng-repeat="(org,prjs) in trustFund.iatiactivities | groupBy: 'ReportingOrg'">
                         <td ng-bind="org"></td>
+                        <td>IATI</td>
                         <td ng-bind="GetSumOfCommitments(prjs) | currency"></td>
                         <!--<td ng-bind="GetSumOfDisbursments(prjs)  | currency"></td>-->
-                        <td>IATI</td>
-                        <td><input type="checkbox" ng-model="prj.IsCommitmentTake" /></td>
+                        <td><input type="checkbox" ng-model="prjs[0].IsCommitmentIncluded" ng-change="ChangeIsCommitmentIncluded(prjs)"/></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <hr />
+
+        <a ng-click="SavePreferences()" class="btn btn-success">Save Preferences &raquo;</a>
 
 
 </div>

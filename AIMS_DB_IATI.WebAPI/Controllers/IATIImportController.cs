@@ -423,11 +423,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 {
                     if (field.IsSourceIATI)
                     {
-                        if (field.Field == "title")
+                        if (field.Field == IatiFields.Title)
                         {
                             matchedProject.aimsProject.Title = matchedProject.iatiActivity.Title;
                         }
-                        if (field.Field == "description")
+                        if (field.Field == IatiFields.Description)
                         {
                             matchedProject.aimsProject.Description = matchedProject.iatiActivity.Description;
                         }
@@ -439,21 +439,21 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 var planDis = new List<planneddisbursement>();
                 foreach (var field in matchedProject.TransactionFields)
                 {
-                    if (field.Field == "commitment")
+                    if (field.Field == IatiFields.Commitment)
                     {
                         if (field.IsSourceIATI)
                             trns.AddRange(matchedProject.iatiActivity.Commitments);
                         else
                             trns.AddRange(matchedProject.aimsProject.Commitments);
                     }
-                    else if (field.Field == "disbursment")
+                    else if (field.Field == IatiFields.Disbursment)
                     {
                         if (field.IsSourceIATI)
                             trns.AddRange(matchedProject.iatiActivity.Disbursments);
                         else
                             trns.AddRange(matchedProject.aimsProject.Disbursments);
                     }
-                    else if (field.Field == "planned-disbursment")
+                    else if (field.Field == IatiFields.PlannedDisbursment)
                     {
                         if (field.IsSourceIATI)
                             planDis.AddRange(matchedProject.iatiActivity.PlannedDisbursments);

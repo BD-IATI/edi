@@ -284,6 +284,28 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
+        public int SaveFieldMappingPreferenceDelegated(List<FieldMappingPreferenceDelegated> fieldMaps)
+        {
+            foreach (var fieldMap in fieldMaps)
+            {
+                var a = dbContext.FieldMappingPreferenceDelegateds.FirstOrDefault(x => x.IatiIdentifier == fieldMap.IatiIdentifier
+                                                                                    && x.FieldName == fieldMap.FieldName);
+                if (a != null)
+                {
+                    a.IatiIdentifier = fieldMap.IatiIdentifier;
+                    a.FieldName = fieldMap.FieldName;
+                    a.IsInclude = fieldMap.IsInclude;
+                }
+                else
+                {
+                    dbContext.FieldMappingPreferenceDelegateds.Add(fieldMap);
+                }
+
+            }
+
+            return dbContext.SaveChanges();
+        }
+
         public List<FieldMappingPreferenceGeneral> GetFieldMappingPreferenceGeneral(string dp)
         {
             var q = (from fieldMap in dbContext.FieldMappingPreferenceGenerals.Where(w => w.OrgId == dp)
@@ -296,6 +318,15 @@ namespace AIMS_BD_IATI.DAL
         {
             var q = (from fieldMap in dbContext.FieldMappingPreferenceActivities
                      where fieldMap.IATIIdentifier == iatiIdentifier
+                     select fieldMap).ToList();
+
+            return q;
+        }
+
+        public List<FieldMappingPreferenceDelegated> GetFieldMappingPreferenceDelegated(string iatiIdentifier)
+        {
+            var q = (from fieldMap in dbContext.FieldMappingPreferenceDelegateds
+                     where fieldMap.IatiIdentifier == iatiIdentifier
                      select fieldMap).ToList();
 
             return q;

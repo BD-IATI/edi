@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using MoreLinq;
+using AIMS_BD_IATI.Library;
 namespace AIMS_DB_IATI.WebAPI.Controllers
 {
     [Authorize]
@@ -31,7 +32,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
-        public object SubmitAssignedActivities(List<iatiactivity> assignedActivities)
+        public CFnTFModel SubmitAssignedActivities(List<iatiactivity> assignedActivities)
         {
             if (assignedActivities == null) return Sessions.CFnTFModel;
             CFnTFModel CFnTFModel = new CFnTFModel();
@@ -46,7 +47,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             {
                 var acts = assignedActivities.FindAll(f => f.MappedProjectId == project.ProjectId);
                 project.MatchedProjects.AddRange(acts);
-            } 
+            }
             #endregion
 
             #region TrustFund
@@ -66,12 +67,60 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             {
                 var acts = assignedActivities.FindAll(f => f.MappedTrustFundId == TrustFund.Id);
                 TrustFund.iatiactivities.AddRange(acts);
-            } 
+            }
             #endregion
             Sessions.CFnTFModel = CFnTFModel;
             return CFnTFModel;
         }
+        [AcceptVerbs("GET", "POST")]
+        public object SavePreferences(CFnTFModel CFnTFModel)
+        {
+            var fieldMappings = new List<FieldMappingPreferenceDelegated>();
 
+            foreach (var project in CFnTFModel.AimsProjects)
+            {
+                foreach (var activity in project.MatchedProjects)
+                {
+                    fieldMappings.Add(new FieldMappingPreferenceDelegated
+                    {
+                        IatiIdentifier = activity.IatiIdentifier,
+                        FieldName = IatiFields.Commitment,
+                        IsInclude = activity.IsCommitmentIncluded
+                    });
+                    fieldMappings.Add(new FieldMappingPreferenceDelegated
+                    {
+                        IatiIdentifier = activity.IatiIdentifier,
+                        FieldName = IatiFields.Disbursment,
+                        IsInclude = activity.IsDisbursmentIncluded
+                    });
+                    fieldMappings.Add(new FieldMappingPreferenceDelegated
+                    {
+                        IatiIdentifier = activity.IatiIdentifier,
+                        FieldName = IatiFields.PlannedDisbursment,
+                        IsInclude = activity.IsPlannedDisbursmentIncluded
+                    });
+
+                }
+            }
+
+            foreach (var trustFund in CFnTFModel.TrustFunds)
+            {
+                foreach (var activity in trustFund.iatiactivities)
+                {
+                    fieldMappings.Add(new FieldMappingPreferenceDelegated
+                    {
+                        IatiIdentifier = activity.IatiIdentifier,
+                        FieldName = IatiFields.Commitment,
+                        IsInclude = activity.IsCommitmentIncluded
+                    });
+                }
+                
+            }
+
+
+            aimsDbIatiDAL.SaveFieldMappingPreferenceDelegated(fieldMappings);
+            return true;
+        }
         [HttpGet]
         public List<transaction> GetTrustFundDetails(int trustFundId)
         {
