@@ -158,10 +158,10 @@ namespace AIMS_BD_IATI.DAL
 
         public iatiactivityContainer GetActivities(string dp)
         {
-            var q = from a in dbContext.Activities
+            var q = (from a in dbContext.Activities
                     where a.OrgId == dp
                     orderby a.IatiIdentifier
-                    select new ActivityModel { IatiActivity = a.IatiActivity };
+                    select new ActivityModel { IatiActivity = a.IatiActivity }).ToList();
 
             var iatiActivities = ParseXML(q);
 
@@ -174,22 +174,21 @@ namespace AIMS_BD_IATI.DAL
             };
         }
 
-        private List<iatiactivity> ParseXML(IQueryable<ActivityModel> q)
+        private List<iatiactivity> ParseXML(List<ActivityModel> q)
         {
             var result = new List<iatiactivity>();
-            var activity = new iatiactivity();
             var serializer = new XmlSerializer(typeof(iatiactivity));
 
             foreach (var a in q)
             {
                 using (TextReader reader = new StringReader(a.IatiActivity))
                 {
-                    activity = (iatiactivity)serializer.Deserialize(reader);
+                    a.iatiActivity = (iatiactivity)serializer.Deserialize(reader);
                 }
 
-                SetExchangedValues(activity);
+                SetExchangedValues(a.iatiActivity);
 
-                result.Add(activity);
+                result.Add(a.iatiActivity);
             }
             return result;
         }
@@ -372,6 +371,7 @@ namespace AIMS_BD_IATI.DAL
                          AssignedDate = a.AssignedDate
                      }).ToList();
 
+            ParseXML(q);
 
             return q;
 
@@ -379,15 +379,16 @@ namespace AIMS_BD_IATI.DAL
 
         public List<ActivityModel> GetCofinanceProjects(string dp)
         {
-            var q = (from a in dbContext.Activities.Where(a => a.OrgId != dp && a.AssignedOrgId == dp)
+            var q = ((from a in dbContext.Activities.Where(a => a.OrgId != dp && a.AssignedOrgId == dp)
                      where a.MappedProjectId > 0
                      select new ActivityModel
                      {
                          IatiIdentifier = a.IatiIdentifier,
                          AssignedOrgId = a.AssignedOrgId,
                          AssignedDate = a.AssignedDate
-                     }).ToList();
+                     })).ToList();
 
+            ParseXML(q);
 
             return q;
 
@@ -404,6 +405,7 @@ namespace AIMS_BD_IATI.DAL
                          AssignedDate = a.AssignedDate
                      }).ToList();
 
+            ParseXML(q);
 
             return q;
 
@@ -415,6 +417,10 @@ namespace AIMS_BD_IATI.DAL
             return q;
         }
 
+
+        /// <summary>
+        /// same as Activity table in AIMS_DB_IATI database
+        /// </summary>
         public class ActivityModel
         {
             public int Id { get; set; }
@@ -431,6 +437,9 @@ namespace AIMS_BD_IATI.DAL
             public Nullable<System.DateTime> AssignedDate { get; set; }
             public Nullable<int> MappedProjectId { get; set; }
             public Nullable<int> MappedTrustFundId { get; set; }
+
+
+            public iatiactivity iatiActivity { get; set; }
         }
 
 
