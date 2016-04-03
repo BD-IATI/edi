@@ -18,10 +18,13 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         {
             var dashboardModel = new DashboardModel();
             dashboardModel.LastDownloadDate = new AimsDbIatiDAL().GetLastDownloadDate(dp);
-            dashboardModel.DelegatedActivities = new AimsDbIatiDAL().GetDelegatedActivities(dp);
             dashboardModel.NewActivityCount = new AimsDbIatiDAL().GetNewActivityCount(dp);
 
+            dashboardModel.DelegatedActivities = new AimsDbIatiDAL().GetDelegatedActivities(dp);
             dashboardModel.DelegatedActivities.ForEach(f => f.AssignedOrgName = Sessions.FundSources.Find(k => k.IATICode == f.AssignedOrgId).n().Name);
+
+            dashboardModel.CofinanceProjects = new AimsDbIatiDAL().GetCofinanceProjects(dp);
+            dashboardModel.TrustFundProjects = new AimsDbIatiDAL().GetTrustFundProjects(dp);
 
             return dashboardModel;
         }

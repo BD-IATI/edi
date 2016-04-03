@@ -15,24 +15,23 @@
         var modalInstance = $uibModal.open({
             animation: true,
             backdrop: false,
-            templateUrl: '6GeneralPreferences/ImportPreferenceModal.html',
+            templateUrl: 'Dashboard/ImportPreferenceModal.html',
             controller: '6GeneralPreferencesController',
             size: 'lg',
-            //resolve: {
-            //    MatchedProject: function () {
-
-            //        return MatchedProject;
-            //    }
-            //}
         });
 
-        //modalInstance.result.then(function (selectedItem) {
-        //    $scope.selected = selectedItem;
-        //}, function () {
-        //    //$log.info('Modal dismissed at: ' + new Date());
-        //});
     };
 
+    $scope.OpenCofinancingAndTrustFund = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            templateUrl: 'Dashboard/CFnTFModal.html',
+            controller: '6GeneralPreferencesController',
+            size: 'lg',
+        });
+
+    };
 
 
     $scope.timeSince = function (date) {

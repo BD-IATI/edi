@@ -32,6 +32,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         public List<DPLookupItem> GetFundSources()
         {
             Sessions.FundSources = aimsDAL.GetAllFundSources();
+            
             return aimsDAL.GetFundSources(Sessions.UserId);
         }
 
@@ -40,7 +41,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             return Sessions.FundSources;
         }
-
 
         [AcceptVerbs("GET", "POST")]
         public HeirarchyModel GetHierarchyData(DPLookupItem dp)

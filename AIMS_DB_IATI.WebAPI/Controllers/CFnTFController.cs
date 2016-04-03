@@ -36,7 +36,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         {
             if (assignedActivities == null) return Sessions.CFnTFModel;
             CFnTFModel CFnTFModel = new CFnTFModel();
-
+            CFnTFModel.AssignedActivities = assignedActivities;
             #region Co-financed
             CFnTFModel.AimsProjects = (from i in assignedActivities
                                        join a in Sessions.CFnTFModel.AimsProjects on i.MappedProjectId equals a.ProjectId
@@ -51,6 +51,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             #endregion
 
             #region TrustFund
+            //get all trust fund activities that the user map by selecting dropdown
             var trastFundsActivities = (from i in assignedActivities
                                         where i.MappedProjectId == default(int)
                                           && i.MappedTrustFundId > 0
@@ -60,7 +61,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             {
 
                 CFnTFModel.TrustFunds.Add(aimsDAL.GetTrustFundDetails(activity.MappedTrustFundId));
-                CFnTFModel.AssignedActivities.Add(activity);
+                //CFnTFModel.AssignedActivities.Add(activity);
             }
 
             foreach (var TrustFund in CFnTFModel.TrustFunds)
@@ -75,6 +76,12 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public object SavePreferences(CFnTFModel CFnTFModel)
         {
+            if (CFnTFModel == null) return null;
+
+            aimsDbIatiDAL.MapCFnTFActivities(CFnTFModel.AssignedActivities);
+
+            #region Save preferences
+
             var fieldMappings = new List<FieldMappingPreferenceDelegated>();
 
             foreach (var project in CFnTFModel.AimsProjects)
@@ -114,19 +121,15 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
                         IsInclude = activity.IsCommitmentIncluded
                     });
                 }
-                
+
             }
 
 
-            aimsDbIatiDAL.SaveFieldMappingPreferenceDelegated(fieldMappings);
+            aimsDbIatiDAL.SaveFieldMappingPreferenceDelegated(fieldMappings); 
+            #endregion
             return true;
         }
-        [HttpGet]
-        public List<transaction> GetTrustFundDetails(int trustFundId)
-        {
-            return null;//aimsDAL.GetTrustFundDetails(trustFundId);
 
-        }
 
     }
 }

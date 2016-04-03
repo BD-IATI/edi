@@ -13,5 +13,9 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         public List<AIMS_BD_IATI.DAL.AimsDbIatiDAL.ActivityModel> DelegatedActivities { get; set; }
 
         public int NewActivityCount { get; set; }
+
+        public List<AimsDbIatiDAL.ActivityModel> CofinanceProjects { get; set; }
+
+        public List<AimsDbIatiDAL.ActivityModel> TrustFundProjects { get; set; }
     }
 }

@@ -76,7 +76,21 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
+        public int MapCFnTFActivities(List<iatiactivity> activities)
+        {
+            foreach (var activity in activities)
+            {
+                var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier);
+                if (a != null)
+                {
+                    a.MappedProjectId = activity.MappedProjectId;
+                    a.MappedTrustFundId = activity.MappedTrustFundId;
 
+                }
+            }
+
+            return dbContext.SaveChanges();
+        }
 
         public CFnTFModel GetAssignActivities(string dp)
         {
@@ -147,32 +161,37 @@ namespace AIMS_BD_IATI.DAL
             var q = from a in dbContext.Activities
                     where a.OrgId == dp
                     orderby a.IatiIdentifier
-                    select a.IatiActivity;
+                    select new ActivityModel { IatiActivity = a.IatiActivity };
 
+            var iatiActivities = ParseXML(q);
+
+
+            return new iatiactivityContainer
+            {
+                DP = dp,
+                iatiActivities = iatiActivities,
+                AimsProjects = new AimsDAL().GetAIMSDataInIATIFormat(dp)
+            };
+        }
+
+        private List<iatiactivity> ParseXML(IQueryable<ActivityModel> q)
+        {
             var result = new List<iatiactivity>();
             var activity = new iatiactivity();
             var serializer = new XmlSerializer(typeof(iatiactivity));
 
             foreach (var a in q)
             {
-                using (TextReader reader = new StringReader(a))
+                using (TextReader reader = new StringReader(a.IatiActivity))
                 {
                     activity = (iatiactivity)serializer.Deserialize(reader);
-
                 }
 
                 SetExchangedValues(activity);
 
                 result.Add(activity);
             }
-
-
-            return new iatiactivityContainer
-            {
-                DP = dp,
-                iatiActivities = result,
-                AimsProjects = new AimsDAL().GetAIMSDataInIATIFormat(dp)
-            };
+            return result;
         }
 
         private void SetExchangedValues(iatiactivity activity)
@@ -341,6 +360,7 @@ namespace AIMS_BD_IATI.DAL
             return q;
 
         }
+
         public List<ActivityModel> GetDelegatedActivities(string dp)
         {
             var q = (from a in dbContext.Activities.Where(a => a.OrgId == dp && a.AssignedOrgId != dp)
@@ -353,7 +373,36 @@ namespace AIMS_BD_IATI.DAL
                      }).ToList();
 
 
-            //var result = ParseActivityXML(q);
+            return q;
+
+        }
+
+        public List<ActivityModel> GetCofinanceProjects(string dp)
+        {
+            var q = (from a in dbContext.Activities.Where(a => a.OrgId != dp && a.AssignedOrgId == dp)
+                     where a.MappedProjectId > 0
+                     select new ActivityModel
+                     {
+                         IatiIdentifier = a.IatiIdentifier,
+                         AssignedOrgId = a.AssignedOrgId,
+                         AssignedDate = a.AssignedDate
+                     }).ToList();
+
+
+            return q;
+
+        }
+
+        public List<ActivityModel> GetTrustFundProjects(string dp)
+        {
+            var q = (from a in dbContext.Activities.Where(a => a.OrgId != dp && a.AssignedOrgId == dp)
+                     where a.MappedTrustFundId > 0
+                     select new ActivityModel
+                     {
+                         IatiIdentifier = a.IatiIdentifier,
+                         AssignedOrgId = a.AssignedOrgId,
+                         AssignedDate = a.AssignedDate
+                     }).ToList();
 
 
             return q;
