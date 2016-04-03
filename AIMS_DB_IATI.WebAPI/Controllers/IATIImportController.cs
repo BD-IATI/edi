@@ -240,7 +240,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (relevantActivies == null)
                 relevantActivies = Sessions.activitiesContainer.RelevantActivities;
 
-            Sessions.ExchangeRates = aimsDAL.GetExchangesRateToUSD(relevantActivies.n(1).defaultcurrency);
             SetStatics();//since we have no access to session at library project, so we pass it in a static variables
 
             var ProjectsOwnedByOther = relevantActivies.FindAll(f => f.IATICode != Sessions.activitiesContainer.DP);

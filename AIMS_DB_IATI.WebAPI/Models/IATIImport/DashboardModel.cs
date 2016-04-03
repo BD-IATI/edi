@@ -1,4 +1,5 @@
 ﻿using AIMS_BD_IATI.DAL;
+using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,11 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
     {
         public DateTime? LastDownloadDate { get; set; }
 
-        public List<AIMS_BD_IATI.DAL.AimsDbIatiDAL.ActivityModel> DelegatedActivities { get; set; }
+        public List<AimsDbIatiDAL.ActivityModel> DelegatedActivities { get; set; }
 
         public int NewActivityCount { get; set; }
 
-        public List<AimsDbIatiDAL.ActivityModel> CofinanceProjects { get; set; }
+        public CFnTFModel CFnTFModel { get; set; }
 
-        public List<AimsDbIatiDAL.ActivityModel> TrustFundProjects { get; set; }
     }
 }

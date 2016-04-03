@@ -29,14 +29,14 @@
                         <td>{{activity.Title}}</td>
                         <td>{{activity.ReportingOrg}}</td>
                         <td>
-                            <select class="form-control" ng-disabled="activity.MappedTrustFundId != 0 && activity.MappedTrustFundId != null"
+                            <select class="form-control" ng-disabled="activity.MappedTrustFundId > 0"
                                     ng-model="activity.MappedProjectId"
-                                    ng-options="item.ProjectId as item.Title for item in Projects">
+                                    ng-options="item.ProjectId as item.Title for item in AimsProjects">
                                 <option value="">Select one...</option>
                             </select>
                         </td>
                         <td>
-                            <select class="form-control" ng-disabled="activity.MappedProjectId != 0 && activity.MappedProjectId != null"
+                            <select class="form-control" ng-disabled="activity.MappedProjectId > 0"
                                     ng-model="activity.MappedTrustFundId"
                                     ng-options="item.ID as item.Name for item in TrustFunds">
                                 <option value="">Select one...</option>

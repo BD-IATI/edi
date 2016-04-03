@@ -22,17 +22,40 @@
 
     };
 
-    $scope.OpenCofinancingAndTrustFund = function () {
+    $scope.OpenTrustFund = function (trustfunddetail) {
         var modalInstance = $uibModal.open({
             animation: true,
             backdrop: false,
-            templateUrl: 'Dashboard/CFnTFModal.html',
-            controller: '6GeneralPreferencesController',
+            templateUrl: 'Dashboard/TrustFundModal.html',
+            controller: '9CofinancingController',
             size: 'lg',
+            resolve: {
+                model: function () {
+
+                    return { TrustFundDetails: [trustfunddetail] };
+                }
+            }
         });
 
     };
+    $scope.OpenCofinancing = function (aimsproject) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            templateUrl: 'Dashboard/CofinancingModal.html',
+            controller: '9CofinancingController',
+            size: 'lg',
+            resolve: {
+                model: function () {
 
+                    return {
+                        AimsProjects: [aimsproject],
+                    };
+                }
+            }
+        });
+
+    };
 
     $scope.timeSince = function (date) {
         if (date == null || date == undefined) return '';

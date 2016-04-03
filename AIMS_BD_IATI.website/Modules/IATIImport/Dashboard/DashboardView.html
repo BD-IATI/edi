@@ -101,6 +101,7 @@
                     <tr>
                         <th>Date</th>
                         <th>Activity</th>
+                        <th>Title</th>
                         <th>Delegated to</th>
                         <th>Recall</th>
                     </tr>
@@ -109,6 +110,7 @@
                     <tr ng-repeat="da in model.DelegatedActivities">
                         <td ng-bind="da.AssignedDate | date:'yyyy-MM-dd'"></td>
                         <td><code ng-bind="da.IatiIdentifier"></code></td>
+                        <td ng-bind="da.iatiActivity.Title"></td>
                         <td ng-bind="da.AssignedOrgName"></td>
                         <td><a class="btn btn-success"><i class="glyphicon glyphicon-share-alt"></i> Recall</a></td>
                     </tr>
@@ -135,45 +137,45 @@
         </div>
         <div class="col-md-6">
             <h4>Co-finance projects</h4>
-            <div class="alert-info" ng-hide="model.CofinanceProjects.length > 0">
+            <div class="alert-info" ng-hide="model.CFnTFModel.AimsProjects.length > 0">
                 There are no mapped co-finance projects.
             </div>
 
-            <table class="table table-striped" ng-show="model.CofinanceProjects.length > 0">
+            <table class="table table-striped" ng-show="model.CFnTFModel.AimsProjects.length > 0">
                 <thead>
                     <tr>
                         <th>Activity</th>
-                        <th>Delegated to</th>
+                        <th>Title</th>
+
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="da in model.CofinanceProjects">
+                    <tr ng-repeat="da in model.CFnTFModel.AimsProjects">
                         <td><code ng-bind="da.IatiIdentifier"></code></td>
-                        <td ng-bind="da.AssignedOrgName"></td>
-                        <td><a class="btn btn-success"><i class="glyphicons glyphicons-modal-window"></i> View</a></td>
+                        <td ng-bind="da.Title"></td>
+
+                        <td><a class="btn btn-success" ng-click="OpenCofinancing(da)"><i class="glyphicons glyphicons-modal-window"></i> View</a></td>
                     </tr>
 
                 </tbody>
             </table>
 
-            <h4>Trust fund projects</h4>
-            <div class="alert-info" ng-hide="model.TrustFundProjects.length > 0">
-                There are no mapped trust fund projects.
+            <h4>Trust funds</h4>
+            <div class="alert-info" ng-hide="model.CFnTFModel.TrustFundDetails.length > 0">
+                There are no mapped trust funds.
             </div>
 
-            <table class="table table-striped" ng-show="model.TrustFundProjects.length > 0">
+            <table class="table table-striped" ng-show="model.CFnTFModel.TrustFundDetails.length > 0">
                 <thead>
                     <tr>
-                        <th>Activity</th>
-                        <th>Delegated to</th>
+                        <th>Identifier</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tr ng-repeat="da in model.TrustFundProjects">
-                    <td><code ng-bind="da.IatiIdentifier"></code></td>
-                    <td ng-bind="da.AssignedOrgName"></td>
-                    <td><a class="btn btn-success"><i class="glyphicons glyphicons-modal-window"></i> View</a></td>
+                <tr ng-repeat="da in model.CFnTFModel.TrustFundDetails">
+                    <td><code ng-bind="da.TFIdentifier"></code></td>
+                    <td><a class="btn btn-success" ng-click="OpenTrustFund(da)"><i class="glyphicons glyphicons-modal-window"></i> View</a></td>
                 </tr>
                 <tbody></tbody>
             </table>

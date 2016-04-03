@@ -14,17 +14,26 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
 
     public class DashboardController : ApiController
     {
+        AimsDAL aimsDAL = new AimsDAL();
+        AimsDbIatiDAL aimsDbIatiDAL = new AimsDbIatiDAL();
+
         public DashboardModel GetDashboardData(string dp)
         {
             var dashboardModel = new DashboardModel();
-            dashboardModel.LastDownloadDate = new AimsDbIatiDAL().GetLastDownloadDate(dp);
-            dashboardModel.NewActivityCount = new AimsDbIatiDAL().GetNewActivityCount(dp);
+            dashboardModel.LastDownloadDate = aimsDbIatiDAL.GetLastDownloadDate(dp);
+            dashboardModel.NewActivityCount = aimsDbIatiDAL.GetNewActivityCount(dp);
 
-            dashboardModel.DelegatedActivities = new AimsDbIatiDAL().GetDelegatedActivities(dp);
+            dashboardModel.DelegatedActivities = aimsDbIatiDAL.GetDelegatedActivities(dp);
             dashboardModel.DelegatedActivities.ForEach(f => f.AssignedOrgName = Sessions.FundSources.Find(k => k.IATICode == f.AssignedOrgId).n().Name);
 
-            dashboardModel.CofinanceProjects = new AimsDbIatiDAL().GetCofinanceProjects(dp);
-            dashboardModel.TrustFundProjects = new AimsDbIatiDAL().GetTrustFundProjects(dp);
+            #region trust fund and cofinance projects
+
+            Sessions.CFnTFModel = aimsDbIatiDAL.GetAssignActivities(dp);
+            Sessions.CFnTFModel = new CFnTFController().SubmitAssignedActivities(Sessions.CFnTFModel.AssignedActivities);
+            dashboardModel.CFnTFModel = Sessions.CFnTFModel;
+
+            #endregion
+
 
             return dashboardModel;
         }

@@ -13,10 +13,6 @@ namespace AIMS_BD_IATI.DAL
     {
         AIMS_DB_IATIEntities dbContext = new AIMS_DB_IATIEntities();
 
-        //static AimsDbIatiDAL()
-        //{
-        //    ExchangeRates = new List<ExchangeRateModel>();
-        //}
         public AimsDbIatiDAL()
         {
             ExchangeRates = new List<ExchangeRateModel>();
@@ -97,7 +93,7 @@ namespace AIMS_BD_IATI.DAL
             var q = from a in dbContext.Activities
                     where a.OrgId != dp && a.AssignedOrgId == dp
                     orderby a.IatiIdentifier
-                    select a.IatiActivity;
+                    select a;
 
 
             var result = new List<iatiactivity>();
@@ -106,11 +102,14 @@ namespace AIMS_BD_IATI.DAL
 
             foreach (var a in q)
             {
-                using (TextReader reader = new StringReader(a))
+                using (TextReader reader = new StringReader(a.IatiActivity))
                 {
                     activity = (iatiactivity)serializer.Deserialize(reader);
 
                 }
+                activity.MappedProjectId = a.MappedProjectId??0;
+                activity.MappedTrustFundId = a.MappedTrustFundId??0;
+
                 result.Add(activity);
 
                 if (activity.HasRelatedActivity)
@@ -368,7 +367,8 @@ namespace AIMS_BD_IATI.DAL
                      {
                          IatiIdentifier = a.IatiIdentifier,
                          AssignedOrgId = a.AssignedOrgId,
-                         AssignedDate = a.AssignedDate
+                         AssignedDate = a.AssignedDate,
+                         IatiActivity = a.IatiActivity
                      }).ToList();
 
             ParseXML(q);
@@ -385,7 +385,8 @@ namespace AIMS_BD_IATI.DAL
                      {
                          IatiIdentifier = a.IatiIdentifier,
                          AssignedOrgId = a.AssignedOrgId,
-                         AssignedDate = a.AssignedDate
+                         AssignedDate = a.AssignedDate,
+                         IatiActivity = a.IatiActivity
                      })).ToList();
 
             ParseXML(q);
@@ -402,7 +403,8 @@ namespace AIMS_BD_IATI.DAL
                      {
                          IatiIdentifier = a.IatiIdentifier,
                          AssignedOrgId = a.AssignedOrgId,
-                         AssignedDate = a.AssignedDate
+                         AssignedDate = a.AssignedDate,
+                         IatiActivity = a.IatiActivity
                      }).ToList();
 
             ParseXML(q);

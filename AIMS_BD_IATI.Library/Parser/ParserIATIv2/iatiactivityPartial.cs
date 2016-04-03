@@ -48,13 +48,15 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     {
         public List<iatiactivity> AimsProjects { get; set; }
         public List<iatiactivity> AssignedActivities { get; set; }
-        public List<TrustFundModel> TrustFunds { get; set; }
+        public List<LookupItem> TrustFunds { get; set; }
+        public List<TrustFundModel> TrustFundDetails { get; set; }
 
         public CFnTFModel()
         {
             AimsProjects = new List<iatiactivity>();
             AssignedActivities = new List<iatiactivity>();
-            TrustFunds = new List<TrustFundModel>();
+            TrustFunds = new List<LookupItem>();
+            TrustFundDetails = new List<TrustFundModel>();
         }
     }
     public partial class iatiactivity

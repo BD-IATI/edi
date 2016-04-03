@@ -1,23 +1,21 @@
-﻿angular.module('iatiDataImporter').controller("9CofinancingController", function ($rootScope, $timeout, $scope, $http) {
-    $scope.AssignedActivities = $rootScope.AssignedActivities;
-    //$scope.Projects = $rootScope.Projects;
-    //$scope.TrustFunds = $rootScope.TrustFunds;
+﻿angular.module('iatiDataImporter').controller("9CofinancingController", function ($rootScope, $timeout, $scope, $http,$uibModalInstance, model) {
+        $scope.AssignedActivities = $rootScope.AssignedActivities;
+    if (model == undefined || model == null) {
 
-    //$http({
-    //    method: 'GET',
-    //    url: apiprefix + '/api/CFnTF/GetTrustFundDetails',
-    //    params: { trustFundId: Activity.MappedTrustFundId }
-    //}).success(function (result) {
-    //    $scope.TrustFundDetails = result;
-    //});
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/CFnTF/SubmitAssignedActivities',
+            data: JSON.stringify($rootScope.AssignedActivities)
+        }).success(function (result) {
+            $scope.model = result;
+        });
+    } else {
+        $scope.model = model;
+    }
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 
-    $http({
-        method: 'POST',
-        url: apiprefix + '/api/CFnTF/SubmitAssignedActivities',
-        data: JSON.stringify($rootScope.AssignedActivities)
-    }).success(function (result) {
-        $scope.model = result;
-    });
 
     $scope.SavePreferences = function () {
         $http({
