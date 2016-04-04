@@ -48,13 +48,15 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     {
         public List<iatiactivity> AimsProjects { get; set; }
         public List<iatiactivity> AssignedActivities { get; set; }
-        public List<TrustFundModel> TrustFunds { get; set; }
+        public List<LookupItem> TrustFunds { get; set; }
+        public List<TrustFundModel> TrustFundDetails { get; set; }
 
         public CFnTFModel()
         {
             AimsProjects = new List<iatiactivity>();
             AssignedActivities = new List<iatiactivity>();
-            TrustFunds = new List<TrustFundModel>();
+            TrustFunds = new List<LookupItem>();
+            TrustFundDetails = new List<TrustFundModel>();
         }
     }
     public partial class iatiactivity
@@ -69,12 +71,19 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public bool IsDataSourceAIMS { get; set; }
 
-        [XmlIgnore]
-        public bool HasRelatedActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
+        #region co-financed and trust fund projects
         [XmlIgnore]
         public bool IsCofinancedProject { get; set; }
         [XmlIgnore]
         public bool IsTrustFundedProject { get; set; }
+        [XmlIgnore]
+        public bool IsCommitmentIncluded { get; set; }
+        [XmlIgnore]
+        public bool IsDisbursmentIncluded { get; set; }
+        [XmlIgnore]
+        public bool IsPlannedDisbursmentIncluded { get; set; }
+        
+        #endregion
         [XmlIgnore]
         public int ProjectId { get; set; } //AIMS ProjectId
         [XmlIgnore]
@@ -82,6 +91,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public int MappedTrustFundId { get; set; }
 
+        [XmlIgnore]
+        public bool HasRelatedActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
         [XmlIgnore]
         public List<iatiactivity> relatedIatiActivities { get; set; }
 
@@ -284,7 +295,6 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public bool? IsRelevant
         {
-            //ToDo add AidType criteria
             get
             {
                 return isRelevant ?? PercentToBD >= 20 && activitystatus.n().code == "2";

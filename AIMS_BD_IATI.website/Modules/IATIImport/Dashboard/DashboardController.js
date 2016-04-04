@@ -15,25 +15,47 @@
         var modalInstance = $uibModal.open({
             animation: true,
             backdrop: false,
-            templateUrl: '6GeneralPreferences/ImportPreferenceModal.html',
+            templateUrl: 'Dashboard/ImportPreferenceModal.html',
             controller: '6GeneralPreferencesController',
             size: 'lg',
-            //resolve: {
-            //    MatchedProject: function () {
-
-            //        return MatchedProject;
-            //    }
-            //}
         });
 
-        //modalInstance.result.then(function (selectedItem) {
-        //    $scope.selected = selectedItem;
-        //}, function () {
-        //    //$log.info('Modal dismissed at: ' + new Date());
-        //});
     };
 
+    $scope.OpenTrustFund = function (trustfunddetail) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            templateUrl: 'Dashboard/TrustFundModal.html',
+            controller: '9CofinancingController',
+            size: 'lg',
+            resolve: {
+                model: function () {
 
+                    return { TrustFundDetails: [trustfunddetail] };
+                }
+            }
+        });
+
+    };
+    $scope.OpenCofinancing = function (aimsproject) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            templateUrl: 'Dashboard/CofinancingModal.html',
+            controller: '9CofinancingController',
+            size: 'lg',
+            resolve: {
+                model: function () {
+
+                    return {
+                        AimsProjects: [aimsproject],
+                    };
+                }
+            }
+        });
+
+    };
 
     $scope.timeSince = function (date) {
         if (date == null || date == undefined) return '';

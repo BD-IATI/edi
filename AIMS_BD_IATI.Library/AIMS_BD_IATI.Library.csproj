@@ -48,6 +48,7 @@
     <Compile Include="DropdownItem.cs" />
     <Compile Include="ExchangeRateModel.cs" />
     <Compile Include="NullChecker.cs" />
+    <Compile Include="Parser\Fields.cs" />
     <Compile Include="Parser\IConverterIATI.cs" />
     <Compile Include="Parser\IParserIATI.cs" />
     <Compile Include="Parser\ParserIATIv1\iati-activities-schema.cs">

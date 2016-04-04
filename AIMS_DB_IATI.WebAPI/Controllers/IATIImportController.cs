@@ -32,6 +32,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         public List<DPLookupItem> GetFundSources()
         {
             Sessions.FundSources = aimsDAL.GetAllFundSources();
+            
             return aimsDAL.GetFundSources(Sessions.UserId);
         }
 
@@ -40,7 +41,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             return Sessions.FundSources;
         }
-
 
         [AcceptVerbs("GET", "POST")]
         public HeirarchyModel GetHierarchyData(DPLookupItem dp)
@@ -240,7 +240,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (relevantActivies == null)
                 relevantActivies = Sessions.activitiesContainer.RelevantActivities;
 
-            Sessions.ExchangeRates = aimsDAL.GetExchangesRateToUSD(relevantActivies.n(1).defaultcurrency);
             SetStatics();//since we have no access to session at library project, so we pass it in a static variables
 
             var ProjectsOwnedByOther = relevantActivies.FindAll(f => f.IATICode != Sessions.activitiesContainer.DP);
@@ -423,11 +422,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 {
                     if (field.IsSourceIATI)
                     {
-                        if (field.Field == "title")
+                        if (field.Field == IatiFields.Title)
                         {
                             matchedProject.aimsProject.Title = matchedProject.iatiActivity.Title;
                         }
-                        if (field.Field == "description")
+                        if (field.Field == IatiFields.Description)
                         {
                             matchedProject.aimsProject.Description = matchedProject.iatiActivity.Description;
                         }
@@ -439,21 +438,21 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 var planDis = new List<planneddisbursement>();
                 foreach (var field in matchedProject.TransactionFields)
                 {
-                    if (field.Field == "commitment")
+                    if (field.Field == IatiFields.Commitment)
                     {
                         if (field.IsSourceIATI)
                             trns.AddRange(matchedProject.iatiActivity.Commitments);
                         else
                             trns.AddRange(matchedProject.aimsProject.Commitments);
                     }
-                    else if (field.Field == "disbursment")
+                    else if (field.Field == IatiFields.Disbursment)
                     {
                         if (field.IsSourceIATI)
                             trns.AddRange(matchedProject.iatiActivity.Disbursments);
                         else
                             trns.AddRange(matchedProject.aimsProject.Disbursments);
                     }
-                    else if (field.Field == "planned-disbursment")
+                    else if (field.Field == IatiFields.PlannedDisbursment)
                     {
                         if (field.IsSourceIATI)
                             planDis.AddRange(matchedProject.iatiActivity.PlannedDisbursments);

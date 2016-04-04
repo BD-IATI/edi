@@ -7,7 +7,7 @@
         params: { dp: $rootScope.getCookie('selectedFundSource').ID }
     }).success(function (result) {
        $rootScope.AssignedActivities = $scope.AssignedActivities = result.AssignedActivities;
-       $rootScope.Projects = $scope.Projects = result.Projects;
+       $rootScope.AimsProjects = $scope.AimsProjects = result.AimsProjects;
        $rootScope.TrustFunds = $scope.TrustFunds = result.TrustFunds;
 
     });

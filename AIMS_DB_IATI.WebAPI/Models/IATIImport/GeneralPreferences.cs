@@ -31,19 +31,19 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
             {
                 Fields.Add(new FieldMap
                 {
-                    Field = "title",
+                    Field = IatiFields.Title,
                     AIMSValue = aimsProject.Title,
                     IATIValue = iatiActivity.Title,
                 });
                 Fields.Add(new FieldMap
                 {
-                    Field = "description",
+                    Field = IatiFields.Description,
                     AIMSValue = aimsProject.Description,
                     IATIValue = iatiActivity.Description,
                 });
                 Fields.Add(new FieldMap
                 {
-                    Field = "activitystatus",
+                    Field = IatiFields.Activitystatus,
                     AIMSValue = aimsProject.ActivityStatus,
                     IATIValue = iatiActivity.ActivityStatus,
                 });
@@ -57,19 +57,19 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
                 //});
                 TransactionFields.Add(new FieldMap
                 {
-                    Field = "commitment",
+                    Field = IatiFields.Commitment,
                     AIMSValue = aimsProject.TotalCommitment,
                     IATIValue = iatiActivity.TotalCommitment
                 });
                 TransactionFields.Add(new FieldMap
                 {
-                    Field = "disbursment",
+                    Field = IatiFields.Disbursment,
                     AIMSValue = aimsProject.TotalDisbursment,
                     IATIValue = iatiActivity.TotalDisbursment
                 });
                 TransactionFields.Add(new FieldMap
                 {
-                    Field = "planned-disbursment",
+                    Field = IatiFields.PlannedDisbursment,
                     AIMSValue = aimsProject.TotalPlannedDisbursment,
                     IATIValue = iatiActivity.TotalPlannedDisbursment
                 });
