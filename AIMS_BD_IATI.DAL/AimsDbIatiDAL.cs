@@ -355,7 +355,7 @@ namespace AIMS_BD_IATI.DAL
                      orderby a.DownloadDate descending
                      select a.DownloadDate).FirstOrDefault();
 
-            return q;
+            return q.Value.ToUniversalTime();
 
         }
 
