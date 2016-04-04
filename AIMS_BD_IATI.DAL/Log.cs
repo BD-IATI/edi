@@ -12,12 +12,14 @@ namespace AIMS_BD_IATI.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class FieldMappingPreferenceActivity
+    public partial class Log
     {
         public int Id { get; set; }
+        public Nullable<int> LogType { get; set; }
+        public string OrgId { get; set; }
         public string IatiIdentifier { get; set; }
-        public Nullable<int> ProjectId { get; set; }
-        public string FieldName { get; set; }
-        public bool IsSourceIATI { get; set; }
+        public string Message { get; set; }
+        public string ExceptionXML { get; set; }
+        public Nullable<System.DateTime> DateTime { get; set; }
     }
 }

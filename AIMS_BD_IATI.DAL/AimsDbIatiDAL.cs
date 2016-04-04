@@ -264,12 +264,12 @@ namespace AIMS_BD_IATI.DAL
         {
             foreach (var fieldMap in fieldMaps)
             {
-                var a = dbContext.FieldMappingPreferenceActivities.FirstOrDefault(x => x.IATIIdentifier == fieldMap.IATIIdentifier
+                var a = dbContext.FieldMappingPreferenceActivities.FirstOrDefault(x => x.IatiIdentifier == fieldMap.IatiIdentifier
                     //&& x.ProjectId == fieldMap.ProjectId
                                                                                     && x.FieldName == fieldMap.FieldName);
                 if (a != null)
                 {
-                    a.IATIIdentifier = fieldMap.IATIIdentifier;
+                    a.IatiIdentifier = fieldMap.IatiIdentifier;
                     a.ProjectId = fieldMap.ProjectId;
                     a.FieldName = fieldMap.FieldName;
                     a.IsSourceIATI = fieldMap.IsSourceIATI;
@@ -295,7 +295,7 @@ namespace AIMS_BD_IATI.DAL
         public List<FieldMappingPreferenceActivity> GetFieldMappingPreferenceActivity(string iatiIdentifier)
         {
             var q = (from fieldMap in dbContext.FieldMappingPreferenceActivities
-                     where fieldMap.IATIIdentifier == iatiIdentifier
+                     where fieldMap.IatiIdentifier == iatiIdentifier
                      select fieldMap).ToList();
 
             return q;
