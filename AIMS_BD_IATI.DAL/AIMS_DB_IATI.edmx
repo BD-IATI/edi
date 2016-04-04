@@ -28,7 +28,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IATIIdentifier" Type="nvarchar" MaxLength="50" />
+          <Property Name="IatiIdentifier" Type="nvarchar" MaxLength="50" />
           <Property Name="ProjectId" Type="int" />
           <Property Name="FieldName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsSourceIATI" Type="bit" Nullable="false" />
@@ -52,32 +52,36 @@
           <Property Name="FieldName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="IsSourceIATI" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogType" Type="int" />
+          <Property Name="OrgId" Type="nvarchar" MaxLength="50" />
+          <Property Name="IatiIdentifier" Type="nvarchar" MaxLength="50" />
+          <Property Name="Message" Type="nvarchar" MaxLength="500" />
+          <Property Name="ExceptionXML" Type="xml" />
+          <Property Name="DateTime" Type="datetime" />
+        </EntityType>
         <EntityContainer Name="AIMS_DB_IATIModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FieldMappingPreferenceActivity" EntityType="Self.FieldMappingPreferenceActivity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FieldMappingPreferenceDelegated" EntityType="Self.FieldMappingPreferenceDelegated" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FieldMappingPreferenceGeneral" EntityType="Self.FieldMappingPreferenceGeneral" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AIMS_DB_IATIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="AIMS_DB_IATIEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="FieldMappingPreferenceActivities" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceActivity" />
           <EntitySet Name="FieldMappingPreferenceGenerals" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral" />
           <EntitySet Name="Activities" EntityType="AIMS_DB_IATIModel.Activity" />
           <EntitySet Name="FieldMappingPreferenceDelegateds" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceDelegated" />
+          <EntitySet Name="FieldMappingPreferenceActivities" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceActivity" />
+          <EntitySet Name="Logs" EntityType="AIMS_DB_IATIModel.Log" />
         </EntityContainer>
-        <EntityType Name="FieldMappingPreferenceActivity">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IATIIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProjectId" Type="Int32" />
-          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsSourceIATI" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="FieldMappingPreferenceGeneral">
           <Key>
             <PropertyRef Name="Id" />
@@ -115,23 +119,34 @@
           <Property Name="FieldName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsInclude" Type="Boolean" />
         </EntityType>
+        <EntityType Name="FieldMappingPreferenceActivity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IatiIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectId" Type="Int32" />
+          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsSourceIATI" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogType" Type="Int32" />
+          <Property Name="OrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IatiIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ExceptionXML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="AIMS_DB_IATIModelStoreContainer" CdmEntityContainer="AIMS_DB_IATIEntities">
-          <EntitySetMapping Name="FieldMappingPreferenceActivities">
-            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.FieldMappingPreferenceActivity">
-              <MappingFragment StoreEntitySet="FieldMappingPreferenceActivity">
-                <ScalarProperty Name="IsSourceIATI" ColumnName="IsSourceIATI" />
-                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
-                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
-                <ScalarProperty Name="IATIIdentifier" ColumnName="IATIIdentifier" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FieldMappingPreferenceGenerals">
             <EntityTypeMapping TypeName="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral">
               <MappingFragment StoreEntitySet="FieldMappingPreferenceGeneral">
@@ -168,6 +183,30 @@
                 <ScalarProperty Name="IsInclude" ColumnName="IsInclude" />
                 <ScalarProperty Name="FieldName" ColumnName="FieldName" />
                 <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FieldMappingPreferenceActivities">
+            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.FieldMappingPreferenceActivity">
+              <MappingFragment StoreEntitySet="FieldMappingPreferenceActivity">
+                <ScalarProperty Name="IsSourceIATI" ColumnName="IsSourceIATI" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="ExceptionXML" ColumnName="ExceptionXML" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
+                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="LogType" ColumnName="LogType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
