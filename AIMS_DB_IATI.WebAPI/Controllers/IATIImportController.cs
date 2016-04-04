@@ -354,7 +354,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 var entity = new FieldMappingPreferenceActivity
                 {
                     FieldName = fieldMap.Field,
-                    IATIIdentifier = activityPreferences.iatiActivity.IatiIdentifier,
+                    IatiIdentifier = activityPreferences.iatiActivity.IatiIdentifier,
                     //ProjectId = activityPreferences.aimsProject.ProjectId,
                     IsSourceIATI = fieldMap.IsSourceIATI
                 };

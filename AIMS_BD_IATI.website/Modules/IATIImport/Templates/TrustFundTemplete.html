@@ -1,51 +1,51 @@
 ﻿
-    <div class="row">
-        <div class="col-md-12">
-            <h2>
-                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-                Trust Funds
-            </h2>
-            <p class="lead">
-                For Trust Funds, we just need to establish
-                the commitments from each DP. You can remove any
-                incorrect commitments reported by other IATI DPs below.
-                New commitments are marked
-                <span class="label label-warning">yellow</span>.
-            </p>
-            <hr />
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <h2>
+            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+            Trust Funds
+        </h2>
+        <p class="lead">
+            For Trust Funds, we just need to establish
+            the commitments from each DP. You can remove any
+            incorrect commitments reported by other IATI DPs below.
+            New commitments are marked
+            <span class="label label-warning">yellow</span>.
+        </p>
+        <hr />
     </div>
+</div>
 
-    <div class="row" ng-repeat="trustFund in model.TrustFundDetails">
-        <div class="col-md-12">
-            <h3 ng-bind="trustFund.TFIdentifier"></h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Funding Org</th>
-                        <th>Source</th>
-                        <th>Commitments (in USD)</th>
-                        <th>Include?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="trorg in trustFund.transactionsInAims">
-                        <td ng-bind="trorg.providerorg.narrative[0].Value"></td>
-                        <td>AIMS</td>
-                        <td ng-bind="trorg.value.Value | currency"></td>
-                        <td></td>
-                    </tr>
-                    <tr ng-repeat="(org,prjs) in trustFund.iatiactivities | groupBy: 'ReportingOrg'">
-                        <td ng-bind="org"></td>
-                        <td>IATI</td>
-                        <td ng-bind="GetSumOfCommitments(prjs) | currency"></td>
-                        <td><input type="checkbox" ng-model="prjs[0].IsCommitmentIncluded" ng-change="ChangeIsCommitmentIncluded(prjs)"/></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<div class="row" ng-repeat="trustFund in model.TrustFundDetails">
+    <div class="col-md-12">
+        <h3 ng-bind="trustFund.TFIdentifier"></h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Funding Org</th>
+                    <th>Source</th>
+                    <th>Commitments (in USD)</th>
+                    <th>Include?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="trorg in trustFund.transactionsInAims">
+                    <td ng-bind="trorg.ProviderOrg"></td>
+                    <td>AIMS</td>
+                    <td ng-bind="trorg.ValUSD | currency"></td>
+                    <td></td>
+                </tr>
+                <tr ng-repeat="(org,prjs) in trustFund.iatiactivities | groupBy: 'ReportingOrg'">
+                    <td ng-bind="org"></td>
+                    <td>IATI</td>
+                    <td ng-bind="prjs | sumByKey: 'TotalCommitment' | currency"></td>
+                    <td><input type="checkbox" ng-model="prjs[0].IsCommitmentIncluded" ng-change="ChangeIsCommitmentIncluded(prjs)" /></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+</div>
 
-    <hr />
+<hr />
 
 

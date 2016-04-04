@@ -82,7 +82,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public bool IsDisbursmentIncluded { get; set; }
         [XmlIgnore]
         public bool IsPlannedDisbursmentIncluded { get; set; }
-        
+
         #endregion
         [XmlIgnore]
         public int ProjectId { get; set; } //AIMS ProjectId
@@ -668,9 +668,52 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     public partial class transaction : ICurrency
     {
+        [XmlIgnore]
+        public string ProviderOrg
+        {
+            get
+            {
+                return providerorg.n().narrative.n(0).Value;
+            }
+            set
+            {
+                providerorg.n().narrative = Statix.getNarativeArray(value);
+            }
+        }
+
+        [XmlIgnore]
+        public decimal ValUSD
+        {
+            get
+            {
+                return value.n().ValueInUSD;
+            }
+        }
+
     }
     public partial class planneddisbursement : ICurrency
     {
+        [XmlIgnore]
+        public string ProviderOrg
+        {
+            get
+            {
+                return providerorg.n().narrative.n(0).Value;
+            }
+            set
+            {
+                providerorg.n().narrative = Statix.getNarativeArray(value);
+            }
+        }
+
+        [XmlIgnore]
+        public decimal ValUSD
+        {
+            get
+            {
+                return value.n().ValueInUSD;
+            }
+        }
     }
     public partial class budget : ICurrency
     {

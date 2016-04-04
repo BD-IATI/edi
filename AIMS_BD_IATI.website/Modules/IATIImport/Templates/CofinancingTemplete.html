@@ -1,59 +1,63 @@
 ﻿
-    <div class="row">
-        <div class="col-md-12">
-            <h2>
-                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-                Co-financing
-            </h2>
-            <p class="lead">
-                For co-financed projects, we need to
-                establish which data should be retained - commitments and
-                disbursements from all reporting organisations or only
-                from one.
-            </p>
-            <hr />
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <h2>
+            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+            Co-financing
+        </h2>
+        <p class="lead">
+            For co-financed projects, we need to
+            establish which data should be retained - commitments and
+            disbursements from all reporting organisations or only
+            from one.
+        </p>
+        <hr />
     </div>
-    <div class="row" ng-repeat="project in model.AimsProjects">
-        <div class="col-md-12">
-            <h3 ng-bind="project.Title"></h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Reporting Org</th>
-                        <th>Source</th>
-                        <th>Commitments</th>
-                        <th>Include C?</th>
-                        <th>Disbursments</th>
-                        <th>Include D?</th>
-                        <th>Planned Disbursments</th>
-                        <th>Include PD?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td ng-bind="project.ReportingOrg"></td>
-                        <td>AIMS</td>
-                        <td ng-bind="project.TotalCommitment | currency"></td>
-                        <td></td>
-                        <td ng-bind="project.TotalDisbursment | currency"></td>
-                        <td></td>
-                        <td ng-bind="project.TotalPlannedDisbursment | currency"></td>
-                        <td></td>
-                    </tr>
-                    <tr ng-repeat="(org,prjs) in project.MatchedProjects | groupBy: 'ReportingOrg'">
-                        <td ng-bind="org"></td>
-                        <td>IATI</td>
-                        <td ng-bind="GetSumOfCommitments(prjs) | currency"></td>
-                        <td><input type="checkbox" ng-model="prjs[0].IsCommitmentIncluded" ng-change="ChangeIsCommitmentIncluded(prjs)"/></td>
-                        <td ng-bind="GetSumOfDisbursments(prjs)  | currency"></td>
-                        <td><input type="checkbox" ng-model="prjs[0].IsDisbursmentIncluded" ng-change="ChangeIsDisbursmentIncluded(prjs)"/></td>
-                        <td ng-bind="GetSumOfPlannedDisbursments(prjs)  | currency"></td>
-                        <td><input type="checkbox" ng-model="prjs[0].IsPlannedDisbursmentIncluded"  ng-change="ChangePlannedDisbursmentIncluded(prjs)"/></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+</div>
+<div class="row" ng-repeat="project in model.AimsProjects">
+    <div class="col-md-12">
+        <h3 ng-bind="project.Title"></h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Provider Org</th>
+                    <th>Source</th>
+                    <th>Commitments</th>
+                    <th>Include C?</th>
+                    <th>Disbursments</th>
+                    <th>Include D?</th>
+                    <th>Planned Disbursments</th>
+                    <th>Include PD?</th>
+                </tr>
+            </thead>
+            <tbody>
 
-    <hr />
+                <tr ng-repeat="(rorg, trs) in project.transaction | groupBy: 'ProviderOrg'">
+                    <td ng-bind="rorg"></td>
+                    <td>AIMS</td>
+                    <td ng-bind="(trs | filter: {transactiontype:{code: '2'}}) | sumByKey: 'ValUSD' | currency"></td>
+                    <td></td>
+                    <td ng-bind="(trs | filter: {transactiontype:{code: '3'}}) | sumByKey: 'ValUSD' | currency"></td>
+                    <td></td>
+                    <td ng-bind="(project.planneddisbursement | filter: {ProviderOrg:rorg}) | sumByKey: 'ValUSD' | currency"></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+
+                <tr ng-repeat="(org, prjs) in project.MatchedProjects | groupBy: 'ReportingOrg'">
+                    <td ng-bind="org"></td>
+                    <td>IATI</td>
+                    <td ng-bind="prjs | sumByKey: 'TotalCommitment' | currency"></td>
+                    <td><input type="checkbox" ng-model="prjs[0].IsCommitmentIncluded" ng-change="ChangeIsCommitmentIncluded(prjs)" /></td>
+                    <td ng-bind="prjs | sumByKey: 'TotalDisbursment' | currency"></td>
+                    <td><input type="checkbox" ng-model="prjs[0].IsDisbursmentIncluded" ng-change="ChangeIsDisbursmentIncluded(prjs)" /></td>
+                    <td ng-bind="prjs | sumByKey: 'TotalPlannedDisbursment' | currency"></td>
+                    <td><input type="checkbox" ng-model="prjs[0].IsPlannedDisbursmentIncluded" ng-change="ChangePlannedDisbursmentIncluded(prjs)" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<hr />

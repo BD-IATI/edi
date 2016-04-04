@@ -143,25 +143,26 @@ namespace AIMS_BD_IATI.DAL
             TrustFundModel trustFundModel = new TrustFundModel();
 
             var trustFundDetails = (from trustFund in dbContext.tblTrustFunds
-                              join trustFundDetail in dbContext.tblTrustFundDetails on trustFund.Id equals trustFundDetail.TrustFundId
-                              join fundSource in dbContext.tblFundSources on trustFundDetail.TFDFundSourceId equals fundSource.Id
+                                    join trustFundDetail in dbContext.tblTrustFundDetails on trustFund.Id equals trustFundDetail.TrustFundId
+                                    join fundSource in dbContext.tblFundSources on trustFundDetail.TFDFundSourceId equals fundSource.Id
 
-                              where trustFund.Id == trustFundId
+                                    where trustFund.Id == trustFundId
 
-                              select new
-                              {
-                                  Id = trustFund.Id,
-                                  TFIdentifier = trustFund.TFIdentifier,
-                                  FundSourceName = fundSource.FundSourceName,
-                                  Amount = trustFundDetail.TFDAmountInUSD,
-                              }).ToList();
+                                    select new
+                                    {
+                                        Id = trustFund.Id,
+                                        TFIdentifier = trustFund.TFIdentifier,
+                                        FundSourceName = fundSource.FundSourceName,
+                                        Amount = trustFundDetail.TFDAmountInUSD,
+                                    }).ToList();
 
             trustFundModel.Id = trustFundDetails.n(0).Id;
             trustFundModel.TFIdentifier = trustFundDetails.n(0).TFIdentifier;
 
             foreach (var trustFundDetail in trustFundDetails)
             {
-                var tr = new transaction{
+                var tr = new transaction
+                {
                     transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("C") },
                     providerorg = new transactionProviderorg { narrative = Statix.getNarativeArray(trustFundDetail.FundSourceName) },
                     value = new currencyType { currency = Statix.Currency, Value = trustFundDetail.Amount ?? 0 },
@@ -200,7 +201,7 @@ namespace AIMS_BD_IATI.DAL
 
                     var defaultfinancetype = "100";
                     if (project.defaultfinancetype != null && !string.IsNullOrWhiteSpace(project.defaultfinancetype.code))
-                        defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100"; 
+                        defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
 
                     #region Commitments
                     var coms = p.tblProjectFundingCommitments.ToList();
@@ -233,7 +234,7 @@ namespace AIMS_BD_IATI.DAL
 
                         aimsCommitment.ExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
                         aimsCommitment.CommittedAmountInBDT = trn.value.n().ValueInBDT;
-                        
+
                         aimsCommitment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
                         aimsCommitment.VerificationRemarks = "Importerd From IATI: ";
 
@@ -243,9 +244,9 @@ namespace AIMS_BD_IATI.DAL
 
                         var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode == defaultfinancetype);
                         aimsCommitment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
-                    } 
+                    }
                     #endregion
-                    
+
                     #region PlannedDisbursements
                     var planDisb = p.tblProjectFundingPlannedDisbursements.ToList();
                     foreach (var cc in planDisb)
@@ -266,7 +267,7 @@ namespace AIMS_BD_IATI.DAL
 
                         aimsPlanDisbursment.PlannedDisbursementPeriodFromDate = trn.periodstart.n().isodate;
                         aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend.n().isodate;
-                        
+
                         var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
                         aimsPlanDisbursment.PlannedDisbursementCurrencyId = aimsCurrency == null ? 0 : aimsCurrency.Id;
                         aimsPlanDisbursment.PlannedDisburseAmount = trn.value.Value;
@@ -283,10 +284,10 @@ namespace AIMS_BD_IATI.DAL
                         //AidCategory
                         var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode.StartsWith(defaultfinancetype));
                         aimsPlanDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
-                       
+
                     }
                     #endregion
-                    
+
                     #region Disbursements
                     var disb = p.tblProjectFundingActualDisbursements.ToList();
                     foreach (var cc in disb)
@@ -322,13 +323,13 @@ namespace AIMS_BD_IATI.DAL
                         aimsDisbursment.VerificationRemarks = "Importerd From IATI: ";
 
                         //AidCategory
-                        if(trn.financetype != null && trn.financetype.code.Length > 1)
+                        if (trn.financetype != null && trn.financetype.code.Length > 1)
                             defaultfinancetype = trn.financetype.code.StartsWith("4") ? "400" : "100";
 
                         var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode == defaultfinancetype);
                         aimsDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
 
-                    } 
+                    }
                     #endregion
                 }
 
@@ -374,7 +375,7 @@ namespace AIMS_BD_IATI.DAL
 
                 iatiActivityObj.IsDataSourceAIMS = true;
 
-                iatiActivityObj.IsCofinancedProject = project.IsCofundedProject??false;
+                iatiActivityObj.IsCofinancedProject = project.IsCofundedProject ?? false;
 
                 iatiActivityObj.ProjectId = project.Id;
                 //iati-activity
@@ -408,7 +409,7 @@ namespace AIMS_BD_IATI.DAL
                     narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceGroup),
                     role = "1",
                     @ref = project.tblFundSource.n().IATICode,
-                    type = "10"
+                    type = project.tblFundSource.n().tblFundSourceCategory.n().IATICode,
                 });
 
                 participatingorgList.Add(new participatingorg
@@ -416,7 +417,7 @@ namespace AIMS_BD_IATI.DAL
                     narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName),
                     role = "3",
                     @ref = project.tblFundSource.n().IATICode,
-                    type = "10"
+                    type = project.tblFundSource.n().tblFundSourceCategory.n().IATICode,
                 });
                 //ToDo
                 //iatiActivity.participatingorg[2] = new participatingorg
@@ -512,8 +513,23 @@ namespace AIMS_BD_IATI.DAL
                         periodstart = new planneddisbursementPeriodstart { isodate = pd.PlannedDisbursementPeriodFromDate ?? DateTime.MinValue },
                         periodend = new planneddisbursementPeriodend { isodate = pd.PlannedDisbursementPeriodToDate ?? DateTime.MinValue },
                         value = new currencyType { currency = Statix.Currency, Value = pd.PlannedDisburseAmountInUSD ?? 0, valuedate = pd.PlannedDisbursementPeriodFromDate ?? DateTime.MinValue, ValueInUSD = pd.PlannedDisburseAmountInUSD ?? 0 },
-                        //provider-org
-                        //receiver-org
+
+                        providerorg = new planneddisbursementProviderorg
+                        {
+                            @ref = pd.tblFundSource.n().IATICode,
+                            provideractivityid = project.IatiIdentifier,
+                            narrative = Statix.getNarativeArray(pd.tblFundSource.n().FundSourceName),
+                            type = pd.tblFundSource.n().tblFundSourceCategory.n().IATICode
+                        },
+
+                        receiverorg = new planneddisbursementReceiverorg
+                        {
+                            receiveractivityid = project.IatiIdentifier,
+                            @ref = project.tblFundSource.n().IATICode,
+                            narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName),
+                            type = project.tblFundSource.n().tblFundSourceCategory.n().IATICode,
+                        }
+
                     });
                 }
 
@@ -536,8 +552,20 @@ namespace AIMS_BD_IATI.DAL
                     tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(commitment.CommittedAmountInUSD), ValueInUSD = Convert.ToDecimal(commitment.CommittedAmountInUSD) }; //commitment.tblCurrency.IATICode
 
                     tr.description = new textRequiredType { narrative = Statix.getNarativeArray(commitment.Remarks) };
-                    tr.providerorg = new transactionProviderorg { @ref = commitment.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = Statix.getNarativeArray(commitment.tblFundSource.n().FundSourceName) };
-                    tr.receiverorg = new transactionReceiverorg { receiveractivityid = project.IatiIdentifier, @ref = project.tblFundSource.n().IATICode, narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName) }; //type="23"
+                    tr.providerorg = new transactionProviderorg
+                    {
+                        @ref = commitment.tblFundSource.n().IATICode,
+                        provideractivityid = project.IatiIdentifier,
+                        narrative = Statix.getNarativeArray(commitment.tblFundSource.n().FundSourceName),
+                        type = commitment.tblFundSource.n().tblFundSourceCategory.n().IATICode
+                    };
+                    tr.receiverorg = new transactionReceiverorg
+                    {
+                        @ref = project.tblFundSource.n().IATICode,
+                        receiveractivityid = project.IatiIdentifier,
+                        narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName),
+                        type = project.tblFundSource.n().tblFundSourceCategory.n().IATICode
+                    };
 
                     //<disbursement-channel code="1" />
                     tr.disbursementchannel = new transactionDisbursementchannel { code = Statix.DisbursementChannel }; //Money is disbursed directly to the implementing institution and managed through a separate bank account
@@ -563,7 +591,7 @@ namespace AIMS_BD_IATI.DAL
 
 
                     iatiActivityObj.IsTrustFundedProject = commitment.IsCommitmentTrustFund ?? false;
-                    
+
                     transactions.Add(tr);
                 }
 
@@ -578,8 +606,22 @@ namespace AIMS_BD_IATI.DAL
                     tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(actualDisbursement.DisbursedAmountInUSD), ValueInUSD = Convert.ToDecimal(actualDisbursement.DisbursedAmountInUSD) }; //actualDisbursement.tblCurrency.IATICode
 
                     tr.description = new textRequiredType { narrative = Statix.getNarativeArray(actualDisbursement.Remarks) };
-                    tr.providerorg = new transactionProviderorg { @ref = actualDisbursement.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = Statix.getNarativeArray(actualDisbursement.tblFundSource.n().FundSourceName) };
-                    tr.receiverorg = new transactionReceiverorg { receiveractivityid = project.IatiIdentifier, @ref = project.tblFundSource.n().IATICode, narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName) }; //type="23"
+                    tr.providerorg = new transactionProviderorg
+                    {
+                        @ref = actualDisbursement.tblFundSource.n().IATICode,
+                        provideractivityid = project.IatiIdentifier,
+                        narrative = Statix.getNarativeArray(actualDisbursement.tblFundSource.n().FundSourceName),
+                        type = actualDisbursement.tblFundSource.n().tblFundSourceCategory.n().IATICode
+
+                    };
+                    tr.receiverorg = new transactionReceiverorg
+                    {
+                        @ref = project.tblFundSource.n().IATICode,
+                        receiveractivityid = project.IatiIdentifier,
+                        narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName),
+                        type = project.tblFundSource.n().tblFundSourceCategory.n().IATICode
+
+                    };
 
                     //<disbursement-channel code="1" />
                     tr.disbursementchannel = new transactionDisbursementchannel { code = Statix.DisbursementChannel };
@@ -617,8 +659,21 @@ namespace AIMS_BD_IATI.DAL
                     tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = expenditure.ExpenditureAmountInUSD ?? 0, ValueInUSD = expenditure.ExpenditureAmountInUSD ?? 0 }; //expenditure.tblCurrency.IATICode
 
                     tr.description = new textRequiredType { narrative = Statix.getNarativeArray(expenditure.Remarks) };
-                    tr.providerorg = new transactionProviderorg { @ref = expenditure.tblFundSource.n().IATICode, provideractivityid = project.IatiIdentifier, narrative = Statix.getNarativeArray(expenditure.tblFundSource.n().FundSourceName) };
-                    tr.receiverorg = new transactionReceiverorg { receiveractivityid = project.IatiIdentifier, @ref = project.tblFundSource.n().IATICode, narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName) }; //type="23"
+                    tr.providerorg = new transactionProviderorg
+                    {
+                        @ref = expenditure.tblFundSource.n().IATICode,
+                        provideractivityid = project.IatiIdentifier,
+                        narrative = Statix.getNarativeArray(expenditure.tblFundSource.n().FundSourceName),
+                        type = expenditure.tblFundSource.n().tblFundSourceCategory.n().IATICode
+
+                    };
+                    tr.receiverorg = new transactionReceiverorg
+                    {
+                        @ref = project.tblFundSource.n().IATICode,
+                        receiveractivityid = project.IatiIdentifier,
+                        narrative = Statix.getNarativeArray(project.tblFundSource.n().FundSourceName),
+                        type = project.tblFundSource.n().tblFundSourceCategory.n().IATICode
+                    }; 
 
                     //<disbursement-channel code="1" />
                     tr.disbursementchannel = new transactionDisbursementchannel { code = Statix.DisbursementChannel };

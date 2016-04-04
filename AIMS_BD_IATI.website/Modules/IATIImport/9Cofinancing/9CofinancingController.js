@@ -27,20 +27,8 @@
             //$scope.model = result;
         });
     }
-    $scope.GetSumOfCommitments = function (prjArray) {
-        var sum = 0;
-        for (var i in prjArray) {
-            sum = sum + Number(prjArray[i].TotalCommitment);
-        }
-        return sum;
-    };
-    $scope.GetSumOfDisbursments = function (prjArray) {
-        var sum = 0;
-        for (var i in prjArray) {
-            sum = sum + Number(prjArray[i].TotalDisbursment);
-        }
-        return sum;
-    };
+
+
     $scope.GetSumOfPlannedDisbursments = function (prjArray) {
         var sum = 0;
         for (var i in prjArray) {
