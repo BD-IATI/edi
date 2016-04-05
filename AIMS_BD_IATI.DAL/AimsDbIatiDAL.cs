@@ -432,6 +432,11 @@ namespace AIMS_BD_IATI.DAL
             return q;
         }
 
+        public int InsertLog(Log log)
+        {
+            dbContext.Logs.Add(log);
+            return dbContext.SaveChanges();
+        }
 
         /// <summary>
         /// same as Activity table in AIMS_DB_IATI database

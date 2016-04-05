@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 //added reference Assemblies->Framework->System.Configuration
 using System.Configuration;
 using System.IO;
+using AIMS_BD_IATI.DAL;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace AIMS_BD_IATI.Service
 {
@@ -29,7 +32,7 @@ namespace AIMS_BD_IATI.Service
         }
     }
 
-    public sealed class Log
+    public sealed class Loging
     {
         public static void Write(string Text)
         {
@@ -46,6 +49,38 @@ namespace AIMS_BD_IATI.Service
                 DateTime.Now.ToString("d-MMM-yyyy, HH:mm:ss") + "  " + Text);
 
             System.Console.WriteLine(Text);
+        }
+        public static void WriteToDbAndFile(dynamic ex, LogType type, string message = "")
+        {
+            try
+            {
+                if (message == "") message = ex.Message;
+
+                Log log = new Log();
+                log.DateTime = DateTime.Now;
+                log.Message = message;
+                log.LogType = type.GetHashCode();
+
+                using (TextWriter writer = new StringWriter())
+                {
+                    new JsonSerializer().Serialize(new JsonTextWriter(writer) ,ex);
+                    log.ExceptionXML = writer.ToString();
+                }
+
+                new AimsDbIatiDAL().InsertLog(log);
+            }
+            catch { }
+            finally
+            {
+                Write(type + " " + message);
+            }
+        }
+
+        public enum LogType
+        {
+            Info,
+            Warning,
+            Error
         }
     }
 }

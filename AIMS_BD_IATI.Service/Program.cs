@@ -21,11 +21,13 @@ namespace AIMS_BD_IATI.Service
         {
             try
             {
+                var z =  0;
+                var k = 1 / z;
                 ParseIATI().Wait();
             }
             catch (Exception ex)
             {
-                Log.Write("ERROR: " + ex.ToString());
+                Loging.WriteToDbAndFile(ex, Loging.LogType.Error);
             }
         }
 
@@ -49,7 +51,7 @@ namespace AIMS_BD_IATI.Service
             {
                 try
                 {
-                    Log.Write("INFO: " + "Parsing Started...for: " + fundSource.IATICode);
+                    Loging.Write("INFO: " + "Parsing Started...for: " + fundSource.IATICode);
 
                     #region Convert Data from v1.05 to v2.01
 
@@ -70,12 +72,12 @@ namespace AIMS_BD_IATI.Service
                         //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=GB-1 or XM-DAC-12-1
                         returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
 
-                        Log.Write("INFO: " + "Parsing completed!");
+                        Loging.Write("INFO: " + "Parsing completed!");
 
                         //Conversion
                         ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
                         returnResult2 = convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
-                        Log.Write("INFO: " + "Convertion completed!");
+                        Loging.Write("INFO: " + "Convertion completed!");
                     }
 
                     #endregion
@@ -88,7 +90,7 @@ namespace AIMS_BD_IATI.Service
                 }
                 catch (Exception ex)
                 {
-                    Log.Write("ERROR: " + ex.ToString());
+                    Loging.WriteToDbAndFile(ex, Loging.LogType.Error);
                 }
             }
         }
@@ -105,7 +107,7 @@ namespace AIMS_BD_IATI.Service
             int counter = 0;
             int totalActivity = iatiactivityArray.Count();
 
-            Log.Write("INFO: " + "Total Activity found: " + totalActivity);
+            Loging.Write("INFO: " + "Total Activity found: " + totalActivity);
 
             foreach (var iatiactivityItem in iatiactivityArray)
             {
@@ -126,7 +128,7 @@ namespace AIMS_BD_IATI.Service
             }
 
             var c = new AimsDbIatiDAL().SaveAtivities(Activities);
-            Log.Write("INFO: " + "All activities are stored in Database");
+            Loging.Write("INFO: " + "All activities are stored in Database");
         }
 
         /// <summary>
@@ -138,7 +140,7 @@ namespace AIMS_BD_IATI.Service
             var serializer = new XmlSerializer(typeof(XmlResultv2), new XmlRootAttribute("result"));
             TextWriter writer = new StreamWriter("D:\\xxv2.01.xml");
             serializer.Serialize(writer, returnResult2);
-            Log.Write("INFO: " + "Saved Converted Data to File");
+            Loging.Write("INFO: " + "Saved Converted Data to File");
         }
 
         //#region Get Data From AIMS
