@@ -82,7 +82,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         {
             if (CFnTFModel == null) return null;
 
-            aimsDbIatiDAL.MapCFnTFActivities(CFnTFModel.AssignedActivities);
+            aimsDbIatiDAL.MapActivities(CFnTFModel.AssignedActivities);
 
             #region Save preferences
 

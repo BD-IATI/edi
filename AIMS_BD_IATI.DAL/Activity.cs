@@ -25,6 +25,7 @@ namespace AIMS_BD_IATI.DAL
         public Nullable<int> ParentHierarchy { get; set; }
         public string AssignedOrgId { get; set; }
         public Nullable<System.DateTime> AssignedDate { get; set; }
+        public Nullable<int> ProjectId { get; set; }
         public Nullable<int> MappedProjectId { get; set; }
         public Nullable<int> MappedTrustFundId { get; set; }
     }

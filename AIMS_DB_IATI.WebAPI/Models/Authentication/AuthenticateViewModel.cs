@@ -248,7 +248,7 @@ namespace AIMS_BD_IATI.WebAPI.Models.Authentication
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 return false;
             }

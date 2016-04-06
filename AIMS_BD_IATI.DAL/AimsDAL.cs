@@ -215,6 +215,7 @@ namespace AIMS_BD_IATI.DAL
 
                         var aimsCommitment = new tblProjectFundingCommitment();
                         p.tblProjectFundingCommitments.Add(aimsCommitment);
+
                         aimsCommitment.IDate = DateTime.Now;
                         aimsCommitment.IUser = Iuser;
                         aimsCommitment.IsCommitmentTrustFund = false;
@@ -258,6 +259,7 @@ namespace AIMS_BD_IATI.DAL
                     {
                         var aimsPlanDisbursment = new tblProjectFundingPlannedDisbursement();
                         p.tblProjectFundingPlannedDisbursements.Add(aimsPlanDisbursment);
+
                         aimsPlanDisbursment.IDate = DateTime.Now;
                         aimsPlanDisbursment.IUser = Iuser;
                         aimsPlanDisbursment.IsPlannedDisbursementTrustFund = false;
@@ -299,6 +301,7 @@ namespace AIMS_BD_IATI.DAL
                     {
                         var aimsDisbursment = new tblProjectFundingActualDisbursement();
                         p.tblProjectFundingActualDisbursements.Add(aimsDisbursment);
+
                         aimsDisbursment.IDate = DateTime.Now;
                         aimsDisbursment.IUser = Iuser;
                         aimsDisbursment.IsDisbursedTrustFund = false;

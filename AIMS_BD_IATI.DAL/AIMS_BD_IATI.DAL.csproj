@@ -99,6 +99,7 @@
     <Compile Include="FieldMappingPreferenceGeneral.cs">
       <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
     </Compile>
+    <Compile Include="ImportLogic.cs" />
     <Compile Include="Log.cs">
       <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
     </Compile>

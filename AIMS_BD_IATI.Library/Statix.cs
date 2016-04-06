@@ -66,4 +66,11 @@ namespace AIMS_BD_IATI.Library
         } 
 
     }
+    public enum LogType
+    {
+        Info,
+        Warning,
+        Error
+    }
+
 }

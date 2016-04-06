@@ -21,13 +21,11 @@ namespace AIMS_BD_IATI.Service
         {
             try
             {
-                var z =  0;
-                var k = 1 / z;
                 ParseIATI().Wait();
             }
             catch (Exception ex)
             {
-                Loging.WriteToDbAndFile(ex, Loging.LogType.Error);
+                Logger.WriteToDbAndFile(ex, LogType.Error);
             }
         }
 
@@ -51,7 +49,7 @@ namespace AIMS_BD_IATI.Service
             {
                 try
                 {
-                    Loging.Write("INFO: " + "Parsing Started...for: " + fundSource.IATICode);
+                    Logger.Write("INFO: " + "Parsing Started...for: " + fundSource.IATICode);
 
                     #region Convert Data from v1.05 to v2.01
 
@@ -72,12 +70,12 @@ namespace AIMS_BD_IATI.Service
                         //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=GB-1 or XM-DAC-12-1
                         returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
 
-                        Loging.Write("INFO: " + "Parsing completed!");
+                        Logger.Write("INFO: " + "Parsing completed!");
 
                         //Conversion
                         ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
                         returnResult2 = convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
-                        Loging.Write("INFO: " + "Convertion completed!");
+                        Logger.Write("INFO: " + "Convertion completed!");
                     }
 
                     #endregion
@@ -90,7 +88,7 @@ namespace AIMS_BD_IATI.Service
                 }
                 catch (Exception ex)
                 {
-                    Loging.WriteToDbAndFile(ex, Loging.LogType.Error);
+                    Logger.WriteToDbAndFile(ex, LogType.Error, fundSource.IATICode);
                 }
             }
         }
@@ -107,28 +105,41 @@ namespace AIMS_BD_IATI.Service
             int counter = 0;
             int totalActivity = iatiactivityArray.Count();
 
-            Loging.Write("INFO: " + "Total Activity found: " + totalActivity);
+            Logger.Write("INFO: " + "Total Activity found: " + totalActivity);
 
-            foreach (var iatiactivityItem in iatiactivityArray)
+            if (totalActivity > 0)
             {
-                var Activity = new Activity();
-
-                Activity.OrgId = Activity.AssignedOrgId = organization_Id;// iatiactivityItem.reportingorg.n().@ref;
-                Activity.IatiIdentifier = iatiactivityItem.iatiidentifier.n().Value;
-                Activity.Hierarchy = iatiactivityItem.hierarchy;
-
-                using (StringWriter ww = new StringWriter())
+                foreach (var iatiactivityItem in iatiactivityArray)
                 {
-                    var ss = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity), new XmlRootAttribute("iati-activity"));
-                    ss.Serialize(ww, iatiactivityItem);
-                    Activity.IatiActivity = ww.ToString();
-                }
-                Activities.Add(Activity);
-                Console.Write("\r Activity Counter: {0}   ", counter++);
-            }
+                    try
+                    {
+                        var Activity = new Activity();
 
-            var c = new AimsDbIatiDAL().SaveAtivities(Activities);
-            Loging.Write("INFO: " + "All activities are stored in Database");
+                        Activity.OrgId = Activity.AssignedOrgId = organization_Id;// iatiactivityItem.reportingorg.n().@ref;
+                        Activity.IatiIdentifier = iatiactivityItem.IatiIdentifier;
+                        Activity.Hierarchy = iatiactivityItem.hierarchy;
+
+                        using (StringWriter ww = new StringWriter())
+                        {
+                            var ss = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity), new XmlRootAttribute("iati-activity"));
+                            ss.Serialize(ww, iatiactivityItem);
+                            Activity.IatiActivity = ww.ToString();
+                        }
+                        Activities.Add(Activity);
+                        Console.Write("\r Activity Counter: {0}   ", counter++);
+
+                    }
+                    catch(Exception ex)
+                    {
+                        Logger.WriteToDbAndFile(ex, LogType.Error, organization_Id, iatiactivityItem.IatiIdentifier);
+                    }
+
+                }
+
+                var c = new AimsDbIatiDAL().SaveAtivities(Activities, iatiactivityArray.ToList());
+                Logger.Write("INFO: " + "All activities are stored in Database");
+
+            }
         }
 
         /// <summary>
@@ -140,12 +151,9 @@ namespace AIMS_BD_IATI.Service
             var serializer = new XmlSerializer(typeof(XmlResultv2), new XmlRootAttribute("result"));
             TextWriter writer = new StreamWriter("D:\\xxv2.01.xml");
             serializer.Serialize(writer, returnResult2);
-            Loging.Write("INFO: " + "Saved Converted Data to File");
+            Logger.Write("INFO: " + "Saved Converted Data to File");
         }
 
-        //#region Get Data From AIMS
-        //var a = new AimsDAL().getAIMSDataInIATIFormat("CA-3");
-        //#endregion
     }
 
 

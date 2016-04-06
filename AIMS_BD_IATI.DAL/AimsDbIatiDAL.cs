@@ -23,7 +23,7 @@ namespace AIMS_BD_IATI.DAL
             set;
         }
 
-        public int SaveAtivities(List<Activity> activities)
+        public int SaveAtivities(List<Activity> activities, List<iatiactivity> iatiActivities)
         {
             foreach (var activity in activities)
             {
@@ -31,7 +31,6 @@ namespace AIMS_BD_IATI.DAL
                 if (a != null)
                 {
                     a.OrgId = activity.OrgId;
-                    a.IatiIdentifier = activity.IatiIdentifier;
 
                     a.IatiActivityPrev = a.IatiActivity;
                     a.IatiActivity = activity.IatiActivity;
@@ -41,11 +40,27 @@ namespace AIMS_BD_IATI.DAL
 
                     a.DownloadDatePrev = a.DownloadDate;
                     a.DownloadDate = DateTime.Now;
+
+                    //update aimsdb
+                    if(a.ProjectId > 0)
+                    {
+
+                    }
+
                 }
                 else
                 {
                     activity.DownloadDate = DateTime.Now;
                     dbContext.Activities.Add(activity);
+
+                    dbContext.Logs.Add(new Log
+                    {
+                        IatiIdentifier = activity.IatiIdentifier,
+                        OrgId = activity.OrgId,
+                        Message = "Imported new activity",
+                        LogType = LogType.Info.GetHashCode(),
+                        DateTime = DateTime.Now
+                    });
                 }
 
             }
@@ -53,7 +68,7 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
-        public int AssignActivities(List<iatiactivity> activities)
+        public int MapActivities(List<iatiactivity> activities)
         {
             foreach (var activity in activities)
             {
@@ -63,22 +78,10 @@ namespace AIMS_BD_IATI.DAL
                     a.AssignedOrgId = activity.IATICode;
                     a.AssignedDate = DateTime.Now;
 
-                }
-            }
+                    a.ProjectId = activity.ProjectId;
 
-            return dbContext.SaveChanges();
-        }
-
-        public int MapCFnTFActivities(List<iatiactivity> activities)
-        {
-            foreach (var activity in activities)
-            {
-                var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier);
-                if (a != null)
-                {
                     a.MappedProjectId = activity.MappedProjectId;
                     a.MappedTrustFundId = activity.MappedTrustFundId;
-
                 }
             }
 
@@ -117,7 +120,7 @@ namespace AIMS_BD_IATI.DAL
                     var DisbursmentIncluded = FieldMappingPreferenceDelegateds.FirstOrDefault(j => j.FieldName == IatiFields.Disbursment);
                     activity.IsDisbursmentIncluded = DisbursmentIncluded.n().IsInclude ?? false;
 
-                } 
+                }
                 #endregion
 
                 activity.MappedProjectId = a.MappedProjectId ?? 0;

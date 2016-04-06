@@ -9,6 +9,7 @@ using System.IO;
 using AIMS_BD_IATI.DAL;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using AIMS_BD_IATI.Library;
 
 namespace AIMS_BD_IATI.Service
 {
@@ -32,7 +33,7 @@ namespace AIMS_BD_IATI.Service
         }
     }
 
-    public sealed class Loging
+    public sealed class Logger
     {
         public static void Write(string Text)
         {
@@ -50,14 +51,17 @@ namespace AIMS_BD_IATI.Service
 
             System.Console.WriteLine(Text);
         }
-        public static void WriteToDbAndFile(dynamic ex, LogType type, string message = "")
+
+        public static void WriteToDbAndFile(dynamic ex, LogType type, string orgId = null, string IatiIdentifier = null, string message = null)
         {
             try
             {
-                if (message == "") message = ex.Message;
+                if (message == null) message = ex.Message;
 
                 Log log = new Log();
                 log.DateTime = DateTime.Now;
+                log.OrgId = orgId;
+                log.IatiIdentifier = IatiIdentifier;
                 log.Message = message;
                 log.LogType = type.GetHashCode();
 
@@ -76,11 +80,5 @@ namespace AIMS_BD_IATI.Service
             }
         }
 
-        public enum LogType
-        {
-            Info,
-            Warning,
-            Error
-        }
     }
 }
