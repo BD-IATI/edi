@@ -145,9 +145,13 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return GetTransactions(ConvertIATIv2.gettransactionCode("D"));
+                var disbursments = GetTransactions(ConvertIATIv2.gettransactionCode("D"));
+                //expenditures in IATI are also treated as disbursments in AIMS
+                disbursments.AddRange(GetTransactions(ConvertIATIv2.gettransactionCode("E")));
+                return disbursments;
             }
         }
+
         [XmlIgnore]
         public List<transaction> Commitments
         {
