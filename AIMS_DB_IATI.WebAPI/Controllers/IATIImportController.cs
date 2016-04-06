@@ -235,7 +235,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             relevantActivies.RemoveAll(f => f.IATICode != Sessions.activitiesContainer.DP);
 
-            var AimsProjects = aimsDAL.GetAIMSDataInIATIFormat(Sessions.activitiesContainer.n().DP);
+            var AimsProjects = aimsDAL.GetAIMSProjectsInIATIFormat(Sessions.activitiesContainer.n().DP);
 
             var MatchedProjects = (from i in relevantActivies
                                    from a in AimsProjects.Where(k => i.iatiidentifier.Value.Replace("-", "").EndsWith(k.iatiidentifier.Value.Replace("-", "")))

@@ -23,8 +23,9 @@ namespace AIMS_BD_IATI.DAL
             set;
         }
 
-        public int SaveAtivities(List<Activity> activities, List<iatiactivity> iatiActivities)
+        public int SaveAtivities(List<Activity> activities, List<iatiactivity> iatiActivities, tblFundSource fundSource)
         {
+
             foreach (var activity in activities)
             {
                 var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier);
@@ -42,8 +43,39 @@ namespace AIMS_BD_IATI.DAL
                     a.DownloadDate = DateTime.Now;
 
                     //update aimsdb
-                    if(a.ProjectId > 0)
+                    if (a.ProjectId > 0)
                     {
+                        var aimsDAL = new AimsDAL();
+                        //step 1: project structure
+                        var iactivities = new List<iatiactivity>();
+                        if (a.Hierarchy == 1)
+                            iactivities = ImportLogic.LoadH1ActivitiesWithChild(iatiActivities); // here pass all activities to find out their related activities
+
+                        //step 2: get mapped iatiActivity and aimsProject
+                        var iatiActivity = iactivities.Find(f => f.IatiIdentifier == a.IatiIdentifier);
+                        // SetExchangedValues
+                        SetExchangedValues(iatiActivity);
+                        iatiActivity.relatedIatiActivities.ForEach(ra => SetExchangedValues(ra));
+
+                        var aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.ProjectId);
+
+                        //step 3: get general preference
+                        var generalPreference = GetFieldMappingPreferenceGeneral(a.OrgId);
+
+                        //step 4: create a ProjectFieldMapModel using iatiActivity, aimsProject and generalPreference
+                        var ProjectFieldMapModel = new ProjectFieldMapModel(iatiActivity, aimsProject, generalPreference);
+
+                        //step 5: SetFieldMappingPreferences
+                        var ProjectFieldMapModels = new List<ProjectFieldMapModel>(); // here we make a list just to use existing method (e.g existing method require a List parameter)
+                        ProjectFieldMapModels.Add(ProjectFieldMapModel);
+
+                        ImportLogic.SetFieldMappingPreferences(ProjectFieldMapModels, ProjectFieldMapModel);
+
+                        //step 6: merge iatiActivity and aimsProject; and get an new merged activity
+                        var mergedActivities = ImportLogic.MergeProjects(ProjectFieldMapModels); //now it will allways return a list containing single activity
+                        mergedActivities.n(0).FundSourceIDnIATICode = fundSource.Id + "~" + a.OrgId;
+                        //step 7: update aims database with margedActivities
+                        aimsDAL.UpdateProjects(mergedActivities, "system");
 
                     }
 
@@ -167,7 +199,7 @@ namespace AIMS_BD_IATI.DAL
             return new CFnTFModel
             {
                 AssignedActivities = result,
-                AimsProjects = new AimsDAL().GetAIMSDataInIATIFormat(dp)
+                AimsProjects = new AimsDAL().GetAIMSProjectsInIATIFormat(dp)
             };
         }
 
@@ -185,7 +217,7 @@ namespace AIMS_BD_IATI.DAL
             {
                 DP = dp,
                 iatiActivities = iatiActivities,
-                AimsProjects = new AimsDAL().GetAIMSDataInIATIFormat(dp)
+                AimsProjects = new AimsDAL().GetAIMSProjectsInIATIFormat(dp)
             };
         }
 
@@ -208,7 +240,7 @@ namespace AIMS_BD_IATI.DAL
             return result;
         }
 
-        private void SetExchangedValues(iatiactivity activity)
+        public void SetExchangedValues(iatiactivity activity)
         {
             if (activity.transaction != null)
                 foreach (var tr in activity.transaction)
@@ -237,8 +269,6 @@ namespace AIMS_BD_IATI.DAL
 
             var cur = tr.value.currency;
 
-
-
             if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
             {
                 ExchangeRates.AddRange(new AimsDAL().GetExchangesRateToUSD(cur));
@@ -259,11 +289,12 @@ namespace AIMS_BD_IATI.DAL
 
             var curExchangeRate = exchangeRates.Where(k => k.DATE == nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
 
-            tr.value.BBexchangeRateDate = curExchangeRate.n().DATE;
+            tr.value.BBexchangeRateDate = curExchangeRate.n().DATE.ToSqlDateTime();
             tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
             tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
             tr.value.BBexchangeRateBDT = curExchangeRate.n().TAKA_PER_DOLLAR ?? 0;
             tr.value.ValueInBDT = tr.value.ValueInUSD * tr.value.BBexchangeRateBDT;
+
         }
 
 

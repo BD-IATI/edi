@@ -63,8 +63,18 @@ namespace AIMS_BD_IATI.Library
                 stream.Seek(0, SeekOrigin.Begin);
                 return (T)formatter.Deserialize(stream);
             }
-        } 
+        }
 
+        public static DateTime? ToSqlDateTimeNull(this DateTime datetime)
+        {
+            if (datetime == default(DateTime)) return null;
+            else return datetime;
+        }
+        public static DateTime ToSqlDateTime(this DateTime datetime)
+        {
+            if (datetime == default(DateTime)) return new DateTime(1700, 01, 01);
+            else return datetime;
+        }
     }
     public enum LogType
     {

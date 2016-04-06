@@ -95,21 +95,31 @@ namespace AIMS_BD_IATI.DAL
                     if (field.Field == IatiFields.Commitment)
                     {
                         if (field.IsSourceIATI)
+                        {
                             trns.AddRange(matchedProject.iatiActivity.Commitments);
+                            matchedProject.aimsProject.IsCommitmentIncluded = true;
+                        }
                         else
                             trns.AddRange(matchedProject.aimsProject.Commitments);
                     }
                     else if (field.Field == IatiFields.Disbursment)
                     {
                         if (field.IsSourceIATI)
+                        {
                             trns.AddRange(matchedProject.iatiActivity.Disbursments);
+                             matchedProject.aimsProject.IsDisbursmentIncluded = true;
+                       }
                         else
                             trns.AddRange(matchedProject.aimsProject.Disbursments);
                     }
                     else if (field.Field == IatiFields.PlannedDisbursment)
                     {
                         if (field.IsSourceIATI)
+                        {
                             planDis.AddRange(matchedProject.iatiActivity.PlannedDisbursments);
+                             matchedProject.aimsProject.IsPlannedDisbursmentIncluded = true;
+
+                        }
                         else
                             planDis.AddRange(matchedProject.aimsProject.PlannedDisbursments);
                     }

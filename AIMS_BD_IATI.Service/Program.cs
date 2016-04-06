@@ -83,7 +83,7 @@ namespace AIMS_BD_IATI.Service
                     iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
                     if (iatiactivityArray != null)
                     {
-                        SaveToDB(fundSource.IATICode, iatiactivityArray);
+                        SaveToDB(fundSource, iatiactivityArray);
                     }
                 }
                 catch (Exception ex)
@@ -98,8 +98,10 @@ namespace AIMS_BD_IATI.Service
         /// Save Data To DB
         /// </summary>
         /// <param name="returnResult2"></param>
-        private static void SaveToDB(string organization_Id, AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray)
+        private static void SaveToDB(tblFundSource fundSource, AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray)
         {
+            string organization_Id = fundSource.IATICode;
+
             List<Activity> Activities = new List<Activity>();
 
             int counter = 0;
@@ -126,6 +128,8 @@ namespace AIMS_BD_IATI.Service
                             Activity.IatiActivity = ww.ToString();
                         }
                         Activities.Add(Activity);
+
+
                         Console.Write("\r Activity Counter: {0}   ", counter++);
 
                     }
@@ -136,7 +140,7 @@ namespace AIMS_BD_IATI.Service
 
                 }
 
-                var c = new AimsDbIatiDAL().SaveAtivities(Activities, iatiactivityArray.ToList());
+                var c = new AimsDbIatiDAL().SaveAtivities(Activities, iatiactivityArray.ToList(), fundSource);
                 Logger.Write("INFO: " + "All activities are stored in Database");
 
             }

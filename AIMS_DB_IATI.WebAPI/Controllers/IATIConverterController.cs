@@ -70,7 +70,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             List<AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity> iatiactivityList = new List<Library.Parser.ParserIATIv2.iatiactivity>();
             try
             {
-                iatiactivityList = new AIMS_BD_IATI.DAL.AimsDAL().GetAIMSDataInIATIFormat(org);
+                iatiactivityList = new AIMS_BD_IATI.DAL.AimsDAL().GetAIMSProjectsInIATIFormat(org);
             }
             catch (Exception)
             {
