@@ -80,7 +80,9 @@ namespace AIMS_BD_IATI.Library
     {
         Info,
         Warning,
-        Error
+        Error,
+        Alert,
+        FinancialDataMismathed
     }
 
 }

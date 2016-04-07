@@ -52,7 +52,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             //{
                 Sessions.heirarchyModel = new HeirarchyModel();
 
-                Sessions.activitiesContainer = aimsDbIatiDAL.GetActivities(dp.ID);
+                Sessions.activitiesContainer = aimsDbIatiDAL.GetNotMappedActivities(dp.ID);
 
                 if (Sessions.activitiesContainer.HasRelatedActivity)
                 {
@@ -235,7 +235,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             relevantActivies.RemoveAll(f => f.IATICode != Sessions.activitiesContainer.DP);
 
-            var AimsProjects = aimsDAL.GetAIMSProjectsInIATIFormat(Sessions.activitiesContainer.n().DP);
+            var AimsProjects = Sessions.activitiesContainer.AimsProjects;
 
             var MatchedProjects = (from i in relevantActivies
                                    from a in AimsProjects.Where(k => i.iatiidentifier.Value.Replace("-", "").EndsWith(k.iatiidentifier.Value.Replace("-", "")))

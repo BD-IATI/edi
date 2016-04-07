@@ -13,6 +13,7 @@ namespace AIMS_BD_IATI.DAL
     public class AimsDAL
     {
         AIMS_DBEntities dbContext = new AIMS_DBEntities();
+        AimsDbIatiDAL aimsDBIatiDAL = new AimsDbIatiDAL();
         public List<DPLookupItem> GetFundSources(string userId)
         {
             var FundSource = new List<DPLookupItem>();
@@ -188,6 +189,11 @@ namespace AIMS_BD_IATI.DAL
             {
                 foreach (var project in projects)
                 {
+                    bool isFinancialDataMismathed = false;
+                    var defaultfinancetype = "100";
+                    if (project.defaultfinancetype != null && !string.IsNullOrWhiteSpace(project.defaultfinancetype.code))
+                        defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
+
                     var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == project.ProjectId);
                     if (p == null)
                     {
@@ -197,24 +203,39 @@ namespace AIMS_BD_IATI.DAL
                         dbContext.tblProjectInfoes.Add(p);
                     }
 
-
-                    p.Title = project.Title;
-                    p.Objective = project.Description;
-
-                    var defaultfinancetype = "100";
-                    if (project.defaultfinancetype != null && !string.IsNullOrWhiteSpace(project.defaultfinancetype.code))
-                        defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
-
                     #region Commitments
                     if (project.IsCommitmentIncluded)
                     {
-                        var coms = p.tblProjectFundingCommitments.ToList();
-                        foreach (var cc in coms)
+                        var aimsCommitments = p.tblProjectFundingCommitments.ToList();
+
+                        var iatiCommitments = project.Commitments;
+
+                        if (aimsCommitments.Count > iatiCommitments.Count)
+                            foreach (var aimsCommitment in aimsCommitments)
+                            {
+                                var notExistInIATI = !iatiCommitments.Exists(e => e.transactiondate.n().isodate.Date == aimsCommitment.CommitmentAgreementSignDate.Value.Date && Math.Floor(e.ValUSD) == Math.Floor(aimsCommitment.CommittedAmountInUSD ?? 0));
+
+                                isFinancialDataMismathed = true;
+
+                                aimsDBIatiDAL.InsertLog(new Log
+                                {
+                                    DateTime = DateTime.Now,
+                                    IatiIdentifier = project.IatiIdentifier,
+                                    LogType = (int)LogType.FinancialDataMismathed,
+                                    OrgId = project.ReportingOrg,
+                                    Message = "Commitments are mismatched between IATI and AIMS"
+                                });
+
+                            }
+
+                        if (isFinancialDataMismathed) continue;
+
+                        foreach (var cc in aimsCommitments)
                         {
                             dbContext.tblProjectFundingCommitments.Remove(cc);
                         }
 
-                        foreach (var trn in project.Commitments)
+                        foreach (var trn in iatiCommitments)
                         {
 
                             var aimsCommitment = new tblProjectFundingCommitment();
@@ -301,8 +322,31 @@ namespace AIMS_BD_IATI.DAL
                     #region Disbursements
                     if (project.IsDisbursmentIncluded)
                     {
-                        var disb = p.tblProjectFundingActualDisbursements.ToList();
-                        foreach (var cc in disb)
+
+                        var aimsDisbursements = p.tblProjectFundingActualDisbursements.ToList();
+                        var iatiDisbursements = project.Disbursments;
+
+                        if (aimsDisbursements.Count > iatiDisbursements.Count)
+                            foreach (var aimsDisbursement in aimsDisbursements)
+                            {
+                                var notExistInIATI = !iatiDisbursements.Exists(e => e.transactiondate.n().isodate.Date == aimsDisbursement.DisbursementDate.Date && Math.Floor(e.ValUSD) == Math.Floor(aimsDisbursement.DisbursedAmountInUSD ?? 0));
+
+                                isFinancialDataMismathed = true;
+
+                                aimsDBIatiDAL.InsertLog(new Log
+                                {
+                                    DateTime = DateTime.Now,
+                                    IatiIdentifier = project.IatiIdentifier,
+                                    LogType = (int)LogType.FinancialDataMismathed,
+                                    OrgId = project.ReportingOrg,
+                                    Message = "Disbursements are mismatched between IATI and AIMS"
+                                });
+
+                            }
+
+                        if (isFinancialDataMismathed) continue;
+
+                        foreach (var cc in aimsDisbursements)
                         {
                             dbContext.tblProjectFundingActualDisbursements.Remove(cc);
                         }
@@ -344,6 +388,13 @@ namespace AIMS_BD_IATI.DAL
 
                         }
                     }
+                    #endregion
+
+                    #region Other Fields
+                    //we need to place this region at bottom due to checking isFinancialDataMismathed
+                    p.Title = project.Title;
+                    p.Objective = project.Description;
+
                     #endregion
                 }
 
@@ -393,7 +444,7 @@ namespace AIMS_BD_IATI.DAL
             return iatiactivities;
         }
 
-        public List<iatiactivity> GetUnMappedAIMSProjectsInIATIFormat(string dp, List<int?> mappedProjectIds)
+        public List<iatiactivity> GetNotMappedAIMSProjectsInIATIFormat(string dp, List<int?> mappedProjectIds)
         {
 
             var projects = (from project in dbContext.tblProjectInfoes

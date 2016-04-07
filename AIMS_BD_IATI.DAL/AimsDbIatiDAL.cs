@@ -90,7 +90,7 @@ namespace AIMS_BD_IATI.DAL
                         IatiIdentifier = activity.IatiIdentifier,
                         OrgId = activity.OrgId,
                         Message = "Imported new activity",
-                        LogType = LogType.Info.GetHashCode(),
+                        LogType = (int) LogType.Info,
                         DateTime = DateTime.Now
                     });
                 }
@@ -203,7 +203,7 @@ namespace AIMS_BD_IATI.DAL
             };
         }
 
-        public iatiactivityContainer GetActivities(string dp)
+        public iatiactivityContainer GetNotMappedActivities(string dp)
         {
             var q = (from a in dbContext.Activities
                      let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
@@ -213,15 +213,7 @@ namespace AIMS_BD_IATI.DAL
 
             var iatiActivities = ParseXML(q);
 
-            var mappedProjectIds = (from a in dbContext.Activities
-                                   let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
-                                   where a.AssignedOrgId == dp && isMapped
-                                   select (a.ProjectId > 0 ? a.ProjectId : 
-                                   a.MappedProjectId > 0 ? a.MappedProjectId : 
-                                   a.MappedTrustFundId)).ToList();
-
-
-            var aimsActivities = new AimsDAL().GetUnMappedAIMSProjectsInIATIFormat(dp, mappedProjectIds);
+            var aimsActivities = GetNotMappedAimsProjects(dp);
 
             return new iatiactivityContainer
             {
@@ -229,6 +221,20 @@ namespace AIMS_BD_IATI.DAL
                 iatiActivities = iatiActivities,
                 AimsProjects = aimsActivities
             };
+        }
+
+        private List<iatiactivity> GetNotMappedAimsProjects(string dp)
+        {
+            var mappedProjectIds = (from a in dbContext.Activities
+                                    let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
+                                    where a.AssignedOrgId == dp && isMapped
+                                    select (a.ProjectId > 0 ? a.ProjectId :
+                                    a.MappedProjectId > 0 ? a.MappedProjectId :
+                                    a.MappedTrustFundId)).ToList();
+
+
+            var aimsActivities = new AimsDAL().GetNotMappedAIMSProjectsInIATIFormat(dp, mappedProjectIds);
+            return aimsActivities;
         }
 
         private List<iatiactivity> ParseXML(List<ActivityModel> q)
