@@ -56,9 +56,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="log in model.Logs">
+                    <tr ng-repeat="log in model.AddedNewActivityLogs">
                         <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>
                         <td><span ng-bind="log.Message"></span> <code ng-bind="log.IatiIdentifier"></code></td>
+                    </tr>
+                    <tr ng-repeat="log in model.OtherLogs">
+                        <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>
+                        <td><span ng-bind="log.Message"></span></td>
                     </tr>
               
                 </tbody>
@@ -75,19 +79,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2016-03-19</td>
-                        <td>
-                            Five activities could not be updated with new
-                            financial data due to a mismatch between IATI and
-                            AIMS
-                        </td>
-                        <td><a class="btn btn-default btn-sm">Resolve &raquo;</a></td>
-                    </tr>
-                    <tr>
-                        <td>2016-03-20</td>
-                        <td>Canada delegated an activity to you</td>
-                        <td><a class="btn btn-default btn-sm">Process &raquo;</a></td>
+                    <tr ng-repeat="log in model.FinancialDataMismatchedLogs">
+                        <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>
+                        <td><span ng-bind="log.Message"></span> <code ng-bind="log.IatiIdentifier"></code></td>
+                        <td><a class="btn btn-default btn-sm" ng-click="OpenMergeConflictAlert(log.IatiIdentifier)">Resolve &raquo;</a></td>
                     </tr>
                 </tbody>
             </table>

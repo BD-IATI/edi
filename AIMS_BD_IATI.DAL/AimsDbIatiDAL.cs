@@ -223,6 +223,23 @@ namespace AIMS_BD_IATI.DAL
             };
         }
 
+        public ProjectFieldMapModel GetActivity(string iatiIdentifier)
+        {
+            var q = (from a in dbContext.Activities
+                     where a.IatiIdentifier == iatiIdentifier
+                     select new ActivityModel { IatiActivity = a.IatiActivity, ProjectId = a.ProjectId }).FirstOrDefault();
+
+            var iatiActivity = ParseXML(new List<ActivityModel> {q}).FirstOrDefault();
+
+            var aimsProject = new AimsDAL().GetAIMSProjectInIATIFormat(q.n().ProjectId);
+
+            return new ProjectFieldMapModel
+            {
+                iatiActivity = iatiActivity,
+                aimsProject = aimsProject,
+            };
+        }
+
         private List<iatiactivity> GetNotMappedAimsProjects(string dp)
         {
             var mappedProjectIds = (from a in dbContext.Activities
@@ -499,7 +516,7 @@ namespace AIMS_BD_IATI.DAL
 
         public List<Log> GetLastDayLogs(string dp)
         {
-            var lastLog = dbContext.Logs.OrderByDescending(o => o.Id).FirstOrDefault();
+            var lastLog = dbContext.Logs.Where(w => w.OrgId == dp).OrderByDescending(o => o.Id).FirstOrDefault();
             var lastDate = lastLog.n().DateTime.Value.Date;
             var logs = dbContext.Logs.Where(w => w.OrgId == dp && w.DateTime >= lastDate).ToList();
 

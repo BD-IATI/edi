@@ -392,7 +392,13 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         }
 
 
+        [AcceptVerbs("GET", "POST")]
+        public ProjectFieldMapModel GetMatchedProjectByIatiIdentifier(string iatiIdentifier)
+        {
+            ProjectFieldMapModel ProjectFieldMapModel = aimsDbIatiDAL.GetActivity(iatiIdentifier);
 
+            return ProjectFieldMapModel;
+        }
 
     }
 

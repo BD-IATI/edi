@@ -1,124 +1,141 @@
-﻿<div role="tabpanel" class="tab-pane active" id="transaction-merge-conflict" ng-controller="MergeConflictAlertController">
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Transaction mismatches</h2>
-            <p class="lead">
-                You have new alerts that need to be resolved
-                before data can be imported.
-            </p>
-            <p>
-                Transactions found in the AIMS do not appear in IATI.
-                This could be for a number of reasons, including:
-            </p>
-            <ul>
-                <li>you manually entered a transaction in the AIMS</li>
-                <li>
-                    your headquarters removed a particular transaction from
-                    their IATI data (this should not happen)
-                </li>
-                <li>
-                    your headquarters has redated all of the transactions in
-                    their IATI data (again, this should not happen)
-                </li>
-                <li>
-                    an error occurred in the generation or processing
-                    of your activities that led to the disappearance of
-                    the transaction
-                </li>
-            </ul>
-            <hr />
+﻿<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()">&times;</button>
+    <h2 class="modal-title">Transaction mismatches</h2>
+</div>
+<div class="modal-body">
+    <div role="tabpanel" class="tab-pane active" id="transaction-merge-conflict">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">
+                    You have new alerts that need to be resolved
+                    before data can be imported.
+                </p>
+                <p>
+                    Transactions found in the AIMS do not appear in IATI.
+                    This could be for a number of reasons, including:
+                </p>
+                <ul>
+                    <li>you manually entered a transaction in the AIMS</li>
+                    <li>
+                        your headquarters removed a particular transaction from
+                        their IATI data (this should not happen)
+                    </li>
+                    <li>
+                        your headquarters has redated all of the transactions in
+                        their IATI data (again, this should not happen)
+                    </li>
+                    <li>
+                        an error occurred in the generation or processing
+                        of your activities that led to the disappearance of
+                        the transaction
+                    </li>
+                </ul>
+                <hr />
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Transactions mismatch: Water Management Improvement Project</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Transactions mismatch: Water Management Improvement Project</h3>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <form class="form-horizontal">
-                <div class="alert alert-warning">
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                                    Remove unmatched transactions from AIMS and stay up to date
-                                    with IATI data
-                                </label>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <form class="form-horizontal">
+                    <div class="alert alert-warning">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                        Remove unmatched transactions from AIMS and stay up to date
+                                        with IATI data
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                        Stop automatically importing IATI data, manually enter
+                                        data into the AIMS in future
+                                    </label>
+                                </div>
+                                <div class="radio disabled">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+                                        Take no action now but remind me tomorrow
+                                    </label>
+                                </div>
                             </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                    Stop automatically importing IATI data, manually enter
-                                    data into the AIMS in future
-                                </label>
-                            </div>
-                            <div class="radio disabled">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
-                                    Take no action now but remind me tomorrow
-                                </label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-warning">Resolve conflict &raquo;</button>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <button type="submit" class="btn btn-warning">Resolve conflict &raquo;</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-1">
+                <h4>Transactions in IATI</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2015-01-01</td>
+                            <td>Commitment</td>
+                            <td>200,000</td>
+                        </tr>
+                        <tr>
+                            <td>2016-02-20</td>
+                            <td>Disbursement</td>
+                            <td>150,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-5">
+                <h4>Transactions in AIMS</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2015-01-01</td>
+                            <td>Commitment</td>
+                            <td>200,000</td>
+                        </tr>
+                        <tr>
+                            <td>2016-02-20</td>
+                            <td>Disbursement</td>
+                            <td>150,000</td>
+                        </tr>
+                        <tr class="danger">
+                            <td>2016-03-20</td>
+                            <td>Disbursement</td>
+                            <td>20,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-5 col-md-offset-1">
-            <h4>Transactions in IATI</h4>
-            <table class="table">
-                <thead>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Value</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2015-01-01</td>
-                        <td>Commitment</td>
-                        <td>200,000</td>
-                    </tr>
-                    <tr>
-                        <td>2016-02-20</td>
-                        <td>Disbursement</td>
-                        <td>150,000</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-5">
-            <h4>Transactions in AIMS</h4>
-            <table class="table">
-                <thead>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Value</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2015-01-01</td>
-                        <td>Commitment</td>
-                        <td>200,000</td>
-                    </tr>
-                    <tr>
-                        <td>2016-02-20</td>
-                        <td>Disbursement</td>
-                        <td>150,000</td>
-                    </tr>
-                    <tr class="danger">
-                        <td>2016-03-20</td>
-                        <td>Disbursement</td>
-                        <td>20,000</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="Save()">Save</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
+

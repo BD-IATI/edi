@@ -35,7 +35,8 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
 
             #endregion
 
-            dashboardModel.Logs = aimsDbIatiDAL.GetLastDayLogs(dp);
+            dashboardModel.addLogs(aimsDbIatiDAL.GetLastDayLogs(dp));
+
             return dashboardModel;
         }
     }

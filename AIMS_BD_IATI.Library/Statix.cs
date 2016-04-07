@@ -78,11 +78,12 @@ namespace AIMS_BD_IATI.Library
     }
     public enum LogType
     {
-        Info,
-        Warning,
-        Error,
-        Alert,
-        FinancialDataMismathed
+        Info = 0,
+        Warning = 1,
+        Error = 2,
+        Alert = 3,
+        FinancialDataMismathed=4,
+        AddedNewActivity=5,
     }
 
 }

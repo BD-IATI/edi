@@ -57,6 +57,29 @@
 
     };
 
+
+    $scope.OpenMergeConflictAlert = function (iatiIdentifier) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            templateUrl: 'MergeConflictAlert/MergeConflictAlertView.html',
+            controller: 'MergeConflictAlertController',
+            size: 'lg',
+            resolve: {
+                iatiIdentifier: function () {
+
+                    return iatiIdentifier;
+                }
+            }
+        });
+
+        //modalInstance.result.then(function (selectedItem) {
+        //    $scope.selected = selectedItem;
+        //}, function () {
+        //    //$log.info('Modal dismissed at: ' + new Date());
+        //});
+    };
+
     $scope.timeSince = function (date) {
         if (date == null || date == undefined) return '';
 
