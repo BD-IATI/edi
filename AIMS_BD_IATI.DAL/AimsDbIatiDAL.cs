@@ -206,18 +206,28 @@ namespace AIMS_BD_IATI.DAL
         public iatiactivityContainer GetActivities(string dp)
         {
             var q = (from a in dbContext.Activities
-                     where a.OrgId == dp
+                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
+                     where a.AssignedOrgId == dp && !isMapped
                      orderby a.IatiIdentifier
-                     select new ActivityModel { IatiActivity = a.IatiActivity }).ToList();
+                     select new ActivityModel { IatiActivity = a.IatiActivity}).ToList();
 
             var iatiActivities = ParseXML(q);
 
+            var mappedProjectIds = (from a in dbContext.Activities
+                                   let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
+                                   where a.AssignedOrgId == dp && isMapped
+                                   select (a.ProjectId > 0 ? a.ProjectId : 
+                                   a.MappedProjectId > 0 ? a.MappedProjectId : 
+                                   a.MappedTrustFundId)).ToList();
+
+
+            var aimsActivities = new AimsDAL().GetUnMappedAIMSProjectsInIATIFormat(dp, mappedProjectIds);
 
             return new iatiactivityContainer
             {
                 DP = dp,
                 iatiActivities = iatiActivities,
-                AimsProjects = new AimsDAL().GetAIMSProjectsInIATIFormat(dp)
+                AimsProjects = aimsActivities
             };
         }
 
@@ -472,6 +482,14 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
+        public List<Log> GetLastDayLogs(string dp)
+        {
+            var lastLog = dbContext.Logs.OrderByDescending(o => o.Id).FirstOrDefault();
+            var lastDate = lastLog.n().DateTime.Value.Date;
+            var logs = dbContext.Logs.Where(w => w.OrgId == dp && w.DateTime >= lastDate).ToList();
+
+            return logs;
+        }
         /// <summary>
         /// same as Activity table in AIMS_DB_IATI database
         /// </summary>
@@ -489,12 +507,15 @@ namespace AIMS_BD_IATI.DAL
             public string AssignedOrgId { get; set; }
             public string AssignedOrgName { get; set; }
             public Nullable<System.DateTime> AssignedDate { get; set; }
+            public Nullable<int> ProjectId { get; set; }
             public Nullable<int> MappedProjectId { get; set; }
             public Nullable<int> MappedTrustFundId { get; set; }
 
 
             public iatiactivity iatiActivity { get; set; }
         }
+
+
 
 
 

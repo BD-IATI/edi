@@ -72,6 +72,7 @@ namespace AIMS_BD_IATI.DAL
             foreach (var matchedProject in matchedProjects)
             {
                 matchedProject.aimsProject.FundSourceIDnIATICode = matchedProject.iatiActivity.FundSourceIDnIATICode;
+
                 foreach (var field in matchedProject.Fields)
                 {
                     if (field.IsSourceIATI)

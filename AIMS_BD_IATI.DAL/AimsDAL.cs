@@ -88,6 +88,7 @@ namespace AIMS_BD_IATI.DAL
 
             return fundSources.ToList();
         }
+
         /// <summary>
         /// Get Managing DPs
         /// </summary>
@@ -123,6 +124,7 @@ namespace AIMS_BD_IATI.DAL
 
             return projects;
         }
+
         public List<LookupItem> GetTrustFunds(string dp)
         {
             var projects = (from trustFund in dbContext.tblTrustFunds
@@ -374,9 +376,32 @@ namespace AIMS_BD_IATI.DAL
 
             var projects = (from project in dbContext.tblProjectInfoes
                             join fundSource in dbContext.tblFundSources on project.FundSourceId equals fundSource.Id
+                            let isIATIactivity = project.IatiIdentifier != null || project.IatiIdentifier.Length > 0 || project.DPProjectNo != null || project.DPProjectNo.Length > 0
                             where fundSource.IATICode == dp
-                            && (project.IatiIdentifier != null || project.IatiIdentifier.Length > 0
-                                || project.DPProjectNo != null || project.DPProjectNo.Length > 0)
+                            && isIATIactivity
+                            select project);
+
+            List<iatiactivity> iatiactivities = new List<iatiactivity>();
+
+            foreach (var project in projects)
+            {
+                var iatiActivityObj = ConvertAimsToIati(project);
+
+                iatiactivities.Add(iatiActivityObj);
+            }
+
+            return iatiactivities;
+        }
+
+        public List<iatiactivity> GetUnMappedAIMSProjectsInIATIFormat(string dp, List<int?> mappedProjectIds)
+        {
+
+            var projects = (from project in dbContext.tblProjectInfoes
+                            join fundSource in dbContext.tblFundSources on project.FundSourceId equals fundSource.Id
+                            let isIATIactivity = project.IatiIdentifier != null || project.IatiIdentifier.Length > 0 || project.DPProjectNo != null || project.DPProjectNo.Length > 0
+                            let isNotMapped = !mappedProjectIds.Contains(project.Id)
+                            where fundSource.IATICode == dp
+                            && isIATIactivity && isNotMapped
                             select project);
 
             List<iatiactivity> iatiactivities = new List<iatiactivity>();

@@ -17,5 +17,6 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
 
         public CFnTFModel CFnTFModel { get; set; }
 
+        public List<Log> Logs { get; set; }
     }
 }
