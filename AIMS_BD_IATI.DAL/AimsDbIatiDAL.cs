@@ -90,7 +90,7 @@ namespace AIMS_BD_IATI.DAL
                         IatiIdentifier = activity.IatiIdentifier,
                         OrgId = activity.OrgId,
                         Message = "Imported new activity",
-                        LogType = (int) LogType.Info,
+                        LogType = (int)LogType.Info,
                         DateTime = DateTime.Now
                     });
                 }
@@ -206,10 +206,10 @@ namespace AIMS_BD_IATI.DAL
         public iatiactivityContainer GetNotMappedActivities(string dp)
         {
             var q = (from a in dbContext.Activities
-                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
-                     where a.AssignedOrgId == dp && !isMapped
+                     let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
+                     where a.AssignedOrgId == dp && isNotMapped
                      orderby a.IatiIdentifier
-                     select new ActivityModel { IatiActivity = a.IatiActivity}).ToList();
+                     select new ActivityModel { IatiActivity = a.IatiActivity }).ToList();
 
             var iatiActivities = ParseXML(q);
 
@@ -476,9 +476,18 @@ namespace AIMS_BD_IATI.DAL
 
         }
 
+
+        public int GetTotalActivityCount(string dp)
+        {
+            var q = dbContext.Activities.Where(w => w.OrgId == dp).Count();
+            return q;
+        }
         public int GetNewActivityCount(string dp)
         {
-            var q = dbContext.Activities.Where(w => w.OrgId == dp && w.MappedProjectId == null && w.MappedTrustFundId == null).Count();
+            var q = (from a in dbContext.Activities
+                     let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
+                     where a.AssignedOrgId == dp && isNotMapped
+                     select 1).Count();
             return q;
         }
 
@@ -520,6 +529,8 @@ namespace AIMS_BD_IATI.DAL
 
             public iatiactivity iatiActivity { get; set; }
         }
+
+
 
 
 

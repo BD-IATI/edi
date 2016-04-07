@@ -213,16 +213,17 @@ namespace AIMS_BD_IATI.DAL
                         if (aimsCommitments.Count > iatiCommitments.Count)
                             foreach (var aimsCommitment in aimsCommitments)
                             {
-                                var notExistInIATI = !iatiCommitments.Exists(e => e.transactiondate.n().isodate.Date == aimsCommitment.CommitmentAgreementSignDate.Value.Date && Math.Floor(e.ValUSD) == Math.Floor(aimsCommitment.CommittedAmountInUSD ?? 0));
+                                var notExistInIATI = !iatiCommitments.Exists(e => e.transactiondate.n().isodate.Date == aimsCommitment.CommitmentAgreementSignDate.n().Value.Date && Math.Floor(e.ValUSD) == Math.Floor(aimsCommitment.CommittedAmountInUSD ?? 0));
 
                                 isFinancialDataMismathed = true;
 
                                 aimsDBIatiDAL.InsertLog(new Log
                                 {
+                                    OrgId = project.IATICode,
+                                    LogType = (int)LogType.FinancialDataMismathed,
                                     DateTime = DateTime.Now,
                                     IatiIdentifier = project.IatiIdentifier,
-                                    LogType = (int)LogType.FinancialDataMismathed,
-                                    OrgId = project.ReportingOrg,
+                                    ProjectId = p.Id,
                                     Message = "Commitments are mismatched between IATI and AIMS"
                                 });
 
@@ -299,7 +300,7 @@ namespace AIMS_BD_IATI.DAL
                             aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend.n().isodate;
 
                             var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
-                            aimsPlanDisbursment.PlannedDisbursementCurrencyId = aimsCurrency == null ? 0 : aimsCurrency.Id;
+                            aimsPlanDisbursment.PlannedDisbursementCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
                             aimsPlanDisbursment.PlannedDisburseAmount = trn.value.Value;
 
                             aimsPlanDisbursment.PlannedDisburseExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
@@ -338,7 +339,8 @@ namespace AIMS_BD_IATI.DAL
                                     DateTime = DateTime.Now,
                                     IatiIdentifier = project.IatiIdentifier,
                                     LogType = (int)LogType.FinancialDataMismathed,
-                                    OrgId = project.ReportingOrg,
+                                    ProjectId = p.Id,
+                                    OrgId = project.IATICode,
                                     Message = "Disbursements are mismatched between IATI and AIMS"
                                 });
 
@@ -367,7 +369,7 @@ namespace AIMS_BD_IATI.DAL
                             aimsDisbursment.DisbursementToDate = trn.transactiondate.n().isodate;
 
                             var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
-                            aimsDisbursment.DisbursedCurrencyId = aimsCurrency == null ? 0 : aimsCurrency.Id;
+                            aimsDisbursment.DisbursedCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
                             aimsDisbursment.DisbursedAmount = trn.value.Value;
 
                             aimsDisbursment.DisbursedExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;

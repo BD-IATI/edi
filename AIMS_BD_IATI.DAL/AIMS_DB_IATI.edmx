@@ -61,6 +61,7 @@
           <Property Name="LogType" Type="int" />
           <Property Name="OrgId" Type="nvarchar" MaxLength="50" />
           <Property Name="IatiIdentifier" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProjectId" Type="int" />
           <Property Name="Message" Type="nvarchar" MaxLength="500" />
           <Property Name="ExceptionXML" Type="xml" />
           <Property Name="DateTime" Type="datetime" />
@@ -80,8 +81,8 @@
           <EntitySet Name="FieldMappingPreferenceGenerals" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral" />
           <EntitySet Name="FieldMappingPreferenceDelegateds" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceDelegated" />
           <EntitySet Name="FieldMappingPreferenceActivities" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceActivity" />
-          <EntitySet Name="Logs" EntityType="AIMS_DB_IATIModel.Log" />
           <EntitySet Name="Activities" EntityType="AIMS_DB_IATIModel.Activity" />
+          <EntitySet Name="Logs" EntityType="AIMS_DB_IATIModel.Log" />
         </EntityContainer>
         <EntityType Name="FieldMappingPreferenceGeneral">
           <Key>
@@ -112,18 +113,6 @@
           <Property Name="FieldName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsSourceIATI" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="Log">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LogType" Type="Int32" />
-          <Property Name="OrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IatiIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ExceptionXML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DateTime" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="Id" />
@@ -142,6 +131,19 @@
           <Property Name="ProjectId" Type="Int32" />
           <Property Name="MappedProjectId" Type="Int32" />
           <Property Name="MappedTrustFundId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogType" Type="Int32" />
+          <Property Name="OrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IatiIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectId" Type="Int32" />
+          <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ExceptionXML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -181,19 +183,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Logs">
-            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.Log">
-              <MappingFragment StoreEntitySet="Log">
-                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
-                <ScalarProperty Name="ExceptionXML" ColumnName="ExceptionXML" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
-                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
-                <ScalarProperty Name="LogType" ColumnName="LogType" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Activities">
             <EntityTypeMapping TypeName="AIMS_DB_IATIModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
@@ -210,6 +199,20 @@
                 <ScalarProperty Name="IatiActivity" ColumnName="IatiActivity" />
                 <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
                 <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="ExceptionXML" ColumnName="ExceptionXML" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
+                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="LogType" ColumnName="LogType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

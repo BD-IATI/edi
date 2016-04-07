@@ -18,6 +18,7 @@ namespace AIMS_BD_IATI.DAL
         public Nullable<int> LogType { get; set; }
         public string OrgId { get; set; }
         public string IatiIdentifier { get; set; }
+        public Nullable<int> ProjectId { get; set; }
         public string Message { get; set; }
         public string ExceptionXML { get; set; }
         public Nullable<System.DateTime> DateTime { get; set; }
