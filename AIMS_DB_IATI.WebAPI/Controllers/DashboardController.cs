@@ -22,6 +22,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             var dashboardModel = new DashboardModel();
             dashboardModel.LastDownloadDate = aimsDbIatiDAL.GetLastDownloadDate(dp);
             dashboardModel.NewActivityCount = aimsDbIatiDAL.GetNewActivityCount(dp);
+            dashboardModel.TotalActivityCount = aimsDbIatiDAL.GetTotalActivityCount(dp);
 
             dashboardModel.DelegatedActivities = aimsDbIatiDAL.GetDelegatedActivities(dp);
             dashboardModel.DelegatedActivities.ForEach(f => f.AssignedOrgName = Sessions.FundSources.Find(k => k.IATICode == f.AssignedOrgId).n().Name);

@@ -14,13 +14,16 @@
             <h3>Summary</h3>
             <p>
                 IATI data last downloaded: <b> <span ng-bind="model.LastDownloadDate | date:'yyyy-MM-dd HH:mm:ss'"> </span> (<span ng-bind="timeSince(model.LastDownloadDate)"></span>)</b>
+
+                <br />
+                Total Activity: <b ng-bind="model.TotalActivityCount"></b>
             </p>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <h4>New activities</h4>
-            <p>We found data on <b ng-bind="model.NewActivityCount"></b> new activities.</p>
+            <p>We found data on <b ng-bind="model.NewActivityCount"></b> new (not mapped) activities.</p>
             <p><a class="btn btn-sm btn-success" href="#/1Hierarchy">Begin import &raquo;</a></p>
             <h4>Assigned activities</h4>
             <p><b ng-bind="model.CFnTFModel.AssignedActivities.length"></b> activities assigned to you.</p>
