@@ -53,14 +53,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2016-03-20</td>
-                        <td>Imported new activity <code>GB-1-12345</code></td>
+                    <tr ng-repeat="log in model.Logs">
+                        <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>
+                        <td><span ng-bind="log.Message"></span> <code ng-bind="log.IatiIdentifier"></code></td>
                     </tr>
-                    <tr>
-                        <td>2016-03-20</td>
-                        <td>Updated financial data for activity <code>GB-1-234567</code></td>
-                    </tr>
+              
                 </tbody>
             </table>
         </div>
