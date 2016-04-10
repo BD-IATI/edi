@@ -340,6 +340,18 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             if (GeneralPreference != null)
                 Sessions.GeneralPreferences = GeneralPreference;
+            else
+                Sessions.GeneralPreferences = GetGeneralPreferences();
+
+            if(Sessions.ProjectMapModel.MatchedProjects == null)
+            {
+                //GetHierarchyData
+                //    SubmitHierarchy
+                //    GetAllImplementingOrg
+                //        FilterDP
+                //        MapActivities
+                //            SubmitActivities
+            }
 
             ImportLogic.SetFieldMappingPreferences(Sessions.ProjectMapModel.MatchedProjects, Sessions.GeneralPreferences);
 

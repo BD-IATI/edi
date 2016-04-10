@@ -527,6 +527,14 @@ namespace AIMS_BD_IATI.DAL
                      select 1).Count();
             return q;
         }
+        public int GetMappedActivityCount(string dp)
+        {
+            var q = (from a in dbContext.Activities
+                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
+                     where a.AssignedOrgId == dp && isMapped
+                     select 1).Count();
+            return q;
+        }
 
         public int InsertLog(Log log)
         {
@@ -566,6 +574,7 @@ namespace AIMS_BD_IATI.DAL
 
             public iatiactivity iatiActivity { get; set; }
         }
+
 
 
 

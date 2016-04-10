@@ -15,6 +15,7 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         public List<AimsDbIatiDAL.ActivityModel> DelegatedActivities { get; set; }
 
         public int NewActivityCount { get; set; }
+        public int MappedActivityCount { get; set; }
 
         public CFnTFModel CFnTFModel { get; set; }
 
