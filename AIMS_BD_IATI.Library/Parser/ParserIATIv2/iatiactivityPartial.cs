@@ -94,9 +94,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public bool HasChildActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
         [XmlIgnore]
-        public List<iatiactivity> childActivities { get; set; }
+        public bool HasParentActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "1") > 0); } }
         [XmlIgnore]
-        public iatiactivity parentActivity { get; set; }
+
+        public List<iatiactivity> childActivities { get; set; }
 
         [XmlIgnore]
         public List<iatiactivity> MatchedProjects { get; set; }
@@ -695,6 +696,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return value.n().ValueInUSD;
             }
         }
+        [XmlIgnore]
+        public bool IsConflicted { get; set; }
 
     }
     public partial class planneddisbursement : ICurrency

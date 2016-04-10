@@ -6,11 +6,8 @@
         url: apiprefix + '/api/IATIImport/GetMatchedProjectByIatiIdentifier',
         dataType: 'json',
         params: { iatiIdentifier: iatiIdentifier }
-    }).then(function (result) {
-        
-    },
-    function (response) {
-        
+    }).success(function (result) {
+        $scope.model = result;
     });
 
 

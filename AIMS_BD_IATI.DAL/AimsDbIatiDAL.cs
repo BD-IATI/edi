@@ -160,40 +160,12 @@ namespace AIMS_BD_IATI.DAL
                 activity.MappedProjectId = a.MappedProjectId ?? 0;
                 activity.MappedTrustFundId = a.MappedTrustFundId ?? 0;
 
-                result.Add(activity);
 
-                if (activity.HasChildActivity)
-                {
-                    var relatedActivities = new List<iatiactivity>();
-                    var relatedActivity = new iatiactivity();
-
-                    var ras = from ac in dbContext.Activities
-                              where ac.IatiIdentifier.StartsWith(activity.IatiIdentifier)
-                              select ac.IatiActivity;
-
-                    foreach (var ac in ras)
-                    {
-                        using (TextReader reader = new StringReader(ac))
-                        {
-                            relatedActivity = (iatiactivity)serializer.Deserialize(reader);
-                        }
-                        relatedActivities.Add(relatedActivity);
-                    }
-
-
-                    List<transaction> transactions = new List<transaction>();
-
-                    foreach (var ra in relatedActivities)
-                    {
-                        if (ra.transaction != null)
-                            transactions.AddRange(ra.transaction);
-
-                        SetExchangedValues(ra);
-                    }
-                    activity.transaction = transactions.ToArray();
-                }
-
+                LoadChildActivities(activity);
                 SetExchangedValues(activity);
+
+
+                result.Add(activity);
 
             }
 
@@ -203,6 +175,41 @@ namespace AIMS_BD_IATI.DAL
                 AssignedActivities = result,
                 AimsProjects = new AimsDAL().GetAIMSProjectsInIATIFormat(dp)
             };
+        }
+
+        private void LoadChildActivities(iatiactivity activity)
+        {
+            if (activity.HasChildActivity)
+            {
+                var relatedActivities = new List<iatiactivity>();
+                var relatedActivity = new iatiactivity();
+
+                var ras = from ac in dbContext.Activities
+                          where ac.IatiIdentifier.StartsWith(activity.IatiIdentifier)
+                          select ac.IatiActivity;
+
+                foreach (var ac in ras)
+                {
+                    using (TextReader reader = new StringReader(ac))
+                    {
+                        relatedActivity = (iatiactivity)new XmlSerializer(typeof(iatiactivity)).Deserialize(reader);
+                    }
+                    relatedActivities.Add(relatedActivity);
+                }
+
+
+                List<transaction> transactions = new List<transaction>();
+
+                foreach (var ra in relatedActivities)
+                {
+                    if (ra.transaction != null)
+                        transactions.AddRange(ra.transaction);
+
+                    SetExchangedValues(ra);
+                }
+                activity.transaction = transactions.ToArray();
+            }
+
         }
 
         public iatiactivityContainer GetNotMappedActivities(string dp)
@@ -233,7 +240,18 @@ namespace AIMS_BD_IATI.DAL
 
             var iatiActivity = ParseXML(new List<ActivityModel> {q}).FirstOrDefault();
 
+            LoadChildActivities(iatiActivity);
+
             var aimsProject = new AimsDAL().GetAIMSProjectInIATIFormat(q.n().ProjectId);
+
+            foreach (var aimsTransaction in aimsProject.transaction)
+            {
+                var isFoundInIati = iatiActivity.transaction.Any(a => a.transactiontype.n().code == aimsTransaction.transactiontype.n().code
+                    && a.transactiondate.n().isodate == aimsTransaction.transactiondate.n().isodate
+                    && Math.Floor(a.ValUSD) == Math.Floor(aimsTransaction.ValUSD));
+
+                aimsTransaction.IsConflicted = !isFoundInIati;
+            }
 
             return new ProjectFieldMapModel
             {

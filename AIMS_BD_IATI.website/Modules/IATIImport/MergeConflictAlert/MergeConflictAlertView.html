@@ -35,7 +35,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <h3>Transactions mismatch: Water Management Improvement Project</h3>
+                <h3 ng-bind="model.iatiActivity.Title"></h3>
             </div>
         </div>
         <div class="row">
@@ -87,15 +87,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>2015-01-01</td>
+                        <tr ng-repeat="commitment in model.iatiActivity.Commitments">
+                            <td ng-bind="commitment.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td>Commitment</td>
-                            <td>200,000</td>
+                            <td ng-bind="commitment.ValUSD"></td>
                         </tr>
-                        <tr>
-                            <td>2016-02-20</td>
+                        <tr ng-repeat="disbursement in model.iatiActivity.Disbursments">
+                            <td ng-bind="disbursement.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td>Disbursement</td>
-                            <td>150,000</td>
+                            <td ng-bind="disbursement.ValUSD"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -111,20 +111,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>2015-01-01</td>
+                        <tr  ng-class="{'danger' : commitment.IsConflicted}" ng-repeat="commitment in model.aimsProject.Commitments | orderBy:'IsConflicted'">
+                            <td ng-bind="commitment.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td>Commitment</td>
-                            <td>200,000</td>
+                            <td ng-bind="commitment.ValUSD"></td>
                         </tr>
-                        <tr>
-                            <td>2016-02-20</td>
+                        <tr ng-class="{'danger' : disbursement.IsConflicted}" ng-repeat="disbursement in model.aimsProject.Disbursments | orderBy:'IsConflicted'">
+                            <td ng-bind="disbursement.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td>Disbursement</td>
-                            <td>150,000</td>
-                        </tr>
-                        <tr class="danger">
-                            <td>2016-03-20</td>
-                            <td>Disbursement</td>
-                            <td>20,000</td>
+                            <td ng-bind="disbursement.ValUSD"></td>
                         </tr>
                     </tbody>
                 </table>

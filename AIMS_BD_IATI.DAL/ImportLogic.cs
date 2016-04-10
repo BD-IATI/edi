@@ -16,13 +16,14 @@ namespace AIMS_BD_IATI.DAL
 
             foreach (var H1Activity in H1Activities)
             {
+                #region populate child activities
                 H1Activity.childActivities.Clear();
                 if (H1Activity.relatedactivity != null)
                 {
                     foreach (var ra in H1Activity.relatedactivity.Where(r => r.type == "2"))
                     {
                         //load related activities
-                        var ha = iatiActivities.Find(f => f.iatiidentifier.Value == ra.@ref);
+                        var ha = iatiActivities.Find(f => f.IatiIdentifier == ra.@ref);
 
                         if (ha != null)
                         {
@@ -30,6 +31,42 @@ namespace AIMS_BD_IATI.DAL
                         }
                     }
                 }
+                #endregion
+
+                #region To Resolve participating org
+                var participatingOrgs = H1Activity.participatingorg.n().Where(w => w.role == "4").ToList();
+                if (participatingOrgs.Count > 0)
+                {
+                    ///iOrgs.AddRange(participatingOrgs);
+                }
+                else if (H1Activity.childActivities.Count > 0)
+                {
+                    participatingorg dominatingParticipatingorg = null;
+                    decimal highestCommitment = 0;
+                    foreach (var relatedActivity in H1Activity.childActivities) // for h2Acts
+                    {
+                        participatingOrgs = relatedActivity.participatingorg.n().Where(w => w.role == "4").ToList();
+                        ///iOrgs.AddRange(participatingOrgs);
+
+                        //getting dominating participating org
+                        var tc = relatedActivity.TotalCommitment;
+                        if (tc > highestCommitment)
+                        {
+                            highestCommitment = tc;
+                            dominatingParticipatingorg = participatingOrgs.FirstOrDefault();
+                        }
+                    }
+
+                    //set dominating participating org to h1activity
+                    if (dominatingParticipatingorg != null)
+                    {
+                        List<participatingorg> participatingorgs = H1Activity.participatingorg.n().ToList();
+                        participatingorgs.Add(dominatingParticipatingorg);
+                        H1Activity.participatingorg = participatingorgs.ToArray();
+                    }
+
+                }
+                #endregion
             }
             return H1Activities;
         }
@@ -40,20 +77,32 @@ namespace AIMS_BD_IATI.DAL
 
             foreach (var H2Activity in H2Activities)
             {
-                H2Activity.parentActivity = null;
-                if (H2Activity.relatedactivity != null)
+                #region To Resolve participating org
+                var participatingOrgs = H2Activity.participatingorg.n().Where(w => w.role == "4").ToList();
+                if (participatingOrgs.Count > 0)
                 {
-
-                    var ra = H2Activity.relatedactivity.FirstOrDefault(r => r.type == "1");
-
-                    var ha = iatiActivities.Find(f => f.iatiidentifier.Value == ra.n().@ref);
-
-                    if (ha != null)
-                    {
-                        H2Activity.parentActivity = ha;
-                    }
-
+                    ///iOrgs.AddRange(participatingOrgs);
                 }
+                else if (H2Activity.HasParentActivity)
+                {
+                    var pa = H2Activity.relatedactivity.First(r => r.type == "1");
+                    var pact = iatiActivities.Find(f => f.IatiIdentifier == pa.@ref);
+
+                    if (pact != null)
+                    {
+                        participatingOrgs = pact.participatingorg.n().Where(w => w.role == "4").ToList();
+
+                        ///iOrgs.AddRange(participatingOrgs);
+
+                        //if child activity does not have implementing org then set it from parant activity
+                        if (H2Activity.participatingorg != null)
+                            participatingOrgs.AddRange(H2Activity.participatingorg);
+                        H2Activity.participatingorg = participatingOrgs.ToArray();
+                    }
+                }
+                #endregion
+
+
             }
             return H2Activities;
         }
@@ -65,7 +114,7 @@ namespace AIMS_BD_IATI.DAL
 
                 var activityPreference = new AimsDbIatiDAL().GetFieldMappingPreferenceActivity(mapModel.iatiActivity.IatiIdentifier);
 
-                var fields = mapModel.Fields;
+                var fields = mapModel.Fields.ToList();
                 fields.AddRange(mapModel.TransactionFields);
 
                 foreach (var field in fields)
@@ -84,6 +133,7 @@ namespace AIMS_BD_IATI.DAL
 
                     }
                 }
+
 
             }
         }

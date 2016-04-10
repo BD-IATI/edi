@@ -50,55 +50,55 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             //if (isDPChanged)
             //{
-                Sessions.heirarchyModel = new HeirarchyModel();
+            Sessions.heirarchyModel = new HeirarchyModel();
 
-                Sessions.activitiesContainer = aimsDbIatiDAL.GetNotMappedActivities(dp.ID);
+            Sessions.activitiesContainer = aimsDbIatiDAL.GetNotMappedActivities(dp.ID);
 
-                if (Sessions.activitiesContainer.HasChildActivity)
+            if (Sessions.activitiesContainer.HasChildActivity)
+            {
+                var H1Acts = Sessions.activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 1);
+                var H2Acts = Sessions.activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 2);
+
+                var AimsProjects = Sessions.activitiesContainer.AimsProjects;
+
+                var matchedH1 = (decimal)(GetMatchedProjects(H1Acts, AimsProjects)).Count();
+
+                var matchedH2 = (decimal)(GetMatchedProjects(H2Acts, AimsProjects)).Count();
+
+
+                Sessions.heirarchyModel.H1Percent = H1Acts.Count > 0 ? Math.Round((decimal)(matchedH1 / H1Acts.Count) * 100, 2) : 0;
+                Sessions.heirarchyModel.H2Percent = H2Acts.Count > 0 ? Math.Round((decimal)(matchedH2 / H2Acts.Count) * 100, 2) : 0;
+
+
+
+                #region Populate relatedActivities of the first activity as sample data
+                var parentActivities = Sessions.activitiesContainer.iatiActivities.FindAll(x => x.hierarchy == 1);
+                foreach (var pa in parentActivities)
                 {
-                    var H1Acts = Sessions.activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 1);
-                    var H2Acts = Sessions.activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 2);
-
-                    var AimsProjects = Sessions.activitiesContainer.AimsProjects;
-
-                    var matchedH1 = (decimal)(GetMatchedProjects(H1Acts, AimsProjects)).Count();
-
-                    var matchedH2 = (decimal)(GetMatchedProjects(H2Acts, AimsProjects)).Count();
-
-
-                    Sessions.heirarchyModel.H1Percent = H1Acts.Count > 0 ? Math.Round((decimal)(matchedH1 / H1Acts.Count) * 100, 2) : 0;
-                    Sessions.heirarchyModel.H2Percent = H2Acts.Count > 0 ? Math.Round((decimal)(matchedH2 / H2Acts.Count) * 100, 2) : 0;
-
-
-
-                    #region Populate relatedActivities of the first activity as sample data
-                    var parentActivities = Sessions.activitiesContainer.iatiActivities.FindAll(x => x.hierarchy == 1);
-                    foreach (var pa in parentActivities)
+                    if (pa.relatedactivity != null)
                     {
-                        if (pa.relatedactivity != null)
+                        foreach (var ra in pa.relatedactivity.Where(r => r.type == "2"))
                         {
-                            foreach (var ra in pa.relatedactivity.Where(r => r.type == "2"))
+                            //load related activities
+                            var ha = Sessions.activitiesContainer.iatiActivities.Find(f => f.iatiidentifier.Value == ra.@ref);
+
+                            if (ha != null)
                             {
-                                //load related activities
-                                var ha = Sessions.activitiesContainer.iatiActivities.Find(f => f.iatiidentifier.Value == ra.@ref);
-
-                                if (ha != null)
-                                {
-                                    pa.childActivities.Add(ha);
-                                }
+                                pa.childActivities.Add(ha);
                             }
-                            Sessions.heirarchyModel.SampleIatiActivity = pa;
-                            break; //we have to show only one hierarchycal project as a sample
                         }
+                        Sessions.heirarchyModel.SampleIatiActivity = pa;
+                        break; //we have to show only one hierarchycal project as a sample
                     }
-                    #endregion
+                }
+                #endregion
 
-                    Sessions.heirarchyModel.SelectedHierarchy = 1;
-                }
-                else
-                {
-                    Sessions.heirarchyModel = null;
-                }
+                Sessions.heirarchyModel.SelectedHierarchy = 1;
+            }
+            else
+            {
+                Sessions.heirarchyModel = null;
+            }
             //}
             return Sessions.heirarchyModel;
         }
@@ -140,48 +140,10 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             var iOrgs = new List<participatingorg>();
             foreach (var activity in Sessions.activitiesContainer.iatiActivities)
             {
-                    var participatingOrgs = activity.participatingorg.n().Where(w => w.role == "4").ToList();
-                    if (participatingOrgs.Count > 0)
-                    {
-                        iOrgs.AddRange(participatingOrgs);
-                    }
-                    else if (activity.childActivities.Count > 0)
-                    {
-                        participatingorg dominatingParticipatingorg = null;
-                        decimal highestCommitment = 0;
-                        foreach (var relatedActivity in activity.childActivities) // for h2Acts
-                        {
-                            participatingOrgs = relatedActivity.participatingorg.n().Where(w => w.role == "4").ToList();
-                            iOrgs.AddRange(participatingOrgs);
+                var participatingOrgs = activity.participatingorg.n().Where(w => w.role == "4").ToList();
 
-                            //getting dominating participating org
-                            var tc = relatedActivity.TotalCommitment;
-                            if (tc > highestCommitment)
-                            {
-                                highestCommitment = tc;
-                                dominatingParticipatingorg = participatingOrgs.FirstOrDefault();
-                            }
-                        }
+                iOrgs.AddRange(participatingOrgs);
 
-                        //set dominating participating org to h1activity
-                        if (dominatingParticipatingorg != null)
-                        {
-                            List<participatingorg> participatingorgs = activity.participatingorg.n().ToList();
-                            participatingorgs.Add(dominatingParticipatingorg);
-                            activity.participatingorg = participatingorgs.ToArray();
-                        }
-
-                    }
-                    else if(activity.parentActivity != null)
-                    {
-                        participatingOrgs = activity.parentActivity.participatingorg.n().Where(w => w.role == "4").ToList();
-                        iOrgs.AddRange(participatingOrgs);
-
-                        //if child activity does not have implementing org then set it from parant activity
-                        if (activity.participatingorg != null)
-                            participatingOrgs.AddRange(activity.participatingorg);
-                        activity.participatingorg = participatingOrgs.ToArray();
-                    }
             }
 
             var distictOrgs = iOrgs.DistinctBy(l => l.narrative.n(0).Value).OrderBy(o => o.narrative.n(0).Value);
