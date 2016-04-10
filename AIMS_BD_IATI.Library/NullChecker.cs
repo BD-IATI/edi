@@ -40,7 +40,12 @@ namespace AIMS_BD_IATI.Library
         {
             if (input == null)
             {
-                input = Activator.CreateInstance<T>();
+                Type tt = Nullable.GetUnderlyingType(typeof(T));
+                if (tt == null)
+                    input = Activator.CreateInstance<T>();
+                else
+                    input = (T)Activator.CreateInstance(tt);
+
             }
             return input;
         }

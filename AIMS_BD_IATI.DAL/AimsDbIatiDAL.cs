@@ -518,8 +518,8 @@ namespace AIMS_BD_IATI.DAL
 
         public List<Log> GetLastDayLogs(string dp)
         {
-            var lastLog = dbContext.Logs.Where(w => w.OrgId == dp).OrderByDescending(o => o.Id).FirstOrDefault();
-            var lastDate = lastLog.n().DateTime.Value.Date;
+            Log lastLog = dbContext.Logs.Where(w => w.OrgId == dp).OrderByDescending(o => o.Id).FirstOrDefault();
+            DateTime lastDate = lastLog.n().DateTime.n().Value.Date;
             var logs = dbContext.Logs.Where(w => w.OrgId == dp && w.DateTime >= lastDate).ToList();
 
             return logs;
