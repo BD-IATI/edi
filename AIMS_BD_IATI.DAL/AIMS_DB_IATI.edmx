@@ -63,7 +63,7 @@
           <Property Name="IatiIdentifier" Type="nvarchar" MaxLength="50" />
           <Property Name="ProjectId" Type="int" />
           <Property Name="Message" Type="nvarchar" MaxLength="500" />
-          <Property Name="ExceptionXML" Type="xml" />
+          <Property Name="ExceptionObj" Type="nvarchar(max)" />
           <Property Name="DateTime" Type="datetime" />
         </EntityType>
         <EntityContainer Name="AIMS_DB_IATIModelStoreContainer">
@@ -142,7 +142,7 @@
           <Property Name="IatiIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProjectId" Type="Int32" />
           <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ExceptionXML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExceptionObj" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DateTime" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
@@ -207,7 +207,7 @@
             <EntityTypeMapping TypeName="AIMS_DB_IATIModel.Log">
               <MappingFragment StoreEntitySet="Log">
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
-                <ScalarProperty Name="ExceptionXML" ColumnName="ExceptionXML" />
+                <ScalarProperty Name="ExceptionObj" ColumnName="ExceptionObj" />
                 <ScalarProperty Name="Message" ColumnName="Message" />
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
                 <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />

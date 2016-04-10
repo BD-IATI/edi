@@ -45,7 +45,7 @@
                                 <tr ng-repeat-end>
                                     <td>2</td>
                                     <td>
-                                        <p ng-repeat="ra in model.SampleIatiActivity.relatedIatiActivities track by $index">
+                                        <p ng-repeat="ra in model.SampleIatiActivity.childActivities track by $index">
                                             <code>{{ra.IatiIdentifier}}</code> {{ra.Title}}
                                         </p>
                                     </td>
@@ -74,7 +74,7 @@
                                 <tr ng-repeat-end>
                                     <td>2</td>
                                     <td>
-                                        <p ng-repeat="ra in activity.relatedIatiActivities track by $index">
+                                        <p ng-repeat="ra in activity.childActivities track by $index">
                                             <code>{{ra.IatiIdentifier}}</code> {{ra.Title}}
                                         </p>
                                     </td>

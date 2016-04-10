@@ -25,7 +25,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public List<iatiactivity> NewProjects { get; set; }
         public List<iatiactivity> AimsProjects { get; set; }
 
-        public bool HasRelatedActivity { get { return iatiActivities.Exists(e => e.relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
+        public bool HasChildActivity { get { return iatiActivities.Exists(e => e.relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
 
 
     }
@@ -63,7 +63,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     {
         public iatiactivity()
         {
-            relatedIatiActivities = new List<iatiactivity>();
+            childActivities = new List<iatiactivity>();
             MatchedProjects = new List<iatiactivity>();
         }
         [XmlIgnore]
@@ -92,9 +92,11 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public int MappedTrustFundId { get; set; }
 
         [XmlIgnore]
-        public bool HasRelatedActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
+        public bool HasChildActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
         [XmlIgnore]
-        public List<iatiactivity> relatedIatiActivities { get; set; }
+        public List<iatiactivity> childActivities { get; set; }
+        [XmlIgnore]
+        public iatiactivity parentActivity { get; set; }
 
         [XmlIgnore]
         public List<iatiactivity> MatchedProjects { get; set; }
@@ -182,7 +184,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 }
                 else
                 {
-                    foreach (var ra in relatedIatiActivities)
+                    foreach (var ra in childActivities)
                     {
                         if (ra.budget != null)
                         {
@@ -262,7 +264,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 total = GetTotal(transaction, transactiontypecode);
             }
 
-            foreach (var ra in relatedIatiActivities)
+            foreach (var ra in childActivities)
             {
                 if (ra.transaction != null)
                 {
@@ -282,7 +284,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 Transactions.AddRange(transaction.Where(p => p.transactiontype.n().code == transactiontypecode));
             }
 
-            foreach (var ra in relatedIatiActivities)
+            foreach (var ra in childActivities)
             {
                 if (ra.transaction != null)
                 {
@@ -456,7 +458,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                     else
                     {
                         var allChildAticitiesTrans = new List<transaction>();
-                        foreach (var ra in relatedIatiActivities)
+                        foreach (var ra in childActivities)
                         {
                             if (ra.transaction != null)
                             {

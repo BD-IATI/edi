@@ -20,7 +20,7 @@ namespace AIMS_BD_IATI.DAL
         public string IatiIdentifier { get; set; }
         public Nullable<int> ProjectId { get; set; }
         public string Message { get; set; }
-        public string ExceptionXML { get; set; }
+        public string ExceptionObj { get; set; }
         public Nullable<System.DateTime> DateTime { get; set; }
     }
 }

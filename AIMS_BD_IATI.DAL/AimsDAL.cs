@@ -189,215 +189,229 @@ namespace AIMS_BD_IATI.DAL
             {
                 foreach (var project in projects)
                 {
-                    bool isFinancialDataMismathed = false;
-                    var defaultfinancetype = "100";
-                    if (project.defaultfinancetype != null && !string.IsNullOrWhiteSpace(project.defaultfinancetype.code))
-                        defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
-
-                    var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == project.ProjectId);
-                    if (p == null)
+                    try
                     {
-                        p = new tblProjectInfo();
-                        p.IDate = DateTime.Now;
-                        p.IUser = Iuser;
-                        dbContext.tblProjectInfoes.Add(p);
-                    }
+                        bool isFinancialDataMismathed = false;
+                        var defaultfinancetype = "100";
+                        if (project.defaultfinancetype != null && !string.IsNullOrWhiteSpace(project.defaultfinancetype.code))
+                            defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
 
-                    #region Commitments
-                    if (project.IsCommitmentIncluded)
-                    {
-                        var aimsCommitments = p.tblProjectFundingCommitments.ToList();
+                        var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == project.ProjectId);
+                        if (p == null)
+                        {
+                            p = new tblProjectInfo();
+                            p.IDate = DateTime.Now;
+                            p.IUser = Iuser;
+                            dbContext.tblProjectInfoes.Add(p);
+                        }
 
-                        var iatiCommitments = project.Commitments;
+                        #region Commitments
+                        if (project.IsCommitmentIncluded)
+                        {
+                            var aimsCommitments = p.tblProjectFundingCommitments.ToList();
 
-                        if (aimsCommitments.Count > iatiCommitments.Count)
-                            foreach (var aimsCommitment in aimsCommitments)
-                            {
-                                var notExistInIATI = !iatiCommitments.Exists(e => e.transactiondate.n().isodate.Date == aimsCommitment.CommitmentAgreementSignDate.n().Value.Date && Math.Floor(e.ValUSD) == Math.Floor(aimsCommitment.CommittedAmountInUSD ?? 0));
+                            var iatiCommitments = project.Commitments;
 
-                                isFinancialDataMismathed = true;
-
-                                aimsDBIatiDAL.InsertLog(new Log
+                            if (aimsCommitments.Count > iatiCommitments.Count)
+                                foreach (var aimsCommitment in aimsCommitments)
                                 {
-                                    OrgId = project.IATICode,
-                                    LogType = (int)LogType.FinancialDataMismathed,
-                                    DateTime = DateTime.Now,
-                                    IatiIdentifier = project.IatiIdentifier,
-                                    ProjectId = p.Id,
-                                    Message = "Commitments are mismatched between IATI and AIMS"
-                                });
+                                    var trandate = aimsCommitment.CommitmentAgreementSignDate ?? p.AgreementSignDate;
 
+                                    var notExistInIATI = !iatiCommitments.Exists(e => e.transactiondate.n().isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsCommitment.CommittedAmountInUSD ?? 0));
+
+                                    isFinancialDataMismathed = true;
+
+                                    aimsDBIatiDAL.InsertLog(new Log
+                                    {
+                                        OrgId = project.IATICode,
+                                        LogType = (int)LogType.FinancialDataMismathed,
+                                        DateTime = DateTime.Now,
+                                        IatiIdentifier = project.IatiIdentifier,
+                                        ProjectId = p.Id,
+                                        Message = "Commitments are mismatched between IATI and AIMS"
+                                    });
+
+                                }
+
+                            if (isFinancialDataMismathed) continue;
+
+                            foreach (var cc in aimsCommitments)
+                            {
+                                dbContext.tblProjectFundingCommitments.Remove(cc);
                             }
 
-                        if (isFinancialDataMismathed) continue;
-
-                        foreach (var cc in aimsCommitments)
-                        {
-                            dbContext.tblProjectFundingCommitments.Remove(cc);
-                        }
-
-                        foreach (var trn in iatiCommitments)
-                        {
-
-                            var aimsCommitment = new tblProjectFundingCommitment();
-                            p.tblProjectFundingCommitments.Add(aimsCommitment);
-
-                            aimsCommitment.IDate = DateTime.Now;
-                            aimsCommitment.IUser = Iuser;
-                            aimsCommitment.IsCommitmentTrustFund = false;
-
-                            //ToDo for co-finance projects it may be different
-                            aimsCommitment.FundSourceId = project.AimsFundSourceId;
-
-                            aimsCommitment.CommitmentAgreementSignDate = trn.transactiondate.n().isodate;
-
-                            var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
-                            aimsCommitment.CommitmentMaidCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
-                            aimsCommitment.CommittedAmount = trn.value.Value;
-
-                            aimsCommitment.CommitmentEffectiveDate = trn.value.n().BBexchangeRateDate;
-                            aimsCommitment.ExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
-                            aimsCommitment.CommittedAmountInUSD = trn.value.n().ValueInUSD;
-
-                            aimsCommitment.ExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
-                            aimsCommitment.CommittedAmountInBDT = trn.value.n().ValueInBDT;
-
-                            aimsCommitment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
-                            aimsCommitment.VerificationRemarks = "Importerd From IATI: ";
-
-                            //AidCategory
-                            if (trn.financetype != null && trn.financetype.code.Length > 1)
-                                defaultfinancetype = trn.financetype.code.StartsWith("4") ? "400" : "100";
-
-                            var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode == defaultfinancetype);
-                            aimsCommitment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
-                        }
-                    }
-                    #endregion
-
-                    #region PlannedDisbursements
-                    if (project.IsPlannedDisbursmentIncluded)
-                    {
-                        var planDisb = p.tblProjectFundingPlannedDisbursements.ToList();
-                        foreach (var cc in planDisb)
-                        {
-                            dbContext.tblProjectFundingPlannedDisbursements.Remove(cc);
-                        }
-
-                        foreach (var trn in project.PlannedDisbursments)
-                        {
-                            var aimsPlanDisbursment = new tblProjectFundingPlannedDisbursement();
-                            p.tblProjectFundingPlannedDisbursements.Add(aimsPlanDisbursment);
-
-                            aimsPlanDisbursment.IDate = DateTime.Now;
-                            aimsPlanDisbursment.IUser = Iuser;
-                            aimsPlanDisbursment.IsPlannedDisbursementTrustFund = false;
-
-                            //ToDo for co-finance projects it may be different
-                            aimsPlanDisbursment.FundSourceId = project.AimsFundSourceId;
-
-                            aimsPlanDisbursment.PlannedDisbursementPeriodFromDate = trn.periodstart.n().isodate;
-                            aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend.n().isodate;
-
-                            var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
-                            aimsPlanDisbursment.PlannedDisbursementCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
-                            aimsPlanDisbursment.PlannedDisburseAmount = trn.value.Value;
-
-                            aimsPlanDisbursment.PlannedDisburseExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
-                            aimsPlanDisbursment.PlannedDisburseAmountInUSD = trn.value.n().ValueInUSD;
-
-                            aimsPlanDisbursment.PlannedDisburseExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
-                            aimsPlanDisbursment.PlannedDisburseAmountInBDT = trn.value.n().ValueInBDT;
-
-                            //aimsPlanDisbursment.VerificationRemarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
-                            aimsPlanDisbursment.VerificationRemarks = "Importerd From IATI: ";
-
-                            //AidCategory
-                            var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode.StartsWith(defaultfinancetype));
-                            aimsPlanDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
-
-                        }
-                    }
-                    #endregion
-
-                    #region Disbursements
-                    if (project.IsDisbursmentIncluded)
-                    {
-
-                        var aimsDisbursements = p.tblProjectFundingActualDisbursements.ToList();
-                        var iatiDisbursements = project.Disbursments;
-
-                        if (aimsDisbursements.Count > iatiDisbursements.Count)
-                            foreach (var aimsDisbursement in aimsDisbursements)
+                            foreach (var trn in iatiCommitments)
                             {
-                                var notExistInIATI = !iatiDisbursements.Exists(e => e.transactiondate.n().isodate.Date == aimsDisbursement.DisbursementDate.Date && Math.Floor(e.ValUSD) == Math.Floor(aimsDisbursement.DisbursedAmountInUSD ?? 0));
 
-                                isFinancialDataMismathed = true;
+                                var aimsCommitment = new tblProjectFundingCommitment();
+                                p.tblProjectFundingCommitments.Add(aimsCommitment);
 
-                                aimsDBIatiDAL.InsertLog(new Log
-                                {
-                                    DateTime = DateTime.Now,
-                                    IatiIdentifier = project.IatiIdentifier,
-                                    LogType = (int)LogType.FinancialDataMismathed,
-                                    ProjectId = p.Id,
-                                    OrgId = project.IATICode,
-                                    Message = "Disbursements are mismatched between IATI and AIMS"
-                                });
+                                aimsCommitment.IDate = DateTime.Now;
+                                aimsCommitment.IUser = Iuser;
+                                aimsCommitment.IsCommitmentTrustFund = false;
 
+                                //ToDo for co-finance projects it may be different
+                                aimsCommitment.FundSourceId = project.AimsFundSourceId;
+
+                                aimsCommitment.CommitmentAgreementSignDate = trn.transactiondate.n().isodate;
+
+                                var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
+                                aimsCommitment.CommitmentMaidCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
+                                aimsCommitment.CommittedAmount = trn.value.Value;
+
+                                aimsCommitment.CommitmentEffectiveDate = trn.value.n().BBexchangeRateDate;
+                                aimsCommitment.ExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
+                                aimsCommitment.CommittedAmountInUSD = trn.value.n().ValueInUSD;
+
+                                aimsCommitment.ExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
+                                aimsCommitment.CommittedAmountInBDT = trn.value.n().ValueInBDT;
+
+                                aimsCommitment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                                aimsCommitment.VerificationRemarks = "Importerd From IATI: ";
+
+                                //AidCategory
+                                if (trn.financetype != null && trn.financetype.code.Length > 1)
+                                    defaultfinancetype = trn.financetype.code.StartsWith("4") ? "400" : "100";
+
+                                var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode == defaultfinancetype);
+                                aimsCommitment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
+                            }
+                        }
+                        #endregion
+
+                        #region PlannedDisbursements
+                        if (project.IsPlannedDisbursmentIncluded)
+                        {
+                            var planDisb = p.tblProjectFundingPlannedDisbursements.ToList();
+                            foreach (var cc in planDisb)
+                            {
+                                dbContext.tblProjectFundingPlannedDisbursements.Remove(cc);
                             }
 
-                        if (isFinancialDataMismathed) continue;
+                            foreach (var trn in project.PlannedDisbursments)
+                            {
+                                var aimsPlanDisbursment = new tblProjectFundingPlannedDisbursement();
+                                p.tblProjectFundingPlannedDisbursements.Add(aimsPlanDisbursment);
 
-                        foreach (var cc in aimsDisbursements)
-                        {
-                            dbContext.tblProjectFundingActualDisbursements.Remove(cc);
+                                aimsPlanDisbursment.IDate = DateTime.Now;
+                                aimsPlanDisbursment.IUser = Iuser;
+                                aimsPlanDisbursment.IsPlannedDisbursementTrustFund = false;
+
+                                //ToDo for co-finance projects it may be different
+                                aimsPlanDisbursment.FundSourceId = project.AimsFundSourceId;
+
+                                aimsPlanDisbursment.PlannedDisbursementPeriodFromDate = trn.periodstart.n().isodate;
+                                aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend.n().isodate;
+
+                                var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
+                                aimsPlanDisbursment.PlannedDisbursementCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
+                                aimsPlanDisbursment.PlannedDisburseAmount = trn.value.Value;
+
+                                aimsPlanDisbursment.PlannedDisburseExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
+                                aimsPlanDisbursment.PlannedDisburseAmountInUSD = trn.value.n().ValueInUSD;
+
+                                aimsPlanDisbursment.PlannedDisburseExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
+                                aimsPlanDisbursment.PlannedDisburseAmountInBDT = trn.value.n().ValueInBDT;
+
+                                //aimsPlanDisbursment.VerificationRemarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                                aimsPlanDisbursment.VerificationRemarks = "Importerd From IATI: ";
+
+                                //AidCategory
+                                var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode.StartsWith(defaultfinancetype));
+                                aimsPlanDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
+
+                            }
                         }
+                        #endregion
 
-                        foreach (var trn in project.Disbursments)
+                        #region Disbursements
+                        if (project.IsDisbursmentIncluded)
                         {
-                            var aimsDisbursment = new tblProjectFundingActualDisbursement();
-                            p.tblProjectFundingActualDisbursements.Add(aimsDisbursment);
 
-                            aimsDisbursment.IDate = DateTime.Now;
-                            aimsDisbursment.IUser = Iuser;
-                            aimsDisbursment.IsDisbursedTrustFund = false;
+                            var aimsDisbursements = p.tblProjectFundingActualDisbursements.ToList();
+                            var iatiDisbursements = project.Disbursments;
 
-                            //ToDo for co-finance projects it may be different
-                            aimsDisbursment.FundSourceId = project.AimsFundSourceId;
+                            if (aimsDisbursements.Count > iatiDisbursements.Count)
+                                foreach (var aimsDisbursement in aimsDisbursements)
+                                {
+                                    var trandate = aimsDisbursement.DisbursementToDate ?? aimsDisbursement.DisbursementDate;
 
-                            aimsDisbursment.DisbursementDate = trn.transactiondate.n().isodate;
-                            aimsDisbursment.DisbursementToDate = trn.transactiondate.n().isodate;
+                                    var notExistInIATI = !iatiDisbursements.Exists(e => e.transactiondate.n().isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsDisbursement.DisbursedAmountInUSD ?? 0));
 
-                            var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
-                            aimsDisbursment.DisbursedCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
-                            aimsDisbursment.DisbursedAmount = trn.value.Value;
+                                    isFinancialDataMismathed = true;
 
-                            aimsDisbursment.DisbursedExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
-                            aimsDisbursment.DisbursedAmountInUSD = trn.value.n().ValueInUSD;
+                                    aimsDBIatiDAL.InsertLog(new Log
+                                    {
+                                        DateTime = DateTime.Now,
+                                        IatiIdentifier = project.IatiIdentifier,
+                                        LogType = (int)LogType.FinancialDataMismathed,
+                                        ProjectId = p.Id,
+                                        OrgId = project.IATICode,
+                                        Message = "Disbursements are mismatched between IATI and AIMS"
+                                    });
 
-                            aimsDisbursment.DisbursedExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
-                            aimsDisbursment.DisbursedAmountInBDT = trn.value.n().ValueInBDT;
+                                }
 
-                            aimsDisbursment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
-                            aimsDisbursment.VerificationRemarks = "Importerd From IATI: ";
+                            if (isFinancialDataMismathed) continue;
 
-                            //AidCategory
-                            if (trn.financetype != null && trn.financetype.code.Length > 1)
-                                defaultfinancetype = trn.financetype.code.StartsWith("4") ? "400" : "100";
+                            foreach (var cc in aimsDisbursements)
+                            {
+                                dbContext.tblProjectFundingActualDisbursements.Remove(cc);
+                            }
 
-                            var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode == defaultfinancetype);
-                            aimsDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
+                            foreach (var trn in project.Disbursments)
+                            {
+                                var aimsDisbursment = new tblProjectFundingActualDisbursement();
+                                p.tblProjectFundingActualDisbursements.Add(aimsDisbursment);
 
+                                aimsDisbursment.IDate = DateTime.Now;
+                                aimsDisbursment.IUser = Iuser;
+                                aimsDisbursment.IsDisbursedTrustFund = false;
+
+                                //ToDo for co-finance projects it may be different
+                                aimsDisbursment.FundSourceId = project.AimsFundSourceId;
+
+                                aimsDisbursment.DisbursementDate = trn.transactiondate.n().isodate;
+                                aimsDisbursment.DisbursementToDate = trn.transactiondate.n().isodate;
+
+                                var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
+                                aimsDisbursment.DisbursedCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
+                                aimsDisbursment.DisbursedAmount = trn.value.Value;
+
+                                aimsDisbursment.DisbursedExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
+                                aimsDisbursment.DisbursedAmountInUSD = trn.value.n().ValueInUSD;
+
+                                aimsDisbursment.DisbursedExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
+                                aimsDisbursment.DisbursedAmountInBDT = trn.value.n().ValueInBDT;
+
+                                aimsDisbursment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                                aimsDisbursment.VerificationRemarks = "Importerd From IATI: ";
+
+                                //AidCategory
+                                if (trn.financetype != null && trn.financetype.code.Length > 1)
+                                    defaultfinancetype = trn.financetype.code.StartsWith("4") ? "400" : "100";
+
+                                var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode == defaultfinancetype);
+                                aimsDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
+
+                            }
                         }
+                        #endregion
+
+                        #region Other Fields
+                        //we need to place this region at bottom due to checking isFinancialDataMismathed
+                        p.Title = project.Title;
+                        p.Objective = project.Description;
+
+                        #endregion
                     }
-                    #endregion
+                    catch (Exception ex)
+                    {
+                        Logger.WriteToDbAndFile(ex, LogType.Error, project.IATICode, project.IatiIdentifier);
 
-                    #region Other Fields
-                    //we need to place this region at bottom due to checking isFinancialDataMismathed
-                    p.Title = project.Title;
-                    p.Objective = project.Description;
+                    }
 
-                    #endregion
+
                 }
 
                 dbContext.SaveChanges();

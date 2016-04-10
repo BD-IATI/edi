@@ -16,7 +16,7 @@ namespace AIMS_BD_IATI.DAL
 
             foreach (var H1Activity in H1Activities)
             {
-                H1Activity.relatedIatiActivities.Clear();
+                H1Activity.childActivities.Clear();
                 if (H1Activity.relatedactivity != null)
                 {
                     foreach (var ra in H1Activity.relatedactivity.Where(r => r.type == "2"))
@@ -26,7 +26,7 @@ namespace AIMS_BD_IATI.DAL
 
                         if (ha != null)
                         {
-                            H1Activity.relatedIatiActivities.Add(ha);
+                            H1Activity.childActivities.Add(ha);
                         }
                     }
                 }
@@ -34,6 +34,29 @@ namespace AIMS_BD_IATI.DAL
             return H1Activities;
         }
 
+        public static List<iatiactivity> LoadH2ActivitiesWithParent(List<iatiactivity> iatiActivities)
+        {
+            var H2Activities = iatiActivities.FindAll(f => f.n().hierarchy == 2);
+
+            foreach (var H2Activity in H2Activities)
+            {
+                H2Activity.parentActivity = null;
+                if (H2Activity.relatedactivity != null)
+                {
+
+                    var ra = H2Activity.relatedactivity.FirstOrDefault(r => r.type == "1");
+
+                    var ha = iatiActivities.Find(f => f.iatiidentifier.Value == ra.n().@ref);
+
+                    if (ha != null)
+                    {
+                        H2Activity.parentActivity = ha;
+                    }
+
+                }
+            }
+            return H2Activities;
+        }
         public static void SetFieldMappingPreferences(List<ProjectFieldMapModel> projectFieldMapModel, ProjectFieldMapModel generalPreferences)
         {
             //set general or activity preferences
@@ -109,8 +132,8 @@ namespace AIMS_BD_IATI.DAL
                         if (field.IsSourceIATI)
                         {
                             trns.AddRange(matchedProject.iatiActivity.Disbursments);
-                             matchedProject.aimsProject.IsDisbursmentIncluded = true;
-                       }
+                            matchedProject.aimsProject.IsDisbursmentIncluded = true;
+                        }
                         else
                             trns.AddRange(matchedProject.aimsProject.Disbursments);
                     }
@@ -119,7 +142,7 @@ namespace AIMS_BD_IATI.DAL
                         if (field.IsSourceIATI)
                         {
                             planDis.AddRange(matchedProject.iatiActivity.PlannedDisbursments);
-                             matchedProject.aimsProject.IsPlannedDisbursmentIncluded = true;
+                            matchedProject.aimsProject.IsPlannedDisbursmentIncluded = true;
 
                         }
                         else

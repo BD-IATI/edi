@@ -54,7 +54,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
                 Sessions.activitiesContainer = aimsDbIatiDAL.GetNotMappedActivities(dp.ID);
 
-                if (Sessions.activitiesContainer.HasRelatedActivity)
+                if (Sessions.activitiesContainer.HasChildActivity)
                 {
                     var H1Acts = Sessions.activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 1);
                     var H2Acts = Sessions.activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 2);
@@ -88,7 +88,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
                                 if (ha != null)
                                 {
-                                    pa.relatedIatiActivities.Add(ha);
+                                    pa.childActivities.Add(ha);
                                 }
                             }
                             Sessions.heirarchyModel.SampleIatiActivity = pa;
@@ -125,7 +125,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 }
                 else
                 {
-                    returnResult.iatiActivities = Sessions.activitiesContainer.iatiActivities.FindAll(f => f.n().hierarchy == heirarchyModel.n().SelectedHierarchy);
+                    returnResult.iatiActivities = ImportLogic.LoadH2ActivitiesWithParent(Sessions.activitiesContainer.iatiActivities);
                 }
 
             }
@@ -138,13 +138,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [HttpPost]
         public object GetAllImplementingOrg(FilterBDModel filterDBModel)
         {
-            if (filterDBModel != null)
-                Sessions.activitiesContainer.iatiActivities = filterDBModel.iatiActivities;
 
             var managingDPs = GetAllFundSources();
 
             var iOrgs = new List<participatingorg>();
-            foreach (var activity in Sessions.activitiesContainer.RelevantActivities)
+            foreach (var activity in Sessions.activitiesContainer.iatiActivities)
             {
                 var h1Acts = activity.participatingorg.n().Where(w => w.role == "4").ToList();
                 if (h1Acts.Count > 0)
@@ -155,7 +153,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 {
                     participatingorg dominatingParticipatingorg = null;
                     decimal highestCommitment = 0;
-                    foreach (var relatedActivity in activity.relatedIatiActivities) // for h2Acts
+                    foreach (var relatedActivity in activity.childActivities) // for h2Acts
                     {
                         var h2Acts = relatedActivity.participatingorg.n().Where(w => w.role == "4").ToList();
                         iOrgs.AddRange(h2Acts);
@@ -194,6 +192,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 //Add selected value
                 org.FundSourceIDnIATICode = managingDP == null ? "" : managingDP.IDnIATICode;
             }
+
+            if (filterDBModel != null)
+                Sessions.activitiesContainer.iatiActivities = filterDBModel.iatiActivities;
 
             return new
             {

@@ -49,13 +49,15 @@ namespace AIMS_BD_IATI.DAL
                         //step 1: project structure
                         var iactivities = new List<iatiactivity>();
                         if (a.Hierarchy == 1)
-                            iactivities = ImportLogic.LoadH1ActivitiesWithChild(iatiActivities); // here pass all activities to find out their related activities
+                            iactivities = ImportLogic.LoadH1ActivitiesWithChild(iatiActivities); // here pass all activities to find out their child activities
+                        else
+                            iactivities = ImportLogic.LoadH2ActivitiesWithParent(iatiActivities);
 
                         //step 2: get mapped iatiActivity and aimsProject
                         var iatiActivity = iactivities.Find(f => f.IatiIdentifier == a.IatiIdentifier);
                         // SetExchangedValues
                         SetExchangedValues(iatiActivity);
-                        iatiActivity.relatedIatiActivities.ForEach(ra => SetExchangedValues(ra));
+                        iatiActivity.childActivities.ForEach(ra => SetExchangedValues(ra));
 
                         var aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.ProjectId);
 
@@ -160,7 +162,7 @@ namespace AIMS_BD_IATI.DAL
 
                 result.Add(activity);
 
-                if (activity.HasRelatedActivity)
+                if (activity.HasChildActivity)
                 {
                     var relatedActivities = new List<iatiactivity>();
                     var relatedActivity = new iatiactivity();

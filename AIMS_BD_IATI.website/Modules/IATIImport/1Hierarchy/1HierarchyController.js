@@ -1,6 +1,6 @@
 ﻿angular.module('iatiDataImporter').controller("1HierarchyController", function ($rootScope, $scope, $http, $timeout) {
 
-    $rootScope.HasRelatedActivity = false;
+    $rootScope.HasChildActivity = false;
     $http({
         method: 'POST',
         url: apiprefix + '/api/IATIImport/GetHierarchyData',
