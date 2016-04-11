@@ -87,7 +87,16 @@ namespace AIMS_DB_IATI.WebAPI.Models
             }
             set { HttpContext.Current.Session["UserId"] = value; }
         }
-
+        public static string DP
+        {
+            get
+            {
+                return HttpContext.Current.Session["CurrentDP"] == null ? 
+                    ""
+                    : Convert.ToString(HttpContext.Current.Session["CurrentDP"]);
+            }
+            set { HttpContext.Current.Session["CurrentDP"] = value; }
+        }
         public static CFnTFModel CFnTFModel
         {
             get

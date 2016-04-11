@@ -20,6 +20,8 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         public DashboardModel GetDashboardData(string dp)
         {
             Sessions.activitiesContainer.DP = dp;
+            Sessions.DP = dp;
+
             var dashboardModel = new DashboardModel();
             dashboardModel.LastDownloadDate = aimsDbIatiDAL.GetLastDownloadDate(dp);
             dashboardModel.NewActivityCount = aimsDbIatiDAL.GetNewActivityCount(dp);

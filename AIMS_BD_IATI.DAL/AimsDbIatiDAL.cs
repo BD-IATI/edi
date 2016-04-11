@@ -46,32 +46,9 @@ namespace AIMS_BD_IATI.DAL
                     if (a.ProjectId > 0)
                     {
                         var aimsDAL = new AimsDAL();
-                        //step 1: project structure
-                        var iactivities = new List<iatiactivity>();
-                        if (a.Hierarchy == 1)
-                            iactivities = ImportLogic.LoadH1ActivitiesWithChild(iatiActivities); // here pass all activities to find out their child activities
-                        else
-                            iactivities = ImportLogic.LoadH2ActivitiesWithParent(iatiActivities);
 
-                        //step 2: get mapped iatiActivity and aimsProject
-                        var iatiActivity = iactivities.Find(f => f.IatiIdentifier == a.IatiIdentifier);
-                        // SetExchangedValues
-                        SetExchangedValues(iatiActivity);
-                        iatiActivity.childActivities.ForEach(ra => SetExchangedValues(ra));
-
-                        var aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.ProjectId);
-
-                        //step 3: get general preference
-                        var generalPreference = GetFieldMappingPreferenceGeneral(a.OrgId);
-
-                        //step 4: create a ProjectFieldMapModel using iatiActivity, aimsProject and generalPreference
-                        var ProjectFieldMapModel = new ProjectFieldMapModel(iatiActivity, aimsProject, generalPreference);
-
-                        //step 5: SetFieldMappingPreferences
-                        var ProjectFieldMapModels = new List<ProjectFieldMapModel>(); // here we make a list just to use existing method (e.g existing method require a List parameter)
-                        ProjectFieldMapModels.Add(ProjectFieldMapModel);
-
-                        ImportLogic.SetFieldMappingPreferences(ProjectFieldMapModels, ProjectFieldMapModel);
+                        //step 1-5
+                        var ProjectFieldMapModels = PrepareMappedActivities(iatiActivities, a, aimsDAL);
 
                         //step 6: merge iatiActivity and aimsProject; and get an new merged activity
                         var mergedActivities = ImportLogic.MergeProjects(ProjectFieldMapModels); //now it will allways return a list containing single activity
@@ -100,6 +77,37 @@ namespace AIMS_BD_IATI.DAL
             }
 
             return dbContext.SaveChanges();
+        }
+
+        private List<ProjectFieldMapModel> PrepareMappedActivities(List<iatiactivity> iatiActivities, Activity a, AimsDAL aimsDAL)
+        {
+            //step 1: project structure
+            var iactivities = new List<iatiactivity>();
+            if (a.Hierarchy == 1)
+                iactivities = ImportLogic.LoadH1ActivitiesWithChild(iatiActivities); // here pass all activities to find out their child activities
+            else
+                iactivities = ImportLogic.LoadH2ActivitiesWithParent(iatiActivities);
+
+            //step 2: get mapped iatiActivity and aimsProject
+            var iatiActivity = iactivities.Find(f => f.IatiIdentifier == a.IatiIdentifier);
+            // SetExchangedValues
+            SetExchangedValues(iatiActivity);
+            iatiActivity.childActivities.ForEach(ra => SetExchangedValues(ra));
+
+            var aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.ProjectId);
+
+            //step 3: get general preference
+            var generalPreference = GetFieldMappingPreferenceGeneral(a.OrgId);
+
+            //step 4: create a ProjectFieldMapModel using iatiActivity, aimsProject and generalPreference
+            var ProjectFieldMapModel = new ProjectFieldMapModel(iatiActivity, aimsProject, generalPreference);
+
+            //step 5: SetFieldMappingPreferences
+            var ProjectFieldMapModels = new List<ProjectFieldMapModel>(); // here we make a list just to use existing method (e.g existing method require a List parameter)
+            ProjectFieldMapModels.Add(ProjectFieldMapModel);
+
+            ImportLogic.SetFieldMappingPreferences(ProjectFieldMapModels, ProjectFieldMapModel);
+            return ProjectFieldMapModels;
         }
 
         public int MapActivities(List<iatiactivity> activities)
@@ -212,6 +220,27 @@ namespace AIMS_BD_IATI.DAL
 
         }
 
+
+        public iatiactivityContainer GetAllActivities(string dp)
+        {
+            var q = (from a in dbContext.Activities
+                     where a.AssignedOrgId == dp
+                     orderby a.IatiIdentifier
+                     select new ActivityModel { IatiActivity = a.IatiActivity }).ToList();
+
+            var iatiActivities = ParseXML(q);
+
+            var aimsActivities = new AimsDAL().GetAIMSProjectsInIATIFormat(dp);
+
+            return new iatiactivityContainer
+            {
+                DP = dp,
+                iatiActivities = iatiActivities,
+                AimsProjects = aimsActivities
+            };
+        }
+
+
         public iatiactivityContainer GetNotMappedActivities(string dp)
         {
             var q = (from a in dbContext.Activities
@@ -232,7 +261,7 @@ namespace AIMS_BD_IATI.DAL
             };
         }
 
-        public ProjectFieldMapModel GetActivity(string iatiIdentifier)
+        public ProjectFieldMapModel GetTransactionMismatchedActivity(string iatiIdentifier)
         {
             var q = (from a in dbContext.Activities
                      where a.IatiIdentifier == iatiIdentifier

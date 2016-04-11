@@ -50,10 +50,18 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             //if (isDPChanged)
             //{
-            Sessions.heirarchyModel = new HeirarchyModel();
 
             Sessions.activitiesContainer = aimsDbIatiDAL.GetNotMappedActivities(dp.ID);
 
+            Sessions.heirarchyModel = CalculateHierarchyMatching();
+            
+            //}
+            return Sessions.heirarchyModel;
+        }
+
+        private static HeirarchyModel CalculateHierarchyMatching()
+        {
+            Sessions.heirarchyModel = new HeirarchyModel();
             if (Sessions.activitiesContainer.HasChildActivity)
             {
                 var H1Acts = Sessions.activitiesContainer.iatiActivities.FindAll(f => f.hierarchy == 1);
@@ -93,13 +101,13 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 }
                 #endregion
 
-                Sessions.heirarchyModel.SelectedHierarchy = 1;
+                Sessions.heirarchyModel.SelectedHierarchy = Sessions.heirarchyModel.H1Percent > Sessions.heirarchyModel.H2Percent ? 1 : 2;
             }
             else
             {
                 Sessions.heirarchyModel = null;
             }
-            //}
+
             return Sessions.heirarchyModel;
         }
 
@@ -132,7 +140,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
-        public object GetAllImplementingOrg(FilterBDModel filterDBModel)
+        public iOrgs GetAllImplementingOrg(FilterBDModel filterDBModel)
         {
 
             var managingDPs = GetAllFundSources();
@@ -164,9 +172,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (filterDBModel != null)
                 Sessions.activitiesContainer.iatiActivities = filterDBModel.iatiActivities;
 
-            return new
+            return new iOrgs
             {
-                Orgs = distictOrgs,
+                Orgs = distictOrgs.ToList(),
                 FundSources = managingDPs
             };
         }
@@ -343,14 +351,17 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             else
                 Sessions.GeneralPreferences = GetGeneralPreferences();
 
-            if(Sessions.ProjectMapModel.MatchedProjects == null)
+            if (Sessions.ProjectMapModel.MatchedProjects.IsEmpty())
             {
-                //GetHierarchyData
-                //    SubmitHierarchy
-                //    GetAllImplementingOrg
-                //        FilterDP
-                //        MapActivities
-                //            SubmitActivities
+                if (Sessions.activitiesContainer.DP == "") Sessions.activitiesContainer = new iatiactivityContainer { DP = Sessions.DP };
+                Sessions.activitiesContainer = aimsDbIatiDAL.GetAllActivities(Sessions.activitiesContainer.DP);
+                var heirarchyModel = CalculateHierarchyMatching();
+
+                var filterBDModel = SubmitHierarchy(heirarchyModel);
+                var iOrgs = GetAllImplementingOrg(filterBDModel);
+                var relevantActivities = FilterDP(iOrgs.Orgs);
+                var projectMapModel = SubmitActivities(relevantActivities);
+
             }
 
             ImportLogic.SetFieldMappingPreferences(Sessions.ProjectMapModel.MatchedProjects, Sessions.GeneralPreferences);
@@ -381,14 +392,19 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public ProjectFieldMapModel GetMatchedProjectByIatiIdentifier(string iatiIdentifier)
         {
-            ProjectFieldMapModel ProjectFieldMapModel = aimsDbIatiDAL.GetActivity(iatiIdentifier);
+            ProjectFieldMapModel ProjectFieldMapModel = aimsDbIatiDAL.GetTransactionMismatchedActivity(iatiIdentifier);
 
             return ProjectFieldMapModel;
         }
 
     }
 
+        public class iOrgs
+        {
+            public List<participatingorg> Orgs { get; set; }
+            public List<FundSourceLookupItem> FundSources { get; set; }
 
+        }
 
 
 }

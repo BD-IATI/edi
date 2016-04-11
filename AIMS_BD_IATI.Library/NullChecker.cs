@@ -98,5 +98,15 @@ namespace AIMS_BD_IATI.Library
                 return Activator.CreateInstance<T>();
         }
 
+        public static bool IsEmpty<T>(this List<T> input)
+        {
+
+            if (input == null)
+            {
+                return true;
+            }
+            else
+                return input.Count == 0 ? true : false;
+        }
     }
 }
