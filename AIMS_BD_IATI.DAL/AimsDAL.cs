@@ -208,7 +208,7 @@ namespace AIMS_BD_IATI.DAL
                         #region Commitments
                         if (project.IsCommitmentIncluded)
                         {
-                            var aimsCommitments = p.tblProjectFundingCommitments.ToList();
+                            var aimsCommitments = p.tblProjectFundingCommitments.Where(w=>w.FundSourceId == project.AimsFundSourceId).ToList();
 
                             var iatiCommitments = project.Commitments;
 
@@ -282,7 +282,7 @@ namespace AIMS_BD_IATI.DAL
                         #region PlannedDisbursements
                         if (project.IsPlannedDisbursmentIncluded)
                         {
-                            var planDisb = p.tblProjectFundingPlannedDisbursements.ToList();
+                            var planDisb = p.tblProjectFundingPlannedDisbursements.Where(w => w.FundSourceId == project.AimsFundSourceId).ToList();
                             foreach (var cc in planDisb)
                             {
                                 dbContext.tblProjectFundingPlannedDisbursements.Remove(cc);
@@ -328,7 +328,7 @@ namespace AIMS_BD_IATI.DAL
                         if (project.IsDisbursmentIncluded)
                         {
 
-                            var aimsDisbursements = p.tblProjectFundingActualDisbursements.ToList();
+                            var aimsDisbursements = p.tblProjectFundingActualDisbursements.Where(w => w.FundSourceId == project.AimsFundSourceId).ToList();
                             var iatiDisbursements = project.Disbursments;
 
                             if (aimsDisbursements.Count > iatiDisbursements.Count)
