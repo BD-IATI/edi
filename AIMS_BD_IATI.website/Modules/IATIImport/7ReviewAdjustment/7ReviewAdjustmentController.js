@@ -1,4 +1,4 @@
-﻿angular.module('iatiDataImporter').controller("7ReviewAdjustmentController", function ($rootScope, $scope, $http, $uibModal) {
+﻿angular.module('iatiDataImporter').controller("7ReviewAdjustmentController", function ($rootScope, $scope, $http, $uibModal,$timeout) {
     $http({
         method: 'POST',
         url: apiprefix + '/api/IATIImport/GetProjectsToMap',
@@ -77,7 +77,10 @@
             url: apiprefix + '/api/IATIImport/ImportProjects',
             data: JSON.stringify($scope.models)
         }).success(function (result) {
-            alert("Projects are imported.");
+            $timeout(function () {
+                alert("Projects are imported.");
+                document.getElementById('btnGoDashboard').click(); //redirect
+            });
         });
 
     }

@@ -259,14 +259,14 @@ namespace AIMS_BD_IATI.DAL
                 TransactionFields.Add(new FieldMap
                 {
                     Field = IatiFields.Commitment,
-                    AIMSValue = aimsProject.TotalCommitment,
-                    IATIValue = iatiActivity.TotalCommitment
+                    AIMSValue = aimsProject.TotalCommitmentThisDPOnly,
+                    IATIValue = iatiActivity.TotalCommitmentThisDPOnly
                 });
                 TransactionFields.Add(new FieldMap
                 {
                     Field = IatiFields.Disbursment,
-                    AIMSValue = aimsProject.TotalDisbursment,
-                    IATIValue = iatiActivity.TotalDisbursment
+                    AIMSValue = aimsProject.TotalDisbursmentThisDPOnly,
+                    IATIValue = iatiActivity.TotalDisbursmentThisDPOnly
                 });
                 TransactionFields.Add(new FieldMap
                 {

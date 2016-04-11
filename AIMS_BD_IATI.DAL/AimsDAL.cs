@@ -187,16 +187,16 @@ namespace AIMS_BD_IATI.DAL
                                     select new { Id = c.Id, IATICode = c.IATICode };
             try
             {
-                foreach (var project in projects)
+                foreach (var mergedproject in projects)
                 {
                     try
                     {
                         bool isFinancialDataMismathed = false;
                         var defaultfinancetype = "100";
-                        if (project.defaultfinancetype != null && !string.IsNullOrWhiteSpace(project.defaultfinancetype.code))
-                            defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
+                        if (mergedproject.defaultfinancetype != null && !string.IsNullOrWhiteSpace(mergedproject.defaultfinancetype.code))
+                            defaultfinancetype = mergedproject.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
 
-                        var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == project.ProjectId);
+                        var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == mergedproject.ProjectId);
                         if (p == null)
                         {
                             p = new tblProjectInfo();
@@ -206,11 +206,11 @@ namespace AIMS_BD_IATI.DAL
                         }
 
                         #region Commitments
-                        if (project.IsCommitmentIncluded)
+                        if (mergedproject.IsCommitmentIncluded)
                         {
-                            var aimsCommitments = p.tblProjectFundingCommitments.Where(w=>w.FundSourceId == project.AimsFundSourceId).ToList();
+                            var aimsCommitments = p.tblProjectFundingCommitments.Where(w=>w.FundSourceId == mergedproject.AimsFundSourceId).ToList();
 
-                            var iatiCommitments = project.Commitments;
+                            var iatiCommitments = mergedproject.CommitmentsThisDPOnly;
 
                             if (aimsCommitments.Count > iatiCommitments.Count)
                                 foreach (var aimsCommitment in aimsCommitments)
@@ -223,12 +223,12 @@ namespace AIMS_BD_IATI.DAL
 
                                     aimsDBIatiDAL.InsertLog(new Log
                                     {
-                                        OrgId = project.IATICode,
+                                        OrgId = mergedproject.IATICode,
                                         LogType = (int)LogType.FinancialDataMismathed,
                                         DateTime = DateTime.Now,
-                                        IatiIdentifier = project.IatiIdentifier,
+                                        IatiIdentifier = mergedproject.IatiIdentifier,
                                         ProjectId = p.Id,
-                                        Message = "Commitments are mismatched between IATI and AIMS"
+                                        Message = "Transactions (C) are mismatched between IATI and AIMS"
                                     });
 
                                 }
@@ -251,7 +251,7 @@ namespace AIMS_BD_IATI.DAL
                                 aimsCommitment.IsCommitmentTrustFund = false;
 
                                 //ToDo for co-finance projects it may be different
-                                aimsCommitment.FundSourceId = project.AimsFundSourceId;
+                                aimsCommitment.FundSourceId = mergedproject.AimsFundSourceId;
 
                                 aimsCommitment.CommitmentAgreementSignDate = trn.transactiondate.n().isodate;
 
@@ -266,7 +266,7 @@ namespace AIMS_BD_IATI.DAL
                                 aimsCommitment.ExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
                                 aimsCommitment.CommittedAmountInBDT = trn.value.n().ValueInBDT;
 
-                                aimsCommitment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                                aimsCommitment.Remarks = mergedproject.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
                                 aimsCommitment.VerificationRemarks = "Importerd From IATI: ";
 
                                 //AidCategory
@@ -280,15 +280,15 @@ namespace AIMS_BD_IATI.DAL
                         #endregion
 
                         #region PlannedDisbursements
-                        if (project.IsPlannedDisbursmentIncluded)
+                        if (mergedproject.IsPlannedDisbursmentIncluded)
                         {
-                            var planDisb = p.tblProjectFundingPlannedDisbursements.Where(w => w.FundSourceId == project.AimsFundSourceId).ToList();
+                            var planDisb = p.tblProjectFundingPlannedDisbursements.Where(w => w.FundSourceId == mergedproject.AimsFundSourceId).ToList();
                             foreach (var cc in planDisb)
                             {
                                 dbContext.tblProjectFundingPlannedDisbursements.Remove(cc);
                             }
 
-                            foreach (var trn in project.PlannedDisbursments)
+                            foreach (var trn in mergedproject.PlannedDisbursments)
                             {
                                 var aimsPlanDisbursment = new tblProjectFundingPlannedDisbursement();
                                 p.tblProjectFundingPlannedDisbursements.Add(aimsPlanDisbursment);
@@ -298,7 +298,7 @@ namespace AIMS_BD_IATI.DAL
                                 aimsPlanDisbursment.IsPlannedDisbursementTrustFund = false;
 
                                 //ToDo for co-finance projects it may be different
-                                aimsPlanDisbursment.FundSourceId = project.AimsFundSourceId;
+                                aimsPlanDisbursment.FundSourceId = mergedproject.AimsFundSourceId;
 
                                 aimsPlanDisbursment.PlannedDisbursementPeriodFromDate = trn.periodstart.n().isodate;
                                 aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend.n().isodate;
@@ -325,11 +325,11 @@ namespace AIMS_BD_IATI.DAL
                         #endregion
 
                         #region Disbursements
-                        if (project.IsDisbursmentIncluded)
+                        if (mergedproject.IsDisbursmentIncluded)
                         {
 
-                            var aimsDisbursements = p.tblProjectFundingActualDisbursements.Where(w => w.FundSourceId == project.AimsFundSourceId).ToList();
-                            var iatiDisbursements = project.Disbursments;
+                            var aimsDisbursements = p.tblProjectFundingActualDisbursements.Where(w => w.FundSourceId == mergedproject.AimsFundSourceId).ToList();
+                            var iatiDisbursements = mergedproject.DisbursmentsThisDPOnly;
 
                             if (aimsDisbursements.Count > iatiDisbursements.Count)
                                 foreach (var aimsDisbursement in aimsDisbursements)
@@ -343,11 +343,11 @@ namespace AIMS_BD_IATI.DAL
                                     aimsDBIatiDAL.InsertLog(new Log
                                     {
                                         DateTime = DateTime.Now,
-                                        IatiIdentifier = project.IatiIdentifier,
+                                        IatiIdentifier = mergedproject.IatiIdentifier,
                                         LogType = (int)LogType.FinancialDataMismathed,
                                         ProjectId = p.Id,
-                                        OrgId = project.IATICode,
-                                        Message = "Disbursements are mismatched between IATI and AIMS"
+                                        OrgId = mergedproject.IATICode,
+                                        Message = "Transactions (D) are mismatched between IATI and AIMS"
                                     });
 
                                 }
@@ -359,7 +359,7 @@ namespace AIMS_BD_IATI.DAL
                                 dbContext.tblProjectFundingActualDisbursements.Remove(cc);
                             }
 
-                            foreach (var trn in project.Disbursments)
+                            foreach (var trn in mergedproject.DisbursmentsThisDPOnly)
                             {
                                 var aimsDisbursment = new tblProjectFundingActualDisbursement();
                                 p.tblProjectFundingActualDisbursements.Add(aimsDisbursment);
@@ -369,7 +369,7 @@ namespace AIMS_BD_IATI.DAL
                                 aimsDisbursment.IsDisbursedTrustFund = false;
 
                                 //ToDo for co-finance projects it may be different
-                                aimsDisbursment.FundSourceId = project.AimsFundSourceId;
+                                aimsDisbursment.FundSourceId = mergedproject.AimsFundSourceId;
 
                                 aimsDisbursment.DisbursementDate = trn.transactiondate.n().isodate;
                                 aimsDisbursment.DisbursementToDate = trn.transactiondate.n().isodate;
@@ -384,7 +384,7 @@ namespace AIMS_BD_IATI.DAL
                                 aimsDisbursment.DisbursedExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
                                 aimsDisbursment.DisbursedAmountInBDT = trn.value.n().ValueInBDT;
 
-                                aimsDisbursment.Remarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                                aimsDisbursment.Remarks = mergedproject.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
                                 aimsDisbursment.VerificationRemarks = "Importerd From IATI: ";
 
                                 //AidCategory
@@ -398,16 +398,16 @@ namespace AIMS_BD_IATI.DAL
                         }
                         #endregion
 
-                        #region Other Fields
                         //we need to place this region at bottom due to checking isFinancialDataMismathed
-                        p.Title = project.Title;
-                        p.Objective = project.Description;
+                        #region Other Fields
+                        p.Title = mergedproject.Title;
+                        p.Objective = mergedproject.Description;
 
                         #endregion
                     }
                     catch (Exception ex)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, project.IATICode, project.IatiIdentifier);
+                        Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier);
 
                     }
 
@@ -501,8 +501,9 @@ namespace AIMS_BD_IATI.DAL
             var iatiActivityObj = new iatiactivity();
 
             iatiActivityObj.IsDataSourceAIMS = true;
-
             iatiActivityObj.IsCofinancedProject = project.IsCofundedProject ?? false;
+
+            iatiActivityObj.FundSourceIDnIATICode = project.FundSourceId + "~" + project.tblFundSource.n().IATICode;
 
             iatiActivityObj.ProjectId = project.Id;
             //iati-activity

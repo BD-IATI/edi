@@ -83,7 +83,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public bool IsPlannedDisbursmentIncluded { get; set; }
 
-        #endregion
+        #endregion co-financed and trust fund projects
+
         [XmlIgnore]
         public int ProjectId { get; set; } //AIMS ProjectId
         [XmlIgnore]
@@ -95,8 +96,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public bool HasChildActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
         [XmlIgnore]
         public bool HasParentActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "1") > 0); } }
-        [XmlIgnore]
 
+        [XmlIgnore]
         public List<iatiactivity> childActivities { get; set; }
 
         [XmlIgnore]
@@ -124,37 +125,24 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
         }
 
+        [XmlIgnore]
+        private bool? isRelevant;
+        [XmlIgnore]
+        public bool? IsRelevant
+        {
+            get
+            {
+                return isRelevant ?? PercentToBD >= 20 && activitystatus.n().code == "2";
+            }
+            set
+            {
+                isRelevant = value;
+            }
+        }
+
         #region Financial Data
-        [XmlIgnore]
-        public decimal TotalCommitment
-        {
-            get
-            {
-                return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("C"));
-            }
-        }
-        [XmlIgnore]
-        public decimal TotalDisbursment
-        {
-            get
-            {
-                return GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("D"))
-                    + (IsDataSourceAIMS == false ? GetTotalTransactionAmt(ConvertIATIv2.gettransactionCode("E")) : 0);
-            }
-        }
 
-        [XmlIgnore]
-        public List<transaction> Disbursments
-        {
-            get
-            {
-                var disbursments = GetTransactions(ConvertIATIv2.gettransactionCode("D"));
-                //expenditures in IATI are also treated as disbursments in AIMS
-                disbursments.AddRange(GetTransactions(ConvertIATIv2.gettransactionCode("E")));
-                return disbursments;
-            }
-        }
-
+        #region Commitments
         [XmlIgnore]
         public List<transaction> Commitments
         {
@@ -163,18 +151,37 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return GetTransactions(ConvertIATIv2.gettransactionCode("C"));
             }
         }
-
-
         [XmlIgnore]
-        public decimal TotalPlannedDisbursment
+        public decimal TotalCommitment
         {
             get
             {
-                return Math.Round(PlannedDisbursments.Sum(s => s.value.n().ValueInUSD), 2);
+                return Math.Round(Commitments.Sum(s => s.ValUSD), 2);
+            }
+        }
+
+        [XmlIgnore]
+        public List<transaction> CommitmentsThisDPOnly
+        {
+            get
+            {
+                return Commitments.FindAll(f => string.IsNullOrWhiteSpace(f.providerorg.n().@ref) || IATICode.Contains(f.providerorg.n().@ref));
             }
         }
         [XmlIgnore]
-        public List<Parser.ParserIATIv2.planneddisbursement> PlannedDisbursments
+        public decimal TotalCommitmentThisDPOnly
+        {
+            get
+            {
+                return Math.Round(CommitmentsThisDPOnly.Sum(s => s.ValUSD), 2);
+            }
+        }
+
+        #endregion Commitments
+
+        #region Planned Disbursements
+        [XmlIgnore]
+        public List<planneddisbursement> PlannedDisbursments
         {
             get
             {
@@ -196,8 +203,58 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return plannedDisbursments;
             }
         }
+        [XmlIgnore]
+        public decimal TotalPlannedDisbursment
+        {
+            get
+            {
+                return Math.Round(PlannedDisbursments.Sum(s => s.ValUSD), 2);
+            }
+        }
+        #endregion Planned Disbursements
 
-        private List<Parser.ParserIATIv2.planneddisbursement> GetPlannedDisbursments(iatiactivity activity)
+        #region Disbursments
+        [XmlIgnore]
+        public List<transaction> Disbursments
+        {
+            get
+            {
+                var disbursments = GetTransactions(ConvertIATIv2.gettransactionCode("D"));
+                //expenditures in IATI are also treated as disbursments in AIMS
+                disbursments.AddRange(GetTransactions(ConvertIATIv2.gettransactionCode("E")));
+                return disbursments;
+            }
+        }
+        [XmlIgnore]
+        public decimal TotalDisbursment
+        {
+            get
+            {
+                return Math.Round(Disbursments.Sum(s => s.ValUSD), 2);
+            }
+        }
+
+        [XmlIgnore]
+        public List<transaction> DisbursmentsThisDPOnly
+        {
+            get
+            {
+                return Disbursments.FindAll(f => string.IsNullOrWhiteSpace(f.providerorg.n().@ref) || IATICode.Contains(f.providerorg.n().@ref));
+            }
+        }
+        [XmlIgnore]
+        public decimal TotalDisbursmentThisDPOnly
+        {
+            get
+            {
+                return Math.Round(DisbursmentsThisDPOnly.Sum(s => s.ValUSD), 2);
+            }
+        }
+
+        #endregion Disbursments
+
+        #region Helper Methods
+        private List<planneddisbursement> GetPlannedDisbursments(iatiactivity activity)
         {
             List<planneddisbursement> planneddisbursements = new List<planneddisbursement>();
 
@@ -248,34 +305,6 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             return planneddisbursements;
         }
 
-
-
-        private decimal GetTotal(transaction[] _transaction, string transactiontypecode)
-        {
-            var tobj = _transaction.Where(p => p.transactiontype.n().code == transactiontypecode);
-            return tobj == null ? 0 : Math.Round(tobj.Sum(s => s.value.n().ValueInUSD), 2); ;
-        }
-
-        private decimal GetTotalTransactionAmt(string transactiontypecode)
-        {
-            decimal total = 0;
-
-            if (transaction != null)
-            {
-                total = GetTotal(transaction, transactiontypecode);
-            }
-
-            foreach (var ra in childActivities)
-            {
-                if (ra.transaction != null)
-                {
-                    total += GetTotal(ra.transaction, transactiontypecode);
-                }
-            }
-
-            return total;
-        }
-
         private List<transaction> GetTransactions(string transactiontypecode)
         {
             var Transactions = new List<transaction>();
@@ -295,22 +324,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             return Transactions;
         }
-        #endregion
 
-        [XmlIgnore]
-        private bool? isRelevant;
-        [XmlIgnore]
-        public bool? IsRelevant
-        {
-            get
-            {
-                return isRelevant ?? PercentToBD >= 20 && activitystatus.n().code == "2";
-            }
-            set
-            {
-                isRelevant = value;
-            }
-        }
+        #endregion Helper Methods
+
+        #endregion Financial Data
 
         #region for filter other DP's projects
         [XmlIgnore]
