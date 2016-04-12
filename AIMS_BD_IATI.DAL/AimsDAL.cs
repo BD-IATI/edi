@@ -119,7 +119,7 @@ namespace AIMS_BD_IATI.DAL
 
             return fundSources;
         }
-        
+
         #endregion Get Fundsources
 
         public List<LookupItem> GetProjects(string dp)
@@ -167,7 +167,7 @@ namespace AIMS_BD_IATI.DAL
                                         Id = trustFund.Id,
                                         TFIdentifier = trustFund.TFIdentifier,
                                         FundSourceName = fundSource.FundSourceName,
-                                        FundSourceId = trustFundDetail.TFDFundSourceId, 
+                                        FundSourceId = trustFundDetail.TFDFundSourceId,
                                         Amount = trustFundDetail.TFDAmountInUSD,
                                     }).ToList();
 
@@ -189,7 +189,7 @@ namespace AIMS_BD_IATI.DAL
             return trustFundModel;
         }
 
-        public int? UpdateTrustFunds(List<iatiactivity> projects, string Iuser)
+        public int? UpdateTrustFunds(List<TrustFundModel> TrustFundModels, string Iuser)
         {
             var aimsCurrencies = from c in dbContext.tblCurrencies
                                  select new CurrencyLookupItem { Id = c.Id, IATICode = c.IATICode };
@@ -198,15 +198,35 @@ namespace AIMS_BD_IATI.DAL
                                     select new AidCategoryLookupItem { Id = c.Id, IATICode = c.IATICode };
             try
             {
-                foreach (var project in projects)
+                foreach (var TrustFundModel in TrustFundModels)
                 {
+
+
+
                     try
                     {
 
+                        var trustFund = dbContext.tblTrustFunds.FirstOrDefault(w => w.Id == TrustFundModel.Id);
+                        if (trustFund != null)
+                        {
+                            foreach (var activity in TrustFundModel.iatiactivities)
+                            {
+                                trustFund.tblTrustFundDetails.Add(new tblTrustFundDetail
+                                      {
+                                          TFDAmount = activity.TotalCommitment,
+                                          TFDAmountInUSD = activity.TotalCommitment,
+                                          TFDExchangeRateToUSD = 1,
+                                          TFDFundSourceId = activity.AimsFundSourceId,
+                                          TFDCurrencyId = 1,
+                                          IUser = Iuser,
+                                          IDate = DateTime.Now
+                                      });
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, project.IATICode, project.IatiIdentifier);
+                        Logger.WriteToDbAndFile(ex, LogType.Error, TrustFundModel.TFIdentifier);
 
                     }
 
@@ -561,7 +581,7 @@ namespace AIMS_BD_IATI.DAL
             return false;
             #endregion
         }
-        
+
         #endregion Update Projects
 
         #region Get Aims data in Iati format

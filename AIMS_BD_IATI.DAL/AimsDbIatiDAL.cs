@@ -158,11 +158,15 @@ namespace AIMS_BD_IATI.DAL
         #endregion Save and Update Activites
 
         #region Get Activities
-        public CFnTFModel GetAssignActivities(string dp, bool includMappedAtivities = false)
+        public CFnTFModel GetAssignActivities(string dp, bool mappedOnly = false)
         {
             var q = (from a in dbContext.Activities
                      let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
-                     where a.OrgId != dp && a.AssignedOrgId == dp && (includMappedAtivities? true : isNotMapped)
+                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
+                     where a.OrgId != dp
+                         && a.AssignedOrgId == dp
+                         && (mappedOnly ? isMapped : isNotMapped)
+
                      orderby a.IatiIdentifier
                      select new ActivityModel
                      {

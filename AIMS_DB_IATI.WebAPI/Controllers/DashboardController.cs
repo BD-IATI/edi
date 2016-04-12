@@ -33,7 +33,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
 
             #region trust fund and cofinance projects
 
-            Sessions.CFnTFModel = aimsDbIatiDAL.GetAssignActivities(dp);
+            Sessions.CFnTFModel = aimsDbIatiDAL.GetAssignActivities(dp,true);
             Sessions.CFnTFModel = new CFnTFController().SubmitAssignedActivities(Sessions.CFnTFModel.AssignedActivities);
             dashboardModel.CFnTFModel = Sessions.CFnTFModel;
 
