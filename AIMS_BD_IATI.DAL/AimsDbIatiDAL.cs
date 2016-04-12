@@ -11,18 +11,23 @@ namespace AIMS_BD_IATI.DAL
 {
     public class AimsDbIatiDAL
     {
+        #region Declarations
         AIMS_DB_IATIEntities dbContext = new AIMS_DB_IATIEntities();
-
-        public AimsDbIatiDAL()
-        {
-            ExchangeRates = new List<ExchangeRateModel>();
-        }
         List<ExchangeRateModel> ExchangeRates
         {
             get;
             set;
         }
+        #endregion Declarations
 
+        #region Constructors
+        public AimsDbIatiDAL()
+        {
+            ExchangeRates = new List<ExchangeRateModel>();
+        } 
+        #endregion Constructors
+
+        #region Save and Update Activites
         public int SaveAtivities(List<Activity> activities, List<iatiactivity> iatiActivities, tblFundSource fundSource)
         {
 
@@ -149,6 +154,10 @@ namespace AIMS_BD_IATI.DAL
 
             return dbContext.SaveChanges();
         }
+        
+        #endregion Save and Update Activites
+
+        #region Get Activities
         public CFnTFModel GetAssignActivities(string dp)
         {
             var q = (from a in dbContext.Activities
@@ -164,7 +173,7 @@ namespace AIMS_BD_IATI.DAL
                          OrgId = a.OrgId
                      }).ToList();
 
-             var iatiActivities = ParseXMLAndResolve(q);
+            var iatiActivities = ParseXMLAndResolve(q);
 
             foreach (var iatiActivity in iatiActivities)
             {
@@ -198,36 +207,6 @@ namespace AIMS_BD_IATI.DAL
             };
         }
 
-        private void LoadChildActivities(iatiactivity activity)
-        {
-            if (activity.HasChildActivity)
-            {
-                var relatedActivities = new List<iatiactivity>();
-                var relatedActivity = new iatiactivity();
-
-                var ras = (from a in dbContext.Activities
-                           where a.IatiIdentifier.StartsWith(activity.IatiIdentifier)
-                           select new ActivityModel { IatiActivity = a.IatiActivity, OrgId = a.OrgId }).ToList();
-
-                relatedActivities = ParseXMLAndResolve(ras);
-
-                //add all transaction of child activities to parent 
-                List<transaction> transactions = new List<transaction>();
-                if (activity.transaction != null)
-                    transactions = activity.transaction.ToList();
-
-                foreach (var ra in relatedActivities)
-                {
-                    if (ra.transaction != null)
-                        transactions.AddRange(ra.transaction);
-
-                    SetExchangedValues(ra);
-                }
-                activity.transaction = transactions.ToArray();
-            }
-
-        }
-
 
         public iatiactivityContainer GetAllActivities(string dp)
         {
@@ -248,7 +227,6 @@ namespace AIMS_BD_IATI.DAL
                 AimsProjects = aimsActivities
             };
         }
-
 
         public iatiactivityContainer GetNotMappedActivities(string dp)
         {
@@ -312,6 +290,8 @@ namespace AIMS_BD_IATI.DAL
             return aimsActivities;
         }
 
+        #region Helper Methods
+
         private List<iatiactivity> ParseXMLAndResolve(List<ActivityModel> q)
         {
             var result = new List<iatiactivity>();
@@ -323,8 +303,8 @@ namespace AIMS_BD_IATI.DAL
                 {
                     a.iatiActivity = (iatiactivity)serializer.Deserialize(reader);
                 }
-                a.iatiActivity.MappedProjectId = a.MappedProjectId??0;
-                a.iatiActivity.MappedTrustFundId = a.MappedTrustFundId??0;
+                a.iatiActivity.MappedProjectId = a.MappedProjectId ?? 0;
+                a.iatiActivity.MappedTrustFundId = a.MappedTrustFundId ?? 0;
 
                 a.iatiActivity.FundSourceIDnIATICode = new AimsDAL().GetFundSourceIDnIATICode(a.OrgId);
 
@@ -332,6 +312,36 @@ namespace AIMS_BD_IATI.DAL
                 result.Add(a.iatiActivity);
             }
             return result;
+        }
+
+        private void LoadChildActivities(iatiactivity activity)
+        {
+            if (activity.HasChildActivity)
+            {
+                var relatedActivities = new List<iatiactivity>();
+                var relatedActivity = new iatiactivity();
+
+                var ras = (from a in dbContext.Activities
+                           where a.IatiIdentifier.StartsWith(activity.IatiIdentifier)
+                           select new ActivityModel { IatiActivity = a.IatiActivity, OrgId = a.OrgId }).ToList();
+
+                relatedActivities = ParseXMLAndResolve(ras);
+
+                //add all transaction of child activities to parent 
+                List<transaction> transactions = new List<transaction>();
+                if (activity.transaction != null)
+                    transactions = activity.transaction.ToList();
+
+                foreach (var ra in relatedActivities)
+                {
+                    if (ra.transaction != null)
+                        transactions.AddRange(ra.transaction);
+
+                    SetExchangedValues(ra);
+                }
+                activity.transaction = transactions.ToArray();
+            }
+
         }
 
         public void SetExchangedValues(iatiactivity activity)
@@ -391,7 +401,10 @@ namespace AIMS_BD_IATI.DAL
 
         }
 
+        #endregion Helper Methods 
+        #endregion Get Activities
 
+        #region Field Mapping Preference
 
         public int SaveFieldMappingPreferenceGeneral(List<FieldMappingPreferenceGeneral> fieldMaps)
         {
@@ -416,7 +429,6 @@ namespace AIMS_BD_IATI.DAL
 
             return dbContext.SaveChanges();
         }
-
 
         public int SaveFieldMappingPreferenceActivity(List<FieldMappingPreferenceActivity> fieldMaps)
         {
@@ -490,6 +502,9 @@ namespace AIMS_BD_IATI.DAL
             return q;
         }
 
+        #endregion Field Mapping Preference
+
+        #region Get Dashboard Infos
         public DateTime? GetLastDownloadDate(string dp)
         {
             var q = (from a in dbContext.Activities.Where(a => a.OrgId == dp)
@@ -499,7 +514,6 @@ namespace AIMS_BD_IATI.DAL
             return q == null ? default(DateTime?) : q.Value.ToUniversalTime();
 
         }
-
         public List<ActivityModel> GetDelegatedActivities(string dp)
         {
             var q = (from a in dbContext.Activities.Where(a => a.OrgId == dp && a.AssignedOrgId != dp)
@@ -517,7 +531,6 @@ namespace AIMS_BD_IATI.DAL
             return q;
 
         }
-
         public List<ActivityModel> GetCofinanceProjects(string dp)
         {
             var q = ((from a in dbContext.Activities.Where(a => a.OrgId != dp && a.AssignedOrgId == dp)
@@ -535,7 +548,6 @@ namespace AIMS_BD_IATI.DAL
             return q;
 
         }
-
         public List<ActivityModel> GetTrustFundProjects(string dp)
         {
             var q = (from a in dbContext.Activities.Where(a => a.OrgId != dp && a.AssignedOrgId == dp)
@@ -553,7 +565,6 @@ namespace AIMS_BD_IATI.DAL
             return q;
 
         }
-
 
         public int GetTotalActivityCount(string dp)
         {
@@ -576,13 +587,6 @@ namespace AIMS_BD_IATI.DAL
                      select 1).Count();
             return q;
         }
-
-        public int InsertLog(Log log)
-        {
-            dbContext.Logs.Add(log);
-            return dbContext.SaveChanges();
-        }
-
         public List<Log> GetLastDayLogs(string dp)
         {
             Log lastLog = dbContext.Logs.Where(w => w.OrgId == dp).OrderByDescending(o => o.Id).FirstOrDefault();
@@ -591,37 +595,13 @@ namespace AIMS_BD_IATI.DAL
 
             return logs;
         }
-        /// <summary>
-        /// same as Activity table in AIMS_DB_IATI database
-        /// </summary>
-        public class ActivityModel
+        
+        #endregion Get Dashboard Infos
+
+        public int InsertLog(Log log)
         {
-            public int Id { get; set; }
-            public string OrgId { get; set; }
-            public string IatiIdentifier { get; set; }
-            public string IatiActivity { get; set; }
-            public Nullable<System.DateTime> DownloadDate { get; set; }
-            public string IatiActivityPrev { get; set; }
-            public Nullable<System.DateTime> DownloadDatePrev { get; set; }
-            public Nullable<int> Hierarchy { get; set; }
-            public Nullable<int> ParentHierarchy { get; set; }
-            public string AssignedOrgId { get; set; }
-            public string AssignedOrgName { get; set; }
-            public Nullable<System.DateTime> AssignedDate { get; set; }
-            public Nullable<int> ProjectId { get; set; }
-            public Nullable<int> MappedProjectId { get; set; }
-            public Nullable<int> MappedTrustFundId { get; set; }
-
-
-            public iatiactivity iatiActivity { get; set; }
+            dbContext.Logs.Add(log);
+            return dbContext.SaveChanges();
         }
-
-
-
-
-
-
-
-
     }
 }
