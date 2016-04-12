@@ -24,7 +24,7 @@ namespace AIMS_BD_IATI.DAL
         public AimsDbIatiDAL()
         {
             ExchangeRates = new List<ExchangeRateModel>();
-        } 
+        }
         #endregion Constructors
 
         #region Save and Update Activites
@@ -154,7 +154,7 @@ namespace AIMS_BD_IATI.DAL
 
             return dbContext.SaveChanges();
         }
-        
+
         #endregion Save and Update Activites
 
         #region Get Activities
@@ -207,7 +207,6 @@ namespace AIMS_BD_IATI.DAL
             };
         }
 
-
         public iatiactivityContainer GetAllActivities(string dp)
         {
             var q = (from a in dbContext.Activities
@@ -251,14 +250,19 @@ namespace AIMS_BD_IATI.DAL
         public ProjectFieldMapModel GetTransactionMismatchedActivity(string iatiIdentifier)
         {
             var q = (from a in dbContext.Activities
-                     where a.IatiIdentifier == iatiIdentifier
+                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
+                     where a.IatiIdentifier == iatiIdentifier && isMapped
                      select new ActivityModel { IatiActivity = a.IatiActivity, ProjectId = a.ProjectId, OrgId = a.OrgId }).FirstOrDefault();
+
+            if (q == null) return null;
 
             var iatiActivity = ParseXMLAndResolve(new List<ActivityModel> { q }).FirstOrDefault();
 
             LoadChildActivities(iatiActivity);
 
-            var aimsProject = new AimsDAL().GetAIMSProjectInIATIFormat(q.n().ProjectId);
+            var aimsProject = new AimsDAL().GetAIMSProjectInIATIFormat(q.ProjectId > 0 ? q.ProjectId :
+                                    q.MappedProjectId > 0 ? q.MappedProjectId :
+                                    0);
 
             foreach (var aimsTransaction in aimsProject.transaction)
             {
@@ -401,7 +405,7 @@ namespace AIMS_BD_IATI.DAL
 
         }
 
-        #endregion Helper Methods 
+        #endregion Helper Methods
         #endregion Get Activities
 
         #region Field Mapping Preference
@@ -595,7 +599,7 @@ namespace AIMS_BD_IATI.DAL
 
             return logs;
         }
-        
+
         #endregion Get Dashboard Infos
 
         public int InsertLog(Log log)

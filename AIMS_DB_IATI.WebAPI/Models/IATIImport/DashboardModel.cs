@@ -12,7 +12,7 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
     {
         public DateTime? LastDownloadDate { get; set; }
 
-        public List<AimsDbIatiDAL.ActivityModel> DelegatedActivities { get; set; }
+        public List<ActivityModel> DelegatedActivities { get; set; }
 
         public int NewActivityCount { get; set; }
         public int MappedActivityCount { get; set; }
