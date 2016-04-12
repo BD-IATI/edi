@@ -200,9 +200,6 @@ namespace AIMS_BD_IATI.DAL
             {
                 foreach (var TrustFundModel in TrustFundModels)
                 {
-
-
-
                     try
                     {
 

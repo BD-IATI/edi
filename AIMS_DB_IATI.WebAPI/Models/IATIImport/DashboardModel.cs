@@ -16,6 +16,7 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
 
         public int NewActivityCount { get; set; }
         public int MappedActivityCount { get; set; }
+        public int AssignedActivityCount { get; set; }
 
         public CFnTFModel CFnTFModel { get; set; }
 

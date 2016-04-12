@@ -596,6 +596,15 @@ namespace AIMS_BD_IATI.DAL
                      select 1).Count();
             return q;
         }
+        public int GetAssignedActivityCount(string dp)
+        {
+            var q = (from a in dbContext.Activities
+                     let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
+                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
+                     where a.AssignedOrgId == dp && a.OrgId != dp && isNotMapped
+                     select 1).Count();
+            return q;
+        }
         public List<Log> GetLastDayLogs(string dp)
         {
             Log lastLog = dbContext.Logs.Where(w => w.OrgId == dp).OrderByDescending(o => o.Id).FirstOrDefault();
