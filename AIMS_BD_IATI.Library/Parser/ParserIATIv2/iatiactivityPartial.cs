@@ -34,6 +34,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     {
         public int Id { get; set; }
         public string TFIdentifier { get; set; }
+        public int FundSourceId { get; set; }
         public List<transaction> transactionsInAims { get; set; }
         public List<iatiactivity> iatiactivities { get; set; }
         public decimal TotalCommitment { get { return transactionsInAims.Count > 0 ? transactionsInAims.Sum(s => s.value.ValueInUSD) : 0; } }

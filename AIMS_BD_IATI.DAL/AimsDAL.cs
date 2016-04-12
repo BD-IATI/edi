@@ -13,8 +13,13 @@ namespace AIMS_BD_IATI.DAL
 {
     public class AimsDAL
     {
+        #region Declarations
         AIMS_DBEntities dbContext = new AIMS_DBEntities();
         AimsDbIatiDAL aimsDBIatiDAL = new AimsDbIatiDAL();
+
+        #endregion
+
+        #region Get Lookup Items
         public List<DPLookupItem> GetFundSources(string userId)
         {
             var FundSource = new List<DPLookupItem>();
@@ -61,12 +66,6 @@ namespace AIMS_BD_IATI.DAL
         }
 
 
-        private string getIdentifer(tblProjectInfo project)
-        {
-            return string.IsNullOrWhiteSpace(project.IatiIdentifier) ?
-                project.DPProjectNo //project.DPProjectNo.n().StartsWith(project.tblFundSource.n().IATICode) ? project.DPProjectNo : project.tblFundSource.n().IATICode + "-" + project.DPProjectNo
-                : project.IatiIdentifier;
-        }
         public List<tblFundSource> GetFundSources()
         {
             var fundSources = from fundSource in dbContext.tblFundSources
@@ -120,6 +119,8 @@ namespace AIMS_BD_IATI.DAL
 
             return fundSources;
         }
+        
+        #endregion Get Fundsources
 
         public List<LookupItem> GetProjects(string dp)
         {
@@ -166,12 +167,12 @@ namespace AIMS_BD_IATI.DAL
                                         Id = trustFund.Id,
                                         TFIdentifier = trustFund.TFIdentifier,
                                         FundSourceName = fundSource.FundSourceName,
+                                        FundSourceId = trustFundDetail.TFDFundSourceId, 
                                         Amount = trustFundDetail.TFDAmountInUSD,
                                     }).ToList();
 
             trustFundModel.Id = trustFundDetails.n(0).Id;
             trustFundModel.TFIdentifier = trustFundDetails.n(0).TFIdentifier;
-
             foreach (var trustFundDetail in trustFundDetails)
             {
                 var tr = new transaction
@@ -230,6 +231,7 @@ namespace AIMS_BD_IATI.DAL
             return 1;
         }
 
+        #region Update Projects
         public int? UpdateProjects(List<iatiactivity> projects, string Iuser)
         {
             var aimsCurrencies = from c in dbContext.tblCurrencies
@@ -483,207 +485,6 @@ namespace AIMS_BD_IATI.DAL
                 }
             }
         }
-        ////private void UpdateTransactions(string Iuser, IQueryable<CurrencyLookupItem> aimsCurrencies, IQueryable<AidCategoryLookupItem> aimsAidCategories, string defaultfinancetype, tblProjectInfo p, iatiactivity MatchedProject)
-        ////{
-        ////    bool isFinancialDataMismathed = false;
-        ////    #region Commitments
-        ////    if (MatchedProject.IsCommitmentIncluded)
-        ////    {
-        ////        var aimsCommitments = p.tblProjectFundingCommitments.Where(w => w.FundSourceId == MatchedProject.AimsFundSourceId).ToList();
-
-        ////        var iatiCommitments = MatchedProject.CommitmentsThisDPOnly;
-
-        ////        #region Checking transaction mismatch
-        ////        if (aimsCommitments.Count > iatiCommitments.Count)
-        ////            foreach (var aimsCommitment in aimsCommitments)
-        ////            {
-        ////                var trandate = aimsCommitment.CommitmentAgreementSignDate ?? p.AgreementSignDate;
-
-        ////                var notExistInIATI = !iatiCommitments.Exists(e => e.transactiondate.n().isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsCommitment.CommittedAmountInUSD ?? 0));
-
-        ////                isFinancialDataMismathed = true;
-
-        ////                aimsDBIatiDAL.InsertLog(new Log
-        ////                {
-        ////                    OrgId = MatchedProject.IATICode,
-        ////                    LogType = (int)LogType.FinancialDataMismathed,
-        ////                    DateTime = DateTime.Now,
-        ////                    IatiIdentifier = MatchedProject.IatiIdentifier,
-        ////                    ProjectId = p.Id,
-        ////                    Message = "Transactions (C) are mismatched between IATI and AIMS"
-        ////                });
-
-        ////            } 
-        ////        #endregion Checking transaction mismatch
-
-        ////        if (isFinancialDataMismathed) return;
-
-        ////        foreach (var cc in aimsCommitments)
-        ////        {
-        ////            dbContext.tblProjectFundingCommitments.Remove(cc);
-        ////        }
-
-        ////        foreach (var trn in iatiCommitments)
-        ////        {
-
-        ////            var aimsCommitment = new tblProjectFundingCommitment();
-        ////            p.tblProjectFundingCommitments.Add(aimsCommitment);
-
-        ////            aimsCommitment.IDate = DateTime.Now;
-        ////            aimsCommitment.IUser = Iuser;
-        ////            aimsCommitment.IsCommitmentTrustFund = false;
-
-        ////            //ToDo for co-finance projects it may be different
-        ////            aimsCommitment.FundSourceId = MatchedProject.AimsFundSourceId;
-
-        ////            aimsCommitment.CommitmentAgreementSignDate = trn.transactiondate.n().isodate;
-
-        ////            var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
-        ////            aimsCommitment.CommitmentMaidCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
-        ////            aimsCommitment.CommittedAmount = trn.value.Value;
-
-        ////            aimsCommitment.CommitmentEffectiveDate = trn.value.n().BBexchangeRateDate;
-        ////            aimsCommitment.ExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
-        ////            aimsCommitment.CommittedAmountInUSD = trn.value.n().ValueInUSD;
-
-        ////            aimsCommitment.ExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
-        ////            aimsCommitment.CommittedAmountInBDT = trn.value.n().ValueInBDT;
-
-        ////            aimsCommitment.Remarks = MatchedProject.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
-        ////            aimsCommitment.VerificationRemarks = "Importerd From IATI: ";
-
-        ////            //AidCategory
-        ////            if (trn.financetype != null && trn.financetype.code.Length > 1)
-        ////                defaultfinancetype = trn.financetype.code.StartsWith("4") ? "400" : "100";
-
-        ////            var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode == defaultfinancetype);
-        ////            aimsCommitment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
-        ////        }
-        ////    }
-        ////    #endregion
-
-        ////    #region PlannedDisbursements
-        ////    if (MatchedProject.IsPlannedDisbursmentIncluded)
-        ////    {
-        ////        var planDisb = p.tblProjectFundingPlannedDisbursements.Where(w => w.FundSourceId == MatchedProject.AimsFundSourceId).ToList();
-        ////        foreach (var cc in planDisb)
-        ////        {
-        ////            dbContext.tblProjectFundingPlannedDisbursements.Remove(cc);
-        ////        }
-
-        ////        foreach (var trn in MatchedProject.PlannedDisbursments)
-        ////        {
-        ////            var aimsPlanDisbursment = new tblProjectFundingPlannedDisbursement();
-        ////            p.tblProjectFundingPlannedDisbursements.Add(aimsPlanDisbursment);
-
-        ////            aimsPlanDisbursment.IDate = DateTime.Now;
-        ////            aimsPlanDisbursment.IUser = Iuser;
-        ////            aimsPlanDisbursment.IsPlannedDisbursementTrustFund = false;
-
-        ////            //ToDo for co-finance projects it may be different
-        ////            aimsPlanDisbursment.FundSourceId = MatchedProject.AimsFundSourceId;
-
-        ////            aimsPlanDisbursment.PlannedDisbursementPeriodFromDate = trn.periodstart.n().isodate;
-        ////            aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend.n().isodate;
-
-        ////            var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
-        ////            aimsPlanDisbursment.PlannedDisbursementCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
-        ////            aimsPlanDisbursment.PlannedDisburseAmount = trn.value.Value;
-
-        ////            aimsPlanDisbursment.PlannedDisburseExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
-        ////            aimsPlanDisbursment.PlannedDisburseAmountInUSD = trn.value.n().ValueInUSD;
-
-        ////            aimsPlanDisbursment.PlannedDisburseExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
-        ////            aimsPlanDisbursment.PlannedDisburseAmountInBDT = trn.value.n().ValueInBDT;
-
-        ////            //aimsPlanDisbursment.VerificationRemarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
-        ////            aimsPlanDisbursment.VerificationRemarks = "Importerd From IATI: ";
-
-        ////            //AidCategory
-        ////            var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode.StartsWith(defaultfinancetype));
-        ////            aimsPlanDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
-
-        ////        }
-        ////    }
-        ////    #endregion
-
-        ////    #region Disbursements
-        ////    if (MatchedProject.IsDisbursmentIncluded)
-        ////    {
-
-        ////        var aimsDisbursements = p.tblProjectFundingActualDisbursements.Where(w => w.FundSourceId == MatchedProject.AimsFundSourceId).ToList();
-        ////        var iatiDisbursements = MatchedProject.DisbursmentsThisDPOnly;
-
-        ////        #region  Checking transaction mismatch
-        ////        if (aimsDisbursements.Count > iatiDisbursements.Count)
-        ////            foreach (var aimsDisbursement in aimsDisbursements)
-        ////            {
-        ////                var trandate = aimsDisbursement.DisbursementToDate ?? aimsDisbursement.DisbursementDate;
-
-        ////                var notExistInIATI = !iatiDisbursements.Exists(e => e.transactiondate.n().isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsDisbursement.DisbursedAmountInUSD ?? 0));
-
-        ////                isFinancialDataMismathed = true;
-
-        ////                aimsDBIatiDAL.InsertLog(new Log
-        ////                {
-        ////                    DateTime = DateTime.Now,
-        ////                    IatiIdentifier = MatchedProject.IatiIdentifier,
-        ////                    LogType = (int)LogType.FinancialDataMismathed,
-        ////                    ProjectId = p.Id,
-        ////                    OrgId = MatchedProject.IATICode,
-        ////                    Message = "Transactions (D) are mismatched between IATI and AIMS"
-        ////                });
-
-        ////            }
-
-        ////        #endregion  Checking transaction mismatch
-
-        ////        if (isFinancialDataMismathed) return;
-
-        ////        foreach (var cc in aimsDisbursements)
-        ////        {
-        ////            dbContext.tblProjectFundingActualDisbursements.Remove(cc);
-        ////        }
-
-        ////        foreach (var trn in iatiDisbursements)
-        ////        {
-        ////            var aimsDisbursment = new tblProjectFundingActualDisbursement();
-        ////            p.tblProjectFundingActualDisbursements.Add(aimsDisbursment);
-
-        ////            aimsDisbursment.IDate = DateTime.Now;
-        ////            aimsDisbursment.IUser = Iuser;
-        ////            aimsDisbursment.IsDisbursedTrustFund = false;
-
-        ////            //ToDo for co-finance projects it may be different
-        ////            aimsDisbursment.FundSourceId = MatchedProject.AimsFundSourceId;
-
-        ////            aimsDisbursment.DisbursementDate = trn.transactiondate.n().isodate;
-        ////            aimsDisbursment.DisbursementToDate = trn.transactiondate.n().isodate;
-
-        ////            var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
-        ////            aimsDisbursment.DisbursedCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
-        ////            aimsDisbursment.DisbursedAmount = trn.value.Value;
-
-        ////            aimsDisbursment.DisbursedExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
-        ////            aimsDisbursment.DisbursedAmountInUSD = trn.value.n().ValueInUSD;
-
-        ////            aimsDisbursment.DisbursedExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
-        ////            aimsDisbursment.DisbursedAmountInBDT = trn.value.n().ValueInBDT;
-
-        ////            aimsDisbursment.Remarks = MatchedProject.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
-        ////            aimsDisbursment.VerificationRemarks = "Importerd From IATI: ";
-
-        ////            //AidCategory
-        ////            if (trn.financetype != null && trn.financetype.code.Length > 1)
-        ////                defaultfinancetype = trn.financetype.code.StartsWith("4") ? "400" : "100";
-
-        ////            var aimsAidCategory = aimsAidCategories.FirstOrDefault(f => f.IATICode == defaultfinancetype);
-        ////            aimsDisbursment.AidCategoryId = aimsAidCategory == null ? 1 : aimsAidCategory.Id;
-
-        ////        }
-        ////    }
-        ////    #endregion
-        ////}
 
         private bool CheckTransactionMismatch(tblProjectInfo p, iatiactivity MatchedProject)
         {
@@ -760,7 +561,10 @@ namespace AIMS_BD_IATI.DAL
             return false;
             #endregion
         }
+        
+        #endregion Update Projects
 
+        #region Get Aims data in Iati format
         /// <summary>
         /// Convert AIMS to IATI v2.x
         /// ref:http://iatistandard.org/202/activity-standard/iati-activities/iati-activity
@@ -1196,6 +1000,14 @@ namespace AIMS_BD_IATI.DAL
             //fss
             return iatiActivityObj;
         }
+        private string getIdentifer(tblProjectInfo project)
+        {
+            return string.IsNullOrWhiteSpace(project.IatiIdentifier) ?
+                project.DPProjectNo //project.DPProjectNo.n().StartsWith(project.tblFundSource.n().IATICode) ? project.DPProjectNo : project.tblFundSource.n().IATICode + "-" + project.DPProjectNo
+                : project.IatiIdentifier;
+        }
+
+        #endregion Get Aims data in Iati format
 
         public List<ExchangeRateModel> GetExchangesRateToUSD(string fromCurrencyISOcode, DateTime? date = null)
         {
