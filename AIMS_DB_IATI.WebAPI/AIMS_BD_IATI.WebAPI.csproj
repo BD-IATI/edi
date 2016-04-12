@@ -158,6 +158,8 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="TextFile1.txt" />
+    <Content Include="TextFile2.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

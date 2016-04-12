@@ -322,6 +322,13 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 }
             }
 
+            foreach (var ra in MatchedProjects)
+            {
+                if (ra.transaction != null)
+                {
+                    Transactions.AddRange(ra.transaction.Where(p => p.transactiontype.n().code == transactiontypecode));
+                }
+            }
             return Transactions;
         }
 
@@ -343,6 +350,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             set
             {
                 ownedBy = value;
+                //foreach (var mproject in MatchedProjects)
+                //{
+                //    mproject.FundSourceIDnIATICode = value;
+                //}
             }
         }
         [XmlIgnore]

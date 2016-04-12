@@ -38,7 +38,7 @@
     $scope.SaveAndNext = function () {
         $http({
             method: 'POST',
-            url: apiprefix + '/api/IATIImport/MapActivities',
+            url: apiprefix + '/api/IATIImport/AssignActivities',
             data: JSON.stringify($scope.RelevantActivities),
             dataType: 'json'
         }).then(function (result) {

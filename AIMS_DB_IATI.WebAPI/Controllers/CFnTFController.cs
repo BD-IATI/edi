@@ -131,6 +131,10 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
 
             aimsDbIatiDAL.SaveFieldMappingPreferenceDelegated(fieldMappings); 
             #endregion
+
+            #region Import
+            aimsDAL.UpdateProjects(CFnTFModel.AimsProjects, Sessions.UserId);
+            #endregion Import
             return true;
         }
 

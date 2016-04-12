@@ -26,6 +26,16 @@ namespace AIMS_BD_IATI.Library
     {
         public int ID { get; set; }
         public string Name { get; set; }
-
     }
+    public class CurrencyLookupItem
+    {
+        public int Id { get; set; }
+        public string IATICode { get; set; }
+    }
+    public class AidCategoryLookupItem
+    {
+        public int Id { get; set; }
+        public string IATICode { get; set; }
+    }
+
 }

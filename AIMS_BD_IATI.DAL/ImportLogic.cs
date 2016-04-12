@@ -172,7 +172,8 @@ namespace AIMS_BD_IATI.DAL
                         if (field.IsSourceIATI)
                         {
                             trns.AddRange(matchedProject.iatiActivity.Commitments);
-                            matchedProject.aimsProject.IsCommitmentIncluded = true;
+                            if (matchedProject.aimsProject.IsCofinancedProject == false)
+                                matchedProject.aimsProject.IsCommitmentIncluded = true;
                         }
                         else
                             trns.AddRange(matchedProject.aimsProject.Commitments);
@@ -182,7 +183,8 @@ namespace AIMS_BD_IATI.DAL
                         if (field.IsSourceIATI)
                         {
                             trns.AddRange(matchedProject.iatiActivity.Disbursments);
-                            matchedProject.aimsProject.IsDisbursmentIncluded = true;
+                            if (matchedProject.aimsProject.IsCofinancedProject == false)
+                                matchedProject.aimsProject.IsDisbursmentIncluded = true;
                         }
                         else
                             trns.AddRange(matchedProject.aimsProject.Disbursments);
@@ -192,7 +194,8 @@ namespace AIMS_BD_IATI.DAL
                         if (field.IsSourceIATI)
                         {
                             planDis.AddRange(matchedProject.iatiActivity.PlannedDisbursments);
-                            matchedProject.aimsProject.IsPlannedDisbursmentIncluded = true;
+                            if (matchedProject.aimsProject.IsCofinancedProject == false)
+                                matchedProject.aimsProject.IsPlannedDisbursmentIncluded = true;
 
                         }
                         else

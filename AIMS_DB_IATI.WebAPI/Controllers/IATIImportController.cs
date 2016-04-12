@@ -195,9 +195,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
-        public int? MapActivities(List<iatiactivity> activities)
+        public int? AssignActivities(List<iatiactivity> activities)
         {
-            return aimsDbIatiDAL.MapActivities(activities);
+            return aimsDbIatiDAL.AssignActivities(activities);
         }
 
         [AcceptVerbs("GET", "POST")]

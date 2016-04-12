@@ -43,7 +43,7 @@ namespace AIMS_BD_IATI.DAL
                     a.DownloadDate = DateTime.Now;
 
                     //update aimsdb
-                    if (a.ProjectId > 0)
+                    if (a.ProjectId > 0 || a.MappedProjectId > 0)
                     {
                         var aimsDAL = new AimsDAL();
 
@@ -94,7 +94,15 @@ namespace AIMS_BD_IATI.DAL
             SetExchangedValues(iatiActivity);
             iatiActivity.childActivities.ForEach(ra => SetExchangedValues(ra));
 
-            var aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.ProjectId);
+            var aimsProject = new iatiactivity();
+            if (a.ProjectId > 0)
+            {
+                aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.ProjectId);
+            }
+            else if (a.MappedProjectId > 0) //for co-finance projects
+            {
+                aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.MappedProjectId);
+            }
 
             //step 3: get general preference
             var generalPreference = GetFieldMappingPreferenceGeneral(a.OrgId);
@@ -110,7 +118,7 @@ namespace AIMS_BD_IATI.DAL
             return ProjectFieldMapModels;
         }
 
-        public int MapActivities(List<iatiactivity> activities)
+        public int AssignActivities(List<iatiactivity> activities)
         {
             foreach (var activity in activities)
             {
@@ -119,7 +127,19 @@ namespace AIMS_BD_IATI.DAL
                 {
                     a.AssignedOrgId = activity.IATICode;
                     a.AssignedDate = DateTime.Now;
+                }
+            }
 
+            return dbContext.SaveChanges();
+        }
+
+        public int MapActivities(List<iatiactivity> activities)
+        {
+            foreach (var activity in activities)
+            {
+                var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier);
+                if (a != null)
+                {
                     a.ProjectId = activity.ProjectId;
 
                     a.MappedProjectId = activity.MappedProjectId;
@@ -129,58 +149,51 @@ namespace AIMS_BD_IATI.DAL
 
             return dbContext.SaveChanges();
         }
-
         public CFnTFModel GetAssignActivities(string dp)
         {
-            var q = from a in dbContext.Activities
-                    where a.OrgId != dp && a.AssignedOrgId == dp
-                    orderby a.IatiIdentifier
-                    select a;
+            var q = (from a in dbContext.Activities
+                     where a.OrgId != dp && a.AssignedOrgId == dp
+                     orderby a.IatiIdentifier
+                     select new ActivityModel
+                     {
+                         IatiActivity = a.IatiActivity,
+                         IatiIdentifier = a.IatiIdentifier,
+                         ProjectId = a.ProjectId,
+                         MappedProjectId = a.MappedProjectId,
+                         MappedTrustFundId = a.MappedTrustFundId,
+                         OrgId = a.OrgId
+                     }).ToList();
 
+             var iatiActivities = ParseXMLAndResolve(q);
 
-            var result = new List<iatiactivity>();
-            var activity = new iatiactivity();
-            var serializer = new XmlSerializer(typeof(iatiactivity));
-
-            foreach (var a in q)
+            foreach (var iatiActivity in iatiActivities)
             {
-                using (TextReader reader = new StringReader(a.IatiActivity))
-                {
-                    activity = (iatiactivity)serializer.Deserialize(reader);
-                }
 
                 #region Field Mapping Preference Delegateds
-                var FieldMappingPreferenceDelegateds = dbContext.FieldMappingPreferenceDelegateds.Where(w => w.IatiIdentifier == a.IatiIdentifier).ToList();
+                var FieldMappingPreferenceDelegateds = dbContext.FieldMappingPreferenceDelegateds.Where(w => w.IatiIdentifier == iatiActivity.IatiIdentifier).ToList();
                 if (FieldMappingPreferenceDelegateds.Count > 0)
                 {
                     var CommitmentIncluded = FieldMappingPreferenceDelegateds.FirstOrDefault(j => j.FieldName == IatiFields.Commitment);
-                    activity.IsCommitmentIncluded = CommitmentIncluded.n().IsInclude ?? false;
+                    iatiActivity.IsCommitmentIncluded = CommitmentIncluded.n().IsInclude ?? false;
 
                     var PlannedDisbursmentIncluded = FieldMappingPreferenceDelegateds.FirstOrDefault(j => j.FieldName == IatiFields.PlannedDisbursment);
-                    activity.IsPlannedDisbursmentIncluded = PlannedDisbursmentIncluded.n().IsInclude ?? false;
+                    iatiActivity.IsPlannedDisbursmentIncluded = PlannedDisbursmentIncluded.n().IsInclude ?? false;
 
                     var DisbursmentIncluded = FieldMappingPreferenceDelegateds.FirstOrDefault(j => j.FieldName == IatiFields.Disbursment);
-                    activity.IsDisbursmentIncluded = DisbursmentIncluded.n().IsInclude ?? false;
+                    iatiActivity.IsDisbursmentIncluded = DisbursmentIncluded.n().IsInclude ?? false;
 
                 }
                 #endregion
 
-                activity.MappedProjectId = a.MappedProjectId ?? 0;
-                activity.MappedTrustFundId = a.MappedTrustFundId ?? 0;
-
-
-                LoadChildActivities(activity);
-                SetExchangedValues(activity);
-
-
-                result.Add(activity);
+                LoadChildActivities(iatiActivity);
+                SetExchangedValues(iatiActivity);
 
             }
 
 
             return new CFnTFModel
             {
-                AssignedActivities = result,
+                AssignedActivities = iatiActivities,
                 AimsProjects = new AimsDAL().GetAIMSProjectsInIATIFormat(dp)
             };
         }
@@ -192,21 +205,16 @@ namespace AIMS_BD_IATI.DAL
                 var relatedActivities = new List<iatiactivity>();
                 var relatedActivity = new iatiactivity();
 
-                var ras = from ac in dbContext.Activities
-                          where ac.IatiIdentifier.StartsWith(activity.IatiIdentifier)
-                          select ac.IatiActivity;
+                var ras = (from a in dbContext.Activities
+                           where a.IatiIdentifier.StartsWith(activity.IatiIdentifier)
+                           select new ActivityModel { IatiActivity = a.IatiActivity, OrgId = a.OrgId }).ToList();
 
-                foreach (var ac in ras)
-                {
-                    using (TextReader reader = new StringReader(ac))
-                    {
-                        relatedActivity = (iatiactivity)new XmlSerializer(typeof(iatiactivity)).Deserialize(reader);
-                    }
-                    relatedActivities.Add(relatedActivity);
-                }
+                relatedActivities = ParseXMLAndResolve(ras);
 
-
+                //add all transaction of child activities to parent 
                 List<transaction> transactions = new List<transaction>();
+                if (activity.transaction != null)
+                    transactions = activity.transaction.ToList();
 
                 foreach (var ra in relatedActivities)
                 {
@@ -226,9 +234,10 @@ namespace AIMS_BD_IATI.DAL
             var q = (from a in dbContext.Activities
                      where a.AssignedOrgId == dp
                      orderby a.IatiIdentifier
-                     select new ActivityModel { IatiActivity = a.IatiActivity }).ToList();
+                     select new ActivityModel { IatiActivity = a.IatiActivity, OrgId = a.OrgId }).ToList();
 
-            var iatiActivities = ParseXML(q);
+            var iatiActivities = ParseXMLAndResolve(q);
+
 
             var aimsActivities = new AimsDAL().GetAIMSProjectsInIATIFormat(dp);
 
@@ -247,9 +256,9 @@ namespace AIMS_BD_IATI.DAL
                      let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
                      where a.AssignedOrgId == dp && isNotMapped
                      orderby a.IatiIdentifier
-                     select new ActivityModel { IatiActivity = a.IatiActivity }).ToList();
+                     select new ActivityModel { IatiActivity = a.IatiActivity, OrgId = a.OrgId }).ToList();
 
-            var iatiActivities = ParseXML(q);
+            var iatiActivities = ParseXMLAndResolve(q);
 
             var aimsActivities = GetNotMappedAimsProjects(dp);
 
@@ -265,9 +274,9 @@ namespace AIMS_BD_IATI.DAL
         {
             var q = (from a in dbContext.Activities
                      where a.IatiIdentifier == iatiIdentifier
-                     select new ActivityModel { IatiActivity = a.IatiActivity, ProjectId = a.ProjectId }).FirstOrDefault();
+                     select new ActivityModel { IatiActivity = a.IatiActivity, ProjectId = a.ProjectId, OrgId = a.OrgId }).FirstOrDefault();
 
-            var iatiActivity = ParseXML(new List<ActivityModel> {q}).FirstOrDefault();
+            var iatiActivity = ParseXMLAndResolve(new List<ActivityModel> { q }).FirstOrDefault();
 
             LoadChildActivities(iatiActivity);
 
@@ -303,7 +312,7 @@ namespace AIMS_BD_IATI.DAL
             return aimsActivities;
         }
 
-        private List<iatiactivity> ParseXML(List<ActivityModel> q)
+        private List<iatiactivity> ParseXMLAndResolve(List<ActivityModel> q)
         {
             var result = new List<iatiactivity>();
             var serializer = new XmlSerializer(typeof(iatiactivity));
@@ -314,9 +323,12 @@ namespace AIMS_BD_IATI.DAL
                 {
                     a.iatiActivity = (iatiactivity)serializer.Deserialize(reader);
                 }
+                a.iatiActivity.MappedProjectId = a.MappedProjectId??0;
+                a.iatiActivity.MappedTrustFundId = a.MappedTrustFundId??0;
+
+                a.iatiActivity.FundSourceIDnIATICode = new AimsDAL().GetFundSourceIDnIATICode(a.OrgId);
 
                 SetExchangedValues(a.iatiActivity);
-
                 result.Add(a.iatiActivity);
             }
             return result;
@@ -484,7 +496,7 @@ namespace AIMS_BD_IATI.DAL
                      orderby a.DownloadDate descending
                      select a.DownloadDate).FirstOrDefault();
 
-            return q.Value.ToUniversalTime();
+            return q == null ? default(DateTime?) : q.Value.ToUniversalTime();
 
         }
 
@@ -500,7 +512,7 @@ namespace AIMS_BD_IATI.DAL
                          IatiActivity = a.IatiActivity
                      }).ToList();
 
-            ParseXML(q);
+            ParseXMLAndResolve(q);
 
             return q;
 
@@ -518,7 +530,7 @@ namespace AIMS_BD_IATI.DAL
                           IatiActivity = a.IatiActivity
                       })).ToList();
 
-            ParseXML(q);
+            ParseXMLAndResolve(q);
 
             return q;
 
@@ -536,7 +548,7 @@ namespace AIMS_BD_IATI.DAL
                          IatiActivity = a.IatiActivity
                      }).ToList();
 
-            ParseXML(q);
+            ParseXMLAndResolve(q);
 
             return q;
 

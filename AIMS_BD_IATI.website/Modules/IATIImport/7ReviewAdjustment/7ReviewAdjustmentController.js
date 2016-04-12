@@ -8,16 +8,16 @@
     });
 
     $scope.disbursmentDiff = function (m) {
-        var numerator = m.iatiActivity.TotalDisbursment >= m.aimsProject.TotalDisbursment ? m.iatiActivity.TotalDisbursment : m.aimsProject.TotalDisbursment;
+        var numerator = m.iatiActivity.TotalDisbursmentThisDPOnly >= m.aimsProject.TotalDisbursmentThisDPOnly ? m.iatiActivity.TotalDisbursmentThisDPOnly : m.aimsProject.TotalDisbursmentThisDPOnly;
 
-        var denominator = m.iatiActivity.TotalDisbursment < m.aimsProject.TotalDisbursment ? m.iatiActivity.TotalDisbursment : m.aimsProject.TotalDisbursment;
+        var denominator = m.iatiActivity.TotalDisbursmentThisDPOnly < m.aimsProject.TotalDisbursmentThisDPOnly ? m.iatiActivity.TotalDisbursmentThisDPOnly : m.aimsProject.TotalDisbursmentThisDPOnly;
 
         return (numerator / denominator) * 100;
     }
     $scope.commitmentDiff = function (m) {
-        var numerator = m.iatiActivity.TotalCommitment >= m.aimsProject.TotalCommitment ? m.iatiActivity.TotalCommitment : m.aimsProject.TotalCommitment;
+        var numerator = m.iatiActivity.TotalCommitmentThisDPOnly >= m.aimsProject.TotalCommitmentThisDPOnly ? m.iatiActivity.TotalCommitmentThisDPOnly : m.aimsProject.TotalCommitmentThisDPOnly;
 
-        var denominator = m.iatiActivity.TotalCommitment < m.aimsProject.TotalCommitment ? m.iatiActivity.TotalCommitment : m.aimsProject.TotalCommitment;
+        var denominator = m.iatiActivity.TotalCommitmentThisDPOnly < m.aimsProject.TotalCommitmentThisDPOnly ? m.iatiActivity.TotalCommitmentThisDPOnly : m.aimsProject.TotalCommitmentThisDPOnly;
 
         return (numerator / denominator) * 100;
 
