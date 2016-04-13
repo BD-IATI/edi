@@ -133,7 +133,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             #endregion
 
             #region Import
-            aimsDAL.UpdateProjects(CFnTFModel.AimsProjects, Sessions.UserId);
+            aimsDAL.UpdateCofinanceProjects(CFnTFModel.AimsProjects, Sessions.UserId);
             aimsDAL.UpdateTrustFunds(CFnTFModel.TrustFundDetails, Sessions.UserId);
             #endregion Import
             return true;

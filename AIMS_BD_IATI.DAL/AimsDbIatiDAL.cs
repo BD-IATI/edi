@@ -52,14 +52,53 @@ namespace AIMS_BD_IATI.DAL
                     {
                         var aimsDAL = new AimsDAL();
 
-                        //step 1-5
-                        var ProjectFieldMapModels = PrepareMappedActivities(iatiActivities, a, aimsDAL);
+                        //step 1: project structure
+                        var iactivities = new List<iatiactivity>();
+                        if (a.Hierarchy == 1)
+                            iactivities = ImportLogic.LoadH1ActivitiesWithChild(iatiActivities); // here pass all activities to find out their child activities
+                        else
+                            iactivities = ImportLogic.LoadH2ActivitiesWithParent(iatiActivities);
 
-                        //step 6: merge iatiActivity and aimsProject; and get an new merged activity
-                        var mergedActivities = ImportLogic.MergeProjects(ProjectFieldMapModels); //now it will allways return a list containing single activity
-                        mergedActivities.n(0).FundSourceIDnIATICode = fundSource.Id + "~" + a.OrgId;
-                        //step 7: update aims database with margedActivities
-                        aimsDAL.UpdateProjects(mergedActivities, "system");
+                        //step 2: get mapped iatiActivity and aimsProject
+                        var iatiActivity = iactivities.Find(f => f.IatiIdentifier == a.IatiIdentifier);
+                        // SetExchangedValues
+                        SetExchangedValues(iatiActivity);
+                        iatiActivity.childActivities.ForEach(ra => SetExchangedValues(ra));
+
+                        var aimsProject = new iatiactivity();
+                        if (a.ProjectId > 0)
+                        {
+                            aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.ProjectId);
+                            //step 3: get general preference
+                            var generalPreference = GetFieldMappingPreferenceGeneral(a.OrgId);
+
+                            //step 4: create a ProjectFieldMapModel using iatiActivity, aimsProject and generalPreference
+                            var ProjectFieldMapModel = new ProjectFieldMapModel(iatiActivity, aimsProject, generalPreference);
+
+                            //step 5: SetFieldMappingPreferences
+                            var ProjectFieldMapModels = new List<ProjectFieldMapModel>(); // here we make a list just to use existing method (e.g existing method require a List parameter)
+                            ProjectFieldMapModels.Add(ProjectFieldMapModel);
+
+                            ImportLogic.SetFieldMappingPreferences(ProjectFieldMapModels, ProjectFieldMapModel);
+
+                            //step 6: merge iatiActivity and aimsProject; and get an new merged activity
+                            var mergedActivities = ImportLogic.MergeProjects(ProjectFieldMapModels); //now it will allways return a list containing single activity
+                            mergedActivities.n(0).FundSourceIDnIATICode = fundSource.Id + "~" + a.OrgId;
+                            //step 7: update aims database with margedActivities
+                            aimsDAL.UpdateProjects(mergedActivities, "system");
+                        }
+                        else if (a.MappedProjectId > 0) //for co-finance projects
+                        {
+                            aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.MappedProjectId);
+
+                            iatiActivity.FundSourceIDnIATICode = fundSource.Id + "~" + a.OrgId;
+
+                            aimsProject.MatchedProjects.Add(iatiActivity);
+                            //step 7: update aims database with margedActivities
+                            aimsDAL.UpdateCofinanceProjects(new List<iatiactivity> { aimsProject }, "system");
+
+
+                        }
 
                     }
 

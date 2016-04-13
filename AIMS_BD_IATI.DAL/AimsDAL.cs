@@ -339,6 +339,76 @@ namespace AIMS_BD_IATI.DAL
             return 1;
         }
 
+        public int? UpdateCofinanceProjects(List<iatiactivity> projects, string Iuser)
+        {
+            var aimsCurrencies = from c in dbContext.tblCurrencies
+                                 select new CurrencyLookupItem { Id = c.Id, IATICode = c.IATICode };
+
+            var aimsAidCategories = from c in dbContext.tblAidCategories
+                                    select new AidCategoryLookupItem { Id = c.Id, IATICode = c.IATICode };
+            try
+            {
+                foreach (var project in projects)
+                {
+                    try
+                    {
+                        bool isFinancialDataMismathed = false;
+                        var defaultfinancetype = "100";
+                        if (project.defaultfinancetype != null && !string.IsNullOrWhiteSpace(project.defaultfinancetype.code))
+                            defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
+
+                        var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == project.ProjectId);
+                        if (p != null)
+                        {
+                            // first check isFinancialDataMismathed
+                            foreach (var MatchedProject in project.MatchedProjects)
+                            {
+                                isFinancialDataMismathed = CheckTransactionMismatch(p, MatchedProject);
+                                if (isFinancialDataMismathed) break;
+                            }
+                            //if Financial Data are Mismathed then continue with next project
+                            if (isFinancialDataMismathed) continue;
+
+                            //if FinancialData are not Mismathed then delete existing transactions (this DP only)
+                            foreach (var MatchedProject in project.MatchedProjects)
+                            {
+                                DeleteTransactions(p, MatchedProject);
+                            }
+                            //here we need another loop to update transactions !!! Do not combine these three identical loops.
+                            foreach (var MatchedProject in project.MatchedProjects)
+                            {
+                                UpdateTransactions(Iuser, aimsCurrencies, aimsAidCategories, defaultfinancetype, p, MatchedProject);
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteToDbAndFile(ex, LogType.Error, project.IATICode, project.IatiIdentifier);
+
+                    }
+
+
+                }
+
+                dbContext.SaveChanges();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Trace.TraceInformation("Property: {0} Error: {1}",
+                                                validationError.PropertyName,
+                                                validationError.ErrorMessage);
+                    }
+                }
+            }
+
+            return 1;
+        }
+
         private void UpdateTransactions(string Iuser, IQueryable<CurrencyLookupItem> aimsCurrencies, IQueryable<AidCategoryLookupItem> aimsAidCategories, string defaultfinancetype, tblProjectInfo p, iatiactivity MatchedProject)
         {
             #region Commitments
