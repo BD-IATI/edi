@@ -34,6 +34,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "IATIImportSite", "http://lo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.WebAPI", "AIMS_DB_IATI.WebAPI\AIMS_BD_IATI.WebAPI.csproj", "{7DED54C5-0325-48BA-9908-F51B485EB0EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.UnitTest", "AIMS_BD_IATI.UnitTest\AIMS_BD_IATI.UnitTest.csproj", "{D5754AE2-6884-41C4-9434-C31FD6730DFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +62,10 @@ Global
 		{7DED54C5-0325-48BA-9908-F51B485EB0EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DED54C5-0325-48BA-9908-F51B485EB0EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DED54C5-0325-48BA-9908-F51B485EB0EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5754AE2-6884-41C4-9434-C31FD6730DFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5754AE2-6884-41C4-9434-C31FD6730DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5754AE2-6884-41C4-9434-C31FD6730DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5754AE2-6884-41C4-9434-C31FD6730DFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
