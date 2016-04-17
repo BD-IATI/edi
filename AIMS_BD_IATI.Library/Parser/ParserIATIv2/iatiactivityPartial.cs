@@ -393,7 +393,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return iatiidentifier.n().Value;
+                var identifier = iatiidentifier.n().Value;
+                return identifier.Length > 50 ? identifier.Substring(0,40) + "*truncated" : identifier;
             }
 
             set

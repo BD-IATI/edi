@@ -77,7 +77,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 }
                             }
 
-                            var desActivity = objDestinaiton.iatiactivities.iatiactivity.FirstOrDefault(q => q.iatiidentifier.Value == srcIatiidentifier);
+                            var desActivity = objDestinaiton.iatiactivities.iatiactivity.FirstOrDefault(q => q.IatiIdentifier == srcIatiidentifier);
                             desActivity.AnyAttr[0].Prefix = "";
                             desActivity.AnyAttr[0].Value = "2.02";
 

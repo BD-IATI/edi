@@ -88,7 +88,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                         foreach (var ra in pa.relatedactivity.Where(r => r.type == "2"))
                         {
                             //load related activities
-                            var ha = Sessions.activitiesContainer.iatiActivities.Find(f => f.iatiidentifier.Value == ra.@ref);
+                            var ha = Sessions.activitiesContainer.iatiActivities.Find(f => f.IatiIdentifier == ra.@ref);
 
                             if (ha != null)
                             {
@@ -218,15 +218,15 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             //for showing mathced projects side by side And field mapping later
             var MatchedProjects2 = (from i in relevantActivies
-                                    from a in AimsProjects.Where(k => i.iatiidentifier.Value.Replace("-", "").EndsWith(k.iatiidentifier.Value.Replace("-", "")))
-                                    orderby i.iatiidentifier.Value
+                                    from a in AimsProjects.Where(k => i.IatiIdentifier.Replace("-", "").EndsWith(k.IatiIdentifier.Replace("-", "")))
+                                    orderby i.IatiIdentifier
                                     select new ProjectFieldMapModel(i, a)
                                     ).ToList();
 
             var IatiActivityNotInAims = relevantActivies.Except(MatchedProjects).ToList();
 
 
-            var AimsProjectNotInIati = AimsProjects.ExceptBy(MatchedProjects, f => f.iatiidentifier.Value).ToList();
+            var AimsProjectNotInIati = AimsProjects.ExceptBy(MatchedProjects, f => f.IatiIdentifier).ToList();
 
             Sessions.ProjectMapModel = new ProjectMapModel
              {
@@ -242,8 +242,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         private static IEnumerable<iatiactivity> GetMatchedProjects(List<iatiactivity> relevantActivies, List<iatiactivity> AimsProjects)
         {
             return from i in relevantActivies
-                   from a in AimsProjects.Where(k => i.iatiidentifier.Value.Replace("-", "").EndsWith(k.iatiidentifier.Value.Replace("-", "")))
-                   orderby i.iatiidentifier.Value
+                   from a in AimsProjects.Where(k => i.IatiIdentifier.Replace("-", "").EndsWith(k.IatiIdentifier.Replace("-", "")))
+                   orderby i.IatiIdentifier
 
                    select i;
         }
