@@ -152,6 +152,12 @@ namespace AIMS_BD_IATI.DAL
 
             return dbContext.SaveChanges();
         }
+        public int SaveAtivity(Activity activity, iatiactivity iatiActivity, tblFundSource fundSource)
+        {
+
+
+            return SaveAtivities(new List<Activity> { activity }, new List<iatiactivity> { iatiActivity }, fundSource);
+        }
 
         private List<ProjectFieldMapModel> PrepareMappedActivities(List<iatiactivity> iatiActivities, Activity a, AimsDAL aimsDAL)
         {

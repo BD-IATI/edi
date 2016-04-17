@@ -49,7 +49,7 @@ namespace AIMS_BD_IATI.Service
             int i = 1;
             foreach (var fundSource in fundSources)
             {
-               
+
                 Thread th = new Thread(new ThreadStart(() =>
                 {
                     Parser p = new Parser();
@@ -163,9 +163,8 @@ namespace AIMS_BD_IATI.Service
         private void SaveToDB(tblFundSource fundSource, AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray)
         {
 
-            List<Activity> Activities = new List<Activity>();
-
-            int counter = 0;
+            int counter = 1;
+            int successfullySavedActivityCounter = 0;
             int totalActivity = iatiactivityArray.Count();
 
             Logger.Write("INFO: " + "Total Activity found: " + totalActivity);
@@ -187,9 +186,25 @@ namespace AIMS_BD_IATI.Service
                             iatiactivitySerealizer.Serialize(ww, iatiactivityItem);
                             Activity.IatiActivity = ww.ToString();
                         }
-                        Activities.Add(Activity);
+
+                        successfullySavedActivityCounter += new AimsDbIatiDAL().SaveAtivity(Activity, iatiactivityItem, fundSource) == 1 ? 1 : 0;
 
                         Console.Write("\r Activity Counter: {0}   ", counter++);
+
+                    }
+                    catch (DbEntityValidationException ex)
+                    {
+                        string messages = "";
+                        foreach (var validationErrors in ex.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                messages += string.Format("\nProperty: {0} Error: {1}",
+                                                        validationError.PropertyName,
+                                                        validationError.ErrorMessage);
+                            }
+                        }
+                        Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, iatiactivityItem.IatiIdentifier, messages);
 
                     }
                     catch (Exception ex)
@@ -199,8 +214,7 @@ namespace AIMS_BD_IATI.Service
 
                 }
 
-                //var c = new AimsDbIatiDAL().SaveAtivities(Activities, iatiactivityArray.ToList(), fundSource);
-                Logger.Write("INFO: " + "All activities are stored in Database");
+                Logger.Write("INFO: " + successfullySavedActivityCounter + " activities are stored in Database");
             }
         }
 
