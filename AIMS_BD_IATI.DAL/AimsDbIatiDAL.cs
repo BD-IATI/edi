@@ -66,37 +66,67 @@ namespace AIMS_BD_IATI.DAL
                         iatiActivity.childActivities.ForEach(ra => SetExchangedValues(ra));
 
                         var aimsProject = new iatiactivity();
+
                         if (a.ProjectId > 0)
                         {
                             aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.ProjectId);
-                            //step 3: get general preference
-                            var generalPreference = GetFieldMappingPreferenceGeneral(a.OrgId);
+                            if (aimsProject != null)
+                            {
+                                //step 3: get general preference
+                                var generalPreference = GetFieldMappingPreferenceGeneral(a.OrgId);
 
-                            //step 4: create a ProjectFieldMapModel using iatiActivity, aimsProject and generalPreference
-                            var ProjectFieldMapModel = new ProjectFieldMapModel(iatiActivity, aimsProject, generalPreference);
+                                //step 4: create a ProjectFieldMapModel using iatiActivity, aimsProject and generalPreference
+                                var ProjectFieldMapModel = new ProjectFieldMapModel(iatiActivity, aimsProject, generalPreference);
 
-                            //step 5: SetFieldMappingPreferences
-                            var ProjectFieldMapModels = new List<ProjectFieldMapModel>(); // here we make a list just to use existing method (e.g existing method require a List parameter)
-                            ProjectFieldMapModels.Add(ProjectFieldMapModel);
+                                //step 5: SetFieldMappingPreferences
+                                var ProjectFieldMapModels = new List<ProjectFieldMapModel>(); // here we make a list just to use existing method (e.g existing method require a List parameter)
+                                ProjectFieldMapModels.Add(ProjectFieldMapModel);
 
-                            ImportLogic.SetFieldMappingPreferences(ProjectFieldMapModels, ProjectFieldMapModel);
+                                ImportLogic.SetFieldMappingPreferences(ProjectFieldMapModels, ProjectFieldMapModel);
 
-                            //step 6: merge iatiActivity and aimsProject; and get an new merged activity
-                            var mergedActivities = ImportLogic.MergeProjects(ProjectFieldMapModels); //now it will allways return a list containing single activity
-                            mergedActivities.n(0).FundSourceIDnIATICode = fundSource.Id + "~" + a.OrgId;
-                            //step 7: update aims database with margedActivities
-                            aimsDAL.UpdateProjects(mergedActivities, "system");
+                                //step 6: merge iatiActivity and aimsProject; and get an new merged activity
+                                var mergedActivities = ImportLogic.MergeProjects(ProjectFieldMapModels); //now it will allways return a list containing single activity
+                                mergedActivities.n(0).FundSourceIDnIATICode = fundSource.Id + "~" + a.OrgId;
+                                //step 7: update aims database with margedActivities
+                                aimsDAL.UpdateProjects(mergedActivities, "system");
+                            }
+                            else
+                            {
+                                dbContext.Logs.Add(new Log
+                                {
+                                    IatiIdentifier = activity.IatiIdentifier,
+                                    OrgId = activity.OrgId,
+                                    ProjectId = a.MappedProjectId,
+                                    Message = "The mapped project is not found in AIMS database",
+                                    LogType = (int)LogType.AimsProjectNotFound,
+                                    DateTime = DateTime.Now
+                                });
+                            }
                         }
                         else if (a.MappedProjectId > 0) //for co-finance projects
                         {
                             aimsProject = aimsDAL.GetAIMSProjectInIATIFormat(a.MappedProjectId);
 
-                            iatiActivity.FundSourceIDnIATICode = fundSource.Id + "~" + a.OrgId;
+                            if (aimsProject != null)
+                            {
+                                iatiActivity.FundSourceIDnIATICode = fundSource.Id + "~" + a.OrgId;
 
-                            aimsProject.MatchedProjects.Add(iatiActivity);
-                            //step 7: update aims database with margedActivities
-                            aimsDAL.UpdateCofinanceProjects(new List<iatiactivity> { aimsProject }, "system");
-
+                                aimsProject.MatchedProjects.Add(iatiActivity);
+                                //step 7: update aims database with margedActivities
+                                aimsDAL.UpdateCofinanceProjects(new List<iatiactivity> { aimsProject }, "system");
+                            }
+                            else
+                            {
+                                dbContext.Logs.Add(new Log
+                                {
+                                    IatiIdentifier = activity.IatiIdentifier,
+                                    OrgId = activity.OrgId,
+                                    ProjectId = a.MappedProjectId,
+                                    Message = "The mapped project is not found in AIMS database",
+                                    LogType = (int)LogType.AimsProjectNotFound,
+                                    DateTime = DateTime.Now
+                                });
+                            }
 
                         }
 
@@ -657,8 +687,11 @@ namespace AIMS_BD_IATI.DAL
 
         public int InsertLog(Log log)
         {
-            dbContext.Logs.Add(log);
-            return dbContext.SaveChanges();
+            using (var db = new AIMS_DB_IATIEntities())
+            {
+                dbContext.Logs.Add(log);
+                return db.SaveChanges();
+            }
         }
     }
 }
