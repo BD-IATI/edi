@@ -13,6 +13,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
     public class ParserIATIv2 : IParserIATI
     {
+        public static XmlSerializer serializer = new XmlSerializer(typeof(XmlResultv2), new XmlRootAttribute("result"));
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -28,8 +29,6 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public IXmlResult ParseIATIXML(string url)
         {
             IXmlResult xmlResult;
-
-            var serializer = new XmlSerializer(typeof(XmlResultv2), new XmlRootAttribute("result"));
 
             // Create an XmlNamespaceManager to resolve namespaces.
             NameTable nameTable = new NameTable();

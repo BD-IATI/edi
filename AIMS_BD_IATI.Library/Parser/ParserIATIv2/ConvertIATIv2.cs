@@ -73,7 +73,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.iatiidentifier))
                                 {
                                     var iatiidentifier = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.iatiidentifier)activityItem;
-                                    srcIatiidentifier = iatiidentifier.Text.FirstOrDefault();
+                                    srcIatiidentifier = iatiidentifier.Text.n(0);
                                 }
                             }
 
@@ -255,7 +255,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                                     var targetotheridentifier = desActivity.otheridentifier[otherIdentifierCounter];
 
-                                    targetotheridentifier.@ref = otheridentifier.Text.FirstOrDefault();
+                                    targetotheridentifier.@ref = otheridentifier.Text.n(0);
                                     targetotheridentifier.type = "A1";
 
                                     targetotheridentifier.ownerorg = new otheridentifierOwnerorg();

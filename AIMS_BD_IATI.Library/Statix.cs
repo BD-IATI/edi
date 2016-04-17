@@ -84,6 +84,8 @@ namespace AIMS_BD_IATI.Library
         Alert = 3,
         FinancialDataMismathed=4,
         AddedNewActivity=5,
+        AimsProjectNotFound=6,
+        ValidationError=7
     }
 
 }

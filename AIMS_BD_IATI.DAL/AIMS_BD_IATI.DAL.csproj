@@ -115,6 +115,7 @@
       <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
     </Compile>
     <Compile Include="Logger.cs" />
+    <Compile Include="Partials\AIMS_DB_IATIEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tblAgreementType.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
@@ -338,7 +339,9 @@
       <DependentUpon>AIMS_DB_IATI.edmx</DependentUpon>
       <LastGenOutput>AIMS_DB_IATI.cs</LastGenOutput>
     </None>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -350,9 +353,7 @@
       <Name>AIMS_BD_IATI.Library</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Partials\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

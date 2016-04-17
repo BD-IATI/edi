@@ -73,17 +73,29 @@ namespace AIMS_BD_IATI.Library
         /// <returns></returns>
         public static T n<T>(this T[] input, int position)
         {
-            if (input == null)
+            T ret = default(T);
+
+            if (input != null && position < input.Length && input[position] != null)
             {
-                return Activator.CreateInstance<T>();
+                ret = input[position];
             }
-            else if (position < input.Length)
-                if (input[position] == null)
-                    return Activator.CreateInstance<T>();
-                else
-                    return input[position];
             else
-                return Activator.CreateInstance<T>();
+            {
+                if (typeof(T) == typeof(string))
+                {
+                    ret = (dynamic) string.Empty;
+                }
+                else
+                {
+                    Type UnderlyingType = Nullable.GetUnderlyingType(typeof(T));
+                    if (UnderlyingType == null)
+                        ret = Activator.CreateInstance<T>();
+                    else
+                        ret = (T)Activator.CreateInstance(UnderlyingType);
+
+                }
+            }
+            return ret;
         }
 
         public static T n<T>(this List<T> input, int position)
