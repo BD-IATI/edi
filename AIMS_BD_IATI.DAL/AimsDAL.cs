@@ -120,8 +120,6 @@ namespace AIMS_BD_IATI.DAL
             return fundSources;
         }
 
-        #endregion Get Fundsources
-
         public List<LookupItem> GetProjects(string dp)
         {
             var projects = (from project in dbContext.tblProjectInfoes
@@ -152,6 +150,9 @@ namespace AIMS_BD_IATI.DAL
             return projects;
         }
 
+        #endregion Get Fundsources
+
+        #region TrustFund
         public TrustFundModel GetTrustFundDetails(int trustFundId)
         {
             TrustFundModel trustFundModel = new TrustFundModel();
@@ -248,6 +249,8 @@ namespace AIMS_BD_IATI.DAL
             return 1;
         }
 
+        #endregion TrustFund
+
         #region Update Projects
         public int? UpdateProjects(List<iatiactivity> projects, string Iuser)
         {
@@ -256,84 +259,99 @@ namespace AIMS_BD_IATI.DAL
 
             var aimsAidCategories = from c in dbContext.tblAidCategories
                                     select new AidCategoryLookupItem { Id = c.Id, IATICode = c.IATICode };
-            try
+            foreach (var mergedproject in projects)
             {
-                foreach (var mergedproject in projects)
+                try
                 {
-                    try
+                    bool isFinancialDataMismathed = false;
+                    var defaultfinancetype = "100";
+                    if (mergedproject.defaultfinancetype != null && !string.IsNullOrWhiteSpace(mergedproject.defaultfinancetype.code))
+                        defaultfinancetype = mergedproject.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
+
+                    var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == mergedproject.ProjectId);
+                    if (p == null)
                     {
-                        bool isFinancialDataMismathed = false;
-                        var defaultfinancetype = "100";
-                        if (mergedproject.defaultfinancetype != null && !string.IsNullOrWhiteSpace(mergedproject.defaultfinancetype.code))
-                            defaultfinancetype = mergedproject.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
-
-                        var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == mergedproject.ProjectId);
-                        if (p == null)
+                        p = new tblProjectInfo();
+                        p.IDate = DateTime.Now;
+                        p.IUser = Iuser;
+                        dbContext.tblProjectInfoes.Add(p);
+                    }
+                    else
+                    {
+                        // first check isFinancialDataMismathed
+                        foreach (var MatchedProject in mergedproject.MatchedProjects)
                         {
-                            p = new tblProjectInfo();
-                            p.IDate = DateTime.Now;
-                            p.IUser = Iuser;
-                            dbContext.tblProjectInfoes.Add(p);
+                            isFinancialDataMismathed = CheckTransactionMismatch(p, MatchedProject);
+                            if (isFinancialDataMismathed) break;
                         }
-                        else
-                        {
-                            // first check isFinancialDataMismathed
-                            foreach (var MatchedProject in mergedproject.MatchedProjects)
-                            {
-                                isFinancialDataMismathed = CheckTransactionMismatch(p, MatchedProject);
-                                if (isFinancialDataMismathed) break;
-                            }
-                            //if Financial Data are Mismathed then continue with next project
-                            if (isFinancialDataMismathed) continue;
-
-                            //if FinancialData are not Mismathed then delete existing transactions (this DP only)
-                            foreach (var MatchedProject in mergedproject.MatchedProjects)
-                            {
-                                DeleteTransactions(p, MatchedProject);
-                            }
-                            //here we need another loop to update transactions !!! Do not combine these three identical loops.
-                            foreach (var MatchedProject in mergedproject.MatchedProjects)
-                            {
-                                UpdateTransactions(Iuser, aimsCurrencies, aimsAidCategories, defaultfinancetype, p, MatchedProject);
-                            }
-                        }
-
-                        isFinancialDataMismathed = CheckTransactionMismatch(p, mergedproject);
+                        //if Financial Data are Mismathed then continue with next project
                         if (isFinancialDataMismathed) continue;
 
-                        DeleteTransactions(p, mergedproject);
-
-                        UpdateTransactions(Iuser, aimsCurrencies, aimsAidCategories, defaultfinancetype, p, mergedproject);
-
-                        //we need to place this region at bottom due to checking isFinancialDataMismathed
-                        #region Other Fields
-                        p.Title = mergedproject.Title;
-                        p.Objective = mergedproject.Description;
-
-                        #endregion
+                        //if FinancialData are not Mismathed then delete existing transactions (this DP only)
+                        foreach (var MatchedProject in mergedproject.MatchedProjects)
+                        {
+                            DeleteTransactions(p, MatchedProject);
+                        }
+                        //here we need another loop to update transactions !!! Do not combine these three identical loops.
+                        foreach (var MatchedProject in mergedproject.MatchedProjects)
+                        {
+                            UpdateTransactions(Iuser, aimsCurrencies, aimsAidCategories, defaultfinancetype, p, MatchedProject);
+                        }
                     }
-                    catch (Exception ex)
+
+                    isFinancialDataMismathed = CheckTransactionMismatch(p, mergedproject);
+                    if (isFinancialDataMismathed) continue;
+
+                    DeleteTransactions(p, mergedproject);
+
+                    UpdateTransactions(Iuser, aimsCurrencies, aimsAidCategories, defaultfinancetype, p, mergedproject);
+
+                    //we need to place this region at bottom due to checking isFinancialDataMismathed
+                    #region Other Fields
+                    p.Title = mergedproject.Title;
+                    p.Objective = mergedproject.Description;
+
+                    foreach (var document in mergedproject.documentlink)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier);
+                        var docTitle = document.title.n().narrative.n(0).Value;
+                        var attachment = p.tblProjectAttachments.FirstOrDefault(f => f.AttachmentTitle == docTitle);
 
+                        if (attachment == null)
+                        {
+                            attachment = new tblProjectAttachment();
+                            p.tblProjectAttachments.Add(attachment);
+                        }
+
+                        attachment.DocumentCategoryId = 1; //Todo: give actual DocumentCategory
+                        attachment.AttachmentTitle = docTitle;
+                        attachment.AttachmentFileURL = document.url;
+                        attachment.IUser = Iuser;
+                        attachment.IDate = DateTime.Now;
                     }
 
+                    #endregion
+
+                    dbContext.SaveChanges();
 
                 }
-
-                dbContext.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                catch (DbEntityValidationException dbEx)
                 {
-                    foreach (var validationError in validationErrors.ValidationErrors)
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
                     {
-                        Trace.TraceInformation("Property: {0} Error: {1}",
-                                                validationError.PropertyName,
-                                                validationError.ErrorMessage);
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Trace.TraceInformation("Property: {0} Error: {1}",
+                                                    validationError.PropertyName,
+                                                    validationError.ErrorMessage);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier);
+
+                }
+
             }
 
             return 1;
@@ -346,65 +364,63 @@ namespace AIMS_BD_IATI.DAL
 
             var aimsAidCategories = from c in dbContext.tblAidCategories
                                     select new AidCategoryLookupItem { Id = c.Id, IATICode = c.IATICode };
-            try
+            foreach (var project in projects)
             {
-                foreach (var project in projects)
+                try
                 {
-                    try
-                    {
-                        bool isFinancialDataMismathed = false;
-                        var defaultfinancetype = "100";
-                        if (project.defaultfinancetype != null && !string.IsNullOrWhiteSpace(project.defaultfinancetype.code))
-                            defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
+                    bool isFinancialDataMismathed = false;
+                    var defaultfinancetype = "100";
+                    if (project.defaultfinancetype != null && !string.IsNullOrWhiteSpace(project.defaultfinancetype.code))
+                        defaultfinancetype = project.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
 
-                        var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == project.ProjectId);
-                        if (p != null)
+                    var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == project.ProjectId);
+                    if (p != null)
+                    {
+                        // first check isFinancialDataMismathed
+                        foreach (var MatchedProject in project.MatchedProjects)
                         {
-                            // first check isFinancialDataMismathed
-                            foreach (var MatchedProject in project.MatchedProjects)
-                            {
-                                isFinancialDataMismathed = CheckTransactionMismatch(p, MatchedProject);
-                                if (isFinancialDataMismathed) break;
-                            }
-                            //if Financial Data are Mismathed then continue with next project
-                            if (isFinancialDataMismathed) continue;
-
-                            //if FinancialData are not Mismathed then delete existing transactions (this DP only)
-                            foreach (var MatchedProject in project.MatchedProjects)
-                            {
-                                DeleteTransactions(p, MatchedProject);
-                            }
-                            //here we need another loop to update transactions !!! Do not combine these three identical loops.
-                            foreach (var MatchedProject in project.MatchedProjects)
-                            {
-                                UpdateTransactions(Iuser, aimsCurrencies, aimsAidCategories, defaultfinancetype, p, MatchedProject);
-                            }
+                            isFinancialDataMismathed = CheckTransactionMismatch(p, MatchedProject);
+                            if (isFinancialDataMismathed) break;
                         }
+                        //if Financial Data are Mismathed then continue with next project
+                        if (isFinancialDataMismathed) continue;
 
+                        //if FinancialData are not Mismathed then delete existing transactions (this DP only)
+                        foreach (var MatchedProject in project.MatchedProjects)
+                        {
+                            DeleteTransactions(p, MatchedProject);
+                        }
+                        //here we need another loop to update transactions !!! Do not combine these three identical loops.
+                        foreach (var MatchedProject in project.MatchedProjects)
+                        {
+                            UpdateTransactions(Iuser, aimsCurrencies, aimsAidCategories, defaultfinancetype, p, MatchedProject);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, project.IATICode, project.IatiIdentifier);
-
-                    }
-
+                    dbContext.SaveChanges();
 
                 }
-
-                dbContext.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                catch (DbEntityValidationException dbEx)
                 {
-                    foreach (var validationError in validationErrors.ValidationErrors)
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
                     {
-                        Trace.TraceInformation("Property: {0} Error: {1}",
-                                                validationError.PropertyName,
-                                                validationError.ErrorMessage);
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Trace.TraceInformation("Property: {0} Error: {1}",
+                                                    validationError.PropertyName,
+                                                    validationError.ErrorMessage);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Logger.WriteToDbAndFile(ex, LogType.Error, project.IATICode, project.IatiIdentifier);
+
+                }
+
+
             }
+
+
 
             return 1;
         }
@@ -1115,12 +1131,6 @@ namespace AIMS_BD_IATI.DAL
 
             return q;
         }
-    }
-
-
-    public class iatiactivityExtended : iatiactivity
-    {
-
     }
 
 }

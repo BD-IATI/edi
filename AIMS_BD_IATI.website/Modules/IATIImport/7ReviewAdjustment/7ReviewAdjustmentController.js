@@ -1,4 +1,5 @@
-﻿angular.module('iatiDataImporter').controller("7ReviewAdjustmentController", function ($rootScope, $scope, $http, $uibModal,$timeout) {
+﻿angular.module('iatiDataImporter').controller("7ReviewAdjustmentController", function ($rootScope, $scope, $http, $uibModal, $timeout) {
+
     $http({
         method: 'POST',
         url: apiprefix + '/api/IATIImport/GetProjectsToMap',
