@@ -148,7 +148,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             var iOrgs = new List<participatingorg>();
             foreach (var activity in Sessions.activitiesContainer.iatiActivities)
             {
-                var participatingOrgs = activity.participatingorg.n().Where(w => w.role == "4").ToList();
+                var participatingOrgs = activity.ImplementingOrgs;
 
                 iOrgs.AddRange(participatingOrgs);
 
@@ -184,7 +184,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
 
             var iOrgs = new List<participatingorg>();
-            Sessions.activitiesContainer.RelevantActivities.ForEach(e => iOrgs.AddRange(e.participatingorg.n().Where(w => w.role == "4").ToList()));
+            Sessions.activitiesContainer.RelevantActivities.ForEach(e => iOrgs.AddRange(e.ImplementingOrgs));
 
             foreach (var iOrg in _iOrgs)
             {

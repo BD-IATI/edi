@@ -60,9 +60,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="log in model.AddedNewActivityLogs">
-                        <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>
-                        <td><span ng-bind="log.Message"></span> <code ng-bind="log.IatiIdentifier"></code></td>
+                    <tr >
+                        <td ng-bind="model.AddedNewActivityLogSummery.DateTime | date:'yyyy-MM-dd'"></td>
+                        <td><span ng-bind="model.AddedNewActivityLogSummery.Message"></span></td>
                     </tr>
                     <tr ng-repeat="log in model.OtherLogs">
                         <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>

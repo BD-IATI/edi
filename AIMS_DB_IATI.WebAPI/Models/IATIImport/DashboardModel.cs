@@ -23,6 +23,9 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         private List<Log> Logs { get; set; }
 
         public List<Log> AddedNewActivityLogs { get { return Logs.Where(f => f.LogType == (int)LogType.AddedNewActivity).DistinctBy(d => d.IatiIdentifier).ToList(); } }
+        public Log AddedNewActivityLogSummery { get { 
+            return new Log { LogType =(int) LogType.AddedNewActivity, DateTime = AddedNewActivityLogs.n(0).DateTime, Message = AddedNewActivityLogs.Count + " new activities were added" }; } }
+        
         public List<Log> FinancialDataMismatchedLogs { get { return Logs.Where(f => f.LogType == (int)LogType.FinancialDataMismathed).DistinctBy(d=>d.IatiIdentifier).ToList(); } }
 
         public List<Log> OtherLogs { get { return Logs.FindAll(f => f.LogType != (int)LogType.AddedNewActivity && f.LogType != (int)LogType.FinancialDataMismathed ); } }

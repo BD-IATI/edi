@@ -143,7 +143,7 @@ namespace AIMS_BD_IATI.DAL
                         IatiIdentifier = activity.IatiIdentifier,
                         OrgId = activity.OrgId,
                         Message = "Imported new activity",
-                        LogType = (int)LogType.Info,
+                        LogType = (int)LogType.AddedNewActivity,
                         DateTime = DateTime.Now
                     });
                 }

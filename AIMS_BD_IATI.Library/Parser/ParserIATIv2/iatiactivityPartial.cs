@@ -346,7 +346,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return string.IsNullOrWhiteSpace(ownedBy) ? participatingorg.n().FirstOrDefault(f => f.n().role == "4").n().FundSourceIDnIATICode : ownedBy;
+                return string.IsNullOrWhiteSpace(ownedBy) ? ImplementingOrgs.n(0).FundSourceIDnIATICode : ownedBy;
             }
             set
             {
@@ -435,6 +435,18 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             set
             {
                 reportingorg.n().narrative = Statix.getNarativeArray(value);
+            }
+        }
+        [XmlIgnore]
+        public List<participatingorg> ImplementingOrgs
+        {
+            get
+            {
+                return participatingorg.n().Where(w => w.n().role == "4").ToList();
+            }
+            set
+            {
+                participatingorg = value.ToArray();
             }
         }
 

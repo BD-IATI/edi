@@ -34,7 +34,7 @@ namespace AIMS_BD_IATI.DAL
                 #endregion
 
                 #region To Resolve participating org
-                var participatingOrgs = H1Activity.participatingorg.n().Where(w => w.role == "4").ToList();
+                var participatingOrgs = H1Activity.ImplementingOrgs;
                 if (participatingOrgs.Count > 0)
                 {
                     ///iOrgs.AddRange(participatingOrgs);
@@ -45,7 +45,7 @@ namespace AIMS_BD_IATI.DAL
                     decimal highestCommitment = 0;
                     foreach (var relatedActivity in H1Activity.childActivities) // for h2Acts
                     {
-                        participatingOrgs = relatedActivity.participatingorg.n().Where(w => w.role == "4").ToList();
+                        participatingOrgs = relatedActivity.ImplementingOrgs;
                         ///iOrgs.AddRange(participatingOrgs);
 
                         //getting dominating participating org
@@ -78,7 +78,7 @@ namespace AIMS_BD_IATI.DAL
             foreach (var H2Activity in H2Activities)
             {
                 #region To Resolve participating org
-                var participatingOrgs = H2Activity.participatingorg.n().Where(w => w.role == "4").ToList();
+                var participatingOrgs = H2Activity.ImplementingOrgs;
                 if (participatingOrgs.Count > 0)
                 {
                     ///iOrgs.AddRange(participatingOrgs);
@@ -90,7 +90,7 @@ namespace AIMS_BD_IATI.DAL
 
                     if (pact != null)
                     {
-                        participatingOrgs = pact.participatingorg.n().Where(w => w.role == "4").ToList();
+                        participatingOrgs = pact.ImplementingOrgs;
 
                         ///iOrgs.AddRange(participatingOrgs);
 
