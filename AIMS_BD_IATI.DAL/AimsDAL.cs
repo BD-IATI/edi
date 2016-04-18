@@ -324,8 +324,9 @@ namespace AIMS_BD_IATI.DAL
                         }
 
                         var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == document.category.n(0).code);
-                        var docCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.FirstOrDefault().Id;
-                        attachment.DocumentCategoryId = docCategoryId; 
+
+                        attachment.DocumentCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.OrderBy(o=>o.Id).FirstOrDefault().Id; 
+
                         attachment.AttachmentTitle = docTitle;
                         attachment.AttachmentFileURL = document.url;
                         attachment.IUser = Iuser;
