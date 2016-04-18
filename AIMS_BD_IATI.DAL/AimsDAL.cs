@@ -306,13 +306,14 @@ namespace AIMS_BD_IATI.DAL
 
                     UpdateTransactions(Iuser, aimsCurrencies, aimsAidCategories, defaultfinancetype, p, mergedproject);
 
-                    //we need to place this region at bottom due to checking isFinancialDataMismathed
+                    //we need to place this region at bottom due to checking isFinancialDataMismatched
                     #region Other Fields
                     p.Title = mergedproject.Title;
                     p.Objective = mergedproject.Description;
 
                     foreach (var document in mergedproject.documentlink)
                     {
+
                         var docTitle = document.title.n().narrative.n(0).Value;
                         var attachment = p.tblProjectAttachments.FirstOrDefault(f => f.AttachmentTitle == docTitle);
 
@@ -322,7 +323,9 @@ namespace AIMS_BD_IATI.DAL
                             p.tblProjectAttachments.Add(attachment);
                         }
 
-                        attachment.DocumentCategoryId = 1; //Todo: give actual DocumentCategory
+                        var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == document.category.n(0).code);
+                        var docCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.FirstOrDefault().Id;
+                        attachment.DocumentCategoryId = docCategoryId; 
                         attachment.AttachmentTitle = docTitle;
                         attachment.AttachmentFileURL = document.url;
                         attachment.IUser = Iuser;
