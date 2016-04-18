@@ -183,12 +183,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         public List<iatiactivity> FilterDP(List<participatingorg> _iOrgs)
         {
 
-            var iOrgs = new List<participatingorg>();
-            Sessions.activitiesContainer.RelevantActivities.ForEach(e => iOrgs.AddRange(e.ImplementingOrgs));
+            var projectsImpOrgs = new List<participatingorg>();
+            Sessions.activitiesContainer.RelevantActivities.ForEach(e => projectsImpOrgs.AddRange(e.ImplementingOrgs));
 
             foreach (var iOrg in _iOrgs)
             {
-                iOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e => e.FundSourceIDnIATICode = iOrg.FundSourceIDnIATICode);
+                projectsImpOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e => e.FundSourceIDnIATICode = iOrg.FundSourceIDnIATICode);
             }
 
             return Sessions.activitiesContainer.RelevantActivities;

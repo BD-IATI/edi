@@ -11,6 +11,8 @@ namespace AIMS_BD_IATI.Library
         public string ID { get; set; }
         public string Name { get; set; }
         public int AimsFundSourceId { get; set; }
+        public string IDnIATICode { get { return AimsFundSourceId + "~" + ID ?? ""; } }
+
 
     }
     public class FundSourceLookupItem

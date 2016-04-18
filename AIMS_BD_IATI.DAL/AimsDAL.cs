@@ -292,7 +292,7 @@ namespace AIMS_BD_IATI.DAL
                         {
                             DeleteTransactions(p, MatchedProject);
                         }
-                        //here we need another loop to update transactions !!! Do not combine these three identical loops.
+                        //then we need another loop to update transactions !!! Do not combine these three identical loops.
                         foreach (var MatchedProject in mergedproject.MatchedProjects)
                         {
                             UpdateTransactions(Iuser, aimsCurrencies, aimsAidCategories, defaultfinancetype, p, MatchedProject);
@@ -328,6 +328,7 @@ namespace AIMS_BD_IATI.DAL
                         attachment.IUser = Iuser;
                         attachment.IDate = DateTime.Now;
                     }
+
 
                     #endregion
 

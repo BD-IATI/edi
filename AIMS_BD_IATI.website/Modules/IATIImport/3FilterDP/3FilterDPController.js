@@ -34,6 +34,19 @@
 
     };
 
+    $scope.hasOtherDPsProject = false;
+    $scope.onFundSourceChanged = function () {
+        var hasOtherDPsProject = false;
+        for (var i = 0; i < $scope.RelevantActivities.length; i++) {
+            if ($scope.RelevantActivities[i].FundSourceIDnIATICode != $rootScope.getCookie('selectedFundSource').IDnIATICode)
+            {
+                hasOtherDPsProject = true;
+                break;
+            }
+        }
+
+        $scope.hasOtherDPsProject = hasOtherDPsProject;
+    };
 
     $scope.SaveAndNext = function () {
         $http({

@@ -80,7 +80,7 @@
                                     <td>
                                         <div class="form-group">
                                             <div class="col-sm-12">
-                                                <select class="form-control"
+                                                <select class="form-control" ng-change="onFundSourceChanged()"
                                                         ng-model="activity.FundSourceIDnIATICode"
                                                         ng-options="item.IDnIATICode as item.Name for item in FundSources">
                                                     <option value="">Select one...</option>
@@ -98,8 +98,8 @@
                 <div class="form-group">
                     <div class="col-md-12 btnFooter">
                         <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
-
-                        <button ng-hide="RelevantActivities.length == 0"
+                        <span ng-hide="RelevantActivities.length == 0">
+                        <button ng-show="hasOtherDPsProject"
                                 type="button"
                                 class="btn btn-default"
                                 popover-title="Delegate projects to other DPs?"
@@ -108,7 +108,8 @@
                                 popover-placement="auto">
                             Next...
                         </button>
-                        <a id="btn4Projects" hidden ng-href="#/4Projects">Next</a>
+                        <a id="btn4Projects" ng-hide='hasOtherDPsProject' class="btn btn-default" ng-href="#/4Projects">Next</a>
+                        </span>
                     </div>
                 </div>
 
