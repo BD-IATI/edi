@@ -260,6 +260,24 @@ namespace AIMS_BD_IATI.DAL
             var aimsAidCategories = from c in dbContext.tblAidCategories
                                     select new AidCategoryLookupItem { Id = c.Id, IATICode = c.IATICode };
 
+            var divisions = from d in dbContext.tblDivisions
+                            where d.GPSLatitude != null && d.GPSLongitude != null
+                            select new
+                            {
+                                d.Id,
+                                d.DivisionName,
+                                d.GPSLatitude,
+                                d.GPSLongitude
+                            };
+            var districts = from d in dbContext.tblDistricts
+                            where d.GPSLatitude != null && d.GPSLongitude != null
+                            select new
+                            {
+                                d.Id,
+                                d.DistrictName,
+                                d.GPSLatitude,
+                                d.GPSLongitude
+                            };
 
             foreach (var mergedproject in projects)
             {
@@ -345,6 +363,29 @@ namespace AIMS_BD_IATI.DAL
                     p.ProjectTypeId = ProjectType != null ? ProjectType.Id : dbContext.tblProjectTypes.FirstOrDefault().Id;
                     
                     #endregion
+
+
+                    #region Location
+                    if (mergedproject.location != null)
+                    {
+
+                        foreach (var location in mergedproject.location)
+                        {
+                            List<GeoLocation> GeoLocations = new List<GeoLocation>();
+                            foreach (var divison in divisions)
+                            {
+
+                                GeoLocations.Add(new GeoLocation
+                                {
+                                    Distance = Math.Sqrt(Math.Pow((double)divison.GPSLatitude - (double)divison.GPSLongitude, 2) + Math.Pow(location.point.GetLatitude() - location.point.GetLongitude(), 2)),
+
+
+                                });
+                            }
+                        }
+                    } 
+                    #endregion
+
 
                     #endregion
 
@@ -1150,4 +1191,15 @@ namespace AIMS_BD_IATI.DAL
         }
     }
 
+    public class GeoLocation
+    {
+        public int DistrictId { get; set; }
+        public int DivisionId { get; set; }
+        public int UpazilaId { get; set; }
+
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+
+        public double Distance { get; set; }
+    }
 }
