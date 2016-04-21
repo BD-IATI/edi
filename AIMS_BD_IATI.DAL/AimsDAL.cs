@@ -364,6 +364,50 @@ namespace AIMS_BD_IATI.DAL
                     
                     #endregion
 
+                    #region Dates
+                    p.AgreementSignDate = mergedproject.ActualStartDate == default(DateTime) ? mergedproject.PlannedStartDate : mergedproject.ActualStartDate;
+                    p.PlannedProjectStartDate = mergedproject.PlannedStartDate;
+                    p.ActualProjectStartDate = mergedproject.ActualStartDate;
+                    p.PlannedProjectCompletionDate = mergedproject.PlannedEndDate;
+                    p.RevisedProjectCompletionDate = mergedproject.ActualEndDate;
+                    
+                    #endregion
+
+
+                    #region Sector
+                    if (mergedproject.sector != null)
+                    {
+                        var totalPercentage = mergedproject.sector.Sum(s => s.percentage); // to prevent percentage being greater than 100
+                        foreach (var sector in mergedproject.sector)
+                        {
+                            if (sector.vocabulary == "1" || sector.vocabulary == "2")
+                            {
+                                var aimsSector = dbContext.tblSectors.FirstOrDefault(f => f.IATICode == sector.code);
+                                var aimsSubsector = dbContext.tblSubSectors.FirstOrDefault(f => f.IATICode == sector.code);
+
+                                var sectorId = aimsSector != null ?
+                                    aimsSector.Id : aimsSubsector != null ?
+                                    aimsSubsector.SectorId : 0;
+
+                                if (sectorId > 0)
+                                {
+                                    var SubsectorId = aimsSubsector != null ? aimsSubsector.Id : 0;
+
+                                    var psector = p.tblProjectSectoralAllocations.FirstOrDefault(f => f.SectorId == sectorId && f.SubSectorId == SubsectorId);
+
+                                    if (psector == null)
+                                    {
+                                        psector = new tblProjectSectoralAllocation();
+                                        p.tblProjectSectoralAllocations.Add(psector);
+                                    }
+                                    psector.SectorId = sectorId;
+                                    psector.SubSectorId = SubsectorId;
+                                    psector.TotalCommitmentPercent = sector.percentage.ToPercent(totalPercentage);
+                                }
+                            }
+                        }
+                    } 
+                    #endregion
 
                     #region Location
                     if (mergedproject.location != null)
