@@ -259,6 +259,8 @@ namespace AIMS_BD_IATI.DAL
 
             var aimsAidCategories = from c in dbContext.tblAidCategories
                                     select new AidCategoryLookupItem { Id = c.Id, IATICode = c.IATICode };
+
+
             foreach (var mergedproject in projects)
             {
                 try
@@ -311,6 +313,7 @@ namespace AIMS_BD_IATI.DAL
                     p.Title = mergedproject.Title;
                     p.Objective = mergedproject.Description;
 
+                    #region Document
                     foreach (var document in mergedproject.documentlink)
                     {
 
@@ -325,14 +328,23 @@ namespace AIMS_BD_IATI.DAL
 
                         var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == document.category.n(0).code);
 
-                        attachment.DocumentCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.OrderBy(o=>o.Id).FirstOrDefault().Id; 
+                        attachment.DocumentCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.OrderBy(o => o.Id).FirstOrDefault().Id;
 
                         attachment.AttachmentTitle = docTitle;
                         attachment.AttachmentFileURL = document.url;
                         attachment.IUser = Iuser;
                         attachment.IDate = DateTime.Now;
-                    }
+                    } 
+                    #endregion
 
+                    #region Aid Type
+                    var AssistanceType = dbContext.tblAssistanceTypes.FirstOrDefault(f => f.IATICode.Contains(mergedproject.AidTypeCode));
+                    p.AssistanceTypeId = AssistanceType != null ? AssistanceType.Id : dbContext.tblAssistanceTypes.FirstOrDefault().Id;
+
+                    var ProjectType = dbContext.tblProjectTypes.FirstOrDefault(f => f.IATICode.Contains(mergedproject.AidTypeCode));
+                    p.ProjectTypeId = ProjectType != null ? ProjectType.Id : dbContext.tblProjectTypes.FirstOrDefault().Id;
+                    
+                    #endregion
 
                     #endregion
 
