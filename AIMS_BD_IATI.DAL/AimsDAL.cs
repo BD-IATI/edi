@@ -373,6 +373,12 @@ namespace AIMS_BD_IATI.DAL
                     
                     #endregion
 
+                    #region Status
+                    var ImplementationStatus = dbContext.tblImplementationStatus.FirstOrDefault(f => f.IATICode.Contains(mergedproject.activitystatus.n().code));
+
+                    p.ImplementationStatusId = ImplementationStatus == null ? default(int?) : ImplementationStatus.Id;
+                    
+                    #endregion
 
                     #region Sector
                     if (mergedproject.sector != null)
