@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -394,7 +394,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             get
             {
                 var identifier = iatiidentifier.n().Value;
-                return identifier != null && identifier.Length > 50 ? identifier.Substring(0,40) + "*truncated" : identifier??"";
+                return identifier != null && identifier.Length > 50 ? identifier.Substring(0, 40) + "*truncated" : identifier ?? "";
             }
 
             set
@@ -770,7 +770,21 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     {
     }
 
-
+    public partial class locationPoint
+    {
+        public double GetLatitude()
+        {
+            double lat = 0;
+            double.TryParse(pos.Substring(0, pos.IndexOf(' ')), out lat);
+            return lat;
+        }
+        public double GetLongitude()
+        {
+            double lon = 0;
+            double.TryParse(pos.Substring(pos.IndexOf(' ') + 1), out lon);
+            return lon;
+        }
+    }
 }
 
 
