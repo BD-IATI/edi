@@ -75,6 +75,26 @@ namespace AIMS_BD_IATI.Library
             if (datetime == default(DateTime)) return new DateTime(1700, 01, 01);
             else return datetime;
         }
+        /// <summary>
+        /// Calculates the percent of a decimal (e.g 10.PercentOf(200) = 20)
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="percentOf"></param>
+        /// <returns></returns>
+        public static decimal PercentOf(this decimal val, decimal percentOf)
+        {
+            return (val / 100) * percentOf;
+        }
+        /// <summary>
+        /// Calculates the percant from a given value (e.g 10.ToPercent(200) = 5)
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="total"></param>
+        /// <returns></returns>
+        public static decimal ToPercent(this decimal val, decimal total)
+        {
+            return total > 0 ? (val / total) * 100 : 0;
+        }    
     }
     public enum LogType
     {
