@@ -78,13 +78,15 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                             }
 
                             var desActivity = objDestinaiton.iatiactivities.iatiactivity.FirstOrDefault(q => q.IatiIdentifier == srcIatiidentifier);
-                            desActivity.AnyAttr[0].Prefix = "";
+                            //desActivity.AnyAttr[0].Prefix = "";
                             desActivity.AnyAttr[0].Value = "2.02";
+
+                            var locations = new List<location>();
 
                             int otherIdentifierCounter = 0;
                             foreach (var activityItem in activity.Items)
                             {
-                                //reporting-org
+                                #region reporting-org
                                 if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.reportingorg))
                                 {
                                     var reportingorg = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.reportingorg)activityItem;
@@ -93,7 +95,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                                     desActivity.reportingorg.narrative = arrynarrative;
                                 }
-                                //title
+                                #endregion
+
+                                #region title
                                 else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType))
                                 {
                                     var title = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)activityItem;
@@ -102,7 +106,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                                     desActivity.title.narrative = arrynarrative;
                                 }
-                                //description
+                                #endregion
+
+                                #region description
                                 else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.description))
                                 {
                                     var description = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.description)activityItem;
@@ -113,7 +119,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                     desActivity.description[0] = new iatiactivityDescription();
                                     desActivity.description[0].narrative = arrynarrative;
                                 }
-                                //participating-org
+                                #endregion
+
+                                #region participating-org
                                 else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.participatingorg))
                                 {
                                     var participatingorg = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.participatingorg)activityItem;
@@ -126,6 +134,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                     targetParticipatingOrg.role = getOrgRoleCode(participatingorg.role);
                                     targetParticipatingOrg.narrative = arrynarrative;
                                 }
+                                #endregion
 
                                 //recipient-country
                                 //Same
@@ -133,7 +142,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 //activity-status
                                 //Same
 
-                                //activity-date
+                                #region activity-date
                                 else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.activitydate))
                                 {
                                     var activitydate = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.activitydate)activityItem;
@@ -141,7 +150,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                     var targetActivitydate = desActivity.activitydate.FirstOrDefault(x => x.type == activitydate.type);
                                     targetActivitydate.type = getActivityDateCode(activitydate.type);
                                 }
-                                //contact-info
+                                #endregion
+
+                                #region contact-info
                                 else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfo))
                                 {
                                     var contactinfo = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfo)activityItem;
@@ -177,8 +188,41 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                     }
 
                                 }
-                                //location
-                                //ToDo
+                                #endregion
+
+                                #region location
+                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.location))
+                                {
+                                    var location = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.location)activityItem;
+
+                                    var locationV2 = new location();
+
+                                    foreach (var it in location.Items)
+                                    {
+                                        if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationCoordinates))
+                                        {
+                                            var coordinate = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationCoordinates)it;
+                                            locationV2.point = new locationPoint { pos = coordinate.latitude + " " + coordinate.longitude };
+                                        }
+
+                                        else if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationPoint))
+                                        {
+                                            var point = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationPoint)it;
+                                            locationV2.point = new locationPoint { pos = point.Items.n(0).ToString() };
+                                        }
+
+                                        else if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationAdministrative))
+                                        {
+                                            var adm = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationAdministrative)it;
+
+                                            locationV2.administrative.Add(new locationAdministrative { vocabulary = adm.vocabulary, level = adm.level, code = adm.code });
+
+                                        }
+                                    }
+
+                                    locations.Add(locationV2);
+                                }
+                                #endregion
 
                                 //sector
                                 //same
@@ -192,7 +236,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 //default-finance-type
                                 //same
 
-                                //budget
+                                #region budget
                                 else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.budget))
                                 {
                                     var budget = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.budget)activityItem;
@@ -203,11 +247,13 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                     }
 
                                 }
+                                #endregion
 
                                 //planned-disbursement
                                 //not in 1.05
 
-                                //transaction
+                                #region transaction
+
                                 else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.transaction))
                                 {
                                     var transaction = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.transaction)activityItem;
@@ -220,7 +266,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
 
                                 }
-                                //document-link
+                                #endregion
+
+                                #region document - link
                                 else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.documentlink))
                                 {
                                     var documentlink = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.documentlink)activityItem;
@@ -238,6 +286,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                     }
 
                                 }
+                                #endregion
                                 //conditions 
                                 //Not in 1.05
 
@@ -245,7 +294,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 //Not in 1.05
 
 
-                                //other-identifier
+                                #region other-identifier
                                 else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.otheridentifier))
                                 {
 
@@ -264,7 +313,12 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                     targetotheridentifier.AnyAttr = null;
                                     otherIdentifierCounter++;
                                 }
+                                #endregion
+
+
                             }
+
+                            desActivity.location = locations.ToArray();
                         }
                     }
                 }
@@ -283,7 +337,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             narrative.lang = "en";
 
             if (activityItem.Any != null)
-            { 
+            {
                 var narrative_value = activityItem.Any[0];
                 narrative.Value = narrative_value != null ? narrative_value.InnerText : "";
 

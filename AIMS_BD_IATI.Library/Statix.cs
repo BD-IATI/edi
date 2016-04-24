@@ -94,7 +94,21 @@ namespace AIMS_BD_IATI.Library
         public static decimal ToPercent(this decimal val, decimal total)
         {
             return total > 0 ? (val / total) * 100 : 0;
-        }    
+        }
+
+        public static T[] Add<T>(this T[] originalArray, T addItem) where T : class
+        {
+            if (addItem == null)
+            {
+                throw new ArgumentNullException("addItem");
+            }
+            var arr = new[] { addItem };
+            if (originalArray == null)
+            {
+                return arr;
+            }
+            return originalArray.Concat(arr).ToArray(); // although Concat is not recommended for performance reasons, see the accepted answer
+        }
     }
     public enum LogType
     {
