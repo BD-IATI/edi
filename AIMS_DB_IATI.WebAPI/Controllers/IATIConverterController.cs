@@ -39,7 +39,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
 
                 var iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
-                if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value == "1.05")
+                if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value.StartsWith("1.0"))
                 {
                     //Parser v1.05
                     parserIATI = new ParserIATIv1();
