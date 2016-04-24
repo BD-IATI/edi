@@ -35,7 +35,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -52,12 +61,21 @@
   <ItemGroup>
     <Compile Include="NullCheckerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LocationTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AIMS_BD_IATI.DAL\AIMS_BD_IATI.DAL.csproj">
+      <Project>{eb82e9d6-c868-4155-8d20-5127c8ab1d1e}</Project>
+      <Name>AIMS_BD_IATI.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AIMS_BD_IATI.Library\AIMS_BD_IATI.Library.csproj">
       <Project>{7864245e-5463-4c47-b5ef-e44fe9748b84}</Project>
       <Name>AIMS_BD_IATI.Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

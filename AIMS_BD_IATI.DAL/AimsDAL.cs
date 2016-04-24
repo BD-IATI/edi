@@ -8,6 +8,7 @@ using AIMS_BD_IATI.Library;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using MoreLinq;
+using System.Device.Location;
 
 namespace AIMS_BD_IATI.DAL
 {
@@ -260,24 +261,38 @@ namespace AIMS_BD_IATI.DAL
             var aimsAidCategories = from c in dbContext.tblAidCategories
                                     select new AidCategoryLookupItem { Id = c.Id, IATICode = c.IATICode };
 
-            var divisions = from d in dbContext.tblDivisions
+            var divisions = (from d in dbContext.tblDivisions
                             where d.GPSLatitude != null && d.GPSLongitude != null
-                            select new
+                            select new GeoLocation
                             {
-                                d.Id,
-                                d.DivisionName,
-                                d.GPSLatitude,
-                                d.GPSLongitude
-                            };
-            var districts = from d in dbContext.tblDistricts
+                                DivisionId = d.Id,
+                                Name = d.DivisionName,
+                                Latitude = (double) d.GPSLatitude,
+                                Longitude = (double) d.GPSLongitude
+                            }).ToList();
+
+            var districts = (from d in dbContext.tblDistricts
                             where d.GPSLatitude != null && d.GPSLongitude != null
-                            select new
+                            select new GeoLocation
                             {
-                                d.Id,
-                                d.DistrictName,
-                                d.GPSLatitude,
-                                d.GPSLongitude
-                            };
+                                DistrictId = d.Id,
+                                DivisionId = d.DivisionId,
+                                Name = d.DistrictName,
+                                Latitude = (double)d.GPSLatitude,
+                                Longitude = (double)d.GPSLongitude
+                            }).ToList();
+
+            var upazilas = (from d in dbContext.tblUpazilas
+                            where d.GPSLatitude != null && d.GPSLongitude != null
+                            select new GeoLocation
+                            {
+                                UpazilaId = d.Id,
+                                DistrictId = d.DistrictId,
+                                DivisionId = d.DivisionId,
+                                Name = d.UpazilaName,
+                                Latitude = (double)d.GPSLatitude,
+                                Longitude = (double)d.GPSLongitude
+                            }).ToList();
 
             foreach (var mergedproject in projects)
             {
@@ -288,7 +303,7 @@ namespace AIMS_BD_IATI.DAL
                     if (mergedproject.defaultfinancetype != null && !string.IsNullOrWhiteSpace(mergedproject.defaultfinancetype.code))
                         defaultfinancetype = mergedproject.defaultfinancetype.code.StartsWith("4") ? "400" : "100";
 
-                    var p = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == mergedproject.ProjectId);
+                    var p = dbContext.tblProjectInfoes?.FirstOrDefault(f => f.Id == mergedproject.ProjectId);
                     if (p == null)
                     {
                         p = new tblProjectInfo();
@@ -418,24 +433,45 @@ namespace AIMS_BD_IATI.DAL
                     #region Location
                     if (mergedproject.location != null)
                     {
-
                         foreach (var location in mergedproject.location)
                         {
-                            List<GeoLocation> GeoLocations = new List<GeoLocation>();
-                            foreach (var divison in divisions)
+                            GeoLocation nearestGeoLocation = null;
+                            var administrative = location.administrative.FirstOrDefault();
+                            if (administrative != null && administrative.vocabulary == "G1")
                             {
-
-                                GeoLocations.Add(new GeoLocation
+                                if (administrative.level == "1")
                                 {
-                                    Distance = Math.Sqrt(Math.Pow((double)divison.GPSLatitude - (double)divison.GPSLongitude, 2) + Math.Pow(location.point.GetLatitude() - location.point.GetLongitude(), 2)),
+                                    nearestGeoLocation = GetNearestGeoLocation(divisions, location);
+                                }
+                                else if (administrative.level == "2")
+                                {
 
+                                    nearestGeoLocation = GetNearestGeoLocation(districts, location);
+                                }
+                                else if (administrative.level == "3")
+                                {
 
-                                });
+                                    nearestGeoLocation = GetNearestGeoLocation(upazilas, location);
+                                }
                             }
+                            else 
+                            {
+                                 nearestGeoLocation = GetNearestGeoLocation(districts, location);
+                            }
+
+                            var aimsProjectLocation = dbContext.tblProjectGeographicAllocations.FirstOrDefault(f => f.DivisionId == nearestGeoLocation.DivisionId && f.DistrictId == nearestGeoLocation.DistrictId && f.UpazilaId == nearestGeoLocation.UpazilaId);
+
+                            if(aimsProjectLocation == null)
+                            {
+                                aimsProjectLocation = new tblProjectGeographicAllocation();
+                                p.tblProjectGeographicAllocations.Add(aimsProjectLocation);
+                            }
+
+                            aimsProjectLocation.TotalCommitmentPercentForDistrict = 100 / mergedproject.location.Count();
+
                         }
                     } 
                     #endregion
-
 
                     #endregion
 
@@ -465,8 +501,20 @@ namespace AIMS_BD_IATI.DAL
             return 1;
         }
 
+        public static GeoLocation GetNearestGeoLocation(List<GeoLocation> districts, location location)
+        {
+            foreach (var district in districts)
+            {
+                district.Distance = district.GeoCoordinate.GetDistanceTo(location?.point?.GeoCoordinate);
+            }
+
+            var nearestGeoLocation = districts.MinBy(o=>o.Distance);
+            return nearestGeoLocation;
+        }
+
         public int? UpdateCofinanceProjects(List<iatiactivity> projects, string Iuser)
         {
+            
             var aimsCurrencies = from c in dbContext.tblCurrencies
                                  select new CurrencyLookupItem { Id = c.Id, IATICode = c.IATICode };
 
@@ -1243,12 +1291,15 @@ namespace AIMS_BD_IATI.DAL
 
     public class GeoLocation
     {
-        public int DistrictId { get; set; }
-        public int DivisionId { get; set; }
-        public int UpazilaId { get; set; }
+        public int? DistrictId { get; set; }
+        public int? DivisionId { get; set; }
+        public int? UpazilaId { get; set; }
+        public string Name { get; set; }
 
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+
+        public GeoCoordinate GeoCoordinate { get { return new GeoCoordinate(Latitude, Longitude); } }
 
         public double Distance { get; set; }
     }

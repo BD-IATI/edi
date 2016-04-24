@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Device.Location;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -784,6 +785,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             double.TryParse(pos.Substring(pos.IndexOf(' ') + 1), out lon);
             return lon;
         }
+
+        public GeoCoordinate GeoCoordinate { get { return new GeoCoordinate(GetLatitude(), GetLongitude()); } }
+
     }
 }
 
