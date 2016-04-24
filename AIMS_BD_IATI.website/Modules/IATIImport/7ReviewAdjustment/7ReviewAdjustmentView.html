@@ -54,7 +54,27 @@
         <hr />
 
     </div>
+    <hr />
 
+    <div class="row" ng-repeat="iatiActivity in models.NewProjectsToAddInAims">
+        <div class="col-md-12" style="padding-bottom: 10px;">
+            <h3>
+                <span class="label label-danger"><i class="glyphicon glyphicon-asterisk"></i></span> {{iatiActivity.Title}}
+
+                <a class="btn btn-sm btn-default" ng-click="OpenTransactionDetail({iatiActivity:iatiActivity})"><i class="glyphicon glyphicon-usd"></i></a>
+                <span style="float:right; font-size:small" class="alert-danger">New Project</span>
+            </h3>
+
+            <commitmentvsdisbursmentchart aims-commitment="{{0}}"
+                                          aims-disbursment="{{0}}"
+                                          iati-commitment="{{iatiActivity.TotalCommitment}}"
+                                          iati-disbursment="{{iatiActivity.TotalDisbursment}}">
+
+            </commitmentvsdisbursmentchart>
+        </div>
+        <hr />
+
+    </div>
     <hr />
     <a ng-click="ImportProjects()" class="btn btn-success">Import projects &raquo;</a>
                         <a id="btnGoDashboard" hidden ng-href="#/Dashboard"></a>

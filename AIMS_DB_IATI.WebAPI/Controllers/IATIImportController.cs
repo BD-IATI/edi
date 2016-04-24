@@ -249,14 +249,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
-        public bool SubmitManualMatching(List<iatiactivity> projects)
+        public bool SubmitManualMatching(ProjectMapModel projectMapModel)
         {
-            Sessions.ProjectMapModel.AimsProjectsNotInIati = projects;
+            Sessions.ProjectMapModel.AimsProjectsNotInIati = projectMapModel?.AimsProjectsNotInIati;
 
             Sessions.ProjectMapModel.MatchedProjects.RemoveAll(r => r.IsManuallyMapped);
 
             //add manually matched projects
-            foreach (var project in Sessions.ProjectMapModel.AimsProjectsNotInIati)
+            foreach (var project in Sessions.ProjectMapModel?.AimsProjectsNotInIati)
             {
                 if (project.MatchedProjects.Count > 0)
                 {
@@ -264,6 +264,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 }
             }
 
+            foreach (var project in projectMapModel?.NewProjectsToAddInAims)
+            {
+                project.IsCommitmentIncluded = true;
+                project.IsDisbursmentIncluded = true;
+                project.IsPlannedDisbursmentIncluded = true;
+
+                Sessions.ProjectMapModel.NewProjectsToAddInAims.Add(project);
+            }
 
             return true;
         }
@@ -351,7 +359,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             else
                 Sessions.GeneralPreferences = GetGeneralPreferences();
 
-            if (Sessions.ProjectMapModel.MatchedProjects.IsEmpty())
+            if (Sessions.ProjectMapModel.MatchedProjects.IsEmpty() && Sessions.ProjectMapModel.NewProjectsToAddInAims.IsEmpty())
             {
                 if (Sessions.activitiesContainer.DP == "") Sessions.activitiesContainer = new iatiactivityContainer { DP = Sessions.DP };
                 Sessions.activitiesContainer = aimsDbIatiDAL.GetAllActivities(Sessions.activitiesContainer.DP);
@@ -371,7 +379,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 MatchedProjects = Sessions.ProjectMapModel.MatchedProjects,
                 IatiActivitiesNotInAims = null,
                 AimsProjectsNotInIati = null,
-                NewProjectsToAddInAims = null,
+                NewProjectsToAddInAims = Sessions.ProjectMapModel.NewProjectsToAddInAims,
                 ProjectsOwnedByOther = null
             };
         }
@@ -385,6 +393,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             var margedProjects = ImportLogic.MergeProjects(matchedProjects);
 
             aimsDbIatiDAL.MapActivities(margedProjects);
+
+            margedProjects.AddRange(projectMapModel.NewProjectsToAddInAims);
+
             return aimsDAL.UpdateProjects(margedProjects, Sessions.UserId);
         }
 

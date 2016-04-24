@@ -359,7 +359,8 @@ namespace AIMS_BD_IATI.DAL
                             p.tblProjectAttachments.Add(attachment);
                         }
 
-                        var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == document.category.n(0).code);
+                        var docCatCode = document.category.n(0).code;
+                        var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == docCatCode);
 
                         attachment.DocumentCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.OrderBy(o => o.Id).FirstOrDefault().Id;
 
@@ -371,6 +372,7 @@ namespace AIMS_BD_IATI.DAL
                     #endregion
 
                     #region Aid Type
+
                     var AssistanceType = dbContext.tblAssistanceTypes.FirstOrDefault(f => f.IATICode.Contains(mergedproject.AidTypeCode));
                     p.AssistanceTypeId = AssistanceType != null ? AssistanceType.Id : dbContext.tblAssistanceTypes.FirstOrDefault().Id;
 
@@ -385,11 +387,12 @@ namespace AIMS_BD_IATI.DAL
                     p.ActualProjectStartDate = mergedproject.ActualStartDate;
                     p.PlannedProjectCompletionDate = mergedproject.PlannedEndDate;
                     p.RevisedProjectCompletionDate = mergedproject.ActualEndDate;
-                    
+
                     #endregion
 
                     #region Status
-                    var ImplementationStatus = dbContext.tblImplementationStatus.FirstOrDefault(f => f.IATICode.Contains(mergedproject.activitystatus.n().code));
+                    var statusCode = mergedproject.activitystatus.n().code;
+                    var ImplementationStatus = dbContext.tblImplementationStatus.FirstOrDefault(f => f.IATICode.Contains(statusCode));
 
                     p.ImplementationStatusId = ImplementationStatus == null ? default(int?) : ImplementationStatus.Id;
                     
@@ -501,14 +504,14 @@ namespace AIMS_BD_IATI.DAL
             return 1;
         }
 
-        public static GeoLocation GetNearestGeoLocation(List<GeoLocation> districts, location location)
+        public static GeoLocation GetNearestGeoLocation(List<GeoLocation> geoLocations, location location)
         {
-            foreach (var district in districts)
+            foreach (var district in geoLocations)
             {
                 district.Distance = district.GeoCoordinate.GetDistanceTo(location?.point?.GeoCoordinate);
             }
 
-            var nearestGeoLocation = districts.MinBy(o=>o.Distance);
+            var nearestGeoLocation = geoLocations.MinBy(o=>o.Distance);
             return nearestGeoLocation;
         }
 

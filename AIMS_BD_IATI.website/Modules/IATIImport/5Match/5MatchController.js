@@ -6,7 +6,7 @@
             $http({
                 url: apiprefix + '/api/IATIImport/SubmitManualMatching',
                 method: 'POST',
-                data: JSON.stringify($scope.models.AimsProjectsNotInIati),
+                data: JSON.stringify($scope.models),
                 dataType: 'json'
             }).then(function (result) {
                 $timeout(function () {

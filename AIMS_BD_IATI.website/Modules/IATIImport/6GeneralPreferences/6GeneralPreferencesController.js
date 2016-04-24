@@ -54,18 +54,10 @@
 
     }
     $scope.NextWithoutSaving = function () {
-        document.getElementById('btn7ReviewAdjustment').click(); //redirect
+        $timeout(function () {
+            document.getElementById('btn7ReviewAdjustment').click(); //redirect
+        });
+
     }
-
-
-    $scope.IsModelChanged = false;
-
-    $scope.$watch('model.Fields', function (oldVal, newVal) {
-        try {
-            if (oldVal.length == newVal.length)
-                $scope.IsModelChanged = true;
-        }
-        catch (ee) { }
-    }, true);
 
 });
