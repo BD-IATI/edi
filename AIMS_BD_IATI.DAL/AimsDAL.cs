@@ -310,6 +310,7 @@ namespace AIMS_BD_IATI.DAL
                         p.IDate = DateTime.Now;
                         p.IUser = Iuser;
                         p.FundSourceId = mergedproject.AimsFundSourceId;
+                        p.IatiIdentifier = mergedproject.IatiIdentifier;
                         dbContext.tblProjectInfoes.Add(p);
                     }
                     else
@@ -484,6 +485,8 @@ namespace AIMS_BD_IATI.DAL
 
                     dbContext.SaveChanges();
 
+                    mergedproject.ProjectId = p.Id;
+
                 }
                 catch (DbEntityValidationException dbEx)
                 {
@@ -505,6 +508,27 @@ namespace AIMS_BD_IATI.DAL
 
             }
 
+            try
+            {
+                aimsDBIatiDAL.MapActivities(projects);
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Trace.TraceInformation("Property: {0} Error: {1}",
+                                                validationError.PropertyName,
+                                                validationError.ErrorMessage);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteToDbAndFile(ex, LogType.Error);
+
+            }
             return 1;
         }
 

@@ -20,6 +20,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public DashboardModel GetDashboardData(DPLookupItem dp)
         {
+            Sessions.Clear();
             string dpId = dp.ID;
             Sessions.DP.ID = dpId;
             Sessions.DP = dp;

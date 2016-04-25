@@ -392,8 +392,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             var margedProjects = ImportLogic.MergeProjects(matchedProjects);
 
-            aimsDbIatiDAL.MapActivities(margedProjects);
-
             foreach (var item in projectMapModel.NewProjectsToAddInAims)
             {
                 item.FundSourceIDnIATICode = Sessions.DP.IDnIATICode;

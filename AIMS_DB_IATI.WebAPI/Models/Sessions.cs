@@ -22,6 +22,16 @@ namespace AIMS_DB_IATI.WebAPI.Models
             set { HttpContext.Current.Session["iatiactivityContainer"] = value; }
         }
 
+        internal static void Clear()
+        {
+            activitiesContainer = null;
+            heirarchyModel = null;
+            GeneralPreferences = null;
+            ProjectMapModel = null;
+            CFnTFModel = null;
+            TrustFunds = null;
+        }
+
         public static HeirarchyModel heirarchyModel
         {
             get
