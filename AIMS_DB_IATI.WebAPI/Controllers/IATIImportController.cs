@@ -54,7 +54,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             Sessions.activitiesContainer = aimsDbIatiDAL.GetNotMappedActivities(dp.ID);
 
             Sessions.heirarchyModel = CalculateHierarchyMatching();
-            
+
             //}
             return Sessions.heirarchyModel;
         }
@@ -163,7 +163,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
                 //if not found, set to Current DP
                 if (managingDP == null)
-                    managingDP = managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.n().Contains(Sessions.activitiesContainer.DP));
+                    managingDP = managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.n().Contains(Sessions.DP.ID));
 
                 //Add selected value
                 org.FundSourceIDnIATICode = managingDP == null ? "" : managingDP.IDnIATICode;
@@ -208,9 +208,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             SetStatics();//since we have no access to session at library project, so we pass it in a static variables
 
-            var ProjectsOwnedByOther = relevantActivies.FindAll(f => f.IATICode != Sessions.activitiesContainer.DP);
+            var ProjectsOwnedByOther = relevantActivies.FindAll(f => f.IATICode != Sessions.DP.ID);
 
-            relevantActivies.RemoveAll(f => f.IATICode != Sessions.activitiesContainer.DP);
+            relevantActivies.RemoveAll(f => f.IATICode != Sessions.DP.ID);
 
             var AimsProjects = Sessions.activitiesContainer.AimsProjects;
 
@@ -229,13 +229,13 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             var AimsProjectNotInIati = AimsProjects.ExceptBy(MatchedProjects, f => f.IatiIdentifier).ToList();
 
             Sessions.ProjectMapModel = new ProjectMapModel
-             {
-                 MatchedProjects = MatchedProjects2,
-                 IatiActivitiesNotInAims = IatiActivityNotInAims,
-                 AimsProjectsNotInIati = AimsProjectNotInIati,
-                 NewProjectsToAddInAims = new List<iatiactivity>(),
-                 ProjectsOwnedByOther = ProjectsOwnedByOther
-             };
+            {
+                MatchedProjects = MatchedProjects2,
+                IatiActivitiesNotInAims = IatiActivityNotInAims,
+                AimsProjectsNotInIati = AimsProjectNotInIati,
+                NewProjectsToAddInAims = new List<iatiactivity>(),
+                ProjectsOwnedByOther = ProjectsOwnedByOther
+            };
             return Sessions.ProjectMapModel;
         }
 
@@ -279,7 +279,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [HttpGet]
         public ProjectFieldMapModel GetGeneralPreferences()
         {
-            var savedPreferences = aimsDbIatiDAL.GetFieldMappingPreferenceGeneral(Sessions.activitiesContainer.DP);
+            var savedPreferences = aimsDbIatiDAL.GetFieldMappingPreferenceGeneral(Sessions.DP.ID);
 
             var returnModel = (from a in Sessions.ProjectMapModel.n().MatchedProjects.n()
                                select new ProjectFieldMapModel(a.iatiActivity, a.aimsProject, savedPreferences)).FirstOrDefault();
@@ -313,7 +313,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 var entity = new FieldMappingPreferenceGeneral
                 {
                     FieldName = fieldMap.Field,
-                    OrgId = Sessions.activitiesContainer.DP,
+                    OrgId = Sessions.DP.ID,
                     IsSourceIATI = fieldMap.IsSourceIATI
                 };
 
@@ -361,8 +361,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             if (Sessions.ProjectMapModel.MatchedProjects.IsEmpty() && Sessions.ProjectMapModel.NewProjectsToAddInAims.IsEmpty())
             {
-                if (Sessions.activitiesContainer.DP == "") Sessions.activitiesContainer = new iatiactivityContainer { DP = Sessions.DP };
-                Sessions.activitiesContainer = aimsDbIatiDAL.GetAllActivities(Sessions.activitiesContainer.DP);
+
+                Sessions.activitiesContainer = aimsDbIatiDAL.GetAllActivities(Sessions.DP.ID);
                 var heirarchyModel = CalculateHierarchyMatching();
 
                 var filterBDModel = SubmitHierarchy(heirarchyModel);
@@ -394,7 +394,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             aimsDbIatiDAL.MapActivities(margedProjects);
 
-            margedProjects.AddRange(projectMapModel.NewProjectsToAddInAims);
+            foreach (var item in projectMapModel.NewProjectsToAddInAims)
+            {
+                item.FundSourceIDnIATICode = Sessions.DP.IDnIATICode;
+                margedProjects.Add(item);
+
+            }
 
             return aimsDAL.UpdateProjects(margedProjects, Sessions.UserId);
         }
@@ -410,12 +415,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
     }
 
-        public class iOrgs
-        {
-            public List<participatingorg> Orgs { get; set; }
-            public List<FundSourceLookupItem> FundSources { get; set; }
+    public class iOrgs
+    {
+        public List<participatingorg> Orgs { get; set; }
+        public List<FundSourceLookupItem> FundSources { get; set; }
 
-        }
+    }
 
 
 }

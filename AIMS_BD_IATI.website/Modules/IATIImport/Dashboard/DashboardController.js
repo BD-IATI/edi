@@ -1,11 +1,11 @@
 ﻿angular.module('iatiDataImporter').controller("DashboardController", function ($rootScope, $scope, $http, $uibModal) {
 
     $http({
-        method: 'GET',
+        method: 'POST',
         url: apiprefix + '/api/Dashboard/GetDashboardData',
-        params: {
-            dp: $rootScope.getCookie('selectedFundSource').ID
-        }
+
+        data: JSON.stringify($rootScope.getCookie('selectedFundSource'))
+
     }).success(function (result) {
         $scope.model = result;
     });
@@ -127,17 +127,17 @@
 
 });
 
-angular.module('iatiDataImporter').filter('sumByKey', function() {
-        return function(data, key) {
-            if (typeof(data) === 'undefined' || typeof(key) === 'undefined') {
-                return 0;
-            }
+angular.module('iatiDataImporter').filter('sumByKey', function () {
+    return function (data, key) {
+        if (typeof (data) === 'undefined' || typeof (key) === 'undefined') {
+            return 0;
+        }
 
-            var sum = 0;
-            for (var i = data.length - 1; i >= 0; i--) {
-                sum += parseFloat(data[i][key]);
-            }
+        var sum = 0;
+        for (var i = data.length - 1; i >= 0; i--) {
+            sum += parseFloat(data[i][key]);
+        }
 
-            return sum;
-        };
-    });
+        return sum;
+    };
+});

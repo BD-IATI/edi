@@ -14,10 +14,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     public class iatiactivityContainer
     {
-        public string DP { get; set; }
         public iatiactivityContainer()
         {
-            DP = "";
             iatiActivities = new List<iatiactivity>();
             NewProjects = new List<iatiactivity>();
         }

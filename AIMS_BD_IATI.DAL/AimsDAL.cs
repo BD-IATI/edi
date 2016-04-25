@@ -211,15 +211,15 @@ namespace AIMS_BD_IATI.DAL
                             foreach (var activity in TrustFundModel.iatiactivities)
                             {
                                 trustFund.tblTrustFundDetails.Add(new tblTrustFundDetail
-                                      {
-                                          TFDAmount = activity.TotalCommitment,
-                                          TFDAmountInUSD = activity.TotalCommitment,
-                                          TFDExchangeRateToUSD = 1,
-                                          TFDFundSourceId = activity.AimsFundSourceId,
-                                          TFDCurrencyId = 1,
-                                          IUser = Iuser,
-                                          IDate = DateTime.Now
-                                      });
+                                {
+                                    TFDAmount = activity.TotalCommitment,
+                                    TFDAmountInUSD = activity.TotalCommitment,
+                                    TFDExchangeRateToUSD = 1,
+                                    TFDFundSourceId = activity.AimsFundSourceId,
+                                    TFDCurrencyId = 1,
+                                    IUser = Iuser,
+                                    IDate = DateTime.Now
+                                });
                             }
                         }
                     }
@@ -262,25 +262,25 @@ namespace AIMS_BD_IATI.DAL
                                     select new AidCategoryLookupItem { Id = c.Id, IATICode = c.IATICode };
 
             var divisions = (from d in dbContext.tblDivisions
-                            where d.GPSLatitude != null && d.GPSLongitude != null
-                            select new GeoLocation
-                            {
-                                DivisionId = d.Id,
-                                Name = d.DivisionName,
-                                Latitude = (double) d.GPSLatitude,
-                                Longitude = (double) d.GPSLongitude
-                            }).ToList();
+                             where d.GPSLatitude != null && d.GPSLongitude != null
+                             select new GeoLocation
+                             {
+                                 DivisionId = d.Id,
+                                 Name = d.DivisionName,
+                                 Latitude = (double)d.GPSLatitude,
+                                 Longitude = (double)d.GPSLongitude
+                             }).ToList();
 
             var districts = (from d in dbContext.tblDistricts
-                            where d.GPSLatitude != null && d.GPSLongitude != null
-                            select new GeoLocation
-                            {
-                                DistrictId = d.Id,
-                                DivisionId = d.DivisionId,
-                                Name = d.DistrictName,
-                                Latitude = (double)d.GPSLatitude,
-                                Longitude = (double)d.GPSLongitude
-                            }).ToList();
+                             where d.GPSLatitude != null && d.GPSLongitude != null
+                             select new GeoLocation
+                             {
+                                 DistrictId = d.Id,
+                                 DivisionId = d.DivisionId,
+                                 Name = d.DistrictName,
+                                 Latitude = (double)d.GPSLatitude,
+                                 Longitude = (double)d.GPSLongitude
+                             }).ToList();
 
             var upazilas = (from d in dbContext.tblUpazilas
                             where d.GPSLatitude != null && d.GPSLongitude != null
@@ -309,6 +309,7 @@ namespace AIMS_BD_IATI.DAL
                         p = new tblProjectInfo();
                         p.IDate = DateTime.Now;
                         p.IUser = Iuser;
+                        p.FundSourceId = mergedproject.AimsFundSourceId;
                         dbContext.tblProjectInfoes.Add(p);
                     }
                     else
@@ -347,28 +348,31 @@ namespace AIMS_BD_IATI.DAL
                     p.Objective = mergedproject.Description;
 
                     #region Document
-                    foreach (var document in mergedproject.documentlink)
+                    if (mergedproject.documentlink != null)
                     {
-
-                        var docTitle = document.title.n().narrative.n(0).Value;
-                        var attachment = p.tblProjectAttachments.FirstOrDefault(f => f.AttachmentTitle == docTitle);
-
-                        if (attachment == null)
+                        foreach (var document in mergedproject.documentlink)
                         {
-                            attachment = new tblProjectAttachment();
-                            p.tblProjectAttachments.Add(attachment);
+
+                            var docTitle = document.title.n().narrative.n(0).Value;
+                            var attachment = p.tblProjectAttachments.FirstOrDefault(f => f.AttachmentTitle == docTitle);
+
+                            if (attachment == null)
+                            {
+                                attachment = new tblProjectAttachment();
+                                p.tblProjectAttachments.Add(attachment);
+                            }
+
+                            var docCatCode = document.category.n(0).code;
+                            var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == docCatCode);
+
+                            attachment.DocumentCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.OrderBy(o => o.Id).FirstOrDefault().Id;
+
+                            attachment.AttachmentTitle = docTitle;
+                            attachment.AttachmentFileURL = document.url;
+                            attachment.IUser = Iuser;
+                            attachment.IDate = DateTime.Now;
                         }
-
-                        var docCatCode = document.category.n(0).code;
-                        var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == docCatCode);
-
-                        attachment.DocumentCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.OrderBy(o => o.Id).FirstOrDefault().Id;
-
-                        attachment.AttachmentTitle = docTitle;
-                        attachment.AttachmentFileURL = document.url;
-                        attachment.IUser = Iuser;
-                        attachment.IDate = DateTime.Now;
-                    } 
+                    }
                     #endregion
 
                     #region Aid Type
@@ -378,7 +382,7 @@ namespace AIMS_BD_IATI.DAL
 
                     var ProjectType = dbContext.tblProjectTypes.FirstOrDefault(f => f.IATICode.Contains(mergedproject.AidTypeCode));
                     p.ProjectTypeId = ProjectType != null ? ProjectType.Id : dbContext.tblProjectTypes.FirstOrDefault().Id;
-                    
+
                     #endregion
 
                     #region Dates
@@ -395,7 +399,7 @@ namespace AIMS_BD_IATI.DAL
                     var ImplementationStatus = dbContext.tblImplementationStatus.FirstOrDefault(f => f.IATICode.Contains(statusCode));
 
                     p.ImplementationStatusId = ImplementationStatus == null ? default(int?) : ImplementationStatus.Id;
-                    
+
                     #endregion
 
                     #region Sector
@@ -430,7 +434,7 @@ namespace AIMS_BD_IATI.DAL
                                 }
                             }
                         }
-                    } 
+                    }
                     #endregion
 
                     #region Location
@@ -439,7 +443,7 @@ namespace AIMS_BD_IATI.DAL
                         foreach (var location in mergedproject.location)
                         {
                             GeoLocation nearestGeoLocation = null;
-                            var administrative = location.administrative.FirstOrDefault();
+                            var administrative = location.administrative?.FirstOrDefault();
                             if (administrative != null && administrative.vocabulary == "G1")
                             {
                                 if (administrative.level == "1")
@@ -457,14 +461,14 @@ namespace AIMS_BD_IATI.DAL
                                     nearestGeoLocation = GetNearestGeoLocation(upazilas, location);
                                 }
                             }
-                            else 
+                            else
                             {
-                                 nearestGeoLocation = GetNearestGeoLocation(districts, location);
+                                nearestGeoLocation = GetNearestGeoLocation(districts, location);
                             }
 
                             var aimsProjectLocation = dbContext.tblProjectGeographicAllocations.FirstOrDefault(f => f.DivisionId == nearestGeoLocation.DivisionId && f.DistrictId == nearestGeoLocation.DistrictId && f.UpazilaId == nearestGeoLocation.UpazilaId);
 
-                            if(aimsProjectLocation == null)
+                            if (aimsProjectLocation == null)
                             {
                                 aimsProjectLocation = new tblProjectGeographicAllocation();
                                 p.tblProjectGeographicAllocations.Add(aimsProjectLocation);
@@ -473,7 +477,7 @@ namespace AIMS_BD_IATI.DAL
                             aimsProjectLocation.TotalCommitmentPercentForDistrict = 100 / mergedproject.location.Count();
 
                         }
-                    } 
+                    }
                     #endregion
 
                     #endregion
@@ -511,13 +515,13 @@ namespace AIMS_BD_IATI.DAL
                 district.Distance = district.GeoCoordinate.GetDistanceTo(location?.point?.GeoCoordinate);
             }
 
-            var nearestGeoLocation = geoLocations.MinBy(o=>o.Distance);
+            var nearestGeoLocation = geoLocations.MinBy(o => o.Distance);
             return nearestGeoLocation;
         }
 
         public int? UpdateCofinanceProjects(List<iatiactivity> projects, string Iuser)
         {
-            
+
             var aimsCurrencies = from c in dbContext.tblCurrencies
                                  select new CurrencyLookupItem { Id = c.Id, IATICode = c.IATICode };
 
@@ -602,7 +606,7 @@ namespace AIMS_BD_IATI.DAL
                     //ToDo for co-finance projects it may be different
                     aimsCommitment.FundSourceId = MatchedProject.AimsFundSourceId;
 
-                    aimsCommitment.CommitmentAgreementSignDate = trn.transactiondate.n().isodate;
+                    aimsCommitment.CommitmentAgreementSignDate = trn.transactiondate?.isodate.ToSqlDateTimeNull();
 
                     var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
                     aimsCommitment.CommitmentMaidCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
@@ -646,8 +650,8 @@ namespace AIMS_BD_IATI.DAL
                     //ToDo for co-finance projects it may be different
                     aimsPlanDisbursment.FundSourceId = MatchedProject.AimsFundSourceId;
 
-                    aimsPlanDisbursment.PlannedDisbursementPeriodFromDate = trn.periodstart.n().isodate;
-                    aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend.n().isodate;
+                    aimsPlanDisbursment.PlannedDisbursementPeriodFromDate = trn.periodstart.n().isodate.ToSqlDateTimeNull();
+                    aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend.n().isodate.ToSqlDateTimeNull();
 
                     var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
                     aimsPlanDisbursment.PlannedDisbursementCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
@@ -687,8 +691,8 @@ namespace AIMS_BD_IATI.DAL
                     //ToDo for co-finance projects it may be different
                     aimsDisbursment.FundSourceId = MatchedProject.AimsFundSourceId;
 
-                    aimsDisbursment.DisbursementDate = trn.transactiondate.n().isodate;
-                    aimsDisbursment.DisbursementToDate = trn.transactiondate.n().isodate;
+                    aimsDisbursment.DisbursementDate = trn.transactiondate.n().isodate.ToSqlDateTime();
+                    aimsDisbursment.DisbursementToDate = trn.transactiondate.n().isodate.ToSqlDateTimeNull();
 
                     var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
                     aimsDisbursment.DisbursedCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;

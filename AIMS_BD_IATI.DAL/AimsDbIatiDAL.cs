@@ -301,7 +301,6 @@ namespace AIMS_BD_IATI.DAL
 
             return new iatiactivityContainer
             {
-                DP = dp,
                 iatiActivities = iatiActivities,
                 AimsProjects = aimsActivities
             };
@@ -321,7 +320,6 @@ namespace AIMS_BD_IATI.DAL
 
             return new iatiactivityContainer
             {
-                DP = dp,
                 iatiActivities = iatiActivities,
                 AimsProjects = aimsActivities
             };

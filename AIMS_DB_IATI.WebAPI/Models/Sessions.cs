@@ -21,6 +21,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
             }
             set { HttpContext.Current.Session["iatiactivityContainer"] = value; }
         }
+
         public static HeirarchyModel heirarchyModel
         {
             get
@@ -65,38 +66,31 @@ namespace AIMS_DB_IATI.WebAPI.Models
             set { HttpContext.Current.Session["FundSources"] = value; }
         }
 
-        public static List<ExchangeRateModel> ExchangeRates
-        {
-            get
-            {
-                return HttpContext.Current.Session["ExchangeRates"] == null ?
-                    new List<ExchangeRateModel>()
-                    : (List<ExchangeRateModel>)HttpContext.Current.Session["ExchangeRates"];
-            }
-            set { HttpContext.Current.Session["ExchangeRates"] = value; }
-        }
-
-
         public static string UserId
         {
             get
             {
-                return HttpContext.Current.Session["UserId"] == null ? 
+                return HttpContext.Current.Session["UserId"] == null ?
                     ""
                     : Convert.ToString(HttpContext.Current.Session["UserId"]);
             }
             set { HttpContext.Current.Session["UserId"] = value; }
         }
-        public static string DP
+
+        public static DPLookupItem DP
         {
             get
             {
-                return HttpContext.Current.Session["CurrentDP"] == null ? 
-                    ""
-                    : Convert.ToString(HttpContext.Current.Session["CurrentDP"]);
+                return HttpContext.Current.Session["CurrentDP"] == null ?
+                    new DPLookupItem()
+                    : (DPLookupItem)HttpContext.Current.Session["CurrentDP"];
             }
-            set { HttpContext.Current.Session["CurrentDP"] = value; }
+            set
+            {
+                HttpContext.Current.Session["CurrentDP"] = value;
+            }
         }
+
         public static CFnTFModel CFnTFModel
         {
             get

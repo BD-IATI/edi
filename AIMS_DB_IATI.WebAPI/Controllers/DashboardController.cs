@@ -17,30 +17,32 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         AimsDAL aimsDAL = new AimsDAL();
         AimsDbIatiDAL aimsDbIatiDAL = new AimsDbIatiDAL();
 
-        public DashboardModel GetDashboardData(string dp)
+        [AcceptVerbs("GET", "POST")]
+        public DashboardModel GetDashboardData(DPLookupItem dp)
         {
-            Sessions.activitiesContainer.DP = dp;
+            string dpId = dp.ID;
+            Sessions.DP.ID = dpId;
             Sessions.DP = dp;
 
             var dashboardModel = new DashboardModel();
-            dashboardModel.LastDownloadDate = aimsDbIatiDAL.GetLastDownloadDate(dp);
-            dashboardModel.NewActivityCount = aimsDbIatiDAL.GetNewActivityCount(dp);
-            dashboardModel.MappedActivityCount = aimsDbIatiDAL.GetMappedActivityCount(dp);
-            dashboardModel.AssignedActivityCount = aimsDbIatiDAL.GetAssignedActivityCount(dp);
-           dashboardModel.TotalActivityCount = aimsDbIatiDAL.GetTotalActivityCount(dp);
+            dashboardModel.LastDownloadDate = aimsDbIatiDAL.GetLastDownloadDate(dpId);
+            dashboardModel.NewActivityCount = aimsDbIatiDAL.GetNewActivityCount(dpId);
+            dashboardModel.MappedActivityCount = aimsDbIatiDAL.GetMappedActivityCount(dpId);
+            dashboardModel.AssignedActivityCount = aimsDbIatiDAL.GetAssignedActivityCount(dpId);
+            dashboardModel.TotalActivityCount = aimsDbIatiDAL.GetTotalActivityCount(dpId);
 
-            dashboardModel.DelegatedActivities = aimsDbIatiDAL.GetDelegatedActivities(dp);
+            dashboardModel.DelegatedActivities = aimsDbIatiDAL.GetDelegatedActivities(dpId);
             dashboardModel.DelegatedActivities.ForEach(f => f.AssignedOrgName = Sessions.FundSources.Find(k => k.IATICode == f.AssignedOrgId).n().Name);
 
             #region trust fund and cofinance projects
 
-            Sessions.CFnTFModel = aimsDbIatiDAL.GetAssignActivities(dp,true);
+            Sessions.CFnTFModel = aimsDbIatiDAL.GetAssignActivities(dpId, true);
             Sessions.CFnTFModel = new CFnTFController().SubmitAssignedActivities(Sessions.CFnTFModel.AssignedActivities);
             dashboardModel.CFnTFModel = Sessions.CFnTFModel;
 
             #endregion
 
-            dashboardModel.addLogs(aimsDbIatiDAL.GetLastDayLogs(dp));
+            dashboardModel.addLogs(aimsDbIatiDAL.GetLastDayLogs(dpId));
 
             return dashboardModel;
         }

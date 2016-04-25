@@ -72,7 +72,7 @@ namespace AIMS_BD_IATI.Library
         }
         public static DateTime ToSqlDateTime(this DateTime datetime)
         {
-            if (datetime == default(DateTime)) return new DateTime(1700, 01, 01);
+            if (datetime == default(DateTime)) return new DateTime(1777, 01, 01);
             else return datetime;
         }
         /// <summary>
