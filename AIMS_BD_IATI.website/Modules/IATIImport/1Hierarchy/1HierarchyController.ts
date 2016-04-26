@@ -1,4 +1,6 @@
+﻿
 angular.module('iatiDataImporter').controller("1HierarchyController", function ($rootScope, $scope, $http, $timeout) {
+
     $rootScope.HasChildActivity = false;
     $http({
         method: 'POST',
@@ -15,4 +17,5 @@ angular.module('iatiDataImporter').controller("1HierarchyController", function (
             $rootScope.hierarchyModel = $scope.model = result;
         }
     });
+
 });
