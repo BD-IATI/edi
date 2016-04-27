@@ -120,6 +120,58 @@ namespace AIMS_BD_IATI.DAL
 
             return fundSources;
         }
+        public List<ExecutingAgencyLookupItem> GetExecutingAgencies()
+        {
+            var DPs = (from dp in dbContext.tblFundSources
+                                    orderby dp.FundSourceName
+                                    select new ExecutingAgencyLookupItem
+                                    {
+                                        Id = dp.Id,
+                                        ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP,
+                                        ExecutingAgencyOrganizationTypeId = dp.FundSourceCategoryId,
+                                        IATICode = dp.IATICode,
+                                        Name = dp.FundSourceName,
+                                    }).ToList();
+
+            var ministryAgencies = (from ministryAgency in dbContext.tblMinistryAgencies
+                                    orderby ministryAgency.AgencyName
+                                    select new ExecutingAgencyLookupItem
+                                    {
+                                        Id = ministryAgency.Id,
+                                        ExecutingAgencyTypeId = (int)ExecutingAgencyType.Government,
+                                        ExecutingAgencyOrganizationTypeId = ministryAgency.MinistryId,
+                                        Name = ministryAgency.AgencyName,
+                                    }).ToList();
+
+            var NGOs = (from ngo in dbContext.tblNGOCSOes
+                                    orderby ngo.NGOOrganizationName
+                                    select new ExecutingAgencyLookupItem
+                                    {
+                                        Id = ngo.Id,
+                                        ExecutingAgencyTypeId = (int)ExecutingAgencyType.NGO,
+                                        ExecutingAgencyOrganizationTypeId = ngo.NGOOrganizationTypeId,
+                                        Name = ngo.NGOOrganizationName,
+                                    }).ToList();
+
+
+            List<ExecutingAgencyLookupItem> r = DPs;
+
+            r.AddRange(NGOs);
+            r.AddRange(ministryAgencies);
+            return r;
+        }
+        public List<LookupItem> GetExecutingAgencyTypes()
+        {
+            var ExecutingAgencyTypes = (from atype in dbContext.tblExecutingAgencyTypes
+
+                                        select new LookupItem
+                                        {
+                                            ID = atype.Id,
+                                            Name = atype.Acronym ?? atype.Name,
+                                        }).ToList();
+
+            return ExecutingAgencyTypes;
+        }
 
         public List<LookupItem> GetProjects(string dp)
         {
@@ -135,7 +187,6 @@ namespace AIMS_BD_IATI.DAL
 
             return projects;
         }
-
         public List<LookupItem> GetTrustFunds(string dp)
         {
             var projects = (from trustFund in dbContext.tblTrustFunds

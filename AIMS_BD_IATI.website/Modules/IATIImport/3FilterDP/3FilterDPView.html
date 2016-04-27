@@ -13,53 +13,42 @@
             <uib-tabset active="0">
                 <uib-tab index="0" heading="3.1 Determine Organisation Type">
                     <form class="form-horizontal">
+
                         <div class="row">
                             <div class="col-md-12">
                                 <h3>Determine organisation type</h3>
-                                <table class="table">
+                                <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Org ID</th>
-                                            <th>Org name</th>
+                                            <th></th>
+                                            <th st-sort="ref">Org ID</th>
+                                            <th st-sort="narrative[0].Value">Org name</th>
                                             <th>Organisation type</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><code>44001</code></td>
-                                            <td>IBRD (HSBC)  C/O THE WORLD BANK</td>
+                                        <tr ng-repeat="org in iOrgs">
+                                            <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
+                                            <td><code>{{org.ref}}</code></td>
+                                            <td>{{org.narrative[0].Value}}</td>
                                             <td>
-                                                <a class="btn btn-success">DP</a>
-                                                <a class="btn btn-default">Govt</a>
-                                                <a class="btn btn-default">NGO</a>
-                                                <a class="btn btn-default">Unknown</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><code>12000</code></td>
-                                            <td>Bangladesh Primary Education Development Programme 3 Ministry of Finance</td>
-                                            <td>
-                                                <a class="btn btn-default">DP</a>
-                                                <a class="btn btn-success">Govt</a>
-                                                <a class="btn btn-default">NGO</a>
-                                                <a class="btn btn-default">Unknown</a>
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <select class="form-control"
+                                                                ng-model="org.ExecutingAgencyTypeId"
+                                                                ng-options="item.ID as item.Name for item in ExecutingAgencyTypes">
+                                                            <option value="">Select one...</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
 
-                                        <tr>
-                                            <td><code>11000</code></td>
-                                            <td>Deutsche Gesellschaft fuer Internationale Zusammenarbeit (GIZ) GmbH</td>
-                                            <td>
-                                                <a class="btn btn-success">DP</a>
-                                                <a class="btn btn-default">Govt</a>
-                                                <a class="btn btn-default">NGO</a>
-                                                <a class="btn btn-default">Unknown</a>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <div class="col-md-10">
                                 <button type="submit" class="btn btn-default">Next &raquo</button>
@@ -92,8 +81,8 @@
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
                                                         <select class="form-control"
-                                                                ng-model="org.FundSourceIDnIATICode"
-                                                                ng-options="item.IDnIATICode as item.Name for item in FundSources">
+                                                                ng-model="org.AllID"
+                                                                ng-options="item.AllID as item.Name for item in ExecutingAgencies | filter: {ExecutingAgencyTypeId: org.ExecutingAgencyTypeId}">
                                                             <option value="">Select one...</option>
                                                         </select>
                                                     </div>

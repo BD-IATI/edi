@@ -122,4 +122,11 @@ namespace AIMS_BD_IATI.Library
         ValidationError=7
     }
 
+    public enum ExecutingAgencyType
+    {
+        Government = 1,
+        DP = 2,
+        NGO = 3,
+        Others = 4
+    }
 }

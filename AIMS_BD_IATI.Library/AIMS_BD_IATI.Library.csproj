@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Levenshtein.cs" />
     <Compile Include="DropdownItem.cs" />
     <Compile Include="ExchangeRateModel.cs" />
     <Compile Include="NullChecker.cs" />

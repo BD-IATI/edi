@@ -122,5 +122,16 @@ namespace AIMS_DB_IATI.WebAPI.Models
             }
             set { HttpContext.Current.Session["AssignedActivities"] = value; }
         }
+
+        public static List<LookupItem> ExecutingAgencyTypes
+        {
+            get
+            {
+                return HttpContext.Current.Session["ExecutingAgencyTypes"] == null ?
+                    new List<LookupItem>()
+                    : (List<LookupItem>)HttpContext.Current.Session["ExecutingAgencyTypes"];
+            }
+            set { HttpContext.Current.Session["ExecutingAgencyTypes"] = value; }
+        }
     }
 }

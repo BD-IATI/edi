@@ -688,8 +688,12 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public string FundSourceIDnIATICode { get; set; }
 
+        [XmlIgnore]
+        public int? ExecutingAgencyTypeId { get; set; }
 
-
+        [XmlIgnore]
+        public string AllID { get; set; }
+        
 
     }
 

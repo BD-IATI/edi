@@ -20,7 +20,24 @@ namespace AIMS_BD_IATI.Library
         public int ID { get; set; }
         public string Name { get; set; }
         public string IATICode { get; set; }
-        public string IDnIATICode { get { return ID + "~" + IATICode??""; } }
+        public string IDnIATICode { get { return ID + "~" + IATICode ?? ""; } }
+
+    }
+    public class ExecutingAgencyLookupItem
+    {
+        public string AllID { get { return Id + "~" 
+                    + IATICode ?? "" + "~" 
+                    + ExecutingAgencyTypeId??0 + "~" 
+                    + ExecutingAgencyOrganizationTypeId + "~" 
+                    + ExecutingAgencyOrganizationId; } }
+
+        public int Id { get; set; }
+        public int? ExecutingAgencyTypeId { get; set; }
+        public int ExecutingAgencyOrganizationTypeId { get; set; }
+        public int ExecutingAgencyOrganizationId { get; set; }
+
+        public string Name { get; set; }
+        public string IATICode { get; set; }
 
     }
 

@@ -30,6 +30,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         }
 
         [HttpGet]
+        public List<LookupItem> GetExecutingAgencyTypes()
+        {
+            Sessions.ExecutingAgencyTypes = aimsDAL.GetExecutingAgencyTypes();
+
+            return Sessions.ExecutingAgencyTypes;
+        }
+
+        [HttpGet]
         public List<DPLookupItem> GetFundSources()
         {
             Sessions.FundSources = aimsDAL.GetAllFundSources();
@@ -175,7 +183,10 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             return new iOrgs
             {
                 Orgs = distictOrgs.ToList(),
-                FundSources = managingDPs
+                FundSources = managingDPs,
+                ExecutingAgencyTypes = aimsDAL.GetExecutingAgencyTypes(),
+                ExecutingAgencies = aimsDAL.GetExecutingAgencies()
+
             };
         }
 
@@ -417,7 +428,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
     {
         public List<participatingorg> Orgs { get; set; }
         public List<FundSourceLookupItem> FundSources { get; set; }
-
+        public List<LookupItem> ExecutingAgencyTypes { get; internal set; }
+        public object ExecutingAgencies { get; internal set; }
     }
 
 

@@ -148,15 +148,16 @@
                 <!--<ul navigation-Other-Dp ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>-->
                 <!-- Tab panes -->
             </div>
-            <div class="col-md-9 some-content-related-div" ng-class="{'col-md-12':$root.location == '/Dashboard', 'col-md-9':$root.location != '/Dashboard'}" id="divView">
+            <div class="col-md-9" ng-class="{'col-md-12':$root.location == '/Dashboard', 'col-md-9':$root.location != '/Dashboard'}" id="divView">
 
-                <div ng-view  class="tab-content">
+                <div ng-view  class="tab-content" style="padding-bottom:25px;">
                 </div>
             </div>
 
         </div>
 
     </div>
+
 
     <script type="text/javascript">
         $(function () {

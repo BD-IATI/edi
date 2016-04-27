@@ -10,6 +10,8 @@
     }).then(function (result) {
         $scope.ImplementingOrgs = result.data.Orgs;
         $scope.FundSources = result.data.FundSources;
+        $scope.ExecutingAgencyTypes = result.data.ExecutingAgencyTypes;
+        $scope.ExecutingAgencies = result.data.ExecutingAgencies;
         $rootScope.filterBDModel = null;
         //deferred.resolve(result);
     },
