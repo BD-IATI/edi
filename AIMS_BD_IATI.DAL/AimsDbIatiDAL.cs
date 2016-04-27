@@ -517,7 +517,7 @@ namespace AIMS_BD_IATI.DAL
             foreach (var fieldMap in fieldMaps)
             {
                 var a = dbContext.FieldMappingPreferenceActivities.FirstOrDefault(x => x.IatiIdentifier == fieldMap.IatiIdentifier
-                    //&& x.ProjectId == fieldMap.ProjectId
+                                                                                    //&& x.ProjectId == fieldMap.ProjectId
                                                                                     && x.FieldName == fieldMap.FieldName);
                 if (a != null)
                 {
@@ -656,8 +656,8 @@ namespace AIMS_BD_IATI.DAL
         public int GetNewActivityCount(string dp)
         {
             var q = (from a in dbContext.Activities
-                     let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
-                     where a.AssignedOrgId == dp && isNotMapped
+                     let isNotMapped = a.ProjectId == null && a.MappedProjectId == null && a.MappedTrustFundId == null
+                     where a.OrgId == dp && a.AssignedOrgId == dp && isNotMapped
                      select 1).Count();
             return q;
         }
@@ -665,14 +665,14 @@ namespace AIMS_BD_IATI.DAL
         {
             var q = (from a in dbContext.Activities
                      let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
-                     where a.AssignedOrgId == dp && isMapped
+                     where a.OrgId == dp && a.AssignedOrgId == dp && isMapped
                      select 1).Count();
             return q;
         }
         public int GetAssignedActivityCount(string dp)
         {
             var q = (from a in dbContext.Activities
-                     let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
+                     let isNotMapped = a.ProjectId == null && a.MappedProjectId == null && a.MappedTrustFundId == null
                      let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
                      where a.AssignedOrgId == dp && a.OrgId != dp && isNotMapped
                      select 1).Count();
