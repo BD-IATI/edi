@@ -1,119 +1,187 @@
 ﻿<div role="tabpanel" class="tab-pane active" id="filterDP" ng-controller="3FilterDPController">
     <div class="row">
         <div class="col-md-12">
-            <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 3. Determine managing DP</h2>
+            <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 3. Implementing organisations</h2>
             <p class="lead">
-                In order to avoid double-counting, we need to establish 
-                which of your activities are managed by other DPs.
+                We need to map your implementing organisations
+                to those already captured in the AIMS. In order to avoid double-counting, we also need
+                to establish which of your activities are managed by other DPs.
             </p>
-            <p class="lead">
-                Please determine which of the following organisations are
-                Managing DPs in the AIMS. Where possible, we have tried to
-                automatically select them for you to review.
-            </p>
-            <hr>
-            <form class="form-horizontal">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>Select Managing DP</h3>
-                        <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class=" table table-striped">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th st-sort="ref">Org ID</th>
-                                    <th st-sort="narrative[0].Value">Org name</th>
-                                    <th>Managing DP</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="org in iOrgs">
-                                    <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
-                                    <td><code>{{org.ref}}</code></td>
-                                    <td>{{org.narrative[0].Value}}</td>
-                                    <td>
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <select class="form-control"
-                                                        ng-model="org.FundSourceIDnIATICode"
-                                                        ng-options="item.IDnIATICode as item.Name for item in FundSources">
-                                                    <option value="">Select one...</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <button ng-click="FilterDP()" class="btn btn-default">Filter DP's projects</button>
-                    </div>
-                </div>
-            </form>
             <hr>
 
-            <form class="form-horizontal">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>Managing DP by project</h3>
+            <uib-tabset active="0">
+                <uib-tab index="0" heading="3.1 Determine Organisation Type">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>Determine organisation type</h3>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Org ID</th>
+                                            <th>Org name</th>
+                                            <th>Organisation type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>44001</code></td>
+                                            <td>IBRD (HSBC)  C/O THE WORLD BANK</td>
+                                            <td>
+                                                <a class="btn btn-success">DP</a>
+                                                <a class="btn btn-default">Govt</a>
+                                                <a class="btn btn-default">NGO</a>
+                                                <a class="btn btn-default">Unknown</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>12000</code></td>
+                                            <td>Bangladesh Primary Education Development Programme 3 Ministry of Finance</td>
+                                            <td>
+                                                <a class="btn btn-default">DP</a>
+                                                <a class="btn btn-success">Govt</a>
+                                                <a class="btn btn-default">NGO</a>
+                                                <a class="btn btn-default">Unknown</a>
+                                            </td>
+                                        </tr>
 
-                        <table st-table="rActivities" st-safe-src="RelevantActivities" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th st-sort="IatiIdentifier" style="min-width:120px">
-                                        Activity ID
-                                    </th>
-                                    <th st-sort="Title" style="min-width:200px">
-                                        Activity Title
-                                    </th>
-                                    <th>Managing DP</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="activity in rActivities">
+                                        <tr>
+                                            <td><code>11000</code></td>
+                                            <td>Deutsche Gesellschaft fuer Internationale Zusammenarbeit (GIZ) GmbH</td>
+                                            <td>
+                                                <a class="btn btn-success">DP</a>
+                                                <a class="btn btn-default">Govt</a>
+                                                <a class="btn btn-default">NGO</a>
+                                                <a class="btn btn-default">Unknown</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <button type="submit" class="btn btn-default">Next &raquo</button>
+                            </div>
+                        </div>
+                    </form>
 
-                                    <td><code>{{activity.IatiIdentifier}}</code></td>
-                                    <td>{{activity.Title}}</td>
-                                    <td>
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <select class="form-control" ng-change="onFundSourceChanged()"
-                                                        ng-model="activity.FundSourceIDnIATICode"
-                                                        ng-options="item.IDnIATICode as item.Name for item in FundSources">
-                                                    <option value="">Select one...</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                </uib-tab>
+
+                <uib-tab index="1" heading="3.2 Determine Specific Organisation">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>Determine specific organisation</h3>
+                                <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th st-sort="ref">Org ID</th>
+                                            <th st-sort="narrative[0].Value">Org name</th>
+                                            <th>Select organisation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="org in iOrgs">
+                                            <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
+                                            <td><code>{{org.ref}}</code></td>
+                                            <td>{{org.narrative[0].Value}}</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <select class="form-control"
+                                                                ng-model="org.FundSourceIDnIATICode"
+                                                                ng-options="item.IDnIATICode as item.Name for item in FundSources">
+                                                            <option value="">Select one...</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button ng-click="FilterDP()" class="btn btn-default">Filter DP's projects</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </uib-tab>
+
+                <uib-tab index="2" heading="3.3 Determine Managing DP">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>Determine Managing DP</h3>
+                                <p class="lead">
+                                    Please determine which of the following organisations are
+                                    Managing DPs in the AIMS. Where possible, we have tried to
+                                    automatically select them for you to review.
+                                </p>
+                                <hr />
+
+                                <table st-table="rActivities" st-safe-src="RelevantActivities" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th st-sort="IatiIdentifier" style="min-width:120px">
+                                                Project ID
+                                            </th>
+                                            <th st-sort="Title" style="min-width:200px">
+                                                Project Title
+                                            </th>
+                                            <th>Managed by</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="activity in rActivities">
+
+                                            <td><code>{{activity.IatiIdentifier}}</code></td>
+                                            <td>{{activity.Title}}</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <select class="form-control" ng-change="onFundSourceChanged()"
+                                                                ng-model="activity.FundSourceIDnIATICode"
+                                                                ng-options="item.IDnIATICode as item.Name for item in FundSources">
+                                                            <option value="">Select one...</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
 
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12 btnFooter">
-                        <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
-                        <span ng-hide="RelevantActivities.length == 0">
-                        <button ng-show="hasOtherDPsProject"
-                                type="button"
-                                class="btn btn-default"
-                                popover-title="Delegate projects to other DPs?"
-                                uib-popover-template="'myPopoverTemplate.html'"
-                                popover-append-to-body="true"
-                                popover-placement="auto">
-                            Next...
-                        </button>
-                        <a id="btn4Projects" ng-hide='hasOtherDPsProject' class="btn btn-default" ng-href="#/4Projects">Next</a>
-                        </span>
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 btnFooter">
+                                <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
+                                <span ng-hide="RelevantActivities.length == 0">
+                                    <button ng-show="hasOtherDPsProject"
+                                            type="button"
+                                            class="btn btn-default"
+                                            popover-title="Delegate projects to other DPs?"
+                                            uib-popover-template="'myPopoverTemplate.html'"
+                                            popover-append-to-body="true"
+                                            popover-placement="auto">
+                                        Next...
+                                    </button>
+                                    <a id="btn4Projects" ng-hide='hasOtherDPsProject' class="btn btn-default" ng-href="#/4Projects">Next</a>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
 
-            </form>
+                </uib-tab>
+            </uib-tabset>
 
         </div>
     </div>
