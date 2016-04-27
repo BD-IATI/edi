@@ -8,13 +8,9 @@
     <link href="../../Content/bootstrap.css" rel="stylesheet" />
     <link href="../../Content/style.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="../../Content/AngularDragAndDrop/vendor/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="../../Content/AngularDragAndDrop/vendor/prism.css">
-    <link rel="stylesheet" href="../../Content/AngularDragAndDrop/demo-framework.css">
-
-
     <script src="../../Scripts/jquery-2.2.1.min.js"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>
+    <script src="../../Scripts/jquery.slimscroll.min.js"></script>
 
     <script src="../../Scripts/angular.min.js"></script>
     <script src="../../Scripts/angular-route.min.js"></script>
@@ -24,7 +20,6 @@
     <script src="../../Scripts/angular-filter/angular-filter.js"></script>
 
     <script src="../../Scripts/AngularDragAndDrop/angular-drag-and-drop-lists.min.js"></script>
-    <script src="../../Content/AngularDragAndDrop/vendor/prism.js"></script>
 
     <script src="../../Scripts/spin.min.js"></script>
     <script src="../../Scripts/spinner.js"></script>
@@ -58,36 +53,6 @@
     <script src="Transaction/TransactionController.js"></script>
 
 
-    <!--0-->
-    <script type="text/javascript">
-
-    </script>
-
-    <!--1-->
-    <script type="text/javascript">
-
-    </script>
-
-    <!--2-->
-    <script type="text/javascript">
-
-    </script>
-
-    <!--3-->
-    <script type="text/javascript">
-
-    </script>
-
-    <!--4-->
-    <script type="text/javascript">
-
-    </script>
-    <!--5-->
-    <script type="text/javascript">
-
-
-
-    </script>
 
     <style>
         .btnFooter {
@@ -107,9 +72,10 @@
         }
 
         html {
-            overflow-y: -moz-scrollbars-vertical;
-            overflow-y: scroll;
+            /*overflow-y: -moz-scrollbars-vertical;*/
+            overflow: hidden;
         }
+
     </style>
 
     <style>
@@ -133,6 +99,13 @@
         .tab-pane {
             margin: 0px 15px;
         }
+
+        /*.scrollable{
+            overflow-y: -moz-scrollbars-vertical;
+            overflow-y: auto;
+            height:100%;
+        }*/
+
     </style>
 </head>
 <body ng-app="iatiDataImporter">
@@ -175,8 +148,9 @@
                 <!--<ul navigation-Other-Dp ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>-->
                 <!-- Tab panes -->
             </div>
-            <div class="col-md-9" ng-class="{'col-md-12':$root.location == '/Dashboard', 'col-md-9':$root.location != '/Dashboard'}">
-                <div ng-view class="tab-content">
+            <div class="col-md-9 some-content-related-div" ng-class="{'col-md-12':$root.location == '/Dashboard', 'col-md-9':$root.location != '/Dashboard'}" id="divView">
+
+                <div ng-view  class="tab-content">
                 </div>
             </div>
 
@@ -184,6 +158,14 @@
 
     </div>
 
+    <script type="text/javascript">
+        $(function () {
+            $('#divView').slimScroll({
+                height: '100%'
+            });
+        });
+        
+    </script>
 
 
 </body>
