@@ -14,7 +14,7 @@ namespace AIMS_BD_IATI.Library
         /// Compute Levenshtein distance 
         /// Memory efficient version
         ///*****************************
-        public int iLD(String sRow, String sCol)
+        public static int iLD(String sRow, String sCol)
         {
             int RowLen = sRow.Length;  // length of sRow
             int ColLen = sCol.Length;  // length of sCol
@@ -131,7 +131,7 @@ namespace AIMS_BD_IATI.Library
         /// Compute the min
         ///*****************************
 
-        private int Minimum(int a, int b, int c)
+        private static int Minimum(int a, int b, int c)
         {
             int mi = a;
 
@@ -151,7 +151,7 @@ namespace AIMS_BD_IATI.Library
         /// Compute Levenshtein distance         
         ///*****************************
 
-        public int LD(String sNew, String sOld)
+        public static int LD(String sNew, String sOld)
         {
             int[,] matrix;              // matrix
             int sNewLen = sNew.Length;  // length of sNew

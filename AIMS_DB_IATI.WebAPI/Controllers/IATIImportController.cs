@@ -164,6 +164,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             var distictOrgs = iOrgs.DistinctBy(l => l.narrative.n(0).Value).OrderBy(o => o.narrative.n(0).Value);
 
+            var exAgencies = aimsDAL.GetExecutingAgencies();
+
             foreach (var org in distictOrgs)
             {
                 //check for matching managing DP from AIMS
@@ -175,17 +177,39 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
                 //Add selected value
                 org.FundSourceIDnIATICode = managingDP == null ? "" : managingDP.IDnIATICode;
+
+                //try to set executing agency
+                ExecutingAgencyLookupItem agencyGuessed = null;
+                int minDistance = 1000;
+                foreach (var agency in exAgencies)
+                {
+                    int distance = Levenshtein.iLD(org.Name, agency.Name);
+                    if (minDistance > distance)
+                    {
+                        minDistance = distance;
+                        agencyGuessed = agency;
+                    }
+
+                }
+                if (minDistance < 7 && agencyGuessed != null)
+                {
+                    org.AllID = agencyGuessed.AllID;
+                    org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
+                }
             }
 
             if (filterDBModel != null)
                 Sessions.activitiesContainer.iatiActivities = filterDBModel.iatiActivities;
+
+
+
 
             return new iOrgs
             {
                 Orgs = distictOrgs.ToList(),
                 FundSources = managingDPs,
                 ExecutingAgencyTypes = aimsDAL.GetExecutingAgencyTypes(),
-                ExecutingAgencies = aimsDAL.GetExecutingAgencies()
+                ExecutingAgencies = exAgencies
 
             };
         }

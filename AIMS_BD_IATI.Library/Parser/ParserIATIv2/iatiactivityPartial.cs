@@ -693,8 +693,19 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         [XmlIgnore]
         public string AllID { get; set; }
-        
 
+        [XmlIgnore]
+        public string Name
+        {
+            get
+            {
+                return narrative.n(0).Value;
+            }
+            set
+            {
+                narrative = Statix.getNarativeArray(value);
+            }
+        }
     }
 
 
