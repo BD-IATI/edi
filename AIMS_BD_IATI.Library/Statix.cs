@@ -109,6 +109,13 @@ namespace AIMS_BD_IATI.Library
             }
             return originalArray.Concat(arr).ToArray(); // although Concat is not recommended for performance reasons, see the accepted answer
         }
+
+        public static int ToInt32(this string value)
+        {
+            int r = default(int);
+            int.TryParse(value, out r);
+            return r;
+        }
     }
     public enum LogType
     {
