@@ -18,6 +18,12 @@
     function (response) {
         //deferred.reject(response);
     });
+    $scope.tabIndex = 0;
+
+    $scope.DetermineOrgType = function () {
+        $scope.tabIndex = 1;
+        $('#divView').slimScroll({ scrollTo: '0px' });
+    };
 
     $scope.FilterDP = function () {
 
@@ -28,6 +34,9 @@
             dataType: 'json'
         }).then(function (result) {
             $rootScope.RelevantActivities = $scope.RelevantActivities = result.data;
+            $scope.tabIndex = 2;
+            $('#divView').slimScroll({ scrollTo: '0px' });
+
             //deferred.resolve(result);
         },
         function (response) {

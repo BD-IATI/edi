@@ -10,7 +10,7 @@
 
             <hr>
 
-            <uib-tabset active="0">
+            <uib-tabset active="tabIndex">
                 <uib-tab index="0" heading="3.1 Determine Organisation Type">
                     <form class="form-horizontal">
 
@@ -50,8 +50,8 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-10">
-                                <button type="submit" class="btn btn-default">Next &raquo</button>
+                            <div class="col-md-12">
+                                <button ng-click="DetermineOrgType()" class="btn btn-default">Next</button>
                             </div>
                         </div>
                     </form>
@@ -96,7 +96,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <button ng-click="FilterDP()" class="btn btn-default">Filter DP's projects</button>
+                                <button ng-click="FilterDP()" class="btn btn-default">Next</button>
                             </div>
                         </div>
                     </form>
