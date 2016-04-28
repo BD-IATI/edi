@@ -25,16 +25,14 @@ namespace AIMS_BD_IATI.Library
     }
     public class ExecutingAgencyLookupItem
     {
-        public string AllID { get { return Id + "~" 
+        public string AllID { get { return ExecutingAgencyOrganizationId + "~" 
                     + IATICode ?? "" + "~" 
                     + ExecutingAgencyTypeId??0 + "~" 
-                    + ExecutingAgencyOrganizationTypeId + "~" 
-                    + ExecutingAgencyOrganizationId; } }
+                    + ExecutingAgencyOrganizationTypeId; } }
 
-        public int Id { get; set; }
+        public int ExecutingAgencyOrganizationId { get; set; }
         public int? ExecutingAgencyTypeId { get; set; }
         public int ExecutingAgencyOrganizationTypeId { get; set; }
-        public int ExecutingAgencyOrganizationId { get; set; }
 
         public string Name { get; set; }
         public string IATICode { get; set; }
