@@ -150,13 +150,13 @@
         <div class="row">
             <span us-spinner="{radius:30, width:8, length: 16, position: 'fixed'}"></span>
             <!-- Nav tabs -->
-            <div class="col-md-2" ng-hide="$root.location == '/Dashboard'" style="height: 100%;
+            <div class="col-md-3" style="height: 100%;
     background-color: #ceb; padding: 10px 0px 5px 5px">
                 <ul navigation ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>
                 <!--<ul navigation-Other-Dp ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>-->
                 <!-- Tab panes -->
             </div>
-            <div class="col-md-10" ng-class="{'col-md-12':$root.location == '/Dashboard', 'col-md-9':$root.location != '/Dashboard'}" id="divView">
+            <div class="col-md-9" id="divView">
 
                 <div ng-view class="tab-content" style="padding-bottom:25px;">
                 </div>
