@@ -120,5 +120,15 @@ namespace AIMS_BD_IATI.Library
             else
                 return input.Count == 0 ? true : false;
         }
+        public static bool IsNotEmpty<T>(this List<T> input)
+        {
+
+            if (input == null)
+            {
+                return false;
+            }
+            else
+                return input.Count > 0 ? true : false;
+        }
     }
 }

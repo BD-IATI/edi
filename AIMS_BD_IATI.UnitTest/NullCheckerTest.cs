@@ -20,6 +20,28 @@ namespace AIMS_BD_IATI.UnitTest
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
+        public void ReturnTheObjFromSpecifiedPositionOfAnArrayfd()
+        {
+            string expected = string.Empty;
+
+            string[] array = new string[2] { "j", "k" };
+
+            string actual = array.n(3);
+
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void ReturnTheObjFromSpecifiedPositionOfAnArradyfd()
+        {
+            string expected = string.Empty;
+
+            string[] array = null;
+
+            string actual = array.n(3);
+
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
         public void ToPercentTest()
         {
             decimal val = 20;
