@@ -26,7 +26,7 @@ namespace AIMS_BD_IATI.Library
     public class ExecutingAgencyLookupItem
     {
         public string AllID { get { return ExecutingAgencyOrganizationId + "~" 
-                    + IATICode ?? "" + "~" 
+                    + (IATICode ?? "") + "~" 
                     + ExecutingAgencyTypeId??0 + "~" 
                     + ExecutingAgencyOrganizationTypeId; } }
 

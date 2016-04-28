@@ -5,7 +5,7 @@ var apiprefix = '../../../IATIImport';
 
 
 var iatiDataImporterApp = angular.module('iatiDataImporter',
-    ['Authentication', 'ngCookies', 'ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table', 'ngAnimate', 'ui.bootstrap', 'angular.filter']);
+    ['Authentication', 'ngCookies', 'ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table', 'ui.select', 'ngAnimate', 'ui.bootstrap', 'angular.filter']);
 
 iatiDataImporterApp.config(function ($routeProvider) {
     $routeProvider

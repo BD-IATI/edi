@@ -1,6 +1,6 @@
 /// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
 var apiprefix = '../../../IATIImport';
-var iatiDataImporterApp = angular.module('iatiDataImporter', ['Authentication', 'ngCookies', 'ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table', 'ngAnimate', 'ui.bootstrap', 'angular.filter']);
+var iatiDataImporterApp = angular.module('iatiDataImporter', ['Authentication', 'ngCookies', 'ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table', 'ui.select', 'ngAnimate', 'ui.bootstrap', 'angular.filter']);
 iatiDataImporterApp.config(function ($routeProvider) {
     $routeProvider
         .when('/login', {
@@ -45,18 +45,18 @@ iatiDataImporterApp.directive('resolveController', ['$controller', function ($co
 iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
     return {
         template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +
-            '    <a> <span ng-class="option.glyphicon" aria-hidden="true"></span> {{option.label}}</a>' + //ng-href="{{option.href}}"
+            '    <a ng-href="{{option.href}}">{{option.label}}</a>' +
             '</li>',
         link: function (scope, element, attr) {
             scope.options = [
-                { label: "Begin import", glyphicon:'glyphicon glyphicon-home', href: "#/0Begin" },
-                { label: "1. Select Project structure", glyphicon: 'glyphicon glyphicon-th-list', href: "#/1Hierarchy" },
-                { label: "2. Filter Bangladesh relevant activities", glyphicon: 'glyphicon glyphicon-filter', href: "#/2FilterBD" },
-                { label: "3. Implementing organisations", glyphicon: 'glyphicon glyphicon-filter', href: "#/3FilterDP" },
-                { label: "4. Review matched projects", glyphicon: 'glyphicon glyphicon-link', href: "#/4Projects" },
-                { label: "5. Map unmatched projects", glyphicon: 'glyphicon glyphicon-resize-small', href: "#/5Match" },
-                { label: "6. Set import preferences", glyphicon: 'glyphicon glyphicon-link', href: "#/6GeneralPreferences" },
-                { label: "7. Review and import", glyphicon: 'glyphicon glyphicon-link', href: "#/7ReviewAdjustment" }
+                { label: "Begin import", href: "#/0Begin" },
+                { label: "1. Project structure", href: "#/1Hierarchy" },
+                { label: "2. Filter Bangladesh-relevant activities", href: "#/2FilterBD" },
+                { label: "3. Determine managing DP", href: "#/3FilterDP" },
+                { label: "4. Review matched projects", href: "#/4Projects" },
+                { label: "5. Match unmatched projects", href: "#/5Match" },
+                { label: "6. Set import preferences", href: "#/6GeneralPreferences" },
+                { label: "7. Review and import", href: "#/7ReviewAdjustment" }
             ];
             scope.isActive = function (option) {
                 return option.href.indexOf(scope.location) === 1;
@@ -70,7 +70,7 @@ iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
 iatiDataImporterApp.directive('navigationOtherDp', function ($rootScope, $location) {
     return {
         template: '<li ng-repeat="option in options" ng-class="{active: isActive(option)}">' +
-            '    <a>{{option.label}}</a>' + //ng-href="{{option.href}}"
+            '    <a ng-href="{{option.href}}">{{option.label}}</a>' +
             '</li>',
         link: function (scope, element, attr) {
             scope.options = [

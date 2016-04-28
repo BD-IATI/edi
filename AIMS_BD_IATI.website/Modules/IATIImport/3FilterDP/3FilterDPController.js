@@ -13,6 +13,10 @@
         $scope.ExecutingAgencyTypes = result.data.ExecutingAgencyTypes;
         $scope.ExecutingAgencies = result.data.ExecutingAgencies;
         $rootScope.filterBDModel = null;
+        //$timeout(function () {
+        //    $("select").select2({ width: 'resolve' });
+        //});
+    
         //deferred.resolve(result);
     },
     function (response) {
@@ -139,4 +143,5 @@
 
         return matrix[b.length][a.length];
     };
+
 });
