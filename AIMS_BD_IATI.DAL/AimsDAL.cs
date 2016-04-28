@@ -123,35 +123,35 @@ namespace AIMS_BD_IATI.DAL
         public List<ExecutingAgencyLookupItem> GetExecutingAgencies()
         {
             var DPs = (from dp in dbContext.tblFundSources
-                                    orderby dp.FundSourceName
-                                    select new ExecutingAgencyLookupItem
-                                    {
-                                        Id = dp.Id,
-                                        ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP,
-                                        ExecutingAgencyOrganizationTypeId = dp.FundSourceCategoryId,
-                                        IATICode = dp.IATICode,
-                                        Name = dp.FundSourceName,
-                                    }).ToList();
+                       orderby dp.FundSourceName
+                       select new ExecutingAgencyLookupItem
+                       {
+                           ExecutingAgencyOrganizationId = dp.Id,
+                           ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP,
+                           ExecutingAgencyOrganizationTypeId = dp.FundSourceCategoryId,
+                           IATICode = dp.IATICode,
+                           Name = dp.FundSourceName,
+                       }).ToList();
 
             var ministryAgencies = (from ministryAgency in dbContext.tblMinistryAgencies
                                     orderby ministryAgency.AgencyName
                                     select new ExecutingAgencyLookupItem
                                     {
-                                        Id = ministryAgency.Id,
+                                        ExecutingAgencyOrganizationId = ministryAgency.Id,
                                         ExecutingAgencyTypeId = (int)ExecutingAgencyType.Government,
                                         ExecutingAgencyOrganizationTypeId = ministryAgency.MinistryId,
                                         Name = ministryAgency.AgencyName,
                                     }).ToList();
 
             var NGOs = (from ngo in dbContext.tblNGOCSOes
-                                    orderby ngo.NGOOrganizationName
-                                    select new ExecutingAgencyLookupItem
-                                    {
-                                        Id = ngo.Id,
-                                        ExecutingAgencyTypeId = (int)ExecutingAgencyType.NGO,
-                                        ExecutingAgencyOrganizationTypeId = ngo.NGOOrganizationTypeId,
-                                        Name = ngo.NGOOrganizationName,
-                                    }).ToList();
+                        orderby ngo.NGOOrganizationName
+                        select new ExecutingAgencyLookupItem
+                        {
+                            ExecutingAgencyOrganizationId = ngo.Id,
+                            ExecutingAgencyTypeId = (int)ExecutingAgencyType.NGO,
+                            ExecutingAgencyOrganizationTypeId = ngo.NGOOrganizationTypeId,
+                            Name = ngo.NGOOrganizationName,
+                        }).ToList();
 
 
             List<ExecutingAgencyLookupItem> r = DPs;
@@ -518,7 +518,7 @@ namespace AIMS_BD_IATI.DAL
                                 nearestGeoLocation = GetNearestGeoLocation(districts, location);
                             }
 
-                            var aimsProjectLocation = dbContext.tblProjectGeographicAllocations.FirstOrDefault(f => f.DivisionId == nearestGeoLocation.DivisionId && f.DistrictId == nearestGeoLocation.DistrictId && f.UpazilaId == nearestGeoLocation.UpazilaId);
+                            var aimsProjectLocation = p.tblProjectGeographicAllocations.FirstOrDefault(f => f.DivisionId == nearestGeoLocation.DivisionId && f.DistrictId == nearestGeoLocation.DistrictId && f.UpazilaId == nearestGeoLocation.UpazilaId);
 
                             if (aimsProjectLocation == null)
                             {
@@ -527,6 +527,29 @@ namespace AIMS_BD_IATI.DAL
                             }
 
                             aimsProjectLocation.TotalCommitmentPercentForDistrict = 100 / mergedproject.location.Count();
+
+                        }
+                    }
+                    #endregion
+
+                    #region Executing Agency
+                    if (mergedproject.ImplementingOrgs.IsNotEmpty())
+                    {
+                        foreach (var ImplementingOrg in mergedproject.ImplementingOrgs)
+                        {
+
+                            var executingAgency = p.tblProjectExecutingAgencies.FirstOrDefault(f => f.ExecutingAgencyOrganizationId == ImplementingOrg.ExecutingAgencyOrganizationId);
+
+                            if (executingAgency == null)
+                            {
+                                executingAgency = new tblProjectExecutingAgency { ExecutingAgencyOrganizationId = ImplementingOrg.ExecutingAgencyOrganizationId };
+
+                                p.tblProjectExecutingAgencies.Add(executingAgency);
+                            }
+
+                            executingAgency.ExecutingAgencyTypeId = ImplementingOrg.ExecutingAgencyTypeId.Value;
+
+                            executingAgency.ExecutingAgencyOrganizationTypeId = ImplementingOrg.ExecutingAgencyOrganizationTypeId;
 
                         }
                     }
