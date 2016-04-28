@@ -18,10 +18,10 @@
     function (response) {
         //deferred.reject(response);
     });
-    $scope.tabIndex = 0;
+    $scope.activeTabIndex = 0;
 
     $scope.DetermineOrgType = function () {
-        $scope.tabIndex = 1;
+        $scope.activeTabIndex = 1;
         $('#divView').slimScroll({ scrollTo: '0px' });
     };
 
@@ -34,7 +34,7 @@
             dataType: 'json'
         }).then(function (result) {
             $rootScope.RelevantActivities = $scope.RelevantActivities = result.data;
-            $scope.tabIndex = 2;
+            $scope.activeTabIndex = 2;
             $('#divView').slimScroll({ scrollTo: '0px' });
 
             //deferred.resolve(result);

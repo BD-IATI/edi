@@ -10,7 +10,7 @@
 
             <hr>
 
-            <uib-tabset active="tabIndex">
+            <uib-tabset active="activeTabIndex">
                 <uib-tab index="0" heading="3.1 Determine Organisation Type">
                     <form class="form-horizontal">
 
@@ -51,6 +51,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12">
+                                <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
                                 <button ng-click="DetermineOrgType()" class="btn btn-default">Next</button>
                             </div>
                         </div>
@@ -96,6 +97,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
+                                <button ng-click="activeTabIndex = 0" class="btn btn-default">Back</button>
                                 <button ng-click="FilterDP()" class="btn btn-default">Next</button>
                             </div>
                         </div>
@@ -152,7 +154,6 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12 btnFooter">
-                                <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
                                 <span ng-hide="RelevantActivities.length == 0">
                                     <button ng-show="hasOtherDPsProject"
                                             type="button"
@@ -163,6 +164,8 @@
                                             popover-placement="auto">
                                         Next...
                                     </button>
+                                    <button ng-click="activeTabIndex = 1" class="btn btn-default">Back</button>
+
                                     <a id="btn4Projects" ng-hide='hasOtherDPsProject' class="btn btn-default" ng-href="#/4Projects">Next</a>
                                 </span>
                             </div>

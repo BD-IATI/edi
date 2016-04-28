@@ -191,12 +191,23 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                     }
 
                 }
+
                 if (minDistance < 7 && agencyGuessed != null)
                 {
                     org.AllID = agencyGuessed.AllID;
 
                     if (org.ExecutingAgencyTypeId == null)
                         org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
+                }
+                else
+                {
+                    var exa = exAgencies.FirstOrDefault(f => f.AllID.Contains(org.@ref));
+                    if (exa != null)
+                    {
+                        org.AllID = exa.AllID;
+
+                        org.ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP;
+                    }
                 }
             }
 
