@@ -59,6 +59,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             TrustFundDetails = new List<TrustFundModel>();
         }
     }
+
     public partial class iatiactivity
     {
         public iatiactivity()
@@ -688,8 +689,17 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public string FundSourceIDnIATICode { get; set; }
 
+        private int? _ExecutingAgencyTypeId;
         [XmlIgnore]
-        public int? ExecutingAgencyTypeId { get; set; }
+        public int? ExecutingAgencyTypeId { get { return _ExecutingAgencyTypeId ?? GetAimsExAgencyTypeIdByOrgType(type); } set { _ExecutingAgencyTypeId = value; } }
+
+
+        [XmlIgnore]
+        public int ExecutingAgencyOrganizationId { get { return string.IsNullOrEmpty(AllID) ? default(int) : AllID.Split('~').n(0).ToInt32(); } }
+
+        [XmlIgnore]
+        public int ExecutingAgencyOrganizationTypeId { get { return string.IsNullOrEmpty(AllID) ? default(int) : AllID.Split('~').n(3).ToInt32(); } }
+
 
         [XmlIgnore]
         public string AllID { get; set; }
@@ -705,6 +715,30 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             {
                 narrative = Statix.getNarativeArray(value);
             }
+        }
+
+        private int? GetAimsExAgencyTypeIdByOrgType(string t)
+        {
+            int? r = null;
+
+            //10  Government
+            //15  Other Public Sector
+            //21  International NGO
+            //22  National NGO
+            //23  Regional NGO
+            //30  Public Private Partnership
+            //40  Multilateral
+            //60  Foundation
+            //70  Private Sector
+            //80  Academic, Training and Research
+
+            if (t == "10")
+                r = (int)ExecutingAgencyType.Government;
+            else if (t == "21" || t == "22" || t == "23")
+                r = (int)ExecutingAgencyType.NGO;
+
+
+            return r;
         }
     }
 
