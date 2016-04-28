@@ -194,7 +194,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 if (minDistance < 7 && agencyGuessed != null)
                 {
                     org.AllID = agencyGuessed.AllID;
-                    org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
+
+                    if (org.ExecutingAgencyTypeId == null)
+                        org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
                 }
             }
 
