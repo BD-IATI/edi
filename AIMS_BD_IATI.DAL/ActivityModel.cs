@@ -10,6 +10,7 @@ namespace AIMS_BD_IATI.DAL
     /// <summary>
     /// same as Activity table in AIMS_DB_IATI database
     /// </summary>
+    [Serializable]
     public class ActivityModel
     {
         public int Id { get; set; }

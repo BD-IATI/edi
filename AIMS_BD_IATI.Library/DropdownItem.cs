@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AIMS_BD_IATI.Library
 {
+    [Serializable]
     public class DPLookupItem
     {
         public string ID { get; set; }
@@ -15,6 +16,8 @@ namespace AIMS_BD_IATI.Library
 
 
     }
+
+    [Serializable]
     public class FundSourceLookupItem
     {
         public int ID { get; set; }
@@ -23,6 +26,8 @@ namespace AIMS_BD_IATI.Library
         public string IDnIATICode { get { return ID + "~" + IATICode ?? ""; } }
 
     }
+
+    [Serializable]
     public class ExecutingAgencyLookupItem
     {
         public string AllID { get { return ExecutingAgencyOrganizationId + "~" 
@@ -39,16 +44,21 @@ namespace AIMS_BD_IATI.Library
 
     }
 
+    [Serializable]
     public class LookupItem
     {
         public int ID { get; set; }
         public string Name { get; set; }
     }
+
+    [Serializable]
     public class CurrencyLookupItem
     {
         public int Id { get; set; }
         public string IATICode { get; set; }
     }
+
+    [Serializable]
     public class AidCategoryLookupItem
     {
         public int Id { get; set; }

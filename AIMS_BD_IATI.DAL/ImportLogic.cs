@@ -212,6 +212,7 @@ namespace AIMS_BD_IATI.DAL
 
     }
 
+    [Serializable]
     public class ProjectFieldMapModel
     {
         //public string OrgId { get; set; }
@@ -294,6 +295,7 @@ namespace AIMS_BD_IATI.DAL
 
     }
 
+    [Serializable]
     public class FieldMap
     {
         public string Field { get; set; }

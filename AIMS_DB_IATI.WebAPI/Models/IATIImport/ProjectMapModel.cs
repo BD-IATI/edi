@@ -7,6 +7,7 @@ using System.Web;
 
 namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
 {
+    [Serializable]
     public class ProjectMapModel
     {
         public object selected { get; set; }

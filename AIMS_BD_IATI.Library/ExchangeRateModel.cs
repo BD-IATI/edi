@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AIMS_BD_IATI.Library
 {
+    [Serializable]
     public partial class ExchangeRateModel
     {
         public System.DateTime DATE { get; set; }

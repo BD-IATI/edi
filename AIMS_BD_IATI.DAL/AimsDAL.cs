@@ -610,7 +610,7 @@ namespace AIMS_BD_IATI.DAL
         {
             foreach (var district in geoLocations)
             {
-                district.Distance = district.GeoCoordinate.GetDistanceTo(location?.point?.GeoCoordinate);
+                district.Distance = district.GeoCoordinate.GetDistanceTo(location?.point?.GetGeoCoordinate());
             }
 
             var nearestGeoLocation = geoLocations.MinBy(o => o.Distance);

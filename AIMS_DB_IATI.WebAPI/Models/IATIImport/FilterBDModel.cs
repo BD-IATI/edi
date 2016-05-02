@@ -6,6 +6,7 @@ using System.Web;
 
 namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
 {
+    [Serializable]
     public class FilterBDModel
     {
         public List<iatiactivity> iatiActivities { get; set; }

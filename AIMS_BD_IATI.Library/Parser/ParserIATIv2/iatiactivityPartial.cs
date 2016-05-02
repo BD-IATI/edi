@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
-
+    [Serializable]
     public class iatiactivityContainer
     {
         public iatiactivityContainer()
@@ -28,7 +28,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
 
     }
-
+    [Serializable]
     public class TrustFundModel
     {
         public int Id { get; set; }
@@ -44,6 +44,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
     }
+    [Serializable]
     public class CFnTFModel
     {
         public List<iatiactivity> AimsProjects { get; set; }
@@ -817,7 +818,6 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     public partial class budget : ICurrency
     {
     }
-
     public partial class locationPoint
     {
         public double GetLatitude()
@@ -833,7 +833,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             return lon;
         }
 
-        public GeoCoordinate GeoCoordinate { get { return new GeoCoordinate(GetLatitude(), GetLongitude()); } }
+        public GeoCoordinate GetGeoCoordinate()
+        {
+            return new GeoCoordinate(GetLatitude(), GetLongitude());
+        }
 
     }
 }

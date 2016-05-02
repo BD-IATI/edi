@@ -461,6 +461,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
     }
 
+    [Serializable]
     public class iOrgs
     {
         public List<participatingorg> Orgs { get; set; }

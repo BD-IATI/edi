@@ -117,6 +117,7 @@ namespace AIMS_BD_IATI.Library
             return r;
         }
     }
+    [Serializable]
     public enum LogType
     {
         Info = 0,
@@ -129,6 +130,7 @@ namespace AIMS_BD_IATI.Library
         ValidationError=7
     }
 
+    [Serializable]
     public enum ExecutingAgencyType
     {
         Government = 1,

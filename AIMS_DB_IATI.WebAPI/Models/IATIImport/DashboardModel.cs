@@ -8,6 +8,7 @@ using System.Web;
 using MoreLinq;
 namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
 {
+    [Serializable]
     public class DashboardModel
     {
         public DateTime? LastDownloadDate { get; set; }

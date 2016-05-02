@@ -13,10 +13,31 @@
             {
                 return base.SaveChanges();
             }
-            catch(DbEntityValidationException ex)
+            catch (DbEntityValidationException ex)
             {
                 throw ex;
             }
         }
+    }
+
+    [Serializable]
+    public partial class Log
+    {
+    }
+
+    [Serializable]
+    public partial class FieldMappingPreferenceGeneral
+    {
+    }
+
+    [Serializable]
+    public partial class FieldMappingPreferenceDelegated
+    {
+    }
+
+    [Serializable]
+    public partial class FieldMappingPreferenceActivity
+    {
+
     }
 }
