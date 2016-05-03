@@ -178,37 +178,39 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 //Add selected value
                 org.FundSourceIDnIATICode = managingDP == null ? "" : managingDP.IDnIATICode;
 
-                //try to set executing agency
-                ExecutingAgencyLookupItem agencyGuessed = null;
-                int minDistance = 1000;
-                foreach (var agency in exAgencies)
-                {
-                    int distance = Levenshtein.iLD(org.Name, agency.Name);
-                    if (minDistance > distance)
-                    {
-                        minDistance = distance;
-                        agencyGuessed = agency;
-                    }
+                ////try to set executing agency
+                //ExecutingAgencyLookupItem agencyGuessed = null;
+                //int minDistance = 1000;
+                //foreach (var agency in exAgencies)
+                //{
+                //    int distance = Levenshtein.iLD(org.Name.ToLower(), agency.Name.ToLower());
+                //    if (minDistance > distance)
+                //    {
+                //        minDistance = distance;
+                //        agencyGuessed = agency;
+                //    }
 
-                }
+                //}
 
-                if (minDistance < 7 && agencyGuessed != null)
-                {
-                    org.AllID = agencyGuessed.AllID;
+                //var len = ((org.Name.Length + agencyGuessed?.Name?.Length) / 2) * 100 / 100; // percent match
 
-                    if (org.ExecutingAgencyTypeId == null)
-                        org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
-                }
-                else
-                {
-                    var exa = exAgencies.FirstOrDefault(f => f.AllID.Contains(org.@ref));
-                    if (exa != null)
-                    {
-                        org.AllID = exa.AllID;
+                //if (minDistance < len && agencyGuessed != null)
+                //{
+                //    org.AllID = agencyGuessed.AllID;
 
-                        org.ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP;
-                    }
-                }
+                //    //if (org.ExecutingAgencyTypeId == null)
+                //        org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
+                //}
+                //else if (!string.IsNullOrEmpty(org.@ref))
+                //{
+                //    var exa = exAgencies.FirstOrDefault(f => f.AllID.Contains(org.@ref));
+                //    if (exa != null)
+                //    {
+                //        org.AllID = exa.AllID;
+
+                //        org.ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP;
+                //    }
+                //}
             }
 
             if (filterDBModel != null)

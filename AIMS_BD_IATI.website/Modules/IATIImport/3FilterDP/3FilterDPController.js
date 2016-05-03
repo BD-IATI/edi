@@ -1,4 +1,4 @@
-﻿angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout) {
+﻿angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout, $filter) {
     $scope.ImplementingOrgs = [];
     $scope.RelevantActivities = [];
 
@@ -13,14 +13,13 @@
         $scope.ExecutingAgencyTypes = result.data.ExecutingAgencyTypes;
         $scope.ExecutingAgencies = result.data.ExecutingAgencies;
         $rootScope.filterBDModel = null;
-        //$timeout(function () {
-        //    $("select").select2({ width: 'resolve' });
-        //});
-    
-        //deferred.resolve(result);
+
+        for (var i = 0; i < $scope.ImplementingOrgs.length; i++) {
+            var dis = $scope.GuessAgency($scope.ImplementingOrgs[i], false);
+        }
+
     },
     function (response) {
-        //deferred.reject(response);
     });
     $scope.activeTabIndex = 0;
 
@@ -90,21 +89,24 @@
     }
 
 
-    $scope.GuessAgency = function () {
+    $scope.GuessAgency = function (org, isFilterByType) {
         //try to set executing agency
-        for (var org in $scope.ImplementingOrgs) {
-            var agencyGuessed = null;
-            var minDistance = 1000;
-            for (var agency in $scope.ExecutingAgencies) {
-                var distance = Levenshtein.iLD(org.Name, agency.Name);
-                if (minDistance > distance) {
-                    minDistance = distance;
-                    agencyGuessed = agency;
-                }
-
+        var agencyGuessed = null;
+        var minDistance = 1000;
+        var exAgencies = isFilterByType ? $filter('filter')($scope.ExecutingAgencies, { ExecutingAgencyTypeId: org.ExecutingAgencyTypeId }) : $scope.ExecutingAgencies;
+        for (var i = 0; i < exAgencies.length; i++) {
+            var distance = $scope.getEditDistance(org.Name.toLowerCase(), exAgencies[i].Name.toLowerCase());
+            if (minDistance > distance) {
+                minDistance = distance;
+                agencyGuessed = exAgencies[i];
             }
-            if (minDistance < 7 && agencyGuessed != null) {
+        }
+        if (agencyGuessed != null) {
+            var tolaratedDistance = ((org.Name.length + agencyGuessed.Name.length) / 2) * 33 / 100;
+            if (minDistance < tolaratedDistance) {
                 org.AllID = agencyGuessed.AllID;
+
+                if (!isFilterByType) org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
             }
         }
     }

@@ -16,7 +16,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <h3>Determine organisation type</h3>
+                                <h3>Determine organisation type and organization</h3>
                                 <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
                                     <thead>
                                         <tr>
@@ -24,6 +24,8 @@
                                             <th st-sort="ref">Org ID</th>
                                             <th st-sort="narrative[0].Value">Org name</th>
                                             <th>Organisation type</th>
+                                            <th>Select organisation</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -31,8 +33,8 @@
                                             <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
                                             <td><code>{{org.ref}}</code></td>
                                             <td>{{org.narrative[0].Value}}</td>
-                                            <td>
-                                                <div class="form-group">
+                                            <td style="min-width:240px;">
+                                                <!--<div class="form-group">
                                                     <div class="col-sm-12">
                                                         <select class="form-control"
                                                                 ng-model="org.ExecutingAgencyTypeId"
@@ -40,44 +42,14 @@
                                                             <option value="">Select one...</option>
                                                         </select>
                                                     </div>
+                                                </div>-->
+                                                <div class="btn-group">
+                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uncheckable ng-click="GuessAgency(org, true)">Govt.</label>
+                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uncheckable ng-click="GuessAgency(org, true)">DP</label>
+                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO</label>
+                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Other</label>
                                                 </div>
                                             </td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
-                                <button ng-click="DetermineOrgType()" class="btn btn-default">Next</button>
-                            </div>
-                        </div>
-                    </form>
-
-                </uib-tab>
-
-                <uib-tab index="1" heading="3.2 Determine Specific Organisation">
-                    <form class="form-horizontal">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3>Determine specific organisation</h3>
-                                <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th st-sort="ref">Org ID</th>
-                                            <th st-sort="narrative[0].Value">Org name</th>
-                                            <th>Select organisation</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="org in iOrgs">
-                                            <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
-                                            <td><code>{{org.ref}}</code></td>
-                                            <td>{{org.narrative[0].Value}}</td>
                                             <td>
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
@@ -89,15 +61,17 @@
                                                     </div>
                                                 </div>
                                             </td>
+
                                         </tr>
 
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <div class="col-md-12">
-                                <button ng-click="activeTabIndex = 0" class="btn btn-default">Back</button>
+                                <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
                                 <button ng-click="FilterDP()" class="btn btn-default">Next</button>
                             </div>
                         </div>
@@ -105,7 +79,7 @@
 
                 </uib-tab>
 
-                <uib-tab index="2" heading="3.3 Determine Managing DP">
+                <uib-tab index="2" heading="3.2 Determine Managing DP">
                     <form class="form-horizontal">
                         <div class="row">
                             <div class="col-md-12">

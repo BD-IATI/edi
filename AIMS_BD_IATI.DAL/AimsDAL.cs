@@ -126,9 +126,9 @@ namespace AIMS_BD_IATI.DAL
                        orderby dp.FundSourceName
                        select new ExecutingAgencyLookupItem
                        {
-                           ExecutingAgencyOrganizationId = dp.Id,
                            ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP,
                            ExecutingAgencyOrganizationTypeId = dp.FundSourceCategoryId,
+                           ExecutingAgencyOrganizationId = dp.Id,
                            IATICode = dp.IATICode,
                            Name = dp.FundSourceName,
                        }).ToList();
@@ -137,9 +137,9 @@ namespace AIMS_BD_IATI.DAL
                                     orderby ministryAgency.AgencyName
                                     select new ExecutingAgencyLookupItem
                                     {
-                                        ExecutingAgencyOrganizationId = ministryAgency.Id,
                                         ExecutingAgencyTypeId = (int)ExecutingAgencyType.Government,
                                         ExecutingAgencyOrganizationTypeId = ministryAgency.MinistryId,
+                                        ExecutingAgencyOrganizationId = ministryAgency.Id,
                                         Name = ministryAgency.AgencyName,
                                     }).ToList();
 
@@ -147,9 +147,9 @@ namespace AIMS_BD_IATI.DAL
                         orderby ngo.NGOOrganizationName
                         select new ExecutingAgencyLookupItem
                         {
-                            ExecutingAgencyOrganizationId = ngo.Id,
                             ExecutingAgencyTypeId = (int)ExecutingAgencyType.NGO,
                             ExecutingAgencyOrganizationTypeId = ngo.NGOOrganizationTypeId,
+                            ExecutingAgencyOrganizationId = ngo.Id,
                             Name = ngo.NGOOrganizationName,
                         }).ToList();
 
