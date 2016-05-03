@@ -109,6 +109,14 @@
                 if (!isFilterByType) org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
             }
         }
+        else if (org['ref'] != null || org['ref'] != undefined) {
+            var exa = $filter('filter')($scope.ExecutingAgencies, { IATICode: org['ref'] });
+            if (exa != null) {
+                org.AllID = exa.AllID;
+
+                org.ExecutingAgencyTypeId = 2;//(int)ExecutingAgencyType.DP;
+            }
+        }
     }
 
     // Compute the edit distance between the two given strings

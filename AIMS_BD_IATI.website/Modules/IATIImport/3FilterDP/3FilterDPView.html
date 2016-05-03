@@ -23,7 +23,7 @@
                                             <th></th>
                                             <th st-sort="ref">Org ID</th>
                                             <th st-sort="narrative[0].Value">Org name</th>
-                                            <th>Organisation type</th>
+                                            <th st-sort="ExecutingAgencyTypeId">Organisation type</th>
                                             <th>Select organisation</th>
 
                                         </tr>
@@ -44,10 +44,10 @@
                                                     </div>
                                                 </div>-->
                                                 <div class="btn-group">
-                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uncheckable ng-click="GuessAgency(org, true)">Govt.</label>
-                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uncheckable ng-click="GuessAgency(org, true)">DP</label>
-                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO</label>
-                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Other</label>
+                                                    <label class="btn btn-default" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uncheckable ng-click="GuessAgency(org, true)">Govt.</label>
+                                                    <label class="btn btn-default" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uncheckable ng-click="GuessAgency(org, true)">DP</label>
+                                                    <label class="btn btn-default" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO</label>
+                                                    <label class="btn btn-default" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Other</label>
                                                 </div>
                                             </td>
                                             <td>
@@ -72,7 +72,7 @@
                         <div class="form-group">
                             <div class="col-md-12">
                                 <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
-                                <button ng-click="FilterDP()" class="btn btn-default">Next</button>
+                                <button ng-click="FilterDP()" class="btn btn-primary">Next</button>
                             </div>
                         </div>
                     </form>
@@ -140,7 +140,7 @@
                                     </button>
                                     <button ng-click="activeTabIndex = 1" class="btn btn-default">Back</button>
 
-                                    <a id="btn4Projects" ng-hide='hasOtherDPsProject' class="btn btn-default" ng-href="#/4Projects">Next</a>
+                                    <a id="btn4Projects" ng-hide='hasOtherDPsProject' class="btn btn-primary" ng-href="#/4Projects">Next</a>
                                 </span>
                             </div>
                         </div>
