@@ -523,6 +523,10 @@ namespace AIMS_BD_IATI.DAL
                             if (aimsProjectLocation == null)
                             {
                                 aimsProjectLocation = new tblProjectGeographicAllocation();
+                                aimsProjectLocation.DistrictId = nearestGeoLocation.DivisionId;
+                                aimsProjectLocation.DistrictId = nearestGeoLocation.DistrictId;
+                                aimsProjectLocation.UpazilaId = nearestGeoLocation.UpazilaId;
+
                                 p.tblProjectGeographicAllocations.Add(aimsProjectLocation);
                             }
 
