@@ -1,4 +1,9 @@
-﻿<div role="tabpanel" class="tab-pane active" id="filterDP" ng-controller="3FilterDPController">
+﻿<style>
+    .NoPadding{
+        padding:0px
+    }
+</style>
+<div role="tabpanel" class="tab-pane active" id="filterDP" ng-controller="3FilterDPController">
     <div class="row">
         <div class="col-md-12">
             <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 3. Implementing organisations</h2>
@@ -15,7 +20,7 @@
                     <form class="form-horizontal">
 
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12 NoPadding">
                                 <h3>Determine organisation type and organization</h3>
                                 <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
                                     <thead>
@@ -24,7 +29,7 @@
                                             <th st-sort="ref">Org ID</th>
                                             <th st-sort="narrative[0].Value">Org name</th>
                                             <th st-sort="ExecutingAgencyTypeId">Organisation type</th>
-                                            <th>Select organisation</th>
+                                            <th st-sort="AllID">Select organisation</th>
 
                                         </tr>
                                     </thead>
@@ -32,8 +37,8 @@
                                         <tr ng-repeat="org in iOrgs">
                                             <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span></td>
                                             <td><code>{{org.ref}}</code></td>
-                                            <td>{{org.narrative[0].Value}}</td>
-                                            <td style="min-width:240px;">
+                                            <td>{{org.Name}}</td>
+                                            <td style="min-width:240px; padding-right:10px;">
                                                 <!--<div class="form-group">
                                                     <div class="col-sm-12">
                                                         <select class="form-control"
@@ -44,20 +49,23 @@
                                                     </div>
                                                 </div>-->
                                                 <div class="btn-group">
-                                                    <label class="btn btn-default" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uncheckable ng-click="GuessAgency(org, true)">Govt.</label>
-                                                    <label class="btn btn-default" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uncheckable ng-click="GuessAgency(org, true)">DP</label>
-                                                    <label class="btn btn-default" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO</label>
-                                                    <label class="btn btn-default" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Other</label>
+                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uncheckable ng-click="GuessAgency(org, true)">Govt.</label>
+                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uncheckable ng-click="GuessAgency(org, true)">DP</label>
+                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO</label>
+                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Other</label>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="form-group">
-                                                    <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="col-sm-10">
                                                         <select class="form-control"
                                                                 ng-model="org.AllID"
                                                                 ng-options="item.AllID as item.Name for item in ExecutingAgencies | filter: {ExecutingAgencyTypeId: org.ExecutingAgencyTypeId}">
-                                                            <option value="">Select one...</option>
+                                                            <option value="">Select one/Unclear</option>
                                                         </select>
+                                                    </div>
+                                                    <div ng-hide="org.AllID" class="col-sm-2 NoPadding" style="height:100%">
+                                                        <button class="btn btn-primary" ng-click="AddNewImplementingOrg(org)">New</button>
                                                     </div>
                                                 </div>
                                             </td>
@@ -151,6 +159,7 @@
 
         </div>
     </div>
+
 </div>
 
 
@@ -161,5 +170,42 @@
 
         <button type="button" ng-click="SaveAndNext()" class="btn btn-primary">Yes, please delegate them</button>
         <button type="button" ng-click="NextWithoutSaving()" class="btn btn-default">No, not right now</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="AddNewImplementingOrgView.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()">&times;</button>
+        <h2 class="modal-title">
+            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+            Add New Implementing Organization
+        </h2>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">
+                    The following implementing organization will be added in the AIMS.
+                </p>
+
+                <hr />
+                <div class="form-group">
+                    <div class="form-control">
+                        <label>Org Type: {{org.ExecutingAgencyTypeId}}</label>
+                    </div>
+                    <div class="form-control">
+                        <label>Org ID: {{org.ref}}</label>
+                    </div>
+                    <div class="form-control">
+                        <label>Org Name: {{org.Name}}</label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="Ok()">Ok</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>

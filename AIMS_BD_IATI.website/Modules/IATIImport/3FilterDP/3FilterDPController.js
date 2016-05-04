@@ -1,4 +1,4 @@
-﻿angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout, $filter) {
+﻿angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModal) {
     $scope.ImplementingOrgs = [];
     $scope.RelevantActivities = [];
 
@@ -88,35 +88,70 @@
         });
     }
 
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    $scope.AddNewImplementingOrg = function (org) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            templateUrl: 'AddNewImplementingOrgView.html',
+            controller: 'AddNewImplementingOrgController',
+            size: 'lg',
+            resolve: { org: org }
+
+        });
+
+        modalInstance.result.then(function () {
+            org.AllID = org.ExecutingAgencyOrganizationId + "~"
+                    + (org.ref || "") + "~"
+                    + (org.ExecutingAgencyTypeId) + "~" 
+                    + org.ExecutingAgencyOrganizationTypeId + "~New~" + org.Name;
+            org.IATICode = org.ref;
+
+            $scope.ExecutingAgencies.push(org);
+        }, function () {
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+
 
     $scope.GuessAgency = function (org, isFilterByType) {
-        //try to set executing agency
-        var agencyGuessed = null;
-        var minDistance = 1000;
-        var exAgencies = isFilterByType ? $filter('filter')($scope.ExecutingAgencies, { ExecutingAgencyTypeId: org.ExecutingAgencyTypeId }) : $scope.ExecutingAgencies;
-        for (var i = 0; i < exAgencies.length; i++) {
-            var distance = $scope.getEditDistance(org.Name.toLowerCase(), exAgencies[i].Name.toLowerCase());
-            if (minDistance > distance) {
-                minDistance = distance;
-                agencyGuessed = exAgencies[i];
-            }
-        }
-        if (agencyGuessed != null) {
-            var tolaratedDistance = ((org.Name.length + agencyGuessed.Name.length) / 2) * 33 / 100;
-            if (minDistance < tolaratedDistance) {
-                org.AllID = agencyGuessed.AllID;
-
-                if (!isFilterByType) org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
-            }
-        }
-        else if (org['ref'] != null || org['ref'] != undefined) {
+        var IsNotFoundInAims = true;
+        if (org['ref'] != null || org['ref'] != undefined) {
             var exa = $filter('filter')($scope.ExecutingAgencies, { IATICode: org['ref'] });
-            if (exa != null) {
-                org.AllID = exa.AllID;
-
+            if (exa.length > 0) {
+                org.AllID = exa[0].AllID;
                 org.ExecutingAgencyTypeId = 2;//(int)ExecutingAgencyType.DP;
+                IsNotFoundInAims = false;
+            }
+           
+        }
+
+        if (IsNotFoundInAims) {
+            //try to set executing agency
+            var agencyGuessed = null;
+            var minDistance = 1000;
+            var exAgencies = isFilterByType ? $filter('filter')($scope.ExecutingAgencies, { ExecutingAgencyTypeId: org.ExecutingAgencyTypeId }) : $scope.ExecutingAgencies;
+            for (var i = 0; i < exAgencies.length; i++) {
+                var distance = $scope.getEditDistance(org.Name.toLowerCase(), exAgencies[i].Name.toLowerCase());
+                if (minDistance > distance) {
+                    minDistance = distance;
+                    agencyGuessed = exAgencies[i];
+                }
+            }
+
+            if (agencyGuessed != null) {
+                var tolaratedDistance = ((org.Name.length + agencyGuessed.Name.length) / 2) * 33 / 100;
+                if (minDistance < tolaratedDistance) {
+                    org.AllID = agencyGuessed.AllID;
+
+                    if (!isFilterByType) org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
+                }
             }
         }
+
     }
 
     // Compute the edit distance between the two given strings
@@ -153,5 +188,18 @@
 
         return matrix[b.length][a.length];
     };
+
+});
+
+angular.module('iatiDataImporter').controller("AddNewImplementingOrgController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModalInstance, org) {
+    $scope.org = org;
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    $scope.Ok = function () {
+        $uibModalInstance.close($scope.org);
+    };
+
 
 });
