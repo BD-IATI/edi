@@ -93,24 +93,35 @@
     };
 
     $scope.AddNewImplementingOrg = function (org) {
+        var exAgencies = $scope.ExecutingAgencies;
+        for (var i = 0; i < exAgencies.length; i++) {
+            var distance = $scope.getEditDistance(org.Name.toLowerCase(), exAgencies[i].Name.toLowerCase());
+            exAgencies[i].editDistance = distance;
+        }
+
         var modalInstance = $uibModal.open({
-            animation: true,
-            backdrop: false,
             templateUrl: 'AddNewImplementingOrgView.html',
             controller: 'AddNewImplementingOrgController',
-            size: 'lg',
-            resolve: { org: org }
+            resolve: { parentScope: $scope, org: org }
 
         });
 
-        modalInstance.result.then(function () {
-            org.AllID = org.ExecutingAgencyOrganizationId + "~"
-                    + (org.ref || "") + "~"
-                    + (org.ExecutingAgencyTypeId) + "~" 
-                    + org.ExecutingAgencyOrganizationTypeId + "~New~" + org.Name;
-            org.IATICode = org.ref;
+        modalInstance.result.then(function (selectedOrg) {
+            if (selectedOrg != null)
+            {
+                org.ExecutingAgencyTypeId = selectedOrg.ExecutingAgencyTypeId;
+                org.AllID = selectedOrg.AllID;
+            }
+            else
+            {
+                org.AllID = org.ExecutingAgencyOrganizationId + "~"
+                + (org.ref || "") + "~"
+                + org.ExecutingAgencyTypeId + "~" 
+                + org.ExecutingAgencyOrganizationTypeId + "~New~" + org.Name;
+                org.IATICode = org.ref;
 
-            $scope.ExecutingAgencies.push(org);
+                $scope.ExecutingAgencies.push(org);
+            }
         }, function () {
             //$log.info('Modal dismissed at: ' + new Date());
         });
@@ -126,7 +137,7 @@
                 org.ExecutingAgencyTypeId = 2;//(int)ExecutingAgencyType.DP;
                 IsNotFoundInAims = false;
             }
-           
+
         }
 
         if (IsNotFoundInAims) {
@@ -143,7 +154,7 @@
             }
 
             if (agencyGuessed != null) {
-                var tolaratedDistance = ((org.Name.length + agencyGuessed.Name.length) / 2) * 33 / 100;
+                var tolaratedDistance = isFilterByType ? (org.Name.length + agencyGuessed.Name.length) / 2 : ((org.Name.length + agencyGuessed.Name.length) / 2) * 50 / 100;
                 if (minDistance < tolaratedDistance) {
                     org.AllID = agencyGuessed.AllID;
 
@@ -191,15 +202,24 @@
 
 });
 
-angular.module('iatiDataImporter').controller("AddNewImplementingOrgController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModalInstance, org) {
+angular.module('iatiDataImporter').controller("AddNewImplementingOrgController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModalInstance, parentScope, org) {
+
+    org.ExecutingAgencyType = org.ExecutingAgencyTypeId == 1 ? 'Govt.' :
+             org.ExecutingAgencyTypeId == 2 ? 'DP' :
+             org.ExecutingAgencyTypeId == 3 ? 'NGO' : 'Other';
+
+    $scope.ExecutingAgencies = parentScope.ExecutingAgencies;
     $scope.org = org;
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
 
     $scope.Ok = function () {
-        $uibModalInstance.close($scope.org);
+        $uibModalInstance.close();
     };
 
+    $scope.selectOrg = function (Org) {
+        $uibModalInstance.close(Org);
+    };
 
 });

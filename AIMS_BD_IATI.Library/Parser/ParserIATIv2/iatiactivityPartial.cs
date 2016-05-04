@@ -737,7 +737,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 r = (int)ExecutingAgencyType.Government;
             else if (t == "21" || t == "22" || t == "23")
                 r = (int)ExecutingAgencyType.NGO;
-
+            else r = (int)ExecutingAgencyType.Others;
 
             return r;
         }
