@@ -109,7 +109,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 }
                 #endregion
 
-                Sessions.heirarchyModel.SelectedHierarchy = Sessions.heirarchyModel.H1Percent > Sessions.heirarchyModel.H2Percent ? 1 : 2;
+                Sessions.heirarchyModel.SelectedHierarchy = Sessions.heirarchyModel.H1Percent >= Sessions.heirarchyModel.H2Percent ? 1 : 2;
             }
             else
             {

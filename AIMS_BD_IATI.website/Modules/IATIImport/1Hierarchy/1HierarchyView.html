@@ -6,15 +6,10 @@
                 It looks like you use multiple levels of
                 activities in your data (for example, projects and
                 sub-components). We've compared your activities against those
-                found in the AIMS, and recommend you proceed with hierarchy 1.
+                found in the AIMS, and recommend you proceed with hierarchy <span ng-bind="model.SelectedHierarchy"></span>
                 However, you can adjust below.
             </p>
             <hr>
-            <!--<div ng-repeat="activity in iatiActivities">
-                <input type="text" ng-model="activity.IatiIdentifier" />
-                       {{activity.IatiIdentifier}} -
-                       {{activity.Title}}>
-            </div>-->
             <form class="form-horizontal">
                 <div class="row">
                     <div class="col-md-12">
@@ -56,35 +51,6 @@
                                         </div>
                                     </td>
                                 </tr>
-
-                                <!--<tr class="success" ng-repeat-start="activity in iatiActivities">
-                                    <td>1</td>
-                                    <td>
-                                        <code>{{activity.IatiIdentifier}}</code> {{activity.Title}}
-                                    </td>
-
-                                    <td>70%</td>
-                                    <td>
-                                        <div class="radio">
-                                            <input type="radio" name="{{activity.IatiIdentifier}}" value="Hierarchy1" ng-model="activity.SelectedHierarchy">
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr ng-repeat-end>
-                                    <td>2</td>
-                                    <td>
-                                        <p ng-repeat="ra in activity.childActivities track by $index">
-                                            <code>{{ra.IatiIdentifier}}</code> {{ra.Title}}
-                                        </p>
-                                    </td>
-                                    <td>0%</td>
-                                    <td>
-                                        <div class="radio">
-                                            <input type="radio" name="{{activity.IatiIdentifier}}" value="Hierarchy2" ng-model="activity.SelectedHierarchy">
-                                        </div>
-                                    </td>
-                                </tr>-->
                             </tbody>
                         </table>
                     </div>
