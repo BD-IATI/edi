@@ -88,6 +88,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         #endregion co-financed and trust fund projects
 
         [XmlIgnore]
+        public bool IsInclude { get; set; } //AIMS ProjectId
+        [XmlIgnore]
         public int ProjectId { get; set; } //AIMS ProjectId
         [XmlIgnore]
         public int MappedProjectId { get; set; }
@@ -101,6 +103,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         [XmlIgnore]
         public List<iatiactivity> childActivities { get; set; }
+        [XmlIgnore]
+        private List<iatiactivity> includedChildActivities { get { return childActivities.FindAll(f=>f.IsInclude == true); } }
 
         [XmlIgnore]
         public List<iatiactivity> MatchedProjects { get; set; }
@@ -194,7 +198,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 }
                 else
                 {
-                    foreach (var ra in childActivities)
+                    foreach (var ra in includedChildActivities)
                     {
                         if (ra.budget != null)
                         {
@@ -316,7 +320,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 Transactions.AddRange(transaction.Where(p => p.transactiontype.n().code == transactiontypecode));
             }
 
-            foreach (var ra in childActivities)
+            foreach (var ra in includedChildActivities)
             {
                 if (ra.transaction != null)
                 {
@@ -502,7 +506,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                     else
                     {
                         var allChildAticitiesTrans = new List<transaction>();
-                        foreach (var ra in childActivities)
+                        foreach (var ra in includedChildActivities)
                         {
                             if (ra.transaction != null)
                             {

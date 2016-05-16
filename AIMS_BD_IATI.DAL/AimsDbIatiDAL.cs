@@ -221,9 +221,17 @@ namespace AIMS_BD_IATI.DAL
                 if (a != null)
                 {
                     a.ProjectId = activity.ProjectId;
-
                     a.MappedProjectId = activity.MappedProjectId;
                     a.MappedTrustFundId = activity.MappedTrustFundId;
+
+                    if (activity.HasChildActivity)
+                        foreach (var ca in activity.childActivities)
+                        {
+                            var c = dbContext.Activities.FirstOrDefault(f => f.IatiIdentifier == ca.IatiIdentifier);
+                            if (c != null)
+                                c.IsInclude = ca.IsInclude;
+
+                        }
                 }
             }
 
@@ -250,7 +258,8 @@ namespace AIMS_BD_IATI.DAL
                          ProjectId = a.ProjectId,
                          MappedProjectId = a.MappedProjectId,
                          MappedTrustFundId = a.MappedTrustFundId,
-                         OrgId = a.OrgId
+                         OrgId = a.OrgId,
+                         IsInclude = a.IsInclude
                      }).ToList();
 
             var iatiActivities = ParseXMLAndResolve(q);
@@ -292,7 +301,15 @@ namespace AIMS_BD_IATI.DAL
             var q = (from a in dbContext.Activities
                      where a.AssignedOrgId == dp
                      orderby a.IatiIdentifier
-                     select new ActivityModel { IatiActivity = a.IatiActivity, OrgId = a.OrgId }).ToList();
+                     select new ActivityModel
+                     {
+                         IatiActivity = a.IatiActivity,
+                         OrgId = a.OrgId,
+                         ProjectId = a.ProjectId,
+                         MappedProjectId = a.MappedProjectId,
+                         MappedTrustFundId = a.MappedTrustFundId,
+                         IsInclude = a.IsInclude
+                     }).ToList();
 
             var iatiActivities = ParseXMLAndResolve(q);
 
@@ -312,7 +329,15 @@ namespace AIMS_BD_IATI.DAL
                      let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
                      where a.AssignedOrgId == dp && isNotMapped
                      orderby a.IatiIdentifier
-                     select new ActivityModel { IatiActivity = a.IatiActivity, OrgId = a.OrgId }).ToList();
+                     select new ActivityModel
+                     {
+                         IatiActivity = a.IatiActivity,
+                         OrgId = a.OrgId,
+                         ProjectId = a.ProjectId,
+                         MappedProjectId = a.MappedProjectId,
+                         MappedTrustFundId = a.MappedTrustFundId,
+                         IsInclude = a.IsInclude
+                     }).ToList();
 
             var iatiActivities = ParseXMLAndResolve(q);
 
@@ -330,7 +355,15 @@ namespace AIMS_BD_IATI.DAL
             var q = (from a in dbContext.Activities
                      let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
                      where a.IatiIdentifier == iatiIdentifier && isMapped
-                     select new ActivityModel { IatiActivity = a.IatiActivity, ProjectId = a.ProjectId, OrgId = a.OrgId }).FirstOrDefault();
+                     select new ActivityModel
+                     {
+                         IatiActivity = a.IatiActivity,
+                         OrgId = a.OrgId,
+                         ProjectId = a.ProjectId,
+                         MappedProjectId = a.MappedProjectId,
+                         MappedTrustFundId = a.MappedTrustFundId,
+                         IsInclude = a.IsInclude
+                     }).FirstOrDefault();
 
             if (q == null) return null;
 
@@ -387,6 +420,7 @@ namespace AIMS_BD_IATI.DAL
                 }
                 a.iatiActivity.MappedProjectId = a.MappedProjectId ?? 0;
                 a.iatiActivity.MappedTrustFundId = a.MappedTrustFundId ?? 0;
+                a.iatiActivity.IsInclude = a.IsInclude ?? true;
 
                 a.iatiActivity.FundSourceIDnIATICode = new AimsDAL().GetFundSourceIDnIATICode(a.OrgId);
 
@@ -405,7 +439,15 @@ namespace AIMS_BD_IATI.DAL
 
                 var ras = (from a in dbContext.Activities
                            where a.IatiIdentifier.StartsWith(activity.IatiIdentifier)
-                           select new ActivityModel { IatiActivity = a.IatiActivity, OrgId = a.OrgId }).ToList();
+                           select new ActivityModel
+                           {
+                               IatiActivity = a.IatiActivity,
+                               OrgId = a.OrgId,
+                               ProjectId = a.ProjectId,
+                               MappedProjectId = a.MappedProjectId,
+                               MappedTrustFundId = a.MappedTrustFundId,
+                               IsInclude = a.IsInclude
+                           }).ToList();
 
                 relatedActivities = ParseXMLAndResolve(ras);
 

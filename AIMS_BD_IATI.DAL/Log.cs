@@ -11,6 +11,7 @@ namespace AIMS_BD_IATI.DAL
 {
     using System;
     using System.Collections.Generic;
+    
     public partial class Log
     {
         public int Id { get; set; }

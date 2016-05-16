@@ -2,65 +2,185 @@
     <div class="row">
         <div class="col-md-12">
             <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 2. Filter for activities relevant to Bangladesh</h2>
-            <p class="lead">
-                Some of the activities published at headquarters
-                level will not be relevant to Bangladesh. We have filtered out those projects where:
-            </p>
-            <ul>
-                <li>less than 20% is tagged as Bangladesh</li>
-                <!--<li>projects where the "Aid Type" is core contributions to multilaterals or NGOs</li>-->
-                <li>projects where the Activity Status is "Implementation" only (i.e. not closed projects) </li>
-            </ul>
-            <hr>
-            <form class="form-horizontal">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table st-table="iatiActivities" st-safe-src="model.iatiActivities" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th st-sort="IatiIdentifier" style="min-width:120px">
-                                        Activity ID
-                                    </th>
-                                    <th st-sort="Title" style="min-width:200px">
-                                        Activity Title
-                                    </th>
-                                    <th st-sort="PercentToBD" style="min-width:120px">
-                                        % to BD
-                                    </th>
-                                    <th st-sort="AidType" style="min-width:100px">
-                                        Aid type
-                                    </th>
-                                    <th st-sort="ActivityStatus" style="min-width:100px">
-                                        Status
-                                    </th>
-                                    <th st-sort="IsRelevant" style="min-width:110px">
-                                        Relevant
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="activity in iatiActivities">
-                                    <td><code>{{activity.IatiIdentifier}}</code></td>
-                                    <td>{{activity.Title}}</td>
-                                    <td>{{activity.PercentToBD}}%</td>
-                                    <td>{{activity.AidType}} <code>{{activity.AidTypeCode}}</code></td>
-                                    <td>{{activity.ActivityStatus}}</td>
-                                    <td><input type="checkbox" ng-model="activity.IsRelevant"></td>
-                                </tr>
-                            </tbody>
-                        </table>
 
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12 btnFooter">
-                        <a ng-hide="$root.HasChildActivity" class="btn btn-default" ng-href="#/0Begin">  Back  </a>
-                        <a ng-show="$root.HasChildActivity" class="btn btn-default" ng-href="#/1Hierarchy">  Back  </a>
-                        <a class="btn btn-primary" ng-href="#/3FilterDP">  Next  </a>
-                    </div>
-                </div>
+            <uib-tabset active="activeTabIndex">
+                <uib-tab index="0" heading="2.1 Select relavent projects">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <br />
 
-            </form>
+                                <p class="lead">
+                                    Some of the activities published at headquarters
+                                    level will not be relevant to Bangladesh. We have filtered out those projects where:
+                                </p>
+                                <ul>
+                                    <li>less than 20% is tagged as Bangladesh</li>
+                                    <!--<li>projects where the "Aid Type" is core contributions to multilaterals or NGOs</li>-->
+                                    <li>projects where the Activity Status is "Implementation" only (i.e. not closed projects) </li>
+                                </ul>
+
+                                <hr>
+                                <table st-table="iatiActivities" st-safe-src="model.iatiActivities" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th st-sort="IatiIdentifier" style="min-width:120px">
+                                                Activity ID
+                                            </th>
+                                            <th st-sort="Title" style="min-width:200px">
+                                                Activity Title
+                                            </th>
+                                            <th st-sort="PercentToBD" style="min-width:120px">
+                                                % to BD
+                                            </th>
+                                            <th st-sort="AidType" style="min-width:100px">
+                                                Aid type
+                                            </th>
+                                            <th st-sort="ActivityStatus" style="min-width:100px">
+                                                Status
+                                            </th>
+                                            <th st-sort="IsRelevant" style="min-width:110px">
+                                                Relevant?
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="activity in iatiActivities">
+                                            <td><code ng-bind="activity.IatiIdentifier"></code></td>
+                                            <td ng-bind="activity.Title"></td>
+                                            <td>{{activity.PercentToBD}}%</td>
+                                            <td>{{activity.AidType}} <code>{{activity.AidTypeCode}}</code></td>
+                                            <td ng-bind="activity.ActivityStatus"></td>
+                                            <td><input type="checkbox" ng-model="activity.IsRelevant"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 btnFooter">
+                                <a ng-hide="$root.HasChildActivity" class="btn btn-default" ng-href="#/0Begin">  Back  </a>
+                                <a ng-show="$root.HasChildActivity" class="btn btn-default" ng-href="#/1Hierarchy">  Back  </a>
+                                <button ng-click="setTabIndex(1)" class="btn btn-default"> Next </button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </uib-tab>
+
+                <uib-tab index="1" heading="2.2 Select project components">
+                    <br />
+                    <p class="lead">
+                        You can deselect individual project sub-components
+                        below, if you want. Otherwise, just click "Next" to include
+                        all sub-components.
+                    </p>
+                    <hr />
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table st-table="iatiActivities" st-safe-src="model.iatiActivities" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Projects and sub-components</th>
+                                            <th>Include?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="activity in iatiActivities | filter: {IsRelevant:true}">
+                                        <tr class="success">
+                                            <td colspan="2"><code ng-bind="activity.IatiIdentifier"></code> {{activity.Title}}</td>
+                                        </tr>
+
+                                        <tr ng-repeat="ca in activity.childActivities">
+                                            <td style="padding-left:50px"><code ng-bind="ca.IatiIdentifier"></code> {{ca.Title}}</td>
+                                            <td><input type="checkbox" ng-model="ca.IsInclude"></td>
+                                        </tr>
+
+                                    </tbody>
+                                    <!--<tbody>
+                                        <tr class="success">
+                                            <td><code>GB-1-107368</code> Rural Electrification Development Project</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p><code>GB-1-107368-101</code> PROCOFSERVICES and P0050 for Rural Electrification Development Project</p>
+                                            </td>
+                                            <td>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" checked>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p><code>GB-1-107368-102</code> MULTILATORGANISATION and P0050 for Rural Electrification Development Project</p>
+                                            </td>
+                                            <td>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" checked>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p><code>GB-1-107368-103</code> NONBUDSUPPFINAID and P0050 for Rural Electrification Development Project</p>
+                                            </td>
+                                            <td>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" checked>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p><code>GB-1-107368-104</code> MOU With USAID for REDP</p>
+                                            </td>
+                                            <td>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" checked>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p><code>GB-1-107368-105</code> NONBUDSUPPFINAID and CP026 for Rural Electrification Development Project</p>
+                                            </td>
+                                            <td>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" checked>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>-->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 btnFooter">
+                                <button class="btn btn-default" ng-click="setTabIndex(0)">  Back  </button>
+                                <a class="btn btn-primary" ng-href="#/3FilterDP">  Next  </a>
+                            </div>
+                        </div>
+                    </form>
+
+                </uib-tab>
+            </uib-tabset>
+
+
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 ﻿angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModal) {
     $scope.ImplementingOrgs = [];
     $scope.RelevantActivities = [];
+    $scope.activeTabIndex = 0;
 
     $http({
         url: apiprefix + '/api/IATIImport/GetAllImplementingOrg',
@@ -21,12 +22,6 @@
     },
     function (response) {
     });
-    $scope.activeTabIndex = 0;
-
-    $scope.DetermineOrgType = function () {
-        $scope.activeTabIndex = 1;
-        $('#divView').slimScroll({ scrollTo: '0px' });
-    };
 
     $scope.FilterDP = function () {
 
@@ -37,7 +32,7 @@
             dataType: 'json'
         }).then(function (result) {
             $rootScope.RelevantActivities = $scope.RelevantActivities = result.data;
-            $scope.activeTabIndex = 2;
+            $scope.activeTabIndex = 1;
             $('#divView').slimScroll({ scrollTo: '0px' });
 
             //deferred.resolve(result);

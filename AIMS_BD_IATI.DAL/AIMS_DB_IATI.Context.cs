@@ -28,7 +28,7 @@ namespace AIMS_BD_IATI.DAL
         public virtual DbSet<FieldMappingPreferenceGeneral> FieldMappingPreferenceGenerals { get; set; }
         public virtual DbSet<FieldMappingPreferenceDelegated> FieldMappingPreferenceDelegateds { get; set; }
         public virtual DbSet<FieldMappingPreferenceActivity> FieldMappingPreferenceActivities { get; set; }
-        public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<Activity> Activities { get; set; }
     }
 }

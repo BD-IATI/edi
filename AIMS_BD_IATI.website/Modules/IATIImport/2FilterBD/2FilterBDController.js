@@ -1,4 +1,6 @@
 ﻿angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope, $scope, $http) {
+    $scope.activeTabIndex = 0;
+    $scope.setTabIndex = function (index) { $scope.activeTabIndex = index; };
 
     $http({
         url: apiprefix + '/api/IATIImport/SubmitHierarchy',
