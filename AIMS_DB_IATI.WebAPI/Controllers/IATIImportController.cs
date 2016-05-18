@@ -36,7 +36,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         public List<DPLookupItem> GetFundSources()
         {
             Sessions.FundSources = aimsDAL.GetAllFundSources();
-            Sessions.CurrentStage = Stage.Begin;
             return aimsDAL.GetFundSources(Sessions.UserId);
         }
 
@@ -55,19 +54,20 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             //if (isDPChanged)
             //{
+            dp = dp ?? Sessions.DP;
 
             Sessions.activitiesContainer = aimsDbIatiDAL.GetNotMappedActivities(Sessions.DP.ID);
 
-            Sessions.heirarchyModel = CalculateHierarchyMatching();
+            var returnResult = CalculateHierarchyMatching();
             //}
+            Sessions.heirarchyModel = returnResult;
 
-
-            return Sessions.heirarchyModel;
+            return returnResult;
         }
 
         private static HeirarchyModel CalculateHierarchyMatching()
         {
-            Sessions.heirarchyModel = new HeirarchyModel();
+            var returnResult = new HeirarchyModel();
             if (Sessions.activitiesContainer?.HasChildActivity == true)
             {
                 var H1Acts = Sessions.activitiesContainer?.iatiActivities.FindAll(f => f.hierarchy == 1);
@@ -80,8 +80,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 var matchedH2 = (decimal)(GetMatchedProjects(H2Acts, AimsProjects)).Count();
 
 
-                Sessions.heirarchyModel.H1Percent = H1Acts.Count > 0 ? Math.Round((decimal)(matchedH1 / H1Acts.Count) * 100, 2) : 0;
-                Sessions.heirarchyModel.H2Percent = H2Acts.Count > 0 ? Math.Round((decimal)(matchedH2 / H2Acts.Count) * 100, 2) : 0;
+                returnResult.H1Percent = H1Acts.Count > 0 ? Math.Round((decimal)(matchedH1 / H1Acts.Count) * 100, 2) : 0;
+                returnResult.H2Percent = H2Acts.Count > 0 ? Math.Round((decimal)(matchedH2 / H2Acts.Count) * 100, 2) : 0;
 
 
 
@@ -101,24 +101,24 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                                 pa.childActivities.Add(ha);
                             }
                         }
-                        Sessions.heirarchyModel.SampleIatiActivity = pa;
+                        returnResult.SampleIatiActivity = pa;
                         break; //we have to show only one hierarchycal project as a sample
                     }
                 }
                 #endregion
 
-                Sessions.heirarchyModel.SelectedHierarchy = Sessions.heirarchyModel.H1Percent >= Sessions.heirarchyModel.H2Percent ? 1 : 2;
+                returnResult.SelectedHierarchy = returnResult.H1Percent >= returnResult.H2Percent ? 1 : 2;
 
                 Sessions.CurrentStage = Stage.Hierarchy;
 
             }
             else
             {
-                Sessions.heirarchyModel = null;
+                returnResult = null;
                 Sessions.CurrentStage = Stage.FilterBD;
             }
 
-            return Sessions.heirarchyModel;
+            return returnResult;
         }
         #endregion
 

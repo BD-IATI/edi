@@ -1,13 +1,30 @@
-﻿angular.module('iatiDataImporter').controller("DashboardController", function ($rootScope, $scope, $http, $uibModal) {
+﻿angular.module('iatiDataImporter').controller("DashboardController", function ($rootScope, $scope, $http, $uibModal,$timeout) {
 
     $http({
         method: 'POST',
-        url: apiprefix + '/api/Dashboard/GetDashboardData',
+        url: apiprefix + '/api/Dashboard/CheckSession',
 
         data: JSON.stringify($rootScope.getCookie('selectedFundSource'))
 
     }).success(function (result) {
-        $scope.model = result;
+        $timeout(function () {
+            if (result == '/0Begin') {
+                $http({
+                    method: 'POST',
+                    url: apiprefix + '/api/Dashboard/GetDashboardData',
+
+                    data: JSON.stringify($rootScope.getCookie('selectedFundSource'))
+
+                }).success(function (result) {
+                    $scope.model = result;
+                });
+
+            }
+            else {
+                location.hash = result;
+            }
+        });
+
     });
 
 

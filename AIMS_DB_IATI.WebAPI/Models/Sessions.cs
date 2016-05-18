@@ -36,18 +36,19 @@ namespace AIMS_DB_IATI.WebAPI.Models
             {
                 using (IAsyncDocumentSession DocumentSession = DocumentStore.OpenAsyncSession())
                 {
+                    T d;
                     if (value == null)
                     {
                         DocumentSession.Delete(docId);
                     }
                     else
                     {
-                        T d = await DocumentSession.LoadAsync<T>(docId);
+                        //d = await DocumentSession.LoadAsync<T>(docId);
 
-                        if (d == null)
+                        //if (d == null)
                             await DocumentSession.StoreAsync(value, docId);
 
-                        d = value;
+                        //d = value;
                     }
                     await DocumentSession.SaveChangesAsync();
                 }
@@ -69,10 +70,14 @@ namespace AIMS_DB_IATI.WebAPI.Models
 
         internal static void Clear()
         {
+            CurrentStage = Stage.Begin;
             activitiesContainer = null;
             heirarchyModel = null;
+            filterBDModel = null;
+            iOrgs = null;
             GeneralPreferences = null;
             ProjectMapModel = null;
+            ProjectsToMap = null;
             CFnTFModel = null;
             TrustFunds = null;
         }
@@ -88,15 +93,19 @@ namespace AIMS_DB_IATI.WebAPI.Models
             set { HttpContext.Current.Session["UserId"] = value; }
         }
 
-        public static Stage CurrentStage
+        public static string CurrentStage
         {
             get
             {
-                return GetSession<Stage>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                return d == null ? Stage.Begin : d.Val;
+
             }
             set
             {
-                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                KeyVal d = new KeyVal { Val = value };
+                SaveSession(d, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+
             }
         }
 
@@ -215,7 +224,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                return GetSession<CFnTFModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? 
+                return GetSession<CFnTFModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ??
                     new CFnTFModel();
             }
             set
@@ -228,7 +237,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new KeyVal();
+                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
                 return d == null ? new List<FundSourceLookupItem>() : d.Val;
 
             }
@@ -245,7 +254,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new KeyVal();
+                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
                 return d == null ? new List<iatiactivity>() : d.Val;
             }
             set
@@ -259,7 +268,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new KeyVal();
+                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
                 return d == null ? new List<LookupItem>() : d.Val;
 
             }
@@ -297,7 +306,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
             _store.Conventions.JsonContractResolver = new DynamicContractResolver();
             _store.Conventions.MaxNumberOfRequestsPerSession = 4096;
             _store.Initialize();
-            _store.DisableAggressiveCaching();
+            //_store.DisableAggressiveCaching();
             //IndexCreation.CreateIndexes(Assembly.GetCallingAssembly(), Store);
             //_store.AggressivelyCache();
 
@@ -332,15 +341,18 @@ namespace AIMS_DB_IATI.WebAPI.Models
         public dynamic Val { get; set; }
     }
 
-    public enum Stage
+    public static class Stage
     {
-        Begin = 0,
-        Hierarchy = 1,
-        FilterBD = 2,
-        FilterDP = 3,
-        ShowProjects = 4,
-        MatchProjects = 5,
-        GeneralPreferences = 6,
-        ReviewAdjustment=7
+        public const string Begin = "/0Begin";
+        public const string Hierarchy = "/1Hierarchy";
+        public const string FilterBD = "/2FilterBD";
+        public const string FilterDP = "/3FilterDP";
+        public const string ShowProjects = "/4Projects";
+        public const string MatchProjects = "/5Match";
+        public const string GeneralPreferences = "/6GeneralPreferences";
+        public const string ReviewAdjustment = "/7ReviewAdjustment";
+
+
+
     }
 }

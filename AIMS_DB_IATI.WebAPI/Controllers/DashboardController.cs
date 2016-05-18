@@ -22,7 +22,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         {
             if (dp == null) return null;
 
-            Sessions.Clear();
+            //Sessions.Clear();
             string dpId = dp.ID;
             //Sessions.DP.ID = dpId;
             Sessions.DP = dp;
@@ -48,6 +48,12 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             dashboardModel.addLogs(aimsDbIatiDAL.GetLastDayLogs(dpId));
 
             return dashboardModel;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public string CheckSession(DPLookupItem dp)
+        {
+            return Sessions.CurrentStage;
         }
     }
 }
