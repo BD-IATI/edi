@@ -70,7 +70,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
 
             foreach (var TrustFund in CFnTFModel.TrustFundDetails)
             {
-                var acts = assignedActivities.FindAll(f => f.MappedTrustFundId == TrustFund.Id);
+                var acts = assignedActivities.FindAll(f => f.MappedTrustFundId == TrustFund.TrustFundId);
                 TrustFund.iatiactivities.AddRange(acts);
             }
             #endregion

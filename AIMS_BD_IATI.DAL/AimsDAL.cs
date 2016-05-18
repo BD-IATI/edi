@@ -224,7 +224,7 @@ namespace AIMS_BD_IATI.DAL
                                         Amount = trustFundDetail.TFDAmountInUSD,
                                     }).ToList();
 
-            trustFundModel.Id = trustFundDetails.n(0).Id;
+            trustFundModel.TrustFundId = trustFundDetails.n(0).Id;
             trustFundModel.TFIdentifier = trustFundDetails.n(0).TFIdentifier;
             foreach (var trustFundDetail in trustFundDetails)
             {
@@ -256,7 +256,7 @@ namespace AIMS_BD_IATI.DAL
                     try
                     {
 
-                        var trustFund = dbContext.tblTrustFunds.FirstOrDefault(w => w.Id == TrustFundModel.Id);
+                        var trustFund = dbContext.tblTrustFunds.FirstOrDefault(w => w.Id == TrustFundModel.TrustFundId);
                         if (trustFund != null)
                         {
                             foreach (var activity in TrustFundModel.iatiactivities)

@@ -19,6 +19,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             iatiActivities = new List<iatiactivity>();
             NewProjects = new List<iatiactivity>();
         }
+        ////public string Id { get; set; }
         public List<iatiactivity> iatiActivities { get; set; }
         public List<iatiactivity> RelevantActivities { get { return iatiActivities.n().FindAll(f => f.IsRelevant == true); } }
         public List<iatiactivity> NewProjects { get; set; }
@@ -31,7 +32,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     [Serializable]
     public class TrustFundModel
     {
-        public int Id { get; set; }
+        //public string Id { get; set; }
+        public int TrustFundId { get; set; }
         public string TFIdentifier { get; set; }
         public int FundSourceId { get; set; }
         public List<transaction> transactionsInAims { get; set; }
@@ -47,6 +49,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     [Serializable]
     public class CFnTFModel
     {
+        //public string Id { get; set; }
         public List<iatiactivity> AimsProjects { get; set; }
         public List<iatiactivity> AssignedActivities { get; set; }
         public List<LookupItem> TrustFunds { get; set; }
@@ -63,6 +66,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     public partial class iatiactivity
     {
+
         public iatiactivity()
         {
             childActivities = new List<iatiactivity>();
@@ -608,6 +612,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     public partial class defaultaidtype
     {
+
         [XmlIgnore]
         public string name
         {

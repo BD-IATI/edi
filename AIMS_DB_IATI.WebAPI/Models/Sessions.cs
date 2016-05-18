@@ -2,78 +2,80 @@
 using AIMS_BD_IATI.Library;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using AIMS_DB_IATI.WebAPI.Models.IATIImport;
+using Raven.Imports.Newtonsoft.Json;
+using Raven.Imports.Newtonsoft.Json.Serialization;
+using Raven.Abstractions.Data;
+using Raven.Client;
+using Raven.Client.Embedded;
+using Raven.Client.Indexes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
+using Raven.Client.Document;
 
 namespace AIMS_DB_IATI.WebAPI.Models
 {
     public static class Sessions
     {
-        public static iatiactivityContainer activitiesContainer
+        static IDocumentStore DocumentStore;
+        static Sessions()
         {
-            get
-            {
-                return HttpContext.Current.Session["iatiactivityContainer"] == null ?
-                    new iatiactivityContainer()
-                    : (iatiactivityContainer)HttpContext.Current.Session["iatiactivityContainer"];
-            }
-            set { HttpContext.Current.Session["iatiactivityContainer"] = value; }
+            DocumentStore = RavenDbConfig.Initialize();
         }
+        private static void SaveSession<T>(T value, string id)
+        {
+            using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
+            {
+                //var dj = DocumentSession.Load<dynamic>(id);
+                var d = DocumentSession.Load<T>(typeof(T).Name + "/" + id);
+
+                if (d == null)
+                    DocumentSession.Store(value, typeof(T).Name + "/" + id);
+
+                    d = value;
+
+                DocumentSession.SaveChanges();
+            }
+        }
+        private static T GetSession<T>(string id)
+        {
+            T d;
+            using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
+            {
+                //var dj = DocumentSession.Load<dynamic>(id);
+
+                d = DocumentSession.Load<T>(typeof(T).Name + "/" + id);
+            }
+            return d;
+        }
+        //private static void SaveSession<T>(T value, string id)
+        //{
+        //    var d = DocumentSession.Load<SessionHolder>(id);
+
+        //    if (d == null)
+        //        DocumentSession.Store(new SessionHolder { Val = value }, id);
+        //    else
+        //        d.Val = value;
+
+        //    DocumentSession.SaveChanges();
+        //}
+        //private static T GetSession<T>(string id)
+        //{
+        //    var d = DocumentSession.Load<SessionHolder>(id);
+
+        //    return (T) d.Val;
+        //}
 
         internal static void Clear()
         {
-            activitiesContainer = null;
-            heirarchyModel = null;
-            GeneralPreferences = null;
-            ProjectMapModel = null;
-            CFnTFModel = null;
-            TrustFunds = null;
-        }
-
-        public static HeirarchyModel heirarchyModel
-        {
-            get
-            {
-                return HttpContext.Current.Session["HeirarchyModel"] == null ?
-                    null
-                    : (HeirarchyModel)HttpContext.Current.Session["HeirarchyModel"];
-            }
-            set { HttpContext.Current.Session["HeirarchyModel"] = value; }
-        }
-
-        public static ProjectFieldMapModel GeneralPreferences
-        {
-            get
-            {
-                return HttpContext.Current.Session["GeneralPreferences"] == null ?
-                    new ProjectFieldMapModel()
-                    : (ProjectFieldMapModel)HttpContext.Current.Session["GeneralPreferences"];
-            }
-            set { HttpContext.Current.Session["GeneralPreferences"] = value; }
-        }
-
-        public static ProjectMapModel ProjectMapModel
-        {
-            get
-            {
-                return HttpContext.Current.Session["ProjectMapModel"] == null ?
-                    new ProjectMapModel()
-                    : (ProjectMapModel)HttpContext.Current.Session["ProjectMapModel"];
-            }
-            set { HttpContext.Current.Session["ProjectMapModel"] = value; }
-        }
-
-        public static List<FundSourceLookupItem> FundSources
-        {
-            get
-            {
-                return HttpContext.Current.Session["FundSources"] == null ?
-                    new List<FundSourceLookupItem>()
-                    : (List<FundSourceLookupItem>)HttpContext.Current.Session["FundSources"];
-            }
-            set { HttpContext.Current.Session["FundSources"] = value; }
+            //activitiesContainer = null;
+            //heirarchyModel = null;
+            //GeneralPreferences = null;
+            //ProjectMapModel = null;
+            //CFnTFModel = null;
+            //TrustFunds = null;
         }
 
         public static string UserId
@@ -87,51 +89,208 @@ namespace AIMS_DB_IATI.WebAPI.Models
             set { HttpContext.Current.Session["UserId"] = value; }
         }
 
+        public static iatiactivityContainer activitiesContainer
+        {
+            get
+            {
+                return GetSession<iatiactivityContainer>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new iatiactivityContainer();
+            }
+            set
+            {
+                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+            }
+        }
+
+        public static HeirarchyModel heirarchyModel
+        {
+            get
+            {
+                return GetSession<HeirarchyModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new HeirarchyModel();
+            }
+            set
+            {
+                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+            }
+        }
+
+
+
+        public static ProjectFieldMapModel GeneralPreferences
+        {
+            get
+            {
+                return GetSession<ProjectFieldMapModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new ProjectFieldMapModel();
+            }
+            set
+            {
+                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+
+            }
+        }
+
+        public static ProjectMapModel ProjectMapModel
+        {
+            get
+            {
+                return GetSession<ProjectMapModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new ProjectMapModel();
+            }
+            set
+            {
+                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+
+            }
+        }
+
+        public static List<FundSourceLookupItem> FundSources
+        {
+            get
+            {
+                dynamic d = GetSession<dynamic>("List<FundSourceLookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                return d == null ? new List<FundSourceLookupItem>() : d.val;
+
+            }
+            set
+            {
+                using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
+                {
+                    dynamic d = DocumentSession.Load<dynamic>("List<FundSourceLookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                    if (d == null)
+                        DocumentSession.Store(new { val = value ?? new List<FundSourceLookupItem>() }, "List<FundSourceLookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+
+                        d = new { val = value ?? new List<FundSourceLookupItem>() };
+
+                    DocumentSession.SaveChanges();
+                }
+
+            }
+
+        }
+
         public static DPLookupItem DP
         {
             get
             {
-                return HttpContext.Current.Session["CurrentDP"] == null ?
-                    new DPLookupItem()
-                    : (DPLookupItem)HttpContext.Current.Session["CurrentDP"];
+                return GetSession<DPLookupItem>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new DPLookupItem();
             }
             set
             {
-                HttpContext.Current.Session["CurrentDP"] = value;
+                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
+
         }
 
         public static CFnTFModel CFnTFModel
         {
             get
             {
-                return HttpContext.Current.Session["CFnTFModel"] == null ?
-                    new CFnTFModel()
-                    : (CFnTFModel)HttpContext.Current.Session["CFnTFModel"];
+                return //GetSession<CFnTFModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? 
+                    new CFnTFModel();
             }
-            set { HttpContext.Current.Session["CFnTFModel"] = value; }
+            set
+            {
+                //SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+            }
         }
 
         public static List<iatiactivity> TrustFunds
         {
             get
             {
-                return HttpContext.Current.Session["AssignedActivities"] == null ?
-                    new List<iatiactivity>()
-                    : (List<iatiactivity>)HttpContext.Current.Session["AssignedActivities"];
+                dynamic d = GetSession<dynamic>("List<iatiactivity>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                return d == null ? new List<iatiactivity>() : d.val;
             }
-            set { HttpContext.Current.Session["AssignedActivities"] = value; }
+            set
+            {
+                using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
+                {
+                    dynamic d = DocumentSession.Load<dynamic>("List<iatiactivity>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                    if (d == null)
+                        DocumentSession.Store(new { val = value ?? new List<iatiactivity>() }, "List<iatiactivity>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+
+                        d = new { val = value ?? new List<iatiactivity>() };
+                    DocumentSession.SaveChanges();
+                }
+
+            }
         }
 
         public static List<LookupItem> ExecutingAgencyTypes
         {
             get
             {
-                return HttpContext.Current.Session["ExecutingAgencyTypes"] == null ?
-                    new List<LookupItem>()
-                    : (List<LookupItem>)HttpContext.Current.Session["ExecutingAgencyTypes"];
+                dynamic d = GetSession<dynamic>("List<LookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                return d == null ? new List<LookupItem>() : d.val;
+
             }
-            set { HttpContext.Current.Session["ExecutingAgencyTypes"] = value; }
+            set
+            {
+                using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
+                {
+                    dynamic d = DocumentSession.Load<dynamic>("List<LookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                    if (d == null)
+                        DocumentSession.Store(new { val = value ?? new List<LookupItem>() }, "List<LookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+
+                        d = new { val = value ?? new List<LookupItem>() };
+
+                    DocumentSession.SaveChanges();
+                }
+            }
         }
     }
+
+    public class SessionHolder
+    {
+        public object Val { get; set; }
+    }
+
+    public class RavenDbConfig
+    {
+        private static IDocumentStore _store;
+        public static IDocumentStore Store
+        {
+            get
+            {
+                if (_store == null)
+                    Initialize();
+                return _store;
+            }
+        }
+
+        public static IDocumentStore Initialize()
+        {
+            _store = new EmbeddableDocumentStore
+            {
+                ConnectionStringName = "SessionDB",
+                DefaultDatabase = "IATIDB"
+                //UseEmbeddedHttpServer = true
+            };
+
+            //_store.Conventions.IdentityPartsSeparator = "-";
+            _store.Conventions.JsonContractResolver = new DynamicContractResolver();
+            //_store.AggressivelyCache();
+            _store.Conventions.MaxNumberOfRequestsPerSession = 4096;
+            _store.Initialize();
+            //IndexCreation.CreateIndexes(Assembly.GetCallingAssembly(), Store);
+
+            return _store;
+        }
+    }
+
+
+    public class DynamicContractResolver : DefaultContractResolver
+    {
+        protected override IList<JsonProperty> CreateProperties(Type type,
+            MemberSerialization memberSerialization)
+        {
+            IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
+
+            properties = properties.Where(p => p.PropertyName != "AnyAttr" && p.PropertyName != "Any").ToList();
+            return properties;
+        }
+        protected override List<MemberInfo> GetSerializableMembers(Type objectType)
+        {
+            return new List<MemberInfo>();
+        }
+    }
+
 }

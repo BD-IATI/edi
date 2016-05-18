@@ -224,7 +224,7 @@ namespace AIMS_BD_IATI.DAL
                     a.MappedProjectId = activity.MappedProjectId;
                     a.MappedTrustFundId = activity.MappedTrustFundId;
 
-                    if (activity.HasChildActivity)
+                    if (activity.childActivities != null)
                         foreach (var ca in activity.childActivities)
                         {
                             var c = dbContext.Activities.FirstOrDefault(f => f.IatiIdentifier == ca.IatiIdentifier);

@@ -35,7 +35,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             dashboardModel.TotalActivityCount = aimsDbIatiDAL.GetTotalActivityCount(dpId);
 
             dashboardModel.DelegatedActivities = aimsDbIatiDAL.GetDelegatedActivities(dpId);
-            dashboardModel.DelegatedActivities.ForEach(f => f.AssignedOrgName = Sessions.FundSources.Find(k => k.IATICode == f.AssignedOrgId).n().Name);
+            dashboardModel.DelegatedActivities.ForEach(f => f.AssignedOrgName = Sessions.FundSources?.Find(k => k.IATICode == f.AssignedOrgId)?.Name);
 
             #region trust fund and cofinance projects
 

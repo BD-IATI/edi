@@ -11,6 +11,8 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
     [Serializable]
     public class DashboardModel
     {
+        public string Key { get; set; }
+
         public DateTime? LastDownloadDate { get; set; }
 
         public List<ActivityModel> DelegatedActivities { get; set; }

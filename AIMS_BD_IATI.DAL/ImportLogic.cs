@@ -205,6 +205,11 @@ namespace AIMS_BD_IATI.DAL
 
                 matchedProject.aimsProject.transaction = trns.ToArray();
                 matchedProject.aimsProject.planneddisbursement = planDis.ToArray();
+
+                //add all child activities if any and delete all transaction from child activities because we only need child activities to update IsInclude field in database
+                matchedProject.aimsProject.childActivities = matchedProject.iatiActivity.childActivities;
+                matchedProject.aimsProject.childActivities.ForEach(f => f.transaction = null);
+
                 margedProjects.Add(matchedProject.aimsProject);
             }
             return margedProjects;
@@ -221,6 +226,8 @@ namespace AIMS_BD_IATI.DAL
         public iatiactivity aimsProject { get; set; }
         public List<FieldMap> Fields { get; set; }
         public List<FieldMap> TransactionFields { get; set; }
+        public string Id { get; set; }
+
         public ProjectFieldMapModel()
         {
             Fields = new List<FieldMap>();

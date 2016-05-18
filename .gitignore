@@ -155,3 +155,5 @@ $RECYCLE.BIN/
 # Mac desktop service store files
 .DS_Store
 /packages
+/AIMS_DB_IATI.WebAPI/App_Data/IATIDB
+/AIMS_DB_IATI.WebAPI/App_Data/SessionDB
