@@ -14,6 +14,7 @@ angular.module('iatiDataImporter').controller("1HierarchyController", function (
         }
         else {
             $rootScope.hierarchyModel = $scope.model = result;
+            $rootScope.HasChildActivity = true;
         }
     });
 });

@@ -24,7 +24,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
 
             Sessions.Clear();
             string dpId = dp.ID;
-            Sessions.DP.ID = dpId;
+            //Sessions.DP.ID = dpId;
             Sessions.DP = dp;
 
             var dashboardModel = new DashboardModel();

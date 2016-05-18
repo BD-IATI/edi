@@ -1,6 +1,13 @@
-﻿angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope, $scope, $http) {
+﻿angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope, $scope, $http, $timeout) {
     $scope.activeTabIndex = 0;
     $scope.setTabIndex = function (index) { $scope.activeTabIndex = index; };
+    $scope.nextFromTab0 = function () {
+        if ($rootScope.HasChildActivity)
+            $scope.activeTabIndex = 1;
+        else $timeout(function () {
+            document.getElementById('btn3FilterDP').click(); //redirect
+        });
+    };
 
     $http({
         url: apiprefix + '/api/IATIImport/SubmitHierarchy',

@@ -88,20 +88,6 @@ namespace AIMS_DB_IATI.WebAPI.Models
             set { HttpContext.Current.Session["UserId"] = value; }
         }
 
-        public static HeirarchyModel heirarchyModel
-        {
-            get
-            {
-                var id = UserId + MethodBase.GetCurrentMethod().Name.Substring(3);
-                return (HeirarchyModel)HttpContext.Current.Session[id];
-            }
-            set
-            {
-                var id = UserId + MethodBase.GetCurrentMethod().Name.Substring(3);
-                HttpContext.Current.Session[id] = value;
-            }
-        }
-
         public static Stage CurrentStage
         {
             get
@@ -112,6 +98,19 @@ namespace AIMS_DB_IATI.WebAPI.Models
             {
                 SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
+        }
+
+        public static DPLookupItem DP
+        {
+            get
+            {
+                return GetSession<DPLookupItem>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new DPLookupItem();
+            }
+            set
+            {
+                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+            }
+
         }
 
         public static iatiactivityContainer activitiesContainer
@@ -126,7 +125,52 @@ namespace AIMS_DB_IATI.WebAPI.Models
             }
         }
 
+        public static HeirarchyModel heirarchyModel
+        {
+            get
+            {
+                return GetSession<HeirarchyModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+            }
+            set
+            {
+                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+            }
 
+            //get
+            //{
+            //    var id = UserId + MethodBase.GetCurrentMethod().Name.Substring(3);
+            //    return (HeirarchyModel)HttpContext.Current.Session[id];
+            //}
+            //set
+            //{
+            //    var id = UserId + MethodBase.GetCurrentMethod().Name.Substring(3);
+            //    HttpContext.Current.Session[id] = value;
+            //}
+        }
+
+        public static FilterBDModel filterBDModel
+        {
+            get
+            {
+                return GetSession<FilterBDModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+            }
+            set
+            {
+                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+            }
+        }
+
+        public static iOrgs iOrgs
+        {
+            get
+            {
+                return GetSession<iOrgs>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+            }
+            set
+            {
+                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+            }
+        }
 
         public static ProjectFieldMapModel GeneralPreferences
         {
@@ -154,18 +198,17 @@ namespace AIMS_DB_IATI.WebAPI.Models
             }
         }
 
-
-        public static DPLookupItem DP
+        public static ProjectMapModel ProjectsToMap
         {
             get
             {
-                return GetSession<DPLookupItem>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new DPLookupItem();
+                return GetSession<ProjectMapModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new ProjectMapModel();
             }
             set
             {
                 SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-            }
 
+            }
         }
 
         public static CFnTFModel CFnTFModel
@@ -254,6 +297,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
             _store.Conventions.JsonContractResolver = new DynamicContractResolver();
             _store.Conventions.MaxNumberOfRequestsPerSession = 4096;
             _store.Initialize();
+            _store.DisableAggressiveCaching();
             //IndexCreation.CreateIndexes(Assembly.GetCallingAssembly(), Store);
             //_store.AggressivelyCache();
 
