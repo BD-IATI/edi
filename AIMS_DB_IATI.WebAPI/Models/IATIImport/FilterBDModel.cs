@@ -9,8 +9,6 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
     [Serializable]
     public class FilterBDModel
     {
-        public string Key { get; set; } 
-
         public List<iatiactivity> iatiActivities { get; set; }
     }
 }

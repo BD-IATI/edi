@@ -10,7 +10,6 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
     [Serializable]
     public class ProjectMapModel
     {
-        public string Id { get; set; }
 
         public object selected { get; set; }
 

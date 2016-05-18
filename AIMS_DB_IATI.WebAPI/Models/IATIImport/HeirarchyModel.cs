@@ -9,8 +9,6 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
     [Serializable]
     public class HeirarchyModel
     {
-        public string Id { get; set; } 
-
         public HeirarchyModel()
         {
             SampleIatiActivity = new iatiactivity();

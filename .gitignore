@@ -157,3 +157,4 @@ $RECYCLE.BIN/
 /packages
 /AIMS_DB_IATI.WebAPI/App_Data/IATIDB
 /AIMS_DB_IATI.WebAPI/App_Data/SessionDB
+/AIMS_DB_IATI.WebAPI/CompiledIndexCache

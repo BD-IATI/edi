@@ -14,6 +14,9 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using Raven.Client.Document;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Web.Hosting;
 
 namespace AIMS_DB_IATI.WebAPI.Models
 {
@@ -26,56 +29,52 @@ namespace AIMS_DB_IATI.WebAPI.Models
         }
         private static void SaveSession<T>(T value, string id)
         {
-            using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
+            var docId = typeof(T).Name + "/" + id;
+            HttpContext.Current.Session[docId] = value;
+
+            HostingEnvironment.QueueBackgroundWorkItem(async cancellationToken =>
             {
-                //var dj = DocumentSession.Load<dynamic>(id);
-                var d = DocumentSession.Load<T>(typeof(T).Name + "/" + id);
+                using (IAsyncDocumentSession DocumentSession = DocumentStore.OpenAsyncSession())
+                {
+                    if (value == null)
+                    {
+                        DocumentSession.Delete(docId);
+                    }
+                    else
+                    {
+                        T d = await DocumentSession.LoadAsync<T>(docId);
 
-                if (d == null)
-                    DocumentSession.Store(value, typeof(T).Name + "/" + id);
+                        if (d == null)
+                            await DocumentSession.StoreAsync(value, docId);
 
-                    d = value;
-
-                DocumentSession.SaveChanges();
-            }
+                        d = value;
+                    }
+                    await DocumentSession.SaveChangesAsync();
+                }
+            });
         }
+
         private static T GetSession<T>(string id)
         {
-            T d;
-            using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
-            {
-                //var dj = DocumentSession.Load<dynamic>(id);
+            var docId = typeof(T).Name + "/" + id;
+            T d = HttpContext.Current.Session[docId] == null ? default(T) : (T)HttpContext.Current.Session[docId];
 
-                d = DocumentSession.Load<T>(typeof(T).Name + "/" + id);
-            }
+            if (d == null)
+                using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
+                {
+                    d = DocumentSession.Load<T>(docId);
+                }
             return d;
         }
-        //private static void SaveSession<T>(T value, string id)
-        //{
-        //    var d = DocumentSession.Load<SessionHolder>(id);
-
-        //    if (d == null)
-        //        DocumentSession.Store(new SessionHolder { Val = value }, id);
-        //    else
-        //        d.Val = value;
-
-        //    DocumentSession.SaveChanges();
-        //}
-        //private static T GetSession<T>(string id)
-        //{
-        //    var d = DocumentSession.Load<SessionHolder>(id);
-
-        //    return (T) d.Val;
-        //}
 
         internal static void Clear()
         {
-            //activitiesContainer = null;
-            //heirarchyModel = null;
-            //GeneralPreferences = null;
-            //ProjectMapModel = null;
-            //CFnTFModel = null;
-            //TrustFunds = null;
+            activitiesContainer = null;
+            heirarchyModel = null;
+            GeneralPreferences = null;
+            ProjectMapModel = null;
+            CFnTFModel = null;
+            TrustFunds = null;
         }
 
         public static string UserId
@@ -89,11 +88,25 @@ namespace AIMS_DB_IATI.WebAPI.Models
             set { HttpContext.Current.Session["UserId"] = value; }
         }
 
-        public static iatiactivityContainer activitiesContainer
+        public static HeirarchyModel heirarchyModel
         {
             get
             {
-                return GetSession<iatiactivityContainer>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new iatiactivityContainer();
+                var id = UserId + MethodBase.GetCurrentMethod().Name.Substring(3);
+                return (HeirarchyModel)HttpContext.Current.Session[id];
+            }
+            set
+            {
+                var id = UserId + MethodBase.GetCurrentMethod().Name.Substring(3);
+                HttpContext.Current.Session[id] = value;
+            }
+        }
+
+        public static Stage CurrentStage
+        {
+            get
+            {
+                return GetSession<Stage>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
             set
             {
@@ -101,11 +114,11 @@ namespace AIMS_DB_IATI.WebAPI.Models
             }
         }
 
-        public static HeirarchyModel heirarchyModel
+        public static iatiactivityContainer activitiesContainer
         {
             get
             {
-                return GetSession<HeirarchyModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new HeirarchyModel();
+                return GetSession<iatiactivityContainer>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new iatiactivityContainer();
             }
             set
             {
@@ -141,30 +154,6 @@ namespace AIMS_DB_IATI.WebAPI.Models
             }
         }
 
-        public static List<FundSourceLookupItem> FundSources
-        {
-            get
-            {
-                dynamic d = GetSession<dynamic>("List<FundSourceLookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-                return d == null ? new List<FundSourceLookupItem>() : d.val;
-
-            }
-            set
-            {
-                using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
-                {
-                    dynamic d = DocumentSession.Load<dynamic>("List<FundSourceLookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-                    if (d == null)
-                        DocumentSession.Store(new { val = value ?? new List<FundSourceLookupItem>() }, "List<FundSourceLookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-
-                        d = new { val = value ?? new List<FundSourceLookupItem>() };
-
-                    DocumentSession.SaveChanges();
-                }
-
-            }
-
-        }
 
         public static DPLookupItem DP
         {
@@ -183,34 +172,43 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                return //GetSession<CFnTFModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? 
+                return GetSession<CFnTFModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? 
                     new CFnTFModel();
             }
             set
             {
-                //SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
+        }
+
+        public static List<FundSourceLookupItem> FundSources
+        {
+            get
+            {
+                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new KeyVal();
+                return d == null ? new List<FundSourceLookupItem>() : d.Val;
+
+            }
+            set
+            {
+                KeyVal d = new KeyVal { Val = value ?? new List<FundSourceLookupItem>() };
+                SaveSession(d, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+
+            }
+
         }
 
         public static List<iatiactivity> TrustFunds
         {
             get
             {
-                dynamic d = GetSession<dynamic>("List<iatiactivity>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-                return d == null ? new List<iatiactivity>() : d.val;
+                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new KeyVal();
+                return d == null ? new List<iatiactivity>() : d.Val;
             }
             set
             {
-                using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
-                {
-                    dynamic d = DocumentSession.Load<dynamic>("List<iatiactivity>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-                    if (d == null)
-                        DocumentSession.Store(new { val = value ?? new List<iatiactivity>() }, "List<iatiactivity>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-
-                        d = new { val = value ?? new List<iatiactivity>() };
-                    DocumentSession.SaveChanges();
-                }
-
+                KeyVal d = new KeyVal { Val = value ?? new List<iatiactivity>() };
+                SaveSession(d, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
         }
 
@@ -218,29 +216,16 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                dynamic d = GetSession<dynamic>("List<LookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-                return d == null ? new List<LookupItem>() : d.val;
+                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new KeyVal();
+                return d == null ? new List<LookupItem>() : d.Val;
 
             }
             set
             {
-                using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
-                {
-                    dynamic d = DocumentSession.Load<dynamic>("List<LookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-                    if (d == null)
-                        DocumentSession.Store(new { val = value ?? new List<LookupItem>() }, "List<LookupItem>/" + UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-
-                        d = new { val = value ?? new List<LookupItem>() };
-
-                    DocumentSession.SaveChanges();
-                }
+                KeyVal d = new KeyVal { Val = value ?? new List<LookupItem>() };
+                SaveSession(d, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
         }
-    }
-
-    public class SessionHolder
-    {
-        public object Val { get; set; }
     }
 
     public class RavenDbConfig
@@ -258,7 +243,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
 
         public static IDocumentStore Initialize()
         {
-            _store = new EmbeddableDocumentStore
+            _store = new DocumentStore
             {
                 ConnectionStringName = "SessionDB",
                 DefaultDatabase = "IATIDB"
@@ -267,10 +252,10 @@ namespace AIMS_DB_IATI.WebAPI.Models
 
             //_store.Conventions.IdentityPartsSeparator = "-";
             _store.Conventions.JsonContractResolver = new DynamicContractResolver();
-            //_store.AggressivelyCache();
             _store.Conventions.MaxNumberOfRequestsPerSession = 4096;
             _store.Initialize();
             //IndexCreation.CreateIndexes(Assembly.GetCallingAssembly(), Store);
+            //_store.AggressivelyCache();
 
             return _store;
         }
@@ -282,15 +267,36 @@ namespace AIMS_DB_IATI.WebAPI.Models
         protected override IList<JsonProperty> CreateProperties(Type type,
             MemberSerialization memberSerialization)
         {
-            IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
+            IList<JsonProperty> properties = base.CreateProperties(type, MemberSerialization.OptOut);
 
-            properties = properties.Where(p => p.PropertyName != "AnyAttr" && p.PropertyName != "Any").ToList();
             return properties;
         }
         protected override List<MemberInfo> GetSerializableMembers(Type objectType)
         {
-            return new List<MemberInfo>();
+            var members = base.GetSerializableMembers(objectType);
+
+            members.RemoveAll(r => r.MemberType != MemberTypes.Property);
+            members.RemoveAll(r => ((PropertyInfo)r).CanWrite == false);
+            members.RemoveAll(r => r.Name == "AnyAttr" || r.Name == "Any");
+
+            return members;
         }
     }
 
+    public class KeyVal
+    {
+        public dynamic Val { get; set; }
+    }
+
+    public enum Stage
+    {
+        Begin = 0,
+        Hierarchy = 1,
+        FilterBD = 2,
+        FilterDP = 3,
+        ShowProjects = 4,
+        MatchProjects = 5,
+        GeneralPreferences = 6,
+        ReviewAdjustment=7
+    }
 }
