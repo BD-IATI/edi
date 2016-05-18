@@ -136,7 +136,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         [XmlIgnore]
-        private bool? isRelevant;
+        public bool? isRelevant { get; set; }
         [XmlIgnore]
         public bool? IsRelevant
         {
@@ -348,7 +348,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         #region for filter other DP's projects
         [XmlIgnore]
-        private string ownedBy;
+        public string ownedBy { get; set; }
         [XmlIgnore]
 
         public string FundSourceIDnIATICode
@@ -699,7 +699,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public string FundSourceIDnIATICode { get; set; }
 
-        private int? _ExecutingAgencyTypeId;
+        public int? _ExecutingAgencyTypeId { get; set; }
         [XmlIgnore]
         public int? ExecutingAgencyTypeId { get { return _ExecutingAgencyTypeId ?? GetAimsExAgencyTypeIdByOrgType(type); } set { _ExecutingAgencyTypeId = value; } }
 
