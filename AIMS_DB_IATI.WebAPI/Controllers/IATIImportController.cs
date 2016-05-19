@@ -311,6 +311,39 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             return true;
         }
+
+        [AcceptVerbs("GET", "POST")]
+        public bool SubmitManualMatchingUsingDropdown(ProjectMapModel projectMapModel)
+        {
+            //Sessions.ProjectMapModel.AimsProjectsNotInIati = projectMapModel?.AimsProjectsNotInIati;
+
+            //Sessions.ProjectMapModel.MatchedProjects.RemoveAll(r => r.IsManuallyMapped);
+
+            //add manually matched projects
+            var aimsProjects = Sessions.ProjectMapModel?.AimsProjectsNotInIati;
+            foreach (var activity in Sessions.ProjectMapModel?.IatiActivitiesNotInAims.Where(w => w.ProjectId > 0))
+            {
+                var project = aimsProjects.Find(f => f.ProjectId == activity.ProjectId);
+
+                if (project != null)
+                {
+                    Sessions.ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(activity, project) { IsManuallyMapped = true });
+                }
+            }
+
+            foreach (var activity in Sessions.ProjectMapModel?.IatiActivitiesNotInAims.Where(w => w.ProjectId == -2))
+            {
+                activity.IsCommitmentIncluded = true;
+                activity.IsDisbursmentIncluded = true;
+                activity.IsPlannedDisbursmentIncluded = true;
+
+                Sessions.ProjectMapModel.NewProjectsToAddInAims.Add(activity);
+
+            }
+
+            return true;
+        }
+
         #endregion
 
         #region Preferences
@@ -331,7 +364,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 //}
             }
             Sessions.GeneralPreferences = returnModel;
-            Sessions.CurrentStage = Stage.GeneralPreferences;
 
             return returnModel;
         }
@@ -395,7 +427,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [HttpPost]
         public ProjectMapModel GetProjectsToMap(ProjectFieldMapModel GeneralPreference)
         {
-                Sessions.GeneralPreferences = GeneralPreference?? Sessions.GeneralPreferences ?? GetGeneralPreferences();
+            Sessions.GeneralPreferences = GeneralPreference ?? Sessions.GeneralPreferences ?? GetGeneralPreferences();
 
             if (Sessions.ProjectMapModel.MatchedProjects.IsEmpty() && Sessions.ProjectMapModel.NewProjectsToAddInAims.IsEmpty())
             {
@@ -413,7 +445,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             ImportLogic.SetFieldMappingPreferences(Sessions.ProjectMapModel.MatchedProjects, Sessions.GeneralPreferences);
 
 
-            var returnResult =new ProjectMapModel
+            var returnResult = new ProjectMapModel
             {
                 MatchedProjects = Sessions.ProjectMapModel.MatchedProjects,
                 IatiActivitiesNotInAims = null,

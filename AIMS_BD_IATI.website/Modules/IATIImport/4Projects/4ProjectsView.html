@@ -39,18 +39,31 @@
                     <table st-table="IatiActivitiesNotInAims" st-safe-src="models.IatiActivitiesNotInAims" class="table" ng-show="models.IatiActivitiesNotInAims.length > 0">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th st-sort="IatiIdentifier" style="min-width:140px">IATI Project ID</th>
                                 <th st-sort="Title">IATI Project Title</th>
-                                <th st-sort="Title">View</th>
+                                <th>AIMS Project</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="active"></tr>
                             <tr ng-repeat="activity in IatiActivitiesNotInAims" class="table-striped">
+                                <td><a href="http://www.d-portal.org/ctrack.html?country=BD#view=act&aid={{activity.IatiIdentifier}}" target="_blank" class="glyphicon glyphicon-search"></a></td>
                                 <td><code>{{activity.IatiIdentifier}}</code></td>
                                 <td>{{activity.Title}}</td>
-                                <td><a href="http://www.d-portal.org/ctrack.html?country=BD#view=act&aid={{activity.IatiIdentifier}}" target="_blank" class="glyphicon glyphicon-search"></a></td>
-                                
+
+                                <td>
+                                    <select class="form-control" ng-model="activity.ProjectId">
+
+                                        <option value="0">Select One</option>
+
+                                        <option ng-repeat="item in AimsProjectsNotInIati" value="{{item.ProjectId}}" ng-bind="item.Title"></option>
+
+                                        <option value="-2">New Project</option>
+
+                                    </select>
+                                </td>
+
                             </tr>
                         </tbody>
                     </table>
@@ -68,18 +81,26 @@
                 <div class="col-md-12">
                     <h3>AIMS projects not found in IATI</h3>
                     <div class="alert alert-danger" ng-show="models.AimsProjectsNotInIati.length > 0">
-                        <p>Some projects were found in the AIMS, but not in
-                          IATI. We recommend you check the following:</p>
+                        <p>
+                            Some projects were found in the AIMS, but not in
+                            IATI. We recommend you check the following:
+                        </p>
                         <ul>
-                          <li>ensure you have not delegated projects to
-                            other DPs that you have already entered into
-                            the AIMS</li>
-                          <li>ensure that your project IDs used in the AIMS
-                            are correct and similarly formatted to those
-                            used in your IATI data</li>
-                          <li>if projects still appear to be missing from
-                            your IATI data, please raise this issue with
-                            your colleagues at headquarters level.</li>
+                            <li>
+                                ensure you have not delegated projects to
+                                other DPs that you have already entered into
+                                the AIMS
+                            </li>
+                            <li>
+                                ensure that your project IDs used in the AIMS
+                                are correct and similarly formatted to those
+                                used in your IATI data
+                            </li>
+                            <li>
+                                if projects still appear to be missing from
+                                your IATI data, please raise this issue with
+                                your colleagues at headquarters level.
+                            </li>
                         </ul>
                     </div>
                     <table st-table="AimsProjectsNotInIati" st-safe-src="models.AimsProjectsNotInIati" class="table" ng-show="models.AimsProjectsNotInIati.length > 0">
