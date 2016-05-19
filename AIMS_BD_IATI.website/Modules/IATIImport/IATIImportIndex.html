@@ -109,10 +109,10 @@
             border-bottom-right-radius: 0px;
         }
 
-            .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
-                color: #000;
-                background-color: #fff;
-            }
+        .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+            color: #000;
+            background-color: #fff;
+        }
         /*.scrollable{
             overflow-y: -moz-scrollbars-vertical;
             overflow-y: auto;
@@ -141,7 +141,14 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="#/Dashboard" class="btn-link">Restart</a>
+                            <a class="btn-link"
+                               popover-title="Are you sure?"
+                               uib-popover-template="'confirmRestartTemplate.html'"
+                               popover-append-to-body="true"
+                               popover-placement="auto"
+                               popover-trigger="outsideClick">
+                                Restart
+                            </a>
                         </li>
                         <li>
                             <a href="#/login" class="btn-link">Logout</a>
@@ -183,6 +190,15 @@
 
     </script>
 
+    <script type="text/ng-template" id="confirmRestartTemplate.html">
+        <div>
+            <!--<div>?</div>-->
+            <br />
+
+            <a type="button" href="#/restart" class="btn btn-primary">Yes</a>
+            <a type="button" href="" class="btn btn-default">No</a>
+        </div>
+    </script>
 
 </body>
 </html>

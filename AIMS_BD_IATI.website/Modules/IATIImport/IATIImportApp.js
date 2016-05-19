@@ -7,6 +7,10 @@ iatiDataImporterApp.config(function ($routeProvider) {
         controller: 'LoginController',
         templateUrl: '../Authentication/LoginView.html'
     })
+        .when('/restart', {
+        controller: 'DashboardController',
+        templateUrl: 'Dashboard/DashboardView.html'
+    })
         .when('/:name*', {
         templateUrl: function (params) {
             return params.name + '/' + params.name + 'View.html';
@@ -14,8 +18,8 @@ iatiDataImporterApp.config(function ($routeProvider) {
     })
         .otherwise({ redirectTo: '/login' });
 });
-iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http',
-    function ($rootScope, $location, $cookieStore, $http) {
+iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http', '$timeout',
+    function ($rootScope, $location, $cookieStore, $http, $timeout) {
         $rootScope.IsImportFromOtherDP = false;
         $rootScope.location = $location;
         $rootScope.getCookie = function (key) { return $cookieStore.get(key) || {}; };
@@ -29,6 +33,17 @@ iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http',
             // redirect to login page if not logged in
             if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
                 $location.path('/login');
+            }
+            else if ($location.path() == '/restart') {
+                $http({
+                    method: 'POST',
+                    url: apiprefix + '/api/Dashboard/RestartSession',
+                    data: JSON.stringify($rootScope.getCookie('selectedFundSource'))
+                }).success(function (result) {
+                    $timeout(function () {
+                        location.hash = '/Dashboard';
+                    });
+                });
             }
         });
     }]);

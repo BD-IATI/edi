@@ -36,7 +36,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
             {
                 using (IAsyncDocumentSession DocumentSession = DocumentStore.OpenAsyncSession())
                 {
-                    T d;
+                    //T d;
                     if (value == null)
                     {
                         DocumentSession.Delete(docId);
@@ -97,14 +97,14 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                KeyVal d = GetSession<KeyVal>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
                 return d == null ? Stage.Begin : d.Val;
 
             }
             set
             {
                 KeyVal d = new KeyVal { Val = value };
-                SaveSession(d, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(d, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
 
             }
         }

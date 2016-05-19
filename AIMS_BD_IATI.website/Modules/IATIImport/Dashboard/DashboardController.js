@@ -20,7 +20,7 @@
                 });
 
             }
-            else {
+            else { 
                 location.hash = result;
             }
         });

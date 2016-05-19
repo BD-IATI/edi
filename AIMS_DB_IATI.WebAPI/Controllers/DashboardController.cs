@@ -53,7 +53,15 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public string CheckSession(DPLookupItem dp)
         {
+            Sessions.DP = dp;
             return Sessions.CurrentStage;
+        }
+        [AcceptVerbs("GET", "POST")]
+        public string RestartSession(DPLookupItem dp)
+        {
+            Sessions.DP = null;
+            Sessions.Clear();
+            return "";
         }
     }
 }
