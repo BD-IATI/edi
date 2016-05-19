@@ -36,6 +36,12 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3>IATI activities not found in the AIMS</h3>
+                    <p class="lead">
+                        The following activities were found in
+                        IATI but not in the AIMS. You can manually map them to
+                        existing activities in the AIMS, or choose to create
+                        new activities in the AIMS.
+                    </p>
                     <table st-table="IatiActivitiesNotInAims" st-safe-src="models.IatiActivitiesNotInAims" class="table" ng-show="models.IatiActivitiesNotInAims.length > 0">
                         <thead>
                             <tr>
@@ -45,22 +51,37 @@
                                 <th>AIMS Project</th>
                             </tr>
                         </thead>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th><input class="form-control" type="text" placeholder="Project ID" ng-model="search.IatiIdentifier"></th>
+                                <th><input class="form-control" type="text" placeholder="Project title" ng-model="search.Title"></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
                         <tbody>
                             <tr class="active"></tr>
-                            <tr ng-repeat="activity in IatiActivitiesNotInAims" class="table-striped">
+                            <tr ng-repeat="activity in IatiActivitiesNotInAims | filter:{IatiIdentifier: search.IatiIdentifier, Title: search.Title}" class="table-striped">
                                 <td><a href="http://www.d-portal.org/ctrack.html?country=BD#view=act&aid={{activity.IatiIdentifier}}" target="_blank" class="glyphicon glyphicon-search"></a></td>
                                 <td><code>{{activity.IatiIdentifier}}</code></td>
                                 <td>{{activity.Title}}</td>
 
                                 <td>
-                                    <select class="form-control" ng-model="activity.ProjectId">
+                                    <!--<select class="form-control" ng-model="activity.ProjectId">
 
-                                        <option value="0">Select One</option>
+                                        <option value="0">Don't Import</option>
 
-                                        <option ng-repeat="item in AimsProjectsNotInIati" value="{{item.ProjectId}}" ng-bind="item.Title"></option>
+                                        <option ng-repeat="item in AimsProjectsNotInIati" value="{item.ProjectId}}" ng-bind="item.Title"></option>
 
-                                        <option value="-2">New Project</option>
+                                        <option value="-2">Create New</option>
 
+                                    </select>-->
+
+                                    <select class="form-control"
+                                            ng-model="org.AllID"
+                                            ng-options="item.ProjectId as item.Title for item in AimsProjectsDrpSrc">
+                                        <option value="">Don't Import</option>
                                     </select>
                                 </td>
 
@@ -160,7 +181,8 @@
             <div class="form-group">
                 <div class="col-md-12 btnFooter">
                     <a class="btn btn-default" ng-href="#/3FilterDP">Back</a>
-                    <a class="btn btn-primary" ng-href="#/5Match">Next</a>
+                    <!--<a class="btn btn-primary" ng-href="#/5Match">Next</a>-->
+                    <a class="btn btn-primary" ng-href="#/6GeneralPreferences">Next</a>
                 </div>
             </div>
 

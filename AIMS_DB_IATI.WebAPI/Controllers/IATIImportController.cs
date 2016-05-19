@@ -315,12 +315,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public bool SubmitManualMatchingUsingDropdown(ProjectMapModel projectMapModel)
         {
-            //Sessions.ProjectMapModel.AimsProjectsNotInIati = projectMapModel?.AimsProjectsNotInIati;
+            Sessions.ProjectMapModel.AimsProjectsNotInIati = projectMapModel?.AimsProjectsNotInIati;
 
-            //Sessions.ProjectMapModel.MatchedProjects.RemoveAll(r => r.IsManuallyMapped);
+            Sessions.ProjectMapModel.MatchedProjects.RemoveAll(r => r.IsManuallyMapped);
 
             //add manually matched projects
-            var aimsProjects = Sessions.ProjectMapModel?.AimsProjectsNotInIati;
+            var aimsProjects = projectMapModel?.AimsProjectsNotInIati;
             foreach (var activity in Sessions.ProjectMapModel?.IatiActivitiesNotInAims.Where(w => w.ProjectId > 0))
             {
                 var project = aimsProjects.Find(f => f.ProjectId == activity.ProjectId);
