@@ -6,181 +6,221 @@
                 This module allows you to manage the import
                 of IATI data for <b ng-bind="$root.getCookie('selectedFundSource').Name"></b>.
             </p>
-            <hr />
+            <!--<hr />-->
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h3>Summary</h3>
-            <p>
-                IATI data last downloaded: <b> <span ng-bind="model.LastDownloadDate | date:'yyyy-MM-dd HH:mm:ss'"> </span> (<span ng-bind="timeSince(model.LastDownloadDate)"></span>)</b>
+            <div class="panel panel-default">
+                <div class="panel-heading">Summary</div>
+                <div class="panel-body">
+                    <p>
+                        IATI data last downloaded: <b> <span ng-bind="model.LastDownloadDate | date:'yyyy-MM-dd HH:mm:ss'"> </span> (<span ng-bind="timeSince(model.LastDownloadDate)"></span>)</b>
 
-                <br />
-                Total Activity: <b ng-bind="model.TotalActivityCount"></b>
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <h4>New activities</h4>
-            <p>We found data on <b ng-bind="model.NewActivityCount"></b> new (not mapped) activities.</p>
-            <p><a class="btn btn-sm btn-success" href="#/1Hierarchy">Begin import &raquo;</a></p>
-            <h4>Assigned activities</h4>
-            <p><b ng-bind="model.AssignedActivityCount"></b> activities assigned to you.</p>
-            <p><a class="btn btn-sm btn-success" href="#/9OtherDPsActivities">Map activities &raquo;</a></p>
-        </div>
-        <div class="col-md-6">
-            <h4>Mapped activities</h4>
-            <p><b ng-bind="model.MappedActivityCount"></b> activities ware mapped.</p>
-            <p><a class="btn btn-sm btn-success" href="#/7ReviewAdjustment">View Details &raquo;</a></p>
-
-            <h4>Options</h4>
-            <p>Your import preferences generally favour using IATI data.</p>
-            <p>
-                <a class="btn btn-sm btn-default" ng-click="OpenAdjustImportPreferences()">
-                    Adjust import
-                    preferences &raquo;
-                </a>
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <hr />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Import logs</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Message</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr >
-                        <td ng-bind="model.AddedNewActivityLogSummery.DateTime | date:'yyyy-MM-dd'"></td>
-                        <td><span ng-bind="model.AddedNewActivityLogSummery.Message"></span></td>
-                    </tr>
-                    <tr ng-repeat="log in model.OtherLogs | limitTo:5">
-                        <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>
-                        <td><span ng-bind="log.Message"></span></td>
-                    </tr>
-              
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-6">
-            <h4>Alerts</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Subject</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="log in model.FinancialDataMismatchedLogs | limitTo:5">
-                        <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>
-                        <td><span ng-bind="log.Message"></span> <code ng-bind="log.IatiIdentifier"></code></td>
-                        <td><a class="btn btn-default btn-sm" ng-click="OpenMergeConflictAlert(log.IatiIdentifier)">Resolve &raquo;</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Delegated activities</h4>
-            <div class="alert alert-info" ng-hide="model.DelegatedActivities.length > 0">
-                There are no delegated activities.
-            </div>
-            <table class="table table-striped" ng-show="model.DelegatedActivities.length > 0">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Activity</th>
-                        <th>Title</th>
-                        <th>Delegated to</th>
-                        <th>Recall</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="da in model.DelegatedActivities">
-                        <td ng-bind="da.AssignedDate | date:'yyyy-MM-dd'"></td>
-                        <td><code ng-bind="da.IatiIdentifier"></code></td>
-                        <td ng-bind="da.iatiActivity.Title"></td>
-                        <td ng-bind="da.AssignedOrgName"></td>
-                        <td><a class="btn btn-success"><i class="glyphicon glyphicon-share-alt"></i> Recall</a></td>
-                    </tr>
-                    <!--<tr>
-                        <td>2016-02-15</td>
-                        <td><code>GB-1-12345</code></td>
-                        <td>World Bank</td>
-                        <td><a data-toggle="modal" data-target="#recallExplanation" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Recall not possible</a></td>
-                    </tr>
-                    <tr>
-                        <td>2016-03-20</td>
-                        <td><code>GB-1-23456</code></td>
-                        <td>World Bank</td>
-                        <td><a class="btn btn-success"><i class="glyphicon glyphicon-share-alt"></i> Recall</a></td>
-                    </tr>
-                    <tr>
-                        <td>2016-02-15</td>
-                        <td><code>GB-1-12345</code></td>
-                        <td>World Bank</td>
-                        <td><a data-toggle="modal" data-target="#recallExplanation" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Recall not possible</a></td>
-                    </tr>-->
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-6">
-            <h4>Co-finance projects</h4>
-            <div class="alert alert-info" ng-hide="model.CFnTFModel.AimsProjects.length > 0">
-                There are no mapped co-finance projects.
+                        <br />
+                        Total Activity: <b ng-bind="model.TotalActivityCount"></b>
+                    </p>
+                </div>
             </div>
 
-            <table class="table table-striped" ng-show="model.CFnTFModel.AimsProjects.length > 0">
-                <thead>
-                    <tr>
-                        <th>Activity</th>
-                        <th>Title</th>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">New activities</div>
+                <div class="panel-body">
+                    <p>We found data on <b ng-bind="model.NewActivityCount"></b> new (not mapped) activities.</p>
+                    <p><a class="btn btn-sm btn-success" href="#/1Hierarchy">Begin import &raquo;</a></p>
 
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="da in model.CFnTFModel.AimsProjects">
-                        <td><code ng-bind="da.IatiIdentifier"></code></td>
-                        <td ng-bind="da.Title"></td>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Assigned activities</div>
+                <div class="panel-body">
+                    <p><b ng-bind="model.AssignedActivityCount"></b> activities assigned to you.</p>
+                    <p><a class="btn btn-sm btn-success" href="#/9OtherDPsActivities">Map activities &raquo;</a></p>
 
-                        <td><a class="btn btn-success" ng-click="OpenCofinancing(da)"><i class="glyphicons glyphicons-modal-window"></i> View</a></td>
-                    </tr>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Mapped activities </div>
+                <div class="panel-body">
+                    <p><b ng-bind="model.MappedActivityCount"></b> activities ware mapped.</p>
+                    <p><a class="btn btn-sm btn-success" href="#/7ReviewAdjustment">View Details &raquo;</a></p>
 
-                </tbody>
-            </table>
+                    <h4>Options</h4>
+                    <p>Your import preferences generally favour using IATI data.</p>
+                    <p>
+                        <a class="btn btn-sm btn-default" ng-click="OpenAdjustImportPreferences()">
+                            Adjust import
+                            preferences &raquo;
+                        </a>
+                    </p>
 
-            <h4>Trust funds</h4>
-            <div class="alert alert-info" ng-hide="model.CFnTFModel.TrustFundDetails.length > 0">
-                There are no mapped trust funds.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Import logs </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td ng-bind="model.AddedNewActivityLogSummery.DateTime | date:'yyyy-MM-dd'"></td>
+                                <td><span ng-bind="model.AddedNewActivityLogSummery.Message"></span></td>
+                            </tr>
+                            <tr ng-repeat="log in model.OtherLogs | limitTo:5">
+                                <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>
+                                <td><span ng-bind="log.Message"></span></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Alerts </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Subject</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="log in model.FinancialDataMismatchedLogs | limitTo:5">
+                                <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>
+                                <td><span ng-bind="log.Message"></span> <code ng-bind="log.IatiIdentifier"></code></td>
+                                <td><a class="btn btn-default btn-sm" ng-click="OpenMergeConflictAlert(log.IatiIdentifier)">Resolve &raquo;</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Delegated activities </div>
+                <div class="panel-body">
+                    <div class="alert alert-info" ng-hide="model.DelegatedActivities.length > 0">
+                        There are no delegated activities.
+                    </div>
+                    <table class="table table-striped" ng-show="model.DelegatedActivities.length > 0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Activity</th>
+                                <th>Title</th>
+                                <th>Delegated to</th>
+                                <!--<th>Recall</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="da in model.DelegatedActivities">
+                                <td ng-bind="da.AssignedDate | date:'yyyy-MM-dd'"></td>
+                                <td><code ng-bind="da.IatiIdentifier"></code></td>
+                                <td ng-bind="da.iatiActivity.Title"></td>
+                                <td ng-bind="da.AssignedOrgName"></td>
+                                <!--<td><a class="btn btn-success"><i class="glyphicon glyphicon-share-alt"></i> Recall</a></td>-->
+                            </tr>
+                            <!--<tr>
+                                <td>2016-02-15</td>
+                                <td><code>GB-1-12345</code></td>
+                                <td>World Bank</td>
+                                <td><a data-toggle="modal" data-target="#recallExplanation" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Recall not possible</a></td>
+                            </tr>
+                            <tr>
+                                <td>2016-03-20</td>
+                                <td><code>GB-1-23456</code></td>
+                                <td>World Bank</td>
+                                <td><a class="btn btn-success"><i class="glyphicon glyphicon-share-alt"></i> Recall</a></td>
+                            </tr>
+                            <tr>
+                                <td>2016-02-15</td>
+                                <td><code>GB-1-12345</code></td>
+                                <td>World Bank</td>
+                                <td><a data-toggle="modal" data-target="#recallExplanation" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Recall not possible</a></td>
+                            </tr>-->
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Co-finance projects </div>
+                <div class="panel-body">
+                    <div class="alert alert-info" ng-hide="model.CFnTFModel.AimsProjects.length > 0">
+                        There are no mapped co-finance projects.
+                    </div>
+
+                    <table class="table table-striped" ng-show="model.CFnTFModel.AimsProjects.length > 0">
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Title</th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="da in model.CFnTFModel.AimsProjects">
+                                <td><code ng-bind="da.IatiIdentifier"></code></td>
+                                <td ng-bind="da.Title"></td>
+
+                                <td><a class="btn btn-success" ng-click="OpenCofinancing(da)"><i class="glyphicons glyphicons-modal-window"></i> View</a></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
 
-            <table class="table table-striped" ng-show="model.CFnTFModel.TrustFundDetails.length > 0">
-                <thead>
-                    <tr>
-                        <th>Identifier</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tr ng-repeat="da in model.CFnTFModel.TrustFundDetails">
-                    <td><code ng-bind="da.TFIdentifier"></code></td>
-                    <td><a class="btn btn-success" ng-click="OpenTrustFund(da)"><i class="glyphicons glyphicons-modal-window"></i> View</a></td>
-                </tr>
-                <tbody></tbody>
-            </table>
+            <div class="panel panel-default">
+                <div class="panel-heading">Trust funds </div>
+                <div class="panel-body">
+                    <div class="alert alert-info" ng-hide="model.CFnTFModel.TrustFundDetails.length > 0">
+                        There are no mapped trust funds.
+                    </div>
+
+                    <table class="table table-striped" ng-show="model.CFnTFModel.TrustFundDetails.length > 0">
+                        <thead>
+                            <tr>
+                                <th>Identifier</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="da in model.CFnTFModel.TrustFundDetails">
+                            <td><code ng-bind="da.TFIdentifier"></code></td>
+                            <td><a class="btn btn-success" ng-click="OpenTrustFund(da)"><i class="glyphicons glyphicons-modal-window"></i> View</a></td>
+                        </tr>
+                        <tbody></tbody>
+                    </table>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
