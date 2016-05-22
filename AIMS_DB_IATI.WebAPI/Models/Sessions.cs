@@ -295,9 +295,9 @@ namespace AIMS_DB_IATI.WebAPI.Models
 
         public static IDocumentStore Initialize()
         {
-            _store = new DocumentStore
+            _store = new EmbeddableDocumentStore
             {
-                ConnectionStringName = "SessionDB",
+                ConnectionStringName = "SessionEDB",
                 DefaultDatabase = "IATIDB"
                 //UseEmbeddedHttpServer = true
             };
@@ -306,7 +306,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
             _store.Conventions.JsonContractResolver = new DynamicContractResolver();
             _store.Conventions.MaxNumberOfRequestsPerSession = 4096;
             _store.Initialize();
-            //_store.DisableAggressiveCaching();
+            _store.DisableAggressiveCaching();
             //IndexCreation.CreateIndexes(Assembly.GetCallingAssembly(), Store);
             //_store.AggressivelyCache();
 
