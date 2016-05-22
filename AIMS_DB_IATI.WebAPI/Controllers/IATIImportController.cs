@@ -321,6 +321,35 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             //add manually matched projects
             var aimsProjects = projectMapModel?.AimsProjectsNotInIati;
+            var iatiActivities = Sessions.ProjectMapModel?.IatiActivitiesNotInAims;
+            foreach (var project in aimsProjects)
+            {
+                if (iatiActivities.Count(c => c.ProjectId == project.ProjectId) == 1)
+                {
+                    Sessions.ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(iatiActivities.Find(c => c.ProjectId == project.ProjectId), project) { IsManuallyMapped = true });
+
+                }
+                else
+                {
+                    var groupedActivity = new iatiactivity();
+                    var trns = new List<transaction>();
+                    var bgts = new List<budget>();
+                    var plnDis = new List<planneddisbursement>();
+
+                    foreach (var activity in iatiActivities)
+                    {
+                        trns.AddRange(activity.transaction);
+                        bgts.AddRange(activity.budget);
+                        plnDis.AddRange(activity.planneddisbursement);
+                    }
+
+                    groupedActivity.transaction = trns.ToArray();
+                    Sessions.ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(groupedActivity, project, false) { IsManuallyMapped = true, IsGrouped = true });
+
+                }
+
+            }
+
             foreach (var activity in Sessions.ProjectMapModel?.IatiActivitiesNotInAims.Where(w => w.ProjectId > 0))
             {
                 var project = aimsProjects.Find(f => f.ProjectId == activity.ProjectId);
