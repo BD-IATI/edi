@@ -220,8 +220,8 @@ namespace AIMS_BD_IATI.DAL
     [Serializable]
     public class ProjectFieldMapModel
     {
-        //public string OrgId { get; set; }
         public bool IsManuallyMapped { get; set; }
+        public bool IsGrouped { get; set; }
         public iatiactivity iatiActivity { get; set; }
         public iatiactivity aimsProject { get; set; }
         public List<FieldMap> Fields { get; set; }
@@ -233,7 +233,7 @@ namespace AIMS_BD_IATI.DAL
             Fields = new List<FieldMap>();
             TransactionFields = new List<FieldMap>();
         }
-        public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject)
+        public ProjectFieldMapModel(iatiactivity _iatiActivity, iatiactivity _aimsProject, bool isSourceIATI = true)
             : this()
         {
             iatiActivity = _iatiActivity;
@@ -246,27 +246,81 @@ namespace AIMS_BD_IATI.DAL
                     Field = IatiFields.Title,
                     AIMSValue = aimsProject.Title,
                     IATIValue = iatiActivity.Title,
+                    IsSourceIATI = isSourceIATI
                 });
                 Fields.Add(new FieldMap
                 {
                     Field = IatiFields.Description,
                     AIMSValue = aimsProject.Description,
                     IATIValue = iatiActivity.Description,
+                    IsSourceIATI = isSourceIATI
+
                 });
                 Fields.Add(new FieldMap
                 {
                     Field = IatiFields.Activitystatus,
                     AIMSValue = aimsProject.ActivityStatus,
                     IATIValue = iatiActivity.ActivityStatus,
+                    IsSourceIATI = isSourceIATI
+
+                });
+                //                public const string Document = "Document";
+                //public const string AidType = "AidType";
+                //public const string Dates = "Dates";
+                //public const string Sector = "Sector";
+                //public const string Location = "Location";
+                //public const string ExecutingAgency = "ExecutingAgency";
+
+                Fields.Add(new FieldMap
+                {
+                    Field = IatiFields.Document,
+                    //AIMSValue = aimsProject.documentlink,
+                    //IATIValue = iatiActivity.documentlink,
+                    IsSourceIATI = isSourceIATI
+
+                });
+                Fields.Add(new FieldMap
+                {
+                    Field = IatiFields.AidType,
+                    AIMSValue = aimsProject.AidType,
+                    IATIValue = iatiActivity.AidType,
+                    IsSourceIATI = isSourceIATI
+
+                });
+                //Fields.Add(new FieldMap
+                //{
+                //    Field = IatiFields.Dates,
+                //    AIMSValue = aimsProject.AidType,
+                //    IATIValue = iatiActivity.AidType,
+                //    IsSourceIATI = isSourceIATI
+
+                //});
+                Fields.Add(new FieldMap
+                {
+                    Field = IatiFields.Sector,
+                    //AIMSValue = aimsProject.sector,
+                    //IATIValue = iatiActivity.sector,
+                    IsSourceIATI = isSourceIATI
+
+                });
+                Fields.Add(new FieldMap
+                {
+                    Field = IatiFields.Location,
+                    //AIMSValue = aimsProject.location,
+                    //IATIValue = iatiActivity.location,
+                    IsSourceIATI = isSourceIATI
+
+                });
+                Fields.Add(new FieldMap
+                {
+                    Field = IatiFields.ExecutingAgency,
+                    //AIMSValue = aimsProject.ImplementingOrgs,
+                    //IATIValue = iatiActivity.ImplementingOrgs,
+                    IsSourceIATI = isSourceIATI
+
                 });
 
                 //Transactions-------------------------------
-                //TransactionFields.Add(new FieldMap
-                //{
-                //    Field = "transaction",
-                //    AIMSValue = new { TotalCommitment = aimsProject.TotalCommitment, TotalDisbursment = aimsProject.TotalDisbursment },
-                //    IATIValue = new { TotalCommitment = iatiActivity.TotalCommitment, TotalDisbursment = iatiActivity.TotalDisbursment },
-                //});
                 TransactionFields.Add(new FieldMap
                 {
                     Field = IatiFields.Commitment,
@@ -309,9 +363,9 @@ namespace AIMS_BD_IATI.DAL
         public bool IsSourceIATI { get; set; }
         public object AIMSValue { get; set; }
         public object IATIValue { get; set; }
-        public FieldMap()
+        public FieldMap(bool isSourceIATI = true)
         {
-            IsSourceIATI = true;
+            IsSourceIATI = isSourceIATI;
         }
     }
 
