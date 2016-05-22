@@ -11,6 +11,12 @@ namespace AIMS_BD_IATI.Library
         public const string Title = "title";
         public const string Description = "description";
         public const string Activitystatus = "activitystatus";
+        public const string Document = "Document";
+        public const string AidType = "AidType";
+        public const string Dates = "Dates";
+        public const string Sector = "Sector";
+        public const string Location = "Location";
+        public const string ExecutingAgency = "ExecutingAgency";
 
         public const string Commitment = "commitment";
         public const string PlannedDisbursment = "planned-disbursment";
