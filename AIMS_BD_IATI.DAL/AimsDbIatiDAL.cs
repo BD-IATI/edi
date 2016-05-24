@@ -272,13 +272,13 @@ namespace AIMS_BD_IATI.DAL
                 if (FieldMappingPreferenceDelegateds.Count > 0)
                 {
                     var CommitmentIncluded = FieldMappingPreferenceDelegateds.FirstOrDefault(j => j.FieldName == IatiFields.Commitment);
-                    iatiActivity.IsCommitmentIncluded = CommitmentIncluded.n().IsInclude ?? false;
+                    iatiActivity.IsCommitmentIncluded = CommitmentIncluded?.IsInclude ?? false;
 
                     var PlannedDisbursmentIncluded = FieldMappingPreferenceDelegateds.FirstOrDefault(j => j.FieldName == IatiFields.PlannedDisbursment);
-                    iatiActivity.IsPlannedDisbursmentIncluded = PlannedDisbursmentIncluded.n().IsInclude ?? false;
+                    iatiActivity.IsPlannedDisbursmentIncluded = PlannedDisbursmentIncluded?.IsInclude ?? false;
 
                     var DisbursmentIncluded = FieldMappingPreferenceDelegateds.FirstOrDefault(j => j.FieldName == IatiFields.Disbursment);
-                    iatiActivity.IsDisbursmentIncluded = DisbursmentIncluded.n().IsInclude ?? false;
+                    iatiActivity.IsDisbursmentIncluded = DisbursmentIncluded?.IsInclude ?? false;
 
                 }
                 #endregion
@@ -377,8 +377,8 @@ namespace AIMS_BD_IATI.DAL
 
             foreach (var aimsTransaction in aimsProject.transaction)
             {
-                var isFoundInIati = iatiActivity.transaction.Any(a => a.transactiontype.n().code == aimsTransaction.transactiontype.n().code
-                    && a.transactiondate.n().isodate == aimsTransaction.transactiondate.n().isodate
+                var isFoundInIati = iatiActivity.transaction.Any(a => a.transactiontype?.code == aimsTransaction.transactiontype?.code
+                    && a.transactiondate?.isodate == aimsTransaction.transactiondate?.isodate
                     && Math.Floor(a.ValUSD) == Math.Floor(aimsTransaction.ValUSD));
 
                 aimsTransaction.IsConflicted = !isFoundInIati;
@@ -473,7 +473,7 @@ namespace AIMS_BD_IATI.DAL
             if (activity.transaction != null)
                 foreach (var tr in activity.transaction)
                 {
-                    SetCurrencyExRateAndVal(tr, activity.defaultcurrency, tr.transactiondate.n().isodate);
+                    SetCurrencyExRateAndVal(tr, activity.defaultcurrency, tr.transactiondate?.isodate??default(DateTime));
                 }
 
             if (activity.budget != null)
@@ -517,10 +517,10 @@ namespace AIMS_BD_IATI.DAL
 
             var curExchangeRate = exchangeRates.Where(k => k.DATE == nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
 
-            tr.value.BBexchangeRateDate = curExchangeRate.n().DATE.ToSqlDateTime();
-            tr.value.BBexchangeRateUSD = curExchangeRate.n().DOLLAR_PER_CURRENCY ?? 0;
+            tr.value.BBexchangeRateDate = curExchangeRate?.DATE??default(DateTime).ToSqlDateTime();
+            tr.value.BBexchangeRateUSD = curExchangeRate?.DOLLAR_PER_CURRENCY ?? 0;
             tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
-            tr.value.BBexchangeRateBDT = curExchangeRate.n().TAKA_PER_DOLLAR ?? 0;
+            tr.value.BBexchangeRateBDT = curExchangeRate?.TAKA_PER_DOLLAR ?? 0;
             tr.value.ValueInBDT = tr.value.ValueInUSD * tr.value.BBexchangeRateBDT;
 
         }

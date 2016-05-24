@@ -109,7 +109,7 @@ namespace AIMS_BD_IATI.Service
 
                 Logger.Write("INFO: " + "Parsing...");
 
-                var iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
+                var iatiactivityArray = returnResult2?.iatiactivities?.iatiactivity;
                 if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value.StartsWith("1.0")) //1.04, 1.05
                 {
                     //Parser v1.05
@@ -128,7 +128,7 @@ namespace AIMS_BD_IATI.Service
 
                 #endregion
 
-                iatiactivityArray = returnResult2.n().iatiactivities.n().iatiactivity;
+                iatiactivityArray = returnResult2?.iatiactivities?.iatiactivity;
                 if (iatiactivityArray != null)
                 {
                     SaveToDB(fundSource, iatiactivityArray);
@@ -177,7 +177,7 @@ namespace AIMS_BD_IATI.Service
                     {
                         var Activity = new Activity();
 
-                        Activity.OrgId = Activity.AssignedOrgId = fundSource.IATICode;// iatiactivityItem.reportingorg.n().@ref;
+                        Activity.OrgId = Activity.AssignedOrgId = fundSource.IATICode;// iatiactivityItem.reportingorg?.@ref;
                         Activity.IatiIdentifier = iatiactivityItem.IatiIdentifier;
                         Activity.Hierarchy = iatiactivityItem.hierarchy;
 

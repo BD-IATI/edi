@@ -12,7 +12,7 @@ namespace AIMS_BD_IATI.DAL
     {
         public static List<iatiactivity> LoadH1ActivitiesWithChild(List<iatiactivity> iatiActivities)
         {
-            var H1Activities = iatiActivities.FindAll(f => f.n().hierarchy == 1);
+            var H1Activities = iatiActivities.FindAll(f => f?.hierarchy == 1);
 
             foreach (var H1Activity in H1Activities)
             {
@@ -60,7 +60,7 @@ namespace AIMS_BD_IATI.DAL
                     //set dominating participating org to h1activity
                     if (dominatingParticipatingorg != null)
                     {
-                        List<participatingorg> participatingorgs = H1Activity.participatingorg.n().ToList();
+                        List<participatingorg> participatingorgs = H1Activity.participatingorg?.ToList();
                         participatingorgs.Add(dominatingParticipatingorg);
                         H1Activity.participatingorg = participatingorgs.ToArray();
                     }
@@ -73,7 +73,7 @@ namespace AIMS_BD_IATI.DAL
 
         public static List<iatiactivity> LoadH2ActivitiesWithParent(List<iatiactivity> iatiActivities)
         {
-            var H2Activities = iatiActivities.FindAll(f => f.n().hierarchy == 2);
+            var H2Activities = iatiActivities.FindAll(f => f?.hierarchy == 2);
 
             foreach (var H2Activity in H2Activities)
             {
@@ -349,8 +349,13 @@ namespace AIMS_BD_IATI.DAL
         {
             foreach (var preference in generalPreferences)
             {
-                Fields.Find(f => f.Field == preference.FieldName).n().IsSourceIATI = preference.IsSourceIATI;
-                TransactionFields.Find(f => f.Field == preference.FieldName).n().IsSourceIATI = preference.IsSourceIATI;
+                var field = Fields.Find(f => f.Field == preference.FieldName);
+                if (field != null)
+                    field.IsSourceIATI = preference.IsSourceIATI;
+
+                var transactionField = TransactionFields.Find(f => f.Field == preference.FieldName);
+                if (transactionField != null)
+                    transactionField.IsSourceIATI = preference.IsSourceIATI;
             }
         }
 

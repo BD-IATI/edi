@@ -50,7 +50,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public HeirarchyModel GetHierarchyData(DPLookupItem dp)
         {
-            //bool isDPChanged = Sessions.activitiesContainer?.n().DP != dp.n().ID;
+            //bool isDPChanged = Sessions.activitiesContainer??.DP != dp?.ID;
 
             //if (isDPChanged)
             //{
@@ -179,11 +179,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             foreach (var org in distictOrgs)
             {
                 //check for matching managing DP from AIMS
-                var managingDP = !string.IsNullOrWhiteSpace(org.@ref) ? managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.n().Contains(org.@ref)) : null;
+                var managingDP = !string.IsNullOrWhiteSpace(org.@ref) ? managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.Contains(org.@ref)) : null;
 
                 //if not found, set to Current DP
                 if (managingDP == null)
-                    managingDP = managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.n().Contains(Sessions.DP.ID));
+                    managingDP = managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.Contains(Sessions.DP.ID));
 
                 //Add selected value
                 org.FundSourceIDnIATICode = managingDP == null ? "" : managingDP.IDnIATICode;
@@ -381,12 +381,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             var savedPreferences = aimsDbIatiDAL.GetFieldMappingPreferenceGeneral(Sessions.DP.ID);
 
-            var returnModel = (from a in Sessions.ProjectMapModel.n().MatchedProjects.n()
+            var returnModel = (from a in Sessions.ProjectMapModel?.MatchedProjects
                                select new ProjectFieldMapModel(a.iatiActivity, a.aimsProject, savedPreferences)).FirstOrDefault();
 
             if (returnModel == null)
             {
-                returnModel = new ProjectFieldMapModel(Sessions.activitiesContainer?.n().RelevantActivities.n(0), new iatiactivity(), savedPreferences);
+                returnModel = new ProjectFieldMapModel(Sessions.activitiesContainer?.RelevantActivities.n(0), new iatiactivity(), savedPreferences);
                 //foreach (var item in returnModel.Fields)
                 //{
                 //    item.AIMSValue = "Not found in AIMS";

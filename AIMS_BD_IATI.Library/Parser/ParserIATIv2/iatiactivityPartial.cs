@@ -25,11 +25,11 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
         ////public string Id { get; set; }
         public List<iatiactivity> iatiActivities { get; set; }
-        public List<iatiactivity> RelevantActivities { get { return iatiActivities.n().FindAll(f => f.IsRelevant == true); } }
+        public List<iatiactivity> RelevantActivities { get { return iatiActivities?.FindAll(f => f.IsRelevant == true); } }
         public List<iatiactivity> NewProjects { get; set; }
         public List<iatiactivity> AimsProjects { get; set; }
 
-        public bool HasChildActivity { get { return iatiActivities.Exists(e => e.relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
+        public bool HasChildActivity { get { return iatiActivities.Exists(e => e.relatedactivity?.Count(r => r != null && r.type == "2") > 0); } }
 
 
     }
@@ -105,9 +105,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public int MappedTrustFundId { get; set; }
 
         [XmlIgnore]
-        public bool HasChildActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "2") > 0); } }
+        public bool HasChildActivity { get { return (relatedactivity?.Count(r => r != null && r.type == "2") > 0); } }
         [XmlIgnore]
-        public bool HasParentActivity { get { return (relatedactivity.n().Count(r => r != null && r.type == "1") > 0); } }
+        public bool HasParentActivity { get { return (relatedactivity?.Count(r => r != null && r.type == "1") > 0); } }
 
         [XmlIgnore]
         public List<iatiactivity> childActivities { get; set; }
@@ -124,7 +124,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             {
                 if (recipientcountry != null)
                 {
-                    var bd = recipientcountry.n().FirstOrDefault(f => f.n().code == "BD");
+                    var bd = recipientcountry?.FirstOrDefault(f => f?.code == "BD");
 
                     if (recipientcountry.Count() == 1)
                         return 100;
@@ -146,7 +146,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return isRelevant ?? PercentToBD >= 20 && activitystatus.n().code == "2";
+                return isRelevant ?? PercentToBD >= 20 && activitystatus?.code == "2";
             }
             set
             {
@@ -179,7 +179,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return Commitments.FindAll(f => string.IsNullOrWhiteSpace(f.providerorg.n().@ref) || IATICode.Contains(f.providerorg.n().@ref));
+                return Commitments.FindAll(f => string.IsNullOrWhiteSpace(f.providerorg?.@ref) || IATICode.Contains(f.providerorg?.@ref));
             }
         }
         [XmlIgnore]
@@ -253,7 +253,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return Disbursments.FindAll(f => string.IsNullOrWhiteSpace(f.providerorg.n().@ref) || IATICode.Contains(f.providerorg.n().@ref));
+                return Disbursments.FindAll(f => string.IsNullOrWhiteSpace(f.providerorg?.@ref) || IATICode.Contains(f.providerorg?.@ref));
             }
         }
         [XmlIgnore]
@@ -290,14 +290,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 {
                     originalBudgets.RemoveAll(r =>
                         (
-                        r.periodstart.n().isodate >= revisedBudget.periodstart.n().isodate && r.periodstart.n().isodate <= revisedBudget.periodend.n().isodate
+                        r.periodstart?.isodate >= revisedBudget.periodstart?.isodate && r.periodstart?.isodate <= revisedBudget.periodend?.isodate
                         )
-                        || (r.periodend.n().isodate >= revisedBudget.periodstart.n().isodate && r.periodend.n().isodate <= revisedBudget.periodend.n().isodate
+                        || (r.periodend?.isodate >= revisedBudget.periodstart?.isodate && r.periodend?.isodate <= revisedBudget.periodend?.isodate
                         )
                         ||
-                         (revisedBudget.periodstart.n().isodate >= r.periodstart.n().isodate && revisedBudget.periodend.n().isodate <= r.periodstart.n().isodate
+                         (revisedBudget.periodstart?.isodate >= r.periodstart?.isodate && revisedBudget.periodend?.isodate <= r.periodstart?.isodate
                          )
-                         || (revisedBudget.periodstart.n().isodate >= r.periodend.n().isodate && revisedBudget.periodend.n().isodate <= r.periodend.n().isodate
+                         || (revisedBudget.periodstart?.isodate >= r.periodend?.isodate && revisedBudget.periodend?.isodate <= r.periodend?.isodate
                         )
                         );
                 }
@@ -309,8 +309,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 {
                     planneddisbursements.Add(new planneddisbursement
                     {
-                        periodstart = new planneddisbursementPeriodstart { isodate = item.periodstart.n().isodate },
-                        periodend = new planneddisbursementPeriodend { isodate = item.periodend.n().isodate },
+                        periodstart = new planneddisbursementPeriodstart { isodate = item.periodstart?.isodate??default(DateTime) },
+                        periodend = new planneddisbursementPeriodend { isodate = item.periodend?.isodate??default(DateTime) },
                         value = item.value
                     });
                 }
@@ -325,14 +325,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             if (transaction != null)
             {
-                Transactions.AddRange(transaction.Where(p => p.transactiontype.n().code == transactiontypecode));
+                Transactions.AddRange(transaction.Where(p => p.transactiontype?.code == transactiontypecode));
             }
 
             foreach (var ra in includedChildActivities)
             {
                 if (ra.transaction != null)
                 {
-                    Transactions.AddRange(ra.transaction.Where(p => p.transactiontype.n().code == transactiontypecode));
+                    Transactions.AddRange(ra.transaction.Where(p => p.transactiontype?.code == transactiontypecode));
                 }
             }
 
@@ -340,7 +340,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             {
                 if (ra.transaction != null)
                 {
-                    Transactions.AddRange(ra.transaction.Where(p => p.transactiontype.n().code == transactiontypecode));
+                    Transactions.AddRange(ra.transaction.Where(p => p.transactiontype?.code == transactiontypecode));
                 }
             }
             return Transactions;
@@ -405,13 +405,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var identifier = iatiidentifier.n().Value;
+                var identifier = iatiidentifier?.Value;
                 return identifier != null && identifier.Length > 50 ? identifier.Substring(0, 40) + "*truncated" : identifier ?? "";
             }
 
             set
             {
-                iatiidentifier.n().Value = value;
+                if (iatiidentifier == null) iatiidentifier = new iatiidentifier();
+                iatiidentifier.Value = value;
             }
         }
         [XmlIgnore]
@@ -419,11 +420,12 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return title.n().narrative.n(0).Value;
+                return title?.narrative.n(0).Value;
             }
             set
             {
-                title.n().narrative = Statix.getNarativeArray(value);
+                if (title == null) title = new textRequiredType();
+                title.narrative = Statix.getNarativeArray(value);
             }
         }
         [XmlIgnore]
@@ -443,11 +445,12 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return reportingorg.n().narrative.n(0).Value;
+                return reportingorg?.narrative.n(0).Value;
             }
             set
             {
-                reportingorg.n().narrative = Statix.getNarativeArray(value);
+                if (reportingorg == null) reportingorg = new reportingorg();
+                reportingorg.narrative = Statix.getNarativeArray(value);
             }
         }
         [XmlIgnore]
@@ -455,7 +458,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return participatingorg.n().Where(w => w.n().role == "4").ToList();
+                return participatingorg?.Where(w => w?.role == "4").ToList();
             }
             set
             {
@@ -472,7 +475,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 if (defaultaidtype == null) // for initializing
                     code = AidTypeCode;
 
-                return defaultaidtype.n().name;
+                return defaultaidtype?.name;
                 //return "Undefined";
             }
             set
@@ -495,14 +498,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                     defaultaidtype = new defaultaidtype();
                     if (transaction != null)
                     {
-                        var commitmentTrans = transaction.Where(c => c.transactiontype.n().code == "2");
+                        var commitmentTrans = transaction.Where(c => c.transactiontype?.code == "2");
 
                         var kk = from t in commitmentTrans
                                  group t by new { t.aidtype, t.value } into g
                                  select new
                                  {
                                      g.Key.aidtype,
-                                     Sum = g.Sum(s => s.value.n().Value)
+                                     Sum = g.Sum(s => s.value?.Value)
                                  };
 
                         var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
@@ -520,7 +523,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 foreach (var item in ra.transaction)
                                 {
                                     if (item.aidtype == null)
-                                        item.aidtype = new transactionAidtype { code = ra.defaultaidtype.n().code };
+                                        item.aidtype = new transactionAidtype { code = ra.defaultaidtype?.code };
                                     allChildAticitiesTrans.Add(item);
 
                                 }
@@ -528,14 +531,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                         }
 
-                        var commitmentTrans = allChildAticitiesTrans.FindAll(c => c.transactiontype.n().code == "2");
+                        var commitmentTrans = allChildAticitiesTrans.FindAll(c => c.transactiontype?.code == "2");
 
                         var kk = (from t in commitmentTrans
                                   group t by new { t.aidtype, t.value } into g
                                   select new
                                   {
                                       g.Key.aidtype,
-                                      Sum = g.Sum(s => s.value.n().Value)
+                                      Sum = g.Sum(s => s.value?.Value)
                                   }).ToList();
 
                         var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
@@ -562,11 +565,12 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return activitystatus.n().name;
+                return activitystatus?.name;
             }
             set
             {
-                activitystatus.n().name = value;
+                if (activitystatus == null) activitystatus = new activitystatus();
+                activitystatus.name = value;
             }
 
         }
@@ -577,7 +581,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var sdate = activitydate.n().FirstOrDefault(f => f.n().type == "1");
+                var sdate = activitydate?.FirstOrDefault(f => f?.type == "1");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //1
@@ -586,7 +590,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var sdate = activitydate.n().FirstOrDefault(f => f.n().type == "2");
+                var sdate = activitydate?.FirstOrDefault(f => f?.type == "2");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //2
@@ -595,7 +599,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var sdate = activitydate.n().FirstOrDefault(f => f.n().type == "3");
+                var sdate = activitydate?.FirstOrDefault(f => f?.type == "3");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //3
@@ -604,7 +608,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var sdate = activitydate.n().FirstOrDefault(f => f.n().type == "4");
+                var sdate = activitydate?.FirstOrDefault(f => f?.type == "4");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //4 
@@ -783,11 +787,12 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return providerorg.n().narrative.n(0).Value;
+                return providerorg?.narrative.n(0).Value;
             }
             set
             {
-                providerorg.n().narrative = Statix.getNarativeArray(value);
+                if (providerorg == null) providerorg = new transactionProviderorg();
+                providerorg.narrative = Statix.getNarativeArray(value);
             }
         }
 
@@ -796,7 +801,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return value.n().ValueInUSD;
+                return value?.ValueInUSD??0;
             }
         }
         [XmlIgnore]
@@ -810,11 +815,12 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return providerorg.n().narrative.n(0).Value;
+                return providerorg?.narrative.n(0).Value;
             }
             set
             {
-                providerorg.n().narrative = Statix.getNarativeArray(value);
+                if (providerorg == null) providerorg = new planneddisbursementProviderorg();
+                providerorg.narrative = Statix.getNarativeArray(value);
             }
         }
 
@@ -823,7 +829,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return value.n().ValueInUSD;
+                return value?.ValueInUSD??0;
             }
         }
     }

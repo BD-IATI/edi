@@ -10,7 +10,7 @@
                     {
                         var trandate = aimsCommitment.CommitmentAgreementSignDate ?? p.AgreementSignDate;
 
-                        var notExistInIATI = !iatiCommitments.Exists(e => e.transactiondate.n().isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsCommitment.CommittedAmountInUSD ?? 0));
+                        var notExistInIATI = !iatiCommitments.Exists(e => e.transactiondate?.isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsCommitment.CommittedAmountInUSD ?? 0));
 
                         isFinancialDataMismathed = true;
 
@@ -46,20 +46,20 @@
                     //ToDo for co-finance projects it may be different
                     aimsCommitment.FundSourceId = mergedproject.AimsFundSourceId;
 
-                    aimsCommitment.CommitmentAgreementSignDate = trn.transactiondate.n().isodate;
+                    aimsCommitment.CommitmentAgreementSignDate = trn.transactiondate?.isodate;
 
                     var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
                     aimsCommitment.CommitmentMaidCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
                     aimsCommitment.CommittedAmount = trn.value.Value;
 
-                    aimsCommitment.CommitmentEffectiveDate = trn.value.n().BBexchangeRateDate;
-                    aimsCommitment.ExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
-                    aimsCommitment.CommittedAmountInUSD = trn.value.n().ValueInUSD;
+                    aimsCommitment.CommitmentEffectiveDate = trn.value?.BBexchangeRateDate;
+                    aimsCommitment.ExchangeRateToUSD = trn.value?.BBexchangeRateUSD;
+                    aimsCommitment.CommittedAmountInUSD = trn.value?.ValueInUSD;
 
-                    aimsCommitment.ExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
-                    aimsCommitment.CommittedAmountInBDT = trn.value.n().ValueInBDT;
+                    aimsCommitment.ExchangeRateToBDT = trn.value?.BBexchangeRateBDT;
+                    aimsCommitment.CommittedAmountInBDT = trn.value?.ValueInBDT;
 
-                    aimsCommitment.Remarks = mergedproject.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                    aimsCommitment.Remarks = mergedproject.IsDataSourceAIMS ? trn.description?.narrative.n(0).Value : "Importerd From IATI: " + trn.description?.narrative.n(0).Value;
                     aimsCommitment.VerificationRemarks = "Importerd From IATI: ";
 
                     //AidCategory
@@ -93,20 +93,20 @@
                     //ToDo for co-finance projects it may be different
                     aimsPlanDisbursment.FundSourceId = mergedproject.AimsFundSourceId;
 
-                    aimsPlanDisbursment.PlannedDisbursementPeriodFromDate = trn.periodstart.n().isodate;
-                    aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend.n().isodate;
+                    aimsPlanDisbursment.PlannedDisbursementPeriodFromDate = trn.periodstart?.isodate;
+                    aimsPlanDisbursment.PlannedDisbursementPeriodToDate = trn.periodend?.isodate;
 
                     var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
                     aimsPlanDisbursment.PlannedDisbursementCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
                     aimsPlanDisbursment.PlannedDisburseAmount = trn.value.Value;
 
-                    aimsPlanDisbursment.PlannedDisburseExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
-                    aimsPlanDisbursment.PlannedDisburseAmountInUSD = trn.value.n().ValueInUSD;
+                    aimsPlanDisbursment.PlannedDisburseExchangeRateToUSD = trn.value?.BBexchangeRateUSD;
+                    aimsPlanDisbursment.PlannedDisburseAmountInUSD = trn.value?.ValueInUSD;
 
-                    aimsPlanDisbursment.PlannedDisburseExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
-                    aimsPlanDisbursment.PlannedDisburseAmountInBDT = trn.value.n().ValueInBDT;
+                    aimsPlanDisbursment.PlannedDisburseExchangeRateToBDT = trn.value?.BBexchangeRateBDT;
+                    aimsPlanDisbursment.PlannedDisburseAmountInBDT = trn.value?.ValueInBDT;
 
-                    //aimsPlanDisbursment.VerificationRemarks = project.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                    //aimsPlanDisbursment.VerificationRemarks = project.IsDataSourceAIMS ? trn.description?.narrative.n(0).Value : "Importerd From IATI: " + trn.description?.narrative.n(0).Value;
                     aimsPlanDisbursment.VerificationRemarks = "Importerd From IATI: ";
 
                     //AidCategory
@@ -129,7 +129,7 @@
                     {
                         var trandate = aimsDisbursement.DisbursementToDate ?? aimsDisbursement.DisbursementDate;
 
-                        var notExistInIATI = !iatiDisbursements.Exists(e => e.transactiondate.n().isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsDisbursement.DisbursedAmountInUSD ?? 0));
+                        var notExistInIATI = !iatiDisbursements.Exists(e => e.transactiondate?.isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsDisbursement.DisbursedAmountInUSD ?? 0));
 
                         isFinancialDataMismathed = true;
 
@@ -164,20 +164,20 @@
                     //ToDo for co-finance projects it may be different
                     aimsDisbursment.FundSourceId = mergedproject.AimsFundSourceId;
 
-                    aimsDisbursment.DisbursementDate = trn.transactiondate.n().isodate;
-                    aimsDisbursment.DisbursementToDate = trn.transactiondate.n().isodate;
+                    aimsDisbursment.DisbursementDate = trn.transactiondate?.isodate;
+                    aimsDisbursment.DisbursementToDate = trn.transactiondate?.isodate;
 
                     var aimsCurrency = aimsCurrencies.FirstOrDefault(f => f.IATICode == trn.value.currency);
                     aimsDisbursment.DisbursedCurrencyId = aimsCurrency == null ? 1 : aimsCurrency.Id;
                     aimsDisbursment.DisbursedAmount = trn.value.Value;
 
-                    aimsDisbursment.DisbursedExchangeRateToUSD = trn.value.n().BBexchangeRateUSD;
-                    aimsDisbursment.DisbursedAmountInUSD = trn.value.n().ValueInUSD;
+                    aimsDisbursment.DisbursedExchangeRateToUSD = trn.value?.BBexchangeRateUSD;
+                    aimsDisbursment.DisbursedAmountInUSD = trn.value?.ValueInUSD;
 
-                    aimsDisbursment.DisbursedExchangeRateToBDT = trn.value.n().BBexchangeRateBDT;
-                    aimsDisbursment.DisbursedAmountInBDT = trn.value.n().ValueInBDT;
+                    aimsDisbursment.DisbursedExchangeRateToBDT = trn.value?.BBexchangeRateBDT;
+                    aimsDisbursment.DisbursedAmountInBDT = trn.value?.ValueInBDT;
 
-                    aimsDisbursment.Remarks = mergedproject.IsDataSourceAIMS ? trn.description.n().narrative.n(0).Value : "Importerd From IATI: " + trn.description.n().narrative.n(0).Value;
+                    aimsDisbursment.Remarks = mergedproject.IsDataSourceAIMS ? trn.description?.narrative.n(0).Value : "Importerd From IATI: " + trn.description?.narrative.n(0).Value;
                     aimsDisbursment.VerificationRemarks = "Importerd From IATI: ";
 
                     //AidCategory
