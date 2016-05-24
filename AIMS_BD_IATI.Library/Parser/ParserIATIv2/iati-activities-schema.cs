@@ -1019,6 +1019,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
+
+        [System.Xml.Serialization.XmlElementAttribute("conditions")]
         public conditions conditions
         {
             get
@@ -1060,6 +1062,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
+        /// 
+        [System.Xml.Serialization.XmlElementAttribute("fss")]
         public fss fss
         {
             get

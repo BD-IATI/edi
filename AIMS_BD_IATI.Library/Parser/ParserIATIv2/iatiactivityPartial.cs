@@ -136,7 +136,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         [XmlIgnore]
-        public bool? isRelevant { get; set; }
+        public bool? isRelevant;
         [XmlIgnore]
         public bool? IsRelevant
         {
@@ -348,7 +348,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         #region for filter other DP's projects
         [XmlIgnore]
-        public string ownedBy { get; set; }
+        public string ownedBy;
         [XmlIgnore]
 
         public string FundSourceIDnIATICode

@@ -317,13 +317,13 @@ namespace AIMS_DB_IATI.WebAPI.Models
 
     public class DynamicContractResolver : DefaultContractResolver
     {
-        protected override IList<JsonProperty> CreateProperties(Type type,
-            MemberSerialization memberSerialization)
-        {
-            IList<JsonProperty> properties = base.CreateProperties(type, MemberSerialization.OptOut);
+        //protected override IList<JsonProperty> CreateProperties(Type type,
+        //    MemberSerialization memberSerialization)
+        //{
+        //    IList<JsonProperty> properties = base.CreateProperties(type, MemberSerialization.OptOut);
 
-            return properties;
-        }
+        //    return properties;
+        //}
         protected override List<MemberInfo> GetSerializableMembers(Type objectType)
         {
             var members = base.GetSerializableMembers(objectType);

@@ -3,10 +3,12 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 using System.Web.SessionState;
+using System.Xml.Serialization;
 
 namespace AIMS_BD_IATI.WebAPIAPI
 {
@@ -31,14 +33,29 @@ namespace AIMS_BD_IATI.WebAPIAPI
 
         public class DynamicContractResolver : DefaultContractResolver
         {
-            protected override IList<JsonProperty> CreateProperties(Type type,
-                MemberSerialization memberSerialization)
-            {
-                IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
+            //protected override IList<JsonProperty> CreateProperties(Type type,
+            //    MemberSerialization memberSerialization)
+            //{
+            //    IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
 
-                properties = properties.Where(p => p.PropertyName != "AnyAttr" && p.PropertyName != "Any").ToList();
-                return properties;
+            //    properties = properties.Where(p => p.PropertyName != "AnyAttr" && p.PropertyName != "Any").ToList();
+            //    return properties;
+            //}
+
+            protected override List<MemberInfo> GetSerializableMembers(Type objectType)
+            {
+                var members = base.GetSerializableMembers(objectType);
+
+                members.RemoveAll(r => r.MemberType != MemberTypes.Property);
+                members.RemoveAll(r => r.GetCustomAttribute(typeof(XmlElementAttribute)) != null);
+                members.RemoveAll(r => r.GetCustomAttribute(typeof(XmlAnyElementAttribute)) != null);
+                members.RemoveAll(r => r.GetCustomAttribute(typeof(XmlAnyAttributeAttribute)) != null);
+
+                members.RemoveAll(r => r.Name == "AnyAttr" || r.Name == "Any");
+
+                return members;
             }
+
         }
 
         public override void Init()
