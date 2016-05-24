@@ -146,7 +146,8 @@
                                uib-popover-template="'confirmRestartTemplate.html'"
                                popover-append-to-body="true"
                                popover-placement="auto"
-                               popover-trigger="outsideClick">
+                               popover-trigger="outsideClick"
+                               popover-is-open="globals.showConfirmRestart">
                                 Restart
                             </a>
                         </li>
@@ -195,8 +196,8 @@
             <div>If you rastart then your decisions will be lost. <br /> Are you sure?</div>
             <br />
 
-            <a type="button" href="#/restart" class="btn btn-primary">Yes</a>
-            <a type="button" href="" class="btn btn-default">No</a>
+            <a type="button" href="#/restart" class="btn btn-primary" ng-click="globals.showConfirmRestart = false">Yes</a>
+            <a type="button" href="" class="btn btn-default" ng-click="globals.showConfirmRestart = false">No</a>
         </div>
     </script>
 
