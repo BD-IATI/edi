@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
-    public class ClientSideAttribute:Attribute
+    public class ServerSideAttribute:Attribute
     {
 
     }

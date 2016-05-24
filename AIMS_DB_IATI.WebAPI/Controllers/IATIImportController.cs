@@ -563,12 +563,18 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 var ra = clientActivities.Find(f => f.IatiIdentifier == activity.IatiIdentifier);
                 if (ra != null)
                 {
-                    var clientProperties = typeof(iatiactivity).GetProperties(BindingFlags.SetProperty).Where(w => w.GetCustomAttribute(typeof(Newtonsoft.Json.JsonIgnoreAttribute)) == null);
+                    activity.IsRelevant = ra.IsRelevant;
+                    activity.ProjectId = ra.ProjectId;
+                    activity.MappedProjectId = ra.MappedProjectId;
+                    activity.MappedTrustFundId = ra.MappedTrustFundId;
+                    activity.FundSourceIDnIATICode = ra.FundSourceIDnIATICode;
 
-                    foreach (PropertyInfo clientProperty in clientProperties)
-                    {
-                        clientProperty.SetValue(activity, clientProperty.GetValue(ra));
-                    }
+                    //var clientProperties = typeof(iatiactivity).GetProperties(BindingFlags.SetProperty).Where(w => w.GetCustomAttribute(typeof(Newtonsoft.Json.JsonIgnoreAttribute)) == null);
+
+                    //foreach (PropertyInfo clientProperty in clientProperties)
+                    //{
+                    //    clientProperty.SetValue(activity, clientProperty.GetValue(ra));
+                    //}
                 }
             }
         }

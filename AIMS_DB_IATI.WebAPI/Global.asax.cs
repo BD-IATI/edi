@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -47,9 +48,9 @@ namespace AIMS_BD_IATI.WebAPIAPI
                 var members = base.GetSerializableMembers(objectType);
 
                 members.RemoveAll(r => r.MemberType != MemberTypes.Property);
-                members.RemoveAll(r => r.GetCustomAttribute(typeof(XmlElementAttribute)) != null);
-                members.RemoveAll(r => r.GetCustomAttribute(typeof(XmlAnyElementAttribute)) != null);
-                members.RemoveAll(r => r.GetCustomAttribute(typeof(XmlAnyAttributeAttribute)) != null);
+                members.RemoveAll(r => r.GetCustomAttribute(typeof(ServerSideAttribute)) != null);
+                //members.RemoveAll(r => r.GetCustomAttribute(typeof(XmlAnyElementAttribute)) != null);
+                //members.RemoveAll(r => r.GetCustomAttribute(typeof(XmlAnyAttributeAttribute)) != null);
 
                 //members.RemoveAll(r => r.Name == "AnyAttr" || r.Name == "Any");
 
