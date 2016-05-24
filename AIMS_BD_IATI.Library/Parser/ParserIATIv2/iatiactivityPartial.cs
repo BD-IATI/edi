@@ -11,6 +11,10 @@ using System.Xml.Serialization;
 
 namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
+    public class ClientSideAttribute:Attribute
+    {
+
+    }
     [Serializable]
     public class iatiactivityContainer
     {
@@ -350,7 +354,6 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public string ownedBy;
         [XmlIgnore]
-
         public string FundSourceIDnIATICode
         {
             get

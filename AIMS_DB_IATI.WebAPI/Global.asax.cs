@@ -51,7 +51,7 @@ namespace AIMS_BD_IATI.WebAPIAPI
                 members.RemoveAll(r => r.GetCustomAttribute(typeof(XmlAnyElementAttribute)) != null);
                 members.RemoveAll(r => r.GetCustomAttribute(typeof(XmlAnyAttributeAttribute)) != null);
 
-                members.RemoveAll(r => r.Name == "AnyAttr" || r.Name == "Any");
+                //members.RemoveAll(r => r.Name == "AnyAttr" || r.Name == "Any");
 
                 return members;
             }
