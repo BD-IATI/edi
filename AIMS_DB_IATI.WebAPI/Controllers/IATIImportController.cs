@@ -8,6 +8,7 @@ using System.Web.Http;
 using MoreLinq;
 using AIMS_DB_IATI.WebAPI.Models.IATIImport;
 using AIMS_DB_IATI.WebAPI.Models;
+using System.Reflection;
 
 namespace AIMS_BD_IATI.WebAPI.Controllers
 {
@@ -216,7 +217,10 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (_iOrgs == null) _iOrgs = Sessions.iOrgs.Orgs;
 
             var projectsImpOrgs = new List<participatingorg>();
-            Sessions.activitiesContainer?.RelevantActivities.ForEach(e => projectsImpOrgs.AddRange(e.ImplementingOrgs));
+            Sessions.activitiesContainer?.RelevantActivities?.ForEach(e =>
+            {
+                if (e.ImplementingOrgs != null) projectsImpOrgs.AddRange(e.ImplementingOrgs);
+            });
 
             foreach (var iOrg in _iOrgs)
             {
@@ -240,8 +244,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public ProjectMapModel SubmitActivities(List<iatiactivity> relevantActivies)
         {
-            if (relevantActivies == null)
-                relevantActivies = Sessions.activitiesContainer?.RelevantActivities;
+            if (relevantActivies != null)
+            {
+                UpdateActivities(relevantActivies, Sessions.activitiesContainer?.RelevantActivities);
+            }
+            relevantActivies = Sessions.activitiesContainer?.RelevantActivities;
 
             SetStatics();//since we have no access to session at library project, so we pass it in a static variables
 
@@ -280,47 +287,27 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             return returnResult;
         }
+
         #endregion
 
         #region Match
-
-        [AcceptVerbs("GET", "POST")]
-        public bool SubmitManualMatching(ProjectMapModel projectMapModel)
-        {
-            Sessions.ProjectMapModel.AimsProjectsNotInIati = projectMapModel?.AimsProjectsNotInIati;
-
-            Sessions.ProjectMapModel.MatchedProjects.RemoveAll(r => r.IsManuallyMapped);
-
-            //add manually matched projects
-            foreach (var project in Sessions.ProjectMapModel?.AimsProjectsNotInIati)
-            {
-                if (project.MatchedProjects.Count > 0)
-                {
-                    Sessions.ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(project.MatchedProjects.First(), project) { IsManuallyMapped = true });
-                }
-            }
-
-            foreach (var project in projectMapModel?.NewProjectsToAddInAims)
-            {
-                project.IsCommitmentIncluded = true;
-                project.IsDisbursmentIncluded = true;
-                project.IsPlannedDisbursmentIncluded = true;
-
-                Sessions.ProjectMapModel.NewProjectsToAddInAims.Add(project);
-            }
-
-            return true;
-        }
-
         [AcceptVerbs("GET", "POST")]
         public bool SubmitManualMatchingUsingDropdown(ProjectMapModel projectMapModel)
         {
-            Sessions.ProjectMapModel.AimsProjectsNotInIati = projectMapModel?.AimsProjectsNotInIati;
+            if (projectMapModel != null)
+            {
+                UpdateActivities(projectMapModel.AimsProjectsNotInIati, Sessions.ProjectMapModel.AimsProjectsNotInIati);
 
-            Sessions.ProjectMapModel.MatchedProjects.RemoveAll(r => r.IsManuallyMapped);
+                Sessions.ProjectMapModel.AimsProjectsNotInIati = projectMapModel.AimsProjectsNotInIati;
+
+                Sessions.ProjectMapModel.MatchedProjects.RemoveAll(r => r.IsManuallyMapped);
+
+            }
+
+            //actual method starts here :)
 
             //add manually matched projects
-            var aimsProjects = projectMapModel?.AimsProjectsNotInIati;
+            var aimsProjects = Sessions.ProjectMapModel?.AimsProjectsNotInIati;
             var iatiActivities = Sessions.ProjectMapModel?.IatiActivitiesNotInAims;
             foreach (var project in aimsProjects)
             {
@@ -368,6 +355,35 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
                 Sessions.ProjectMapModel.NewProjectsToAddInAims.Add(activity);
 
+            }
+
+            return true;
+        }
+
+        //unused method
+        [AcceptVerbs("GET", "POST")]
+        public bool SubmitManualMatching(ProjectMapModel projectMapModel)
+        {
+            Sessions.ProjectMapModel.AimsProjectsNotInIati = projectMapModel?.AimsProjectsNotInIati;
+
+            Sessions.ProjectMapModel.MatchedProjects.RemoveAll(r => r.IsManuallyMapped);
+
+            //add manually matched projects
+            foreach (var project in Sessions.ProjectMapModel?.AimsProjectsNotInIati)
+            {
+                if (project.MatchedProjects.Count > 0)
+                {
+                    Sessions.ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(project.MatchedProjects.First(), project) { IsManuallyMapped = true });
+                }
+            }
+
+            foreach (var project in projectMapModel?.NewProjectsToAddInAims)
+            {
+                project.IsCommitmentIncluded = true;
+                project.IsDisbursmentIncluded = true;
+                project.IsPlannedDisbursmentIncluded = true;
+
+                Sessions.ProjectMapModel.NewProjectsToAddInAims.Add(project);
             }
 
             return true;
@@ -494,8 +510,18 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public int? ImportProjects(ProjectMapModel projectMapModel)
         {
-            var matchedProjects = projectMapModel.MatchedProjects;
+            var matchedProjects = Sessions.ProjectMapModel.MatchedProjects;
 
+            foreach (var mp in matchedProjects)
+            {
+                var v = projectMapModel.MatchedProjects.Find(f => f.iatiActivity.IatiIdentifier == mp.iatiActivity.IatiIdentifier);
+
+                mp.Fields = v.Fields;
+                mp.TransactionFields = v.TransactionFields;
+
+            }
+
+            //actual method starts here :)
             var margedProjects = ImportLogic.MergeProjects(matchedProjects);
 
             foreach (var item in projectMapModel.NewProjectsToAddInAims)
@@ -528,6 +554,23 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                    orderby i.IatiIdentifier
 
                    select i;
+        }
+
+        private static void UpdateActivities(List<iatiactivity> clientActivities, List<iatiactivity> sessionActivities)
+        {
+            foreach (var activity in sessionActivities)
+            {
+                var ra = clientActivities.Find(f => f.IatiIdentifier == activity.IatiIdentifier);
+                if (ra != null)
+                {
+                    var clientProperties = typeof(iatiactivity).GetProperties(BindingFlags.SetProperty).Where(w => w.GetCustomAttribute(typeof(Newtonsoft.Json.JsonIgnoreAttribute)) == null);
+
+                    foreach (PropertyInfo clientProperty in clientProperties)
+                    {
+                        clientProperty.SetValue(activity, clientProperty.GetValue(ra));
+                    }
+                }
+            }
         }
 
     }

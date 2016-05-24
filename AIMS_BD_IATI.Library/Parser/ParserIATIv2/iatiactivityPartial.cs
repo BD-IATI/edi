@@ -447,22 +447,18 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             {
                 return reportingorg?.narrative.n(0).Value;
             }
-            set
-            {
-                if (reportingorg == null) reportingorg = new reportingorg();
-                reportingorg.narrative = Statix.getNarativeArray(value);
-            }
+            //set
+            //{
+            //    if (reportingorg == null) reportingorg = new reportingorg();
+            //    reportingorg.narrative = Statix.getNarativeArray(value);
+            //}
         }
         [XmlIgnore]
         public List<participatingorg> ImplementingOrgs
         {
             get
             {
-                return participatingorg?.Where(w => w?.role == "4").ToList();
-            }
-            set
-            {
-                participatingorg = value.ToArray();
+                return participatingorg?.Where(w => w?.role == "4")?.ToList();
             }
         }
 
