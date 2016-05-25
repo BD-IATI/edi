@@ -38,16 +38,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="trn in Project.transaction | filter : { transactiontype: {code : '2'} }">
-                        <td>{{trn.providerorg.narrative[0].Value}}</td>
-                        <td>{{trn.value.Value}}</td>
+                    <tr ng-repeat="trn in Project.Commitments">
+                        <td>{{trn.ProviderOrg}}</td>
+                        <td>{{trn.ValUSD}}</td>
                         <td>{{trn.transactiondate.isodate | date:'yyyy-MM-dd'}}</td>
                         <td>AIMS</td>
                         <td></td>
                     </tr>
-                    <tr class="warning" ng-repeat="trn in Activity.transaction | filter : { transactiontype: {code : '2'} }">
-                        <td>{{trn.providerorg.narrative[0].Value}}</td>
-                        <td>{{trn.value.Value}}</td>
+                    <tr class="warning" ng-repeat="trn in Activity.Commitments">
+                        <td>{{trn.ProviderOrg}}</td>
+                        <td>{{trn.ValUSD}}</td>
                         <td>{{trn.transactiondate.isodate | date:'yyyy-MM-dd'}}</td>
                         <td>IATI</td>
                         <td><input type="checkbox" ></td>
@@ -68,16 +68,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="trn in Project.transaction | filter : { transactiontype: {code : '3'} }">
-                        <td>{{trn.providerorg.narrative[0].Value}}</td>
-                        <td>{{trn.value.Value}}</td>
+                    <tr ng-repeat="trn in Project.Disbursments">
+                        <td>{{trn.ProviderOrg}}</td>
+                        <td>{{trn.ValUSD}}</td>
                         <td>{{trn.transactiondate.isodate | date:'yyyy-MM-dd'}}</td>
                         <td>AIMS</td>
                         <td></td>
                     </tr>
-                    <tr class="warning" ng-repeat="trn in Activity.transaction | filter : { transactiontype: {code : '3'} }">
-                        <td>{{trn.providerorg.narrative[0].Value}}</td>
-                        <td>{{trn.value.Value}}</td>
+                    <tr class="warning" ng-repeat="trn in Activity.Disbursments">
+                        <td>{{trn.ProviderOrg}}</td>
+                        <td>{{trn.ValUSD}}</td>
                         <td>{{trn.transactiondate.isodate | date:'yyyy-MM-dd'}}</td>
                         <td>IATI</td>
                         <td><input type="checkbox" ></td>
@@ -120,15 +120,15 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="trn in TrustFundDetails | filter : { transactiontype: {code : '2'} }">
-                        <td>{{trn.providerorg.narrative[0].Value}}</td>
-                        <td>{{trn.value.Value}}</td>
+                        <td>{{trn.ProviderOrg}}</td>
+                        <td>{{trn.ValUSD}}</td>
                         <td>Cumulative, to date</td>
                         <td>AIMS</td>
                         <td></td>
                     </tr>
-                    <tr class="warning" ng-repeat="trn in Activity.transaction | filter : { transactiontype: {code : '2'} }">
-                        <td>{{trn.providerorg.narrative[0].Value}}</td>
-                        <td>{{trn.value.Value}}</td>
+                    <tr class="warning" ng-repeat="trn in Activity.Commitments">
+                        <td>{{trn.ProviderOrg}}</td>
+                        <td>{{trn.ValUSD}}</td>
                         <td>{{trn.transactiondate.isodate | date:'yyyy-MM-dd'}}</td>
                         <td>IATI</td>
                         <td><input type="checkbox" ></td>

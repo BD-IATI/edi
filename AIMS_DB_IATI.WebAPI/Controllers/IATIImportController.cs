@@ -160,14 +160,19 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public iOrgs GetAllImplementingOrg(FilterBDModel filterDBModel)
         {
-            if (filterDBModel == null) filterDBModel = Sessions.filterBDModel;
+            if (filterDBModel != null)
+            {
+                UpdateActivities(filterDBModel.iatiActivities, Sessions.filterBDModel?.iatiActivities);
+                Sessions.activitiesContainer.iatiActivities = Sessions.filterBDModel?.iatiActivities;
+            }
 
+            //actual method begins here
             var managingDPs = GetAllFundSources();
 
             var iOrgs = new List<participatingorg>();
-            foreach (var activity in Sessions.activitiesContainer?.iatiActivities)
+            foreach (var activity in Sessions.activitiesContainer?.RelevantActivities)
             {
-                var participatingOrgs = activity.ImplementingOrgs;
+                var participatingOrgs = activity.ImplementingOrgs??new List<participatingorg>();
 
                 iOrgs.AddRange(participatingOrgs);
 
@@ -191,13 +196,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             }
 
-            if (filterDBModel != null)
-                Sessions.activitiesContainer.iatiActivities = filterDBModel.iatiActivities;
-
-
 
             Sessions.CurrentStage = Stage.FilterDP;
-
 
             var returtResult = new iOrgs
             {
@@ -262,7 +262,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             //for showing mathced projects side by side And field mapping later
             var MatchedProjects2 = (from i in relevantActivies
-                                    from a in AimsProjects.Where(k => i.IatiIdentifier.Replace("-", "").EndsWith(k.IatiIdentifier.Replace("-", "")))
+                                    from a in AimsProjects.Where(k => i.IatiIdentifier.Replace("-", "").EndsWith(k.IatiIdentifier.Replace("-", "")) || i.IatiIdentifier.Contains(k.IatiIdentifier))
                                     orderby i.IatiIdentifier
                                     select new ProjectFieldMapModel(i, a)
                                     ).ToList();

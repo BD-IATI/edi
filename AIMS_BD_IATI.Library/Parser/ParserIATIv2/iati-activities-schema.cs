@@ -95,7 +95,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private decimal valueField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string currency
         {
             get
@@ -109,7 +109,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute("value-date", DataType = "date")]
+        [System.Xml.Serialization.XmlAttributeAttribute("value-date", DataType = "date")]
         public System.DateTime valuedate
         {
             get
@@ -4768,7 +4768,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("transaction-type", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [System.Xml.Serialization.XmlElementAttribute("transaction-type", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public transactionTransactiontype transactiontype
         {
             get
@@ -4782,7 +4782,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("transaction-date", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [System.Xml.Serialization.XmlElementAttribute("transaction-date", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public transactionTransactiondate transactiondate
         {
             get
@@ -4796,7 +4796,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public currencyType value
         {
             get

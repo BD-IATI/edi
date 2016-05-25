@@ -6,7 +6,7 @@
         data: JSON.stringify($rootScope.RelevantActivities),
         dataType: 'json'
     }).then(function (result) {
-        var projects = result.data.IatiActivitiesNotInAims;
+        var projects = result.data.AimsProjectsNotInIati;
         $scope.AimsProjectsDrpSrc = [];
 
         for (var i = 0; i < projects.length; i++) {
