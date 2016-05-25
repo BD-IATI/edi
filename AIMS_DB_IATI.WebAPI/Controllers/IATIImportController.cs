@@ -550,7 +550,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             Sessions.CurrentStage = Stage.MatchProjects;
 
             return from i in relevantActivies
-                   from a in AimsProjects.Where(k => i.IatiIdentifier.Replace("-", "").EndsWith(k.IatiIdentifier.Replace("-", "")))
+                   from a in AimsProjects.Where(k => i.IatiIdentifier.Replace("-", "").EndsWith(k.IatiIdentifier.Replace("-", "")) || i.IatiIdentifier.Contains(k.IatiIdentifier))
                    orderby i.IatiIdentifier
 
                    select i;
