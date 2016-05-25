@@ -137,7 +137,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute()]
         public decimal Value
         {
             get
@@ -5122,7 +5122,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute("iso-date", DataType = "date")]
+        [System.Xml.Serialization.XmlAttributeAttribute("iso-date", DataType = "date")]
         public System.DateTime isodate
         {
             get

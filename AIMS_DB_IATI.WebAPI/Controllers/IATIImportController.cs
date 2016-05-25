@@ -531,7 +531,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             }
 
-            Sessions.CurrentStage = Stage.Begin;
+            Sessions.Clear();
             return aimsDAL.UpdateProjects(margedProjects, Sessions.UserId);
         }
 
