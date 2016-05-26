@@ -172,7 +172,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             var iOrgs = new List<participatingorg>();
             foreach (var activity in Sessions.activitiesContainer?.RelevantActivities)
             {
-                var participatingOrgs = activity.ImplementingOrgs??new List<participatingorg>();
+                var participatingOrgs = activity.ImplementingOrgs ?? new List<participatingorg>();
 
                 iOrgs.AddRange(participatingOrgs);
 
@@ -296,9 +296,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             if (projectMapModel != null)
             {
-                UpdateActivities(projectMapModel.AimsProjectsNotInIati, Sessions.ProjectMapModel.AimsProjectsNotInIati);
+                UpdateActivities(projectMapModel.IatiActivitiesNotInAims, Sessions.ProjectMapModel.IatiActivitiesNotInAims);
 
-                Sessions.ProjectMapModel.AimsProjectsNotInIati = projectMapModel.AimsProjectsNotInIati;
+                //Sessions.ProjectMapModel.AimsProjectsNotInIati = projectMapModel.AimsProjectsNotInIati;
 
                 Sessions.ProjectMapModel.MatchedProjects.RemoveAll(r => r.IsManuallyMapped);
 
@@ -323,7 +323,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                     var bgts = new List<budget>();
                     var plnDis = new List<planneddisbursement>();
 
-                    foreach (var activity in iatiActivities)
+                    foreach (var activity in iatiActivities.FindAll(c => c.ProjectId == project.ProjectId))
                     {
                         trns.AddRange(activity.transaction);
                         bgts.AddRange(activity.budget);
@@ -337,15 +337,15 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             }
 
-            foreach (var activity in Sessions.ProjectMapModel?.IatiActivitiesNotInAims.Where(w => w.ProjectId > 0))
-            {
-                var project = aimsProjects.Find(f => f.ProjectId == activity.ProjectId);
+            //foreach (var activity in Sessions.ProjectMapModel?.IatiActivitiesNotInAims.Where(w => w.ProjectId > 0))
+            //{
+            //    var project = aimsProjects.Find(f => f.ProjectId == activity.ProjectId);
 
-                if (project != null)
-                {
-                    Sessions.ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(activity, project) { IsManuallyMapped = true });
-                }
-            }
+            //    if (project != null)
+            //    {
+            //        Sessions.ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(activity, project) { IsManuallyMapped = true });
+            //    }
+            //}
 
             foreach (var activity in Sessions.ProjectMapModel?.IatiActivitiesNotInAims.Where(w => w.ProjectId == -2))
             {
@@ -550,7 +550,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             Sessions.CurrentStage = Stage.MatchProjects;
 
             return from i in relevantActivies
-                   from a in AimsProjects.Where(k => i.IatiIdentifier.Replace("-", "").EndsWith(k.IatiIdentifier.Replace("-", "")) || i.IatiIdentifier.Contains(k.IatiIdentifier))
+                   let isHierarchy2 = i.hierarchy == 2
+                   from a in AimsProjects.Where(k => i.IatiIdentifier.Replace("-", "").EndsWith(k.IatiIdentifier.Replace("-", "")) ||
+                   (isHierarchy2 ? false : i.IatiIdentifier.Contains(k.IatiIdentifier)))
                    orderby i.IatiIdentifier
 
                    select i;

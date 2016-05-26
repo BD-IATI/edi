@@ -1,4 +1,4 @@
-﻿angular.module('iatiDataImporter').controller("4ProjectsController", function ($rootScope, $scope, $http) {
+﻿angular.module('iatiDataImporter').controller("4ProjectsController", function ($rootScope, $scope, $http, $timeout) {
 
     $http({
         url: apiprefix + '/api/IATIImport/SubmitActivities',
@@ -26,4 +26,23 @@
         //deferred.reject(response);
     });
 
+
+    $scope.saveData= function () {
+            $http({
+                url: apiprefix + '/api/IATIImport/SubmitManualMatchingUsingDropdown',
+                method: 'POST',
+                data: JSON.stringify($scope.models),
+                dataType: 'json'
+            }).then(function (result) {
+                $timeout(function () {
+                    document.getElementById('btn6GeneralPreferences').click(); //redirect
+                });
+
+                //deferred.resolve(result);
+            },
+            function (response) {
+                //deferred.reject(response);
+            });
+
+        };
 });
