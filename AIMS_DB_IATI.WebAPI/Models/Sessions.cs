@@ -295,9 +295,9 @@ namespace AIMS_DB_IATI.WebAPI.Models
 
         public static IDocumentStore Initialize()
         {
-            _store = new EmbeddableDocumentStore
+            _store = new DocumentStore
             {
-                ConnectionStringName = "SessionEDB",
+                ConnectionStringName = "SessionDB",
                 DefaultDatabase = "IATIDB"
                 //UseEmbeddedHttpServer = true
             };
