@@ -198,7 +198,7 @@ namespace AIMS_BD_IATI.DAL
             return ProjectFieldMapModels;
         }
 
-        public int AssignActivities(List<iatiactivity> activities)
+        public int AssignActivities(List<iatiactivityModel> activities)
         {
             foreach (var activity in activities)
             {

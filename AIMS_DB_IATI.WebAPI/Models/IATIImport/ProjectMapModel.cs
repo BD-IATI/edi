@@ -21,4 +21,20 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         public List<iatiactivity> ProjectsOwnedByOther { get; set; }
 
     }
+    [Serializable]
+    public class ProjectMapModelMinified
+    {
+
+        public object selected { get; set; }
+
+        public List<ProjectFieldMapModelMinified> MatchedProjects { get; set; }
+
+        public List<iatiactivityModel> IatiActivitiesNotInAims { get; set; }
+        public List<iatiactivityModel> AimsProjectsNotInIati { get; set; }
+        public List<iatiactivityModel> NewProjectsToAddInAims { get; set; }
+        public List<iatiactivityModel> ProjectsOwnedByOther { get; set; }
+
+    }
+
 }
+

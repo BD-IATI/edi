@@ -124,6 +124,7 @@
     <header>
         <nav id="main" class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
+                <!--Menu-->
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-collapse">
                         <span class="sr-only">Toggle navigation</span>
@@ -133,29 +134,39 @@
                     </button>
                     <a class="navbar-brand" href="#/Dashboard">AIMS IATI Import</a>
                 </div>
-                <div class="collapse navbar-collapse">
-                    <!--<ul class="nav navbar-nav">
-                        <li>
-                            <a href="#/Dashboard" class="btn-link">Dashboard</a>
-                        </li>
-                    </ul>-->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a class="btn-link"
-                               popover-title="Are you sure?"
-                               uib-popover-template="'confirmRestartTemplate.html'"
-                               popover-append-to-body="true"
-                               popover-placement="auto"
-                               popover-trigger="outsideClick"
-                               popover-is-open="globals.showConfirmRestart">
-                                Restart
+
+                <div class="nav navbar-nav navbar-right">
+                    
+                    <div class="pull-left" style="margin-top:5px;">
+                        <a class="btn btn-warning"
+                           popover-title="Are you sure?"
+                           uib-popover-template="'confirmRestartTemplate.html'"
+                           popover-append-to-body="true"
+                           popover-placement="auto"
+                           popover-trigger="outsideClick"
+                           popover-is-open="globals.showConfirmRestart">
+                            Restart
+                        </a>
+                    </div>
+
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <span class="hidden-xs">{{globals.currentUser.username}}</span>
                             </a>
-                        </li>
-                        <li>
-                            <a href="#/login" class="btn-link">Logout</a>
+                            <ul class="dropdown-menu">
+                                <li style="padding-left:2px; padding-right:2px;">
+                                    <div class="pull-left">
+                                        <a href="#/0Begin" class="btn btn-sm btn-danger">Switch DP</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="#/login" class="btn btn-sm btn-danger">Logout</a>
+                                    </div>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
-
                 </div>
 
             </div>

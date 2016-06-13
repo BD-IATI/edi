@@ -362,6 +362,18 @@ namespace AIMS_BD_IATI.DAL
     }
 
     [Serializable]
+    public class ProjectFieldMapModelMinified
+    {
+        public bool IsManuallyMapped { get; set; }
+        public bool IsGrouped { get; set; }
+        public iatiactivityModel iatiActivity { get; set; }
+        public iatiactivityModel aimsProject { get; set; }
+        public List<FieldMap> Fields { get; set; }
+        public List<FieldMap> TransactionFields { get; set; }
+        public string Id { get; set; }
+    }
+
+    [Serializable]
     public class FieldMap
     {
         public string Field { get; set; }

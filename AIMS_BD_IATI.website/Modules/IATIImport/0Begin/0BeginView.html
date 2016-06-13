@@ -14,8 +14,10 @@
                 <div class="col-md-10 col-md-offset-1">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label for="beginDPselect" class="col-sm-2 control-label">Development Partner</label>
-                            <div class="col-sm-8">
+                            <span class="col-sm-2">
+                                <label for="beginDPselect" class="col-sm-2 control-label">Development Partner</label>
+                            </span>
+                            <span class="col-sm-8">
                                 <!--<ui-select ng-model="$root.selectedFundSource" ng-change="$root.putCookie('selectedFundSource',$root.selectedFundSource)">
                                     <ui-select-match placeholder="Select">{{$select.selected.ID}}</ui-select-match>
                                     <ui-select-choices repeat="FundSource in FundSources | filter: {Name: $select.search}">
@@ -28,10 +30,15 @@
                                         ng-options="item as item.Name for item in FundSources">
                                     <option value="">Select one...</option>
                                 </select>
-
-                                <p ng-bind="$root.selectedFundSource.ID"></p>
-
-                            </div>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="col-sm-2">
+                                <!--<label for="orgIdentifier" class="col-sm-2 control-label">Identifier(s)</label>-->
+                            </span>
+                            <span class="col-sm-8">
+                                <label ng-repeat="orgIdentifier in $root.selectedFundSource.ID.split('|')" class="label-default label" ng-bind="orgIdentifier" style="margin-right:2px;" />
+                            </span>
                         </div>
                         <div class="form-group" ng-show="selectedFundSource != null">
                             <div class="col-md-12 btnFooter">

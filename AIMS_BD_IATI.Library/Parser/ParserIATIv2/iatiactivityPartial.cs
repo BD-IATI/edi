@@ -853,6 +853,95 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
     }
+
+    [Serializable]
+    public class iatiactivityModel
+    {
+        public bool IsDataSourceAIMS { get; set; }
+
+        #region co-financed and trust fund projects
+        public bool IsCofinancedProject { get; set; }
+        public bool IsTrustFundedProject { get; set; }
+        public bool IsCommitmentIncluded { get; set; }
+        public bool IsDisbursmentIncluded { get; set; }
+        public bool IsPlannedDisbursmentIncluded { get; set; }
+
+        #endregion co-financed and trust fund projects
+
+        public bool IsInclude { get; set; } //AIMS ProjectId
+        public int ProjectId { get; set; } //AIMS ProjectId
+        public int MappedProjectId { get; set; }
+        public int MappedTrustFundId { get; set; }
+
+        public bool HasChildActivity { get; set; }
+        public bool HasParentActivity { get; set; }
+
+        public List<iatiactivityModel> childActivities { get; set; }
+        //private List<iatiactivity> includedChildActivities { get { return childActivities.FindAll(f => f.IsInclude == true); } }
+
+        public List<iatiactivityModel> MatchedProjects { get; set; }
+
+        public decimal PercentToBD { get; set; }
+
+        public bool? IsRelevant { get; set; }
+
+        #region Financial Data
+
+        #region Commitments
+        public List<transaction> Commitments { get; set; }
+        public decimal TotalCommitment { get; set; }
+
+        public List<transaction> CommitmentsThisDPOnly { get; set; }
+        public decimal TotalCommitmentThisDPOnly { get; set; }
+
+        #endregion Commitments
+
+        #region Planned Disbursements
+        public List<planneddisbursement> PlannedDisbursments { get; set; }
+        public decimal TotalPlannedDisbursment { get; set; }
+        #endregion Planned Disbursements
+
+        #region Disbursments
+        public List<transaction> Disbursments { get; set; }
+        public decimal TotalDisbursment { get; set; }
+        public List<transaction> DisbursmentsThisDPOnly { get; set; }
+        public decimal TotalDisbursmentThisDPOnly { get; set; }
+
+        #endregion Disbursments
+
+        #endregion Financial Data
+
+        #region for filter other DP's projects
+        public string FundSourceIDnIATICode { get; set; }
+
+        public int AimsFundSourceId { get; set; }
+
+        public string IATICode { get; set; }
+        #endregion
+
+        #region Wrappers
+
+        public string IatiIdentifier { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string ReportingOrg { get; set; }
+        public List<participatingorg> ImplementingOrgs { get; set; }
+
+        public string AidType { get; set; }
+        public string AidTypeCode { get; set; }
+        public string ActivityStatus { get; set; }
+
+        #region activitydate
+        public DateTime PlannedStartDate { get; set; }
+        public DateTime ActualStartDate { get; set; }
+        public DateTime PlannedEndDate { get; set; }
+        public DateTime ActualEndDate { get; set; }
+        #endregion
+        #endregion
+
+
+    }
+
 }
 
 
