@@ -22,7 +22,9 @@
     },
     function (response) {
     });
-
+    $scope.GotoTab = function (indx) {
+        $scope.activeTabIndex = indx;
+    }
     $scope.FilterDP = function () {
 
         $http({

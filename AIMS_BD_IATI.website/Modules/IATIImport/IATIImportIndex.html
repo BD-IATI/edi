@@ -113,6 +113,10 @@
             color: #000;
             background-color: #fff;
         }
+        .nav-pills > li > a, .nav-pills > li > a:hover, .nav-pills > li > a:focus {
+            color: #000;
+            background-color: #dff0d8;
+        }
         /*.scrollable{
             overflow-y: -moz-scrollbars-vertical;
             overflow-y: auto;
@@ -176,7 +180,7 @@
         <div class="row">
             <span us-spinner="{radius:30, width:8, length: 16, position: 'fixed'}"></span>
             <!-- Nav tabs -->
-            <div class="col-md-3" style="height: 100%;
+            <div class="col-sm-3" style="height: 100%;
     background-color: #dff0d8; padding: 10px 0px 5px 5px">
                 <ul navigation ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>
                 <!--<ul navigation-Other-Dp ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>-->

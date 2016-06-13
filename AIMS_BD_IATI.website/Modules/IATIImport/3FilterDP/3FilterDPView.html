@@ -50,17 +50,15 @@
                                 <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th st-sort="ref">Org ID</th>
                                             <th st-sort="narrative[0].Value">Org name</th>
-                                            <th st-sort="ExecutingAgencyTypeId">Org type</th>
+                                            <th st-sort="ExecutingAgencyTypeId"  style="width:33%;">Org type</th>
                                             <th st-sort="AllID">Select organisation</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="org in iOrgs">
-                                            <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span><code>{{org.ref}}</code></td>
-                                            <td>{{org.Name}}</td>
-                                            <td style="min-width:245px; padding-right:10px;">
+                                            <td><code>{{org.Name}}</code></td>
+                                            <td>
                                                 <!--<div class="form-group">
                                                     <div class="col-sm-12">
                                                         <select class="form-control"
@@ -71,10 +69,10 @@
                                                     </div>
                                                 </div>-->
                                                 <div class="btn-group">
-                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uncheckable ng-click="GuessAgency(org, true)">BD Govt.</label>
-                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uncheckable ng-click="GuessAgency(org, true)">DP</label>
-                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO / Private</label>
-                                                    <label class="btn btn-warning" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Unknown</label>
+                                                    <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uncheckable ng-click="GuessAgency(org, true)">BD Govt.</label>
+                                                    <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uncheckable ng-click="GuessAgency(org, true)">DP</label>
+                                                    <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO / Private</label>
+                                                    <label class="btn btn-sm btn-warning" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Unknown</label>
                                                 </div>
                                             </td>
                                             <td style="min-width:300px;">
@@ -175,7 +173,7 @@
                                             popover-placement="auto">
                                         Next...
                                     </button>
-                                    <button ng-click="$scope.activeTabIndex = 0" class="btn btn-default">Back</button>
+                                    <button ng-click="GotoTab(0)" class="btn btn-default">Back</button>
 
                                     <a id="btn4Projects" ng-hide='hasOtherDPsProject' class="btn btn-primary" ng-href="#/4Projects">Next</a>
                                 </span>

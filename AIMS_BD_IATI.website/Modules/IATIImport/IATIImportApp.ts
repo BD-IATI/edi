@@ -70,8 +70,8 @@ iatiDataImporterApp.directive('navigation', function ($rootScope, $location) {
         link: function (scope, element, attr) {
             scope.options = [
                 { label: "Begin import", glyphicon: 'glyphicon glyphicon-home', href: "#/0Begin" },
-                { label: "1. Select Project structure", glyphicon: 'glyphicon glyphicon-th-list', href: "#/1Hierarchy" },
-                { label: "2. Filter country relevant activities", glyphicon: 'glyphicon glyphicon-filter', href: "#/2FilterBD" },
+                { label: "1. Select project structure", glyphicon: 'glyphicon glyphicon-th-list', href: "#/1Hierarchy" },
+                { label: "2. Filter relevant projects", glyphicon: 'glyphicon glyphicon-filter', href: "#/2FilterBD" },
                 { label: "3. Implementing organisations", glyphicon: 'glyphicon glyphicon-filter', href: "#/3FilterDP" },
                 { label: "4. Review matched projects", glyphicon: 'glyphicon glyphicon-link', href: "#/4Projects" },
                 //{ label: "5. Map unmatched projects", glyphicon: 'glyphicon glyphicon-resize-small', href: "#/5Match" },
