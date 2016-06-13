@@ -34,10 +34,10 @@
                         </div>
                         <div class="form-group">
                             <span class="col-sm-2">
-                                <label for="beginDPselect" class="col-sm-2 control-label">Identifier(s)</label>
+                                <!--<label for="orgIdentifier" class="col-sm-2 control-label">Identifier(s)</label>-->
                             </span>
                             <span class="col-sm-8">
-                                <label class="label-warning" ng-bind="$root.selectedFundSource.ID.split('|').join(', ')"></label>
+                                <label ng-repeat="orgIdentifier in $root.selectedFundSource.ID.split('|')" class="label-default label" ng-bind="orgIdentifier" style="margin-right:2px;" />
                             </span>
                         </div>
                         <div class="form-group" ng-show="selectedFundSource != null">
