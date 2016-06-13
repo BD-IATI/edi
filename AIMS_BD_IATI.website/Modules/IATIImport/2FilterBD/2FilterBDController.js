@@ -9,16 +9,16 @@
         });
     };
 
-    var selectedHierarchy = $rootScope.hierarchyModel ? $rootScope.hierarchyModel.SelectedHierarchy : null;
+    //var selectedHierarchy = $rootScope.hierarchyModel ? $rootScope.hierarchyModel.SelectedHierarchy : null;
 
     $http({
         url: apiprefix + '/api/IATIImport/SubmitHierarchy',
         method: 'POST',
-        data: JSON.stringify({ SelectedHierarchy: selectedHierarchy }),
+        data: JSON.stringify($rootScope.hierarchyModel),
         dataType: 'json'
     }).then(function (result) {
         $rootScope.filterBDModel = $scope.model = result.data;
-        $rootScope.hierarchyModel = null;
+        //$rootScope.hierarchyModel = null;
         //deferred.resolve(result);
     },
     function (response) {

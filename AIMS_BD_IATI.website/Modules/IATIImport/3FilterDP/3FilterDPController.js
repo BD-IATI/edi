@@ -13,7 +13,7 @@
         $scope.FundSources = result.data.FundSources;
         $scope.ExecutingAgencyTypes = result.data.ExecutingAgencyTypes;
         $scope.ExecutingAgencies = result.data.ExecutingAgencies;
-        $rootScope.filterBDModel = null;
+        //$rootScope.filterBDModel = null;
 
         for (var i = 0; i < $scope.ImplementingOrgs.length; i++) {
             var dis = $scope.GuessAgency($scope.ImplementingOrgs[i], false);

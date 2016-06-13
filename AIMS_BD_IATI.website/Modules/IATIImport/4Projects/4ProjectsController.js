@@ -19,7 +19,7 @@
 
         $rootScope.models = $scope.models = result.data;
 
-        $rootScope.RelevantActivities = null;
+        //$rootScope.RelevantActivities = null;
         //deferred.resolve(result);
     },
     function (response) {
