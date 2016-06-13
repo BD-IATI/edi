@@ -25,7 +25,7 @@
                                 <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th st-sort="ref">Org ID</th>
+                                            <!--<th st-sort="ref">Org ID</th>-->
                                             <th st-sort="narrative[0].Value">Org name</th>
                                             <th st-sort="ExecutingAgencyTypeId">Org type</th>
                                             <th st-sort="AllID">Select organisation</th>
@@ -33,7 +33,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="org in iOrgs">
-                                            <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span><code>{{org.ref}}</code></td>
+                                            <!--<td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span><code>{{org.ref}}</code></td>-->
                                             <td>{{org.Name}}</td>
                                             <td style="min-width:245px; padding-right:10px;">
                                                 <!--<div class="form-group">
@@ -61,7 +61,7 @@
                                                             <option value="">Select one/Unclear</option>
                                                         </select>
                                                     </div>
-                                                    <div ng-hide="org.AllID" class="col-sm-2 NoPadding" style="height:100%">
+                                                    <div class="col-sm-2 NoPadding" style="height:100%"> <!--ng-hide="org.AllID"-->
                                                         <button class="btn btn-primary" ng-click="AddNewImplementingOrg(org)">New</button>
                                                     </div>
                                                 </div>
@@ -105,6 +105,7 @@
                                             <th st-sort="Title" style="min-width:200px">
                                                 Project Title
                                             </th>
+                                            <th>Implementing organisation</th>
                                             <th>Managed by</th>
                                         </tr>
                                     </thead>
@@ -113,6 +114,11 @@
 
                                             <td><code>{{activity.IatiIdentifier}}</code></td>
                                             <td>{{activity.Title}}</td>
+                                            <td>
+                                                <span ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
+                                                    {{ImplementingOrg.Name}}
+                                                </span>
+                                            </td>
                                             <td>
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
