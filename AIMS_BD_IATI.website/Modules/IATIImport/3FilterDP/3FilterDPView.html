@@ -50,7 +50,6 @@
                                 <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th st-sort="ref">Org ID</th>
                                             <th st-sort="narrative[0].Value">Organisation name</th>
                                             <th st-sort="ExecutingAgencyTypeId">Select organisation type</th>
                                             <th st-sort="AllID">Select specific organisation</th>
@@ -58,7 +57,6 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="org in iOrgs">
-                                            <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span><code>{{org.ref}}</code></td>
                                             <td>{{org.Name}}</td>
                                             <td style="min-width:245px; padding-right:10px;">
                                                 <!--<div class="form-group">
