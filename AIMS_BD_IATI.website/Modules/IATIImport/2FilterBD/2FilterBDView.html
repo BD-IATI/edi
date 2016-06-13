@@ -1,10 +1,10 @@
 ﻿<div role="tabpanel" class="tab-pane active" id="filterBD" ng-controller="2FilterBDController">
     <div class="row">
         <div class="col-md-12">
-            <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 2. Filter for activities relevant to Bangladesh</h2>
+            <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 2. Filter for relevant projects</h2>
 
             <uib-tabset active="activeTabIndex">
-                <uib-tab index="0" heading="2.1 Select relavent projects">
+                <uib-tab index="0" heading="2.1 Select relevant projects">
                     <form class="form-horizontal">
                         <div class="row">
                             <div class="col-md-12">
@@ -16,19 +16,20 @@
                                 </p>
                                 <ul>
                                     <li>less than 20% is tagged as Bangladesh</li>
-                                    <!--<li>projects where the "Aid Type" is core contributions to multilaterals or NGOs</li>-->
-                                    <li>projects where the Activity Status is "Implementation" only (i.e. not closed projects) </li>
+                                    <li>the project is not currently being implemented (i.e. excluding pipeline and closed projects) </li>
                                 </ul>
-
+                                <p class="lead">
+                                  You can include or exclude other projects by clicking the checkboxes below.
+                                </p>
                                 <hr>
                                 <table st-table="iatiActivities" st-safe-src="model.iatiActivities" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th st-sort="IatiIdentifier" style="min-width:120px">
-                                                Activity ID
+                                                Project ID
                                             </th>
                                             <th st-sort="Title" style="min-width:200px">
-                                                Activity Title
+                                                Project Title
                                             </th>
                                             <th st-sort="PercentToBD" style="min-width:120px">
                                                 % to BD
@@ -40,7 +41,7 @@
                                                 Status
                                             </th>
                                             <th st-sort="IsRelevant" style="min-width:110px">
-                                                Relevant?
+                                                Include
                                             </th>
                                         </tr>
                                     </thead>
@@ -62,7 +63,7 @@
                             <div class="col-md-12 btnFooter">
                                 <a ng-hide="$root.HasChildActivity" class="btn btn-default" ng-href="#/0Begin">  Back  </a>
                                 <a ng-show="$root.HasChildActivity" class="btn btn-default" ng-href="#/1Hierarchy">  Back  </a>
-                                <button ng-click="nextFromTab0()" class="btn btn-default"> Next </button>
+                                <button ng-click="nextFromTab0()" class="btn btn-primary"> Next </button>
                                 <a id="btn3FilterDP" hidden ng-href="#/3FilterDP">  Next  </a>
                             </div>
                         </div>
@@ -100,73 +101,6 @@
                                         </tr>
 
                                     </tbody>
-                                    <!--<tbody>
-                                        <tr class="success">
-                                            <td><code>GB-1-107368</code> Rural Electrification Development Project</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <p><code>GB-1-107368-101</code> PROCOFSERVICES and P0050 for Rural Electrification Development Project</p>
-                                            </td>
-                                            <td>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" checked>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <p><code>GB-1-107368-102</code> MULTILATORGANISATION and P0050 for Rural Electrification Development Project</p>
-                                            </td>
-                                            <td>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" checked>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <p><code>GB-1-107368-103</code> NONBUDSUPPFINAID and P0050 for Rural Electrification Development Project</p>
-                                            </td>
-                                            <td>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" checked>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <p><code>GB-1-107368-104</code> MOU With USAID for REDP</p>
-                                            </td>
-                                            <td>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" checked>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <p><code>GB-1-107368-105</code> NONBUDSUPPFINAID and CP026 for Rural Electrification Development Project</p>
-                                            </td>
-                                            <td>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" checked>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                    </tbody>-->
                                 </table>
                             </div>
                         </div>

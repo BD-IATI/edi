@@ -8,24 +8,49 @@
         <div class="col-md-12">
             <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 3. Implementing organisations</h2>
             <p class="lead">
-                We need to map your implementing organisations
-                to those already captured in the AIMS. In order to avoid double-counting, we also need
-                to establish which of your activities are managed by other DPs.
+                We need to map your projects' implementing organisations
+                to those already captured in the AIMS.
+                In order to avoid double-counting, we also need
+                to establish which of your projects are managed by other DPs.
             </p>
-
             <hr>
 
             <uib-tabset active="activeTabIndex">
-                <uib-tab index="0" heading="3.1 Determine Organisation Type">
+                <uib-tab index="0" heading="3.1 Determine organisation">
                     <form class="form-horizontal">
 
                         <div class="row">
                             <div class="col-md-12 NoPadding">
-                                <h3>Determine organisation type and organization</h3>
+                                <h3>Determine implementing organisation</h3>
+                                <p class="lead">
+                                    We need to map your projects' implementing
+                                    organisations to those already captured in the AIMS.
+                                    For each organisation listed below:
+                                </p>
+                                <p class="lead"><strong>Firstly</strong>,
+                                    click the green buttons to determine
+                                    what type of organisation it is (Bangladesh
+                                    Government, DP, or NGO/private sector). If it's not a specific
+                                    organisation (if it states something
+                                    general like
+                                    <code>INTERNATIONAL NGO</code> or
+                                    <code>OTHER</code>) then select
+                                    <a class="btn btn-warning btn-xs">Unknown</a>.
+                                  </p>
+                                <p class="lead"><strong>Secondly</strong>,
+                                  click the drop-down box to select a
+                                  specific organisation. If the organisation
+                                  is not listed, click
+                                  <a class="btn btn-primary btn-xs">New</a> to
+                                  create a new organisation.
+                                </p>
+                                <p class="lead">We've tried to do this
+                                  automatically, where possible, but please
+                                  check the answers carefully.</p>
                                 <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <!--<th st-sort="ref">Org ID</th>-->
+                                            <th st-sort="ref">Org ID</th>
                                             <th st-sort="narrative[0].Value">Org name</th>
                                             <th st-sort="ExecutingAgencyTypeId">Org type</th>
                                             <th st-sort="AllID">Select organisation</th>
@@ -33,7 +58,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="org in iOrgs">
-                                            <!--<td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span><code>{{org.ref}}</code></td>-->
+                                            <td><span ng-show="org.ref == '11000'" ng-hide="org.ref != '11000'" class="label label-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></span><code>{{org.ref}}</code></td>
                                             <td>{{org.Name}}</td>
                                             <td style="min-width:245px; padding-right:10px;">
                                                 <!--<div class="form-group">
@@ -46,10 +71,10 @@
                                                     </div>
                                                 </div>-->
                                                 <div class="btn-group">
-                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uncheckable ng-click="GuessAgency(org, true)">Govt.</label>
+                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uncheckable ng-click="GuessAgency(org, true)">BD Govt.</label>
                                                     <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uncheckable ng-click="GuessAgency(org, true)">DP</label>
-                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO</label>
-                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Other</label>
+                                                    <label class="btn btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO / Private</label>
+                                                    <label class="btn btn-warning" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Unknown</label>
                                                 </div>
                                             </td>
                                             <td style="min-width:300px;">
@@ -90,9 +115,10 @@
                             <div class="col-md-12">
                                 <h3>Determine Managing DP</h3>
                                 <p class="lead">
-                                    Please determine which of the following organisations are
-                                    Managing DPs in the AIMS. Where possible, we have tried to
-                                    automatically select them for you to review.
+                                    We need to establish which of your projects are managed by another DP.
+                                    Using your answers in the previous step, we have tried to
+                                    automatically determine this for you to review,
+                                    but please check carefully.
                                 </p>
                                 <hr />
 

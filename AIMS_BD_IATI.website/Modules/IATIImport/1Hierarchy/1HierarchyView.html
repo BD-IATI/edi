@@ -5,10 +5,12 @@
 
             <p class="lead alert alert-success" ng-show="model.H1Percent + model.H2Percent > 0">
                 It looks like you use multiple levels of
-                activities in your data (for example, projects and
-                sub-components). We've compared your activities against those
-                found in the AIMS, and recommend you proceed with hierarchy <span ng-bind="::model.SelectedHierarchy"></span>
-                However, you can adjust below.
+                activities in your IATI data (for example, projects and
+                sub-components).</p>
+                <p class="lead">We've compared your IATI data with projects
+                found in the AIMS, and recommend you proceed with level
+                <span ng-bind="::model.SelectedHierarchy"></span>.
+                You only need to adjust the selection below if you disagree.
             </p>
             <p class="lead alert alert-danger" ng-show="model.H1Percent + model.H2Percent <= 0">
                 It looks like you use multiple levels of activities in your data (for example, projects and sub-components). We've compared your activities against those found in the AIMS, but we could not match any of your projects in IATI to the AIMS. Before proceeding, we recommend you go back to the AIMS and check your activities are using the same project codes in the AIMS as those used in IATI.
@@ -21,7 +23,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Hierarchy</th>
+                                    <th>Level</th>
                                     <th>Sample data</th>
                                     <th>% matched</th>
                                     <th>Select</th>
@@ -37,7 +39,9 @@
                                     <td>{{model.H1Percent}}</td>
                                     <td>
                                         <div class="radio">
-                                            <input type="radio" name="{{model.SampleIatiActivity.IatiIdentifier}}" value="1" ng-model="model.SelectedHierarchy">
+                                            <label>
+                                                <input type="radio" name="{{model.SampleIatiActivity.IatiIdentifier}}" value="1" ng-model="model.SelectedHierarchy">
+                                            </label>
                                         </div>
                                     </td>
                                 </tr>
@@ -52,7 +56,9 @@
                                     <td>{{model.H2Percent}}</td>
                                     <td>
                                         <div class="radio">
-                                            <input type="radio" name="{{model.SampleIatiActivity.IatiIdentifier}}" value="2" ng-model="model.SelectedHierarchy">
+                                            <label>
+                                                <input type="radio" name="{{model.SampleIatiActivity.IatiIdentifier}}" value="2" ng-model="model.SelectedHierarchy">
+                                            </label>
                                         </div>
                                     </td>
                                 </tr>

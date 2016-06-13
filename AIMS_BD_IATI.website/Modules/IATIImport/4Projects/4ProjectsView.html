@@ -10,7 +10,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>IATI activities matched to the AIMS</h3>
+                    <h3>IATI projects matched to the AIMS</h3>
                     <table st-table="MatchedProjects" st-safe-src="models.MatchedProjects" class="table table-striped">
                         <thead>
                             <tr>
@@ -35,12 +35,12 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>IATI activities not found in the AIMS</h3>
+                    <h3>IATI projects not found in the AIMS</h3>
                     <p class="lead">
-                        The following activities were found in
+                        The following projects were found in
                         IATI but not in the AIMS. You can manually map them to
-                        existing activities in the AIMS, or choose to create
-                        new activities in the AIMS.
+                        existing projects in the AIMS, or choose to create
+                        new projects in the AIMS.
                     </p>
                     <table st-table="IatiActivitiesNotInAims" st-safe-src="models.IatiActivitiesNotInAims" class="table" ng-show="models.IatiActivitiesNotInAims.length > 0">
                         <thead>
@@ -81,8 +81,7 @@
                     </table>
 
                     <div class="alert alert-success" ng-hide="models.IatiActivitiesNotInAims.length > 0">
-                        Great news! All IATI activities
-                        were found in this DP's AIMS data.
+                        Great news! All of your IATI projects were found in the AIMS.
                     </div>
 
                 </div>
@@ -132,8 +131,7 @@
                     </table>
 
                     <div class="alert alert-success" ng-hide="models.AimsProjectsNotInIati.length > 0">
-                        Great news! All AIMS
-                        projects were found in this DP's IATI data.
+                        Great news! All of your AIMS projects were found your IATI data.
                     </div>
 
                 </div>
@@ -162,7 +160,8 @@
                     </table>
 
                     <div class="alert alert-success" ng-hide="models.ProjectsOwnedByOther.length > 0">
-                        Great news! There is no other DP's project.
+                        None of the projects found in your IATI data are
+                        managed by other DPs.
                     </div>
 
                 </div>
