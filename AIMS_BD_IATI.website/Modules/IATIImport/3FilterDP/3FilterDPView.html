@@ -105,6 +105,7 @@
                                             <th st-sort="Title" style="min-width:200px">
                                                 Project Title
                                             </th>
+                                            <th>Implementing organisation</th>
                                             <th>Managed by</th>
                                         </tr>
                                     </thead>
@@ -113,6 +114,11 @@
 
                                             <td><code>{{activity.IatiIdentifier}}</code></td>
                                             <td>{{activity.Title}}</td>
+                                            <td>
+                                                <span ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
+                                                    {{ImplementingOrg.Name}}
+                                                </span>
+                                            </td>
                                             <td>
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
