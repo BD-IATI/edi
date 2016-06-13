@@ -2,13 +2,18 @@
     <div class="row">
         <div class="col-md-12">
             <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 1. Project structure</h2>
-            <p class="lead">
+
+            <p class="lead alert alert-success" ng-show="model.H1Percent + model.H2Percent > 0">
                 It looks like you use multiple levels of
                 activities in your data (for example, projects and
                 sub-components). We've compared your activities against those
                 found in the AIMS, and recommend you proceed with hierarchy <span ng-bind="::model.SelectedHierarchy"></span>
                 However, you can adjust below.
             </p>
+            <p class="lead alert alert-danger" ng-show="model.H1Percent + model.H2Percent <= 0">
+                It looks like you use multiple levels of activities in your data (for example, projects and sub-components). We've compared your activities against those found in the AIMS, but we could not match any of your projects in IATI to the AIMS. Before proceeding, we recommend you go back to the AIMS and check your activities are using the same project codes in the AIMS as those used in IATI.
+            </p>
+
             <hr>
             <form class="form-horizontal">
                 <div class="row">
