@@ -2,29 +2,12 @@
 
     $http({
         method: 'POST',
-        url: apiprefix + '/api/Dashboard/CheckSession',
+        url: apiprefix + '/api/Dashboard/GetDashboardData',
 
         data: JSON.stringify($rootScope.getCookie('selectedFundSource'))
 
     }).success(function (result) {
-        $timeout(function () {
-            if (result == '/0Begin') {
-                $http({
-                    method: 'POST',
-                    url: apiprefix + '/api/Dashboard/GetDashboardData',
-
-                    data: JSON.stringify($rootScope.getCookie('selectedFundSource'))
-
-                }).success(function (result) {
-                    $scope.model = result;
-                });
-
-            }
-            else { 
-                location.hash = result;
-            }
-        });
-
+        $scope.model = result;
     });
 
 
