@@ -485,7 +485,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                if (defaultaidtype != null)
+                if (defaultaidtype != null && !string.IsNullOrWhiteSpace(defaultaidtype.code))
                 {
                     return defaultaidtype.code;
                 }
@@ -621,6 +621,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
+                code = code.Trim();
                 if (code == "A01") return "General budget support";
                 else if (code == "A02") return "Sector budget support";
                 else if (code == "B01") return "Core support to NGOs, other private bodies, PPPs and research institutes";
@@ -641,6 +642,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
             set
             {
+                value = value.Trim();
                 if (value == "General budget support") code = "A01";
                 else if (value == "Sector budget support") code = "A02";
                 else if (value == "Core support to NGOs, other private bodies, PPPs and research institutes") code = "B01";
