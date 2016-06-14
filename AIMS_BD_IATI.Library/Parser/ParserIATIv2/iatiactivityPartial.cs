@@ -706,8 +706,13 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                var ss = 
-                return string.IsNullOrEmpty(AllID) ? "" : AllID.Split('~').n(0);
+                string r = string.Empty;
+                if (!string.IsNullOrEmpty(AllID))
+                {
+                    var ss = AllID.Split('~');
+                    r = ss[0] + "~" + ss[1];
+                }
+                return r;
             }
         }
 

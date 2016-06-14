@@ -85,21 +85,6 @@ namespace AIMS_BD_IATI.DAL
             return fundSourceId + "~" + IatiCode;
         }
 
-        public List<DPLookupItem> GetFundSourcesDropdownData()
-        {
-            var fundSources = from fundSource in dbContext.tblFundSources
-                              where fundSource.IATICode != null && !string.IsNullOrEmpty(fundSource.IATICode)
-                              orderby fundSource.FundSourceName
-                              select new DPLookupItem
-                              {
-                                  ID = fundSource.IATICode,
-                                  Name = fundSource.FundSourceName + " (" + (fundSource.Acronym ?? "") + ")",
-                                  AimsFundSourceId = fundSource.Id
-                              };
-
-            return fundSources.ToList();
-        }
-
         /// <summary>
         /// Get Managing DPs
         /// </summary>
@@ -122,6 +107,7 @@ namespace AIMS_BD_IATI.DAL
 
             return fundSources;
         }
+
         public List<ExecutingAgencyLookupItem> GetExecutingAgencies()
         {
             var DPs = GetAllFundSources();
