@@ -104,34 +104,27 @@ namespace AIMS_BD_IATI.DAL
         /// Get Managing DPs
         /// </summary>
         /// <returns></returns>
-        public List<FundSourceLookupItem> GetAllFundSources()
+        public List<ExecutingAgencyLookupItem> GetAllFundSources()
         {
             var piList = dbContext.tblProjectInfoes.GroupBy(q => q.FundSourceId).Select(x => x.FirstOrDefault().FundSourceId).ToList();
 
-            var fundSources = (from fundSource in dbContext.tblFundSources
-                               where piList.Contains(fundSource.Id)
-                               orderby fundSource.FundSourceName
-                               select new FundSourceLookupItem
+            var fundSources = (from dp in dbContext.tblFundSources
+                               where piList.Contains(dp.Id)
+                               orderby dp.FundSourceName
+                               select new ExecutingAgencyLookupItem
                                {
-                                   ID = fundSource.Id,
-                                   Name = fundSource.FundSourceName + " (" + (fundSource.Acronym ?? "") + ")",
-                                   IATICode = fundSource.IATICode
+                                   ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP,
+                                   ExecutingAgencyOrganizationTypeId = dp.FundSourceCategoryId,
+                                   ExecutingAgencyOrganizationId = dp.Id,
+                                   IATICode = dp.IATICode,
+                                   Name = dp.FundSourceName,
                                }).ToList();
 
             return fundSources;
         }
         public List<ExecutingAgencyLookupItem> GetExecutingAgencies()
         {
-            var DPs = (from dp in dbContext.tblFundSources
-                       orderby dp.FundSourceName
-                       select new ExecutingAgencyLookupItem
-                       {
-                           ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP,
-                           ExecutingAgencyOrganizationTypeId = dp.FundSourceCategoryId,
-                           ExecutingAgencyOrganizationId = dp.Id,
-                           IATICode = dp.IATICode,
-                           Name = dp.FundSourceName,
-                       }).ToList();
+            var DPs = GetAllFundSources();
 
             var ministryAgencies = (from ministryAgency in dbContext.tblMinistryAgencies
                                     orderby ministryAgency.AgencyName

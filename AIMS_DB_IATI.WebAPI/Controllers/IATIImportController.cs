@@ -21,9 +21,16 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
         void SetStatics()
         {
+            if (Sessions.FundSources.Count == 0)
+                Sessions.FundSources = aimsDAL.GetAllFundSources();
+
             iatiactivity.FundSources = Sessions.FundSources;
         }
+        public IATIImportController()
+        {
+            SetStatics();//since we have no access to session at library project, so we pass it in a static variables
 
+        }
         #region Dropdown Load
         [HttpGet]
         public List<LookupItem> GetExecutingAgencyTypes()
@@ -36,12 +43,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [HttpGet]
         public List<DPLookupItem> GetFundSources()
         {
-            Sessions.FundSources = aimsDAL.GetAllFundSources();
             return aimsDAL.GetFundSources(Sessions.UserId);
         }
 
         [HttpGet]
-        public List<FundSourceLookupItem> GetAllFundSources()
+        public List<ExecutingAgencyLookupItem> GetAllFundSources()
         {
             return Sessions.FundSources;
         }
@@ -195,7 +201,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                     managingDP = managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.Contains(Sessions.DP.ID));
 
                 //Add selected value
-                org.FundSourceIDnIATICode = managingDP == null ? "" : managingDP.IDnIATICode;
+                org.AllID = managingDP == null ? "" : managingDP.AllID;
 
             }
 
@@ -218,21 +224,21 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         public List<iatiactivityModel> FilterDP(List<participatingorg> _iOrgs)
         {
             if (_iOrgs == null) _iOrgs = Sessions.iOrgs.Orgs;
-
+            var relevantActivities = Sessions.activitiesContainer?.RelevantActivities;
             var projectsImpOrgs = new List<participatingorg>();
-            Sessions.activitiesContainer?.RelevantActivities?.ForEach(e =>
+            relevantActivities?.ForEach(e =>
             {
                 if (e.ImplementingOrgs != null) projectsImpOrgs.AddRange(e.ImplementingOrgs);
             });
 
             foreach (var iOrg in _iOrgs)
             {
-                projectsImpOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e => e.FundSourceIDnIATICode = iOrg.FundSourceIDnIATICode);
+                projectsImpOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e => e.AllID = iOrg.AllID);
             }
 
             Sessions.CurrentStage = Stage.FilterDP;
-
-            return ToMinifiedIatiActivitiesModel(Sessions.activitiesContainer?.RelevantActivities);
+            Sessions.activitiesContainer.iatiActivities = relevantActivities;
+            return ToMinifiedIatiActivitiesModel(relevantActivities);
         }
 
         [AcceptVerbs("GET", "POST")]
@@ -253,7 +259,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             }
             var relevantActiviesSession = Sessions.activitiesContainer?.RelevantActivities;
 
-            SetStatics();//since we have no access to session at library project, so we pass it in a static variables
+            //SetStatics();//since we have no access to session at library project, so we pass it in a static variables
 
             var ProjectsOwnedByOther = relevantActiviesSession.FindAll(f => f.IATICode != Sessions.DP.ID);
 
@@ -625,6 +631,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
                 FundSourceIDnIATICode = iatiActivity.FundSourceIDnIATICode,
                 AimsFundSourceId = iatiActivity.AimsFundSourceId,
+                FundSource = iatiActivity.FundSource,
                 IATICode = iatiActivity.IATICode,
                 IatiIdentifier = iatiActivity.IatiIdentifier,
                 Title = iatiActivity.Title,

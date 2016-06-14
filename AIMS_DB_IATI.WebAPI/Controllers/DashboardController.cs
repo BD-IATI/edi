@@ -59,7 +59,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public string RestartSession(DPLookupItem dp)
         {
-            Sessions.DP = null;
+            //Sessions.DP = null;
             Sessions.Clear();
             return "";
         }

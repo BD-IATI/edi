@@ -12,7 +12,7 @@ namespace AIMS_BD_IATI.Library
         public string ID { get; set; }
         public string Name { get; set; }
         public int AimsFundSourceId { get; set; }
-        public string IDnIATICode { get { return AimsFundSourceId + "~" + ID ?? ""; } }
+        public string IDnIATICode { get { return AimsFundSourceId + "~" + (ID ?? ""); } }
 
 
     }
@@ -23,7 +23,7 @@ namespace AIMS_BD_IATI.Library
         public int ID { get; set; }
         public string Name { get; set; }
         public string IATICode { get; set; }
-        public string IDnIATICode { get { return ID + "~" + IATICode ?? ""; } }
+        public string IDnIATICode { get { return ID + "~" + (IATICode ?? ""); } }
 
     }
 
@@ -32,7 +32,7 @@ namespace AIMS_BD_IATI.Library
     {
         public string AllID { get { return ExecutingAgencyOrganizationId + "~" 
                     + (IATICode ?? "") + "~" 
-                    + ExecutingAgencyTypeId??0 + "~" 
+                    + (ExecutingAgencyTypeId??0) + "~" 
                     + ExecutingAgencyOrganizationTypeId; } }
 
         public int ExecutingAgencyOrganizationId { get; set; }

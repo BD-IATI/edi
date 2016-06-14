@@ -46,7 +46,7 @@ namespace AIMS_DB_IATI.WebAPI.Models
                         //d = await DocumentSession.LoadAsync<T>(docId);
 
                         //if (d == null)
-                            await DocumentSession.StoreAsync(value, docId);
+                        await DocumentSession.StoreAsync(value, docId);
 
                         //d = value;
                     }
@@ -126,11 +126,11 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                return GetSession<iatiactivityContainer>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new iatiactivityContainer();
+                return GetSession<iatiactivityContainer>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new iatiactivityContainer();
             }
             set
             {
-                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(value, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
         }
 
@@ -138,11 +138,11 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                return GetSession<HeirarchyModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                return GetSession<HeirarchyModel>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
             set
             {
-                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(value, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
 
             //get
@@ -161,11 +161,11 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                return GetSession<FilterBDModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                return GetSession<FilterBDModel>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
             set
             {
-                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(value, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
         }
 
@@ -173,11 +173,11 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                return GetSession<iOrgs>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                return GetSession<iOrgs>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
             set
             {
-                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(value, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
         }
 
@@ -185,11 +185,11 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                return GetSession<ProjectFieldMapModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new ProjectFieldMapModel();
+                return GetSession<ProjectFieldMapModel>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new ProjectFieldMapModel();
             }
             set
             {
-                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(value, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
 
             }
         }
@@ -198,11 +198,11 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                return GetSession<ProjectMapModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new ProjectMapModel();
+                return GetSession<ProjectMapModel>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new ProjectMapModel();
             }
             set
             {
-                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(value, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
 
             }
         }
@@ -211,11 +211,11 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                return GetSession<ProjectMapModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new ProjectMapModel();
+                return GetSession<ProjectMapModel>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3)) ?? new ProjectMapModel();
             }
             set
             {
-                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(value, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
 
             }
         }
@@ -224,29 +224,24 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                return GetSession<CFnTFModel>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3)) ??
+                return GetSession<CFnTFModel>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3)) ??
                     new CFnTFModel();
             }
             set
             {
-                SaveSession(value, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(value, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
         }
 
-        public static List<FundSourceLookupItem> FundSources
+        public static List<ExecutingAgencyLookupItem> FundSources
         {
             get
             {
-                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-                return d == null ? new List<FundSourceLookupItem>() : d.Val;
-
+                return HttpContext.Current.Session["FundSources"] == null ?
+                    new List<ExecutingAgencyLookupItem>()
+                    : (List<ExecutingAgencyLookupItem>)HttpContext.Current.Session["FundSources"];
             }
-            set
-            {
-                KeyVal d = new KeyVal { Val = value ?? new List<FundSourceLookupItem>() };
-                SaveSession(d, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
-
-            }
+            set { HttpContext.Current.Session["FundSources"] = value; }
 
         }
 
@@ -254,13 +249,13 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                KeyVal d = GetSession<KeyVal>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
                 return d == null ? new List<iatiactivity>() : d.Val;
             }
             set
             {
                 KeyVal d = new KeyVal { Val = value ?? new List<iatiactivity>() };
-                SaveSession(d, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(d, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
         }
 
@@ -268,14 +263,14 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                KeyVal d = GetSession<KeyVal>(UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                KeyVal d = GetSession<KeyVal>(MethodBase.GetCurrentMethod().Name.Substring(3));
                 return d == null ? new List<LookupItem>() : d.Val;
 
             }
             set
             {
                 KeyVal d = new KeyVal { Val = value ?? new List<LookupItem>() };
-                SaveSession(d, UserId + MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(d, MethodBase.GetCurrentMethod().Name.Substring(3));
             }
         }
     }

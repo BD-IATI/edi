@@ -17,7 +17,7 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
     public class iOrgs
     {
         public List<participatingorg> Orgs { get; set; }
-        public List<FundSourceLookupItem> FundSources { get; set; }
+        public List<ExecutingAgencyLookupItem> FundSources { get; set; }
         public List<LookupItem> ExecutingAgencyTypes { get; internal set; }
         public object ExecutingAgencies { get; internal set; }
     }

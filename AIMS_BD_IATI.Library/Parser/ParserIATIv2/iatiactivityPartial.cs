@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 {
-    public class ServerSideAttribute:Attribute
+    public class ServerSideAttribute : Attribute
     {
 
     }
@@ -77,7 +77,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             MatchedProjects = new List<iatiactivity>();
         }
         [XmlIgnore]
-        public static List<FundSourceLookupItem> FundSources { get; set; }
+        public static List<ExecutingAgencyLookupItem> FundSources { get; set; }
         [XmlIgnore]
         public bool IsDataSourceAIMS { get; set; }
 
@@ -112,7 +112,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public List<iatiactivity> childActivities { get; set; }
         [XmlIgnore]
-        private List<iatiactivity> includedChildActivities { get { return childActivities.FindAll(f=>f.IsInclude == true); } }
+        private List<iatiactivity> includedChildActivities { get { return childActivities.FindAll(f => f.IsInclude == true); } }
 
         [XmlIgnore]
         public List<iatiactivity> MatchedProjects { get; set; }
@@ -309,8 +309,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 {
                     planneddisbursements.Add(new planneddisbursement
                     {
-                        periodstart = new planneddisbursementPeriodstart { isodate = item.periodstart?.isodate??default(DateTime) },
-                        periodend = new planneddisbursementPeriodend { isodate = item.periodend?.isodate??default(DateTime) },
+                        periodstart = new planneddisbursementPeriodstart { isodate = item.periodstart?.isodate ?? default(DateTime) },
+                        periodend = new planneddisbursementPeriodend { isodate = item.periodend?.isodate ?? default(DateTime) },
                         value = item.value
                     });
                 }
@@ -381,11 +381,11 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                FundSourceLookupItem r;
+                ExecutingAgencyLookupItem r;
                 if (FundSources != null)
-                    r = FundSources.FirstOrDefault(f => f.ID == AimsFundSourceId);
+                    r = FundSources.FirstOrDefault(f => f.ExecutingAgencyOrganizationId == AimsFundSourceId);
                 else
-                    r = new FundSourceLookupItem();
+                    r = new ExecutingAgencyLookupItem();
 
                 return r == null ? "" : r.Name;
             }
@@ -700,7 +700,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
     public partial class participatingorg
     {
         [XmlIgnore]
-        public string FundSourceIDnIATICode { get; set; }
+        public string FundSourceIDnIATICode
+        {
+            get
+            {
+                var ss = 
+                return string.IsNullOrEmpty(AllID) ? "" : AllID.Split('~').n(0);
+            }
+        }
 
         public int? _ExecutingAgencyTypeId { get; set; }
         [XmlIgnore]
@@ -797,7 +804,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return value?.ValueInUSD??0;
+                return value?.ValueInUSD ?? 0;
             }
         }
         [XmlIgnore]
@@ -825,7 +832,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return value?.ValueInUSD??0;
+                return value?.ValueInUSD ?? 0;
             }
         }
     }
@@ -915,6 +922,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public string FundSourceIDnIATICode { get; set; }
 
         public int AimsFundSourceId { get; set; }
+
+        public string FundSource { get; set; }
 
         public string IATICode { get; set; }
         #endregion

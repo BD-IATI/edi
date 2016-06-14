@@ -139,9 +139,9 @@
                                             <td><code>{{activity.IatiIdentifier}}</code></td>
                                             <td>{{activity.Title}}</td>
                                             <td>
-                                                <span ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
+                                                <div ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
                                                     {{ImplementingOrg.Name}}
-                                                </span>
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="form-group">
@@ -164,16 +164,17 @@
                         <div class="form-group">
                             <div class="col-md-12 btnFooter">
                                 <span ng-hide="RelevantActivities.length == 0">
+                                    <button ng-click="GotoTab(0)" class="btn btn-default">Back</button>
+
                                     <button ng-show="hasOtherDPsProject"
                                             type="button"
-                                            class="btn btn-default"
+                                            class="btn btn-primary"
                                             popover-title="Delegate projects to other DPs?"
                                             uib-popover-template="'myPopoverTemplate.html'"
                                             popover-append-to-body="true"
                                             popover-placement="auto">
                                         Next...
                                     </button>
-                                    <button ng-click="GotoTab(0)" class="btn btn-default">Back</button>
 
                                     <a id="btn4Projects" ng-hide='hasOtherDPsProject' class="btn btn-primary" ng-href="#/4Projects">Next</a>
                                 </span>
