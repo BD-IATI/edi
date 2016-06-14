@@ -80,6 +80,8 @@ namespace AIMS_DB_IATI.WebAPI.Models
             ProjectsToMap = null;
             CFnTFModel = null;
             TrustFunds = null;
+            ExecutingAgencyTypes = null;
+
         }
 
         public static string UserId
@@ -263,14 +265,14 @@ namespace AIMS_DB_IATI.WebAPI.Models
         {
             get
             {
-                KeyVal d = GetSession<KeyVal>(MethodBase.GetCurrentMethod().Name.Substring(3));
+                KeyVal d = GetSession<KeyVal>(UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
                 return d == null ? new List<LookupItem>() : d.Val;
 
             }
             set
             {
                 KeyVal d = new KeyVal { Val = value ?? new List<LookupItem>() };
-                SaveSession(d, MethodBase.GetCurrentMethod().Name.Substring(3));
+                SaveSession(d, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
         }
     }

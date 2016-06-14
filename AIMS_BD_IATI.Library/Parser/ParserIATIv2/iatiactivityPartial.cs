@@ -352,23 +352,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         #region for filter other DP's projects
         [XmlIgnore]
-        public string ownedBy;
-        [XmlIgnore]
-        public string FundSourceIDnIATICode
-        {
-            get
-            {
-                return string.IsNullOrWhiteSpace(ownedBy) ? ImplementingOrgs.n(0).FundSourceIDnIATICode : ownedBy;
-            }
-            set
-            {
-                ownedBy = value;
-                //foreach (var mproject in MatchedProjects)
-                //{
-                //    mproject.FundSourceIDnIATICode = value;
-                //}
-            }
-        }
+
         private string _AllID;
         [XmlIgnore]
         public string AllID
@@ -380,11 +364,6 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             set
             {
                 _AllID = value;
-                ownedBy = value;
-                //foreach (var mproject in MatchedProjects)
-                //{
-                //    mproject.FundSourceIDnIATICode = value;
-                //}
             }
         }
 
@@ -392,7 +371,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         public int AimsFundSourceId
         {
-            get { return string.IsNullOrWhiteSpace(FundSourceIDnIATICode) ? 0 : Convert.ToInt32(FundSourceIDnIATICode.Split('~')[0]); }
+            get { return string.IsNullOrWhiteSpace(AllID) ? 0 : Convert.ToInt32(AllID.Split('~')[0]); }
         }
         [XmlIgnore]
 
@@ -402,7 +381,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             {
                 ExecutingAgencyLookupItem r;
                 if (FundSources != null)
-                    r = FundSources.FirstOrDefault(f => f.ExecutingAgencyOrganizationId == AimsFundSourceId);
+                    r = FundSources.FirstOrDefault(f => f.AllID == AllID);
                 else
                     r = new ExecutingAgencyLookupItem();
 
@@ -413,7 +392,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         public string IATICode
         {
-            get { return string.IsNullOrWhiteSpace(FundSourceIDnIATICode) ? "" : FundSourceIDnIATICode.Split('~')[1]; }
+            get { return string.IsNullOrWhiteSpace(AllID) ? "" : AllID.Split('~')[1]; }
         }
         #endregion
 
@@ -720,21 +699,6 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
     public partial class participatingorg
     {
-        [XmlIgnore]
-        public string FundSourceIDnIATICode
-        {
-            get
-            {
-                string r = string.Empty;
-                if (!string.IsNullOrEmpty(AllID))
-                {
-                    var ss = AllID.Split('~');
-                    r = ss[0] + "~" + ss[1];
-                }
-                return r;
-            }
-        }
-
         public int? _ExecutingAgencyTypeId { get; set; }
         [XmlIgnore]
         public int? ExecutingAgencyTypeId { get { return _ExecutingAgencyTypeId ?? GetAimsExAgencyTypeIdByOrgType(type); } set { _ExecutingAgencyTypeId = value; } }
@@ -945,7 +909,6 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         #endregion Financial Data
 
         #region for filter other DP's projects
-        public string FundSourceIDnIATICode { get; set; }
         public string AllID { get; set; }
 
         public int AimsFundSourceId { get; set; }

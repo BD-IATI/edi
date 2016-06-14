@@ -86,7 +86,9 @@ namespace AIMS_BD_IATI.DAL
 
                                 //step 6: merge iatiActivity and aimsProject; and get an new merged activity
                                 var mergedActivities = ImportLogic.MergeProjects(ProjectFieldMapModels); //now it will allways return a list containing single activity
-                                mergedActivities.n(0).FundSourceIDnIATICode = fundSource.Id + "~" + a.OrgId;
+                                mergedActivities.n(0).AllID = fundSource.Id + "~" + a.OrgId + "~"
+                                        + (int)ExecutingAgencyType.DP + "~"
+                                        + fundSource.FundSourceCategoryId;
                                 //step 7: update aims database with margedActivities
                                 aimsDAL.UpdateProjects(mergedActivities, "system");
                             }
@@ -109,7 +111,10 @@ namespace AIMS_BD_IATI.DAL
 
                             if (aimsProject != null)
                             {
-                                iatiActivity.FundSourceIDnIATICode = fundSource.Id + "~" + a.OrgId;
+                                iatiActivity.AllID = fundSource.Id + "~" + a.OrgId + "~"
+                                        + (int)ExecutingAgencyType.DP + "~"
+                                        + fundSource.FundSourceCategoryId;
+
 
                                 aimsProject.MatchedProjects.Add(iatiActivity);
                                 //step 7: update aims database with margedActivities
@@ -422,7 +427,7 @@ namespace AIMS_BD_IATI.DAL
                 a.iatiActivity.MappedTrustFundId = a.MappedTrustFundId ?? 0;
                 a.iatiActivity.IsInclude = a.IsInclude ?? true;
 
-                a.iatiActivity.FundSourceIDnIATICode = new AimsDAL().GetFundSourceIDnIATICode(a.OrgId);
+                a.iatiActivity.AllID = new AimsDAL().GetFundSourceIDnIATICode(a.OrgId);
 
                 SetExchangedValues(a.iatiActivity);
                 result.Add(a.iatiActivity);
@@ -473,7 +478,7 @@ namespace AIMS_BD_IATI.DAL
             if (activity.transaction != null)
                 foreach (var tr in activity.transaction)
                 {
-                    SetCurrencyExRateAndVal(tr, activity.defaultcurrency, tr.transactiondate?.isodate??default(DateTime));
+                    SetCurrencyExRateAndVal(tr, activity.defaultcurrency, tr.transactiondate?.isodate ?? default(DateTime));
                 }
 
             if (activity.budget != null)
@@ -517,7 +522,7 @@ namespace AIMS_BD_IATI.DAL
 
             var curExchangeRate = exchangeRates.Where(k => k.DATE == nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
 
-            tr.value.BBexchangeRateDate = curExchangeRate?.DATE??default(DateTime).ToSqlDateTime();
+            tr.value.BBexchangeRateDate = curExchangeRate?.DATE ?? default(DateTime).ToSqlDateTime();
             tr.value.BBexchangeRateUSD = curExchangeRate?.DOLLAR_PER_CURRENCY ?? 0;
             tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
             tr.value.BBexchangeRateBDT = curExchangeRate?.TAKA_PER_DOLLAR ?? 0;

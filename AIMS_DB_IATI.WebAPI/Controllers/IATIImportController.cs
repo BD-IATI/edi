@@ -159,6 +159,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             returnResult.iatiActivities = returnResult.iatiActivities.OrderByDescending(k => k.IsRelevant).ToList();
 
             Sessions.CurrentStage = Stage.FilterBD;
+            Sessions.heirarchyModel = heirarchyModel;
             Sessions.filterBDModel = returnResult;
             return returnResult;
         }
@@ -196,12 +197,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 //check for matching managing DP from AIMS
                 var managingDP = !string.IsNullOrWhiteSpace(org.@ref) ? managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.Contains(org.@ref)) : null;
 
-                //if not found, set to Current DP
-                if (managingDP == null)
-                    managingDP = managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.Contains(Sessions.DP.ID));
-
                 //Add selected value
-                org.AllID = managingDP == null ? "" : managingDP.AllID;
+                org.AllID = managingDP == null ? Sessions.DP.AllID : managingDP.AllID;
 
             }
 
@@ -229,13 +226,18 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             relevantActivities?.ForEach(e =>
             {
                 if (e.ImplementingOrgs != null) projectsImpOrgs.AddRange(e.ImplementingOrgs);
-                e.FundSourceIDnIATICode = null;
+                e.AllID = null;
             });
 
             foreach (var iOrg in _iOrgs)
             {
                 projectsImpOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e => e.AllID = iOrg.AllID);
             }
+
+            relevantActivities?.ForEach(e =>
+            {
+                if (e.AllID == null) e.AllID = Sessions.DP.AllID;
+            });
 
             Sessions.CurrentStage = Stage.FilterDP;
             Sessions.activitiesContainer.iatiActivities = relevantActivities;
@@ -280,7 +282,10 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             var IatiActivityNotInAims = relevantActiviesSession.Except(MatchedProjects).ToList();
 
 
-            var AimsProjectNotInIati = AimsProjects.ExceptBy(MatchedProjects, f => f.IatiIdentifier).ToList();
+            var AimsProjectNotInIati = AimsProjects
+                .ExceptBy(MatchedProjects, f => f.IatiIdentifier)
+                .ExceptBy(ProjectsOwnedByOther, f => f.IatiIdentifier)
+                .ToList();
 
             var returnResult = new ProjectMapModel
             {
@@ -536,7 +541,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             foreach (var item in Sessions.ProjectsToMap?.NewProjectsToAddInAims)
             {
-                item.FundSourceIDnIATICode = Sessions.DP.IDnIATICode;
+                item.AllID = Sessions.DP.AllID;
                 margedProjects.Add(item);
 
             }
@@ -579,7 +584,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                     activity.ProjectId = ra.ProjectId;
                     activity.MappedProjectId = ra.MappedProjectId;
                     activity.MappedTrustFundId = ra.MappedTrustFundId;
-                    activity.FundSourceIDnIATICode = ra.FundSourceIDnIATICode;
                     activity.AllID = ra.AllID;
                     //var clientProperties = typeof(iatiactivity).GetProperties(BindingFlags.SetProperty).Where(w => w.GetCustomAttribute(typeof(Newtonsoft.Json.JsonIgnoreAttribute)) == null);
 
@@ -594,7 +598,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         public List<iatiactivityModel> ToMinifiedIatiActivitiesModel(List<iatiactivity> iatiActivities, bool includeTransactions = false, bool includeChilds = false, bool includeMatched = false)
         {
             return iatiActivities == null ? null : (from i in iatiActivities
-                    select ToMinifiedIatiActivityModel(i, includeTransactions, includeChilds, includeMatched)).ToList();
+                                                    select ToMinifiedIatiActivityModel(i, includeTransactions, includeChilds, includeMatched)).ToList();
         }
 
         public iatiactivityModel ToMinifiedIatiActivityModel(iatiactivity iatiActivity, bool includeTransactions = false, bool includeChilds = false, bool includeMatched = false)
@@ -630,7 +634,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 DisbursmentsThisDPOnly = includeTransactions ? iatiActivity.DisbursmentsThisDPOnly : null,
                 TotalDisbursmentThisDPOnly = iatiActivity.TotalDisbursmentThisDPOnly,
 
-                FundSourceIDnIATICode = iatiActivity.FundSourceIDnIATICode,
                 AllID = iatiActivity.AllID,
                 AimsFundSourceId = iatiActivity.AimsFundSourceId,
                 FundSource = iatiActivity.FundSource,
@@ -674,7 +677,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                     {
                         IsManuallyMapped = m.IsManuallyMapped,
                         IsGrouped = m.IsGrouped,
-                        iatiActivity = ToMinifiedIatiActivityModel(m.iatiActivity,true),
+                        iatiActivity = ToMinifiedIatiActivityModel(m.iatiActivity, true),
                         aimsProject = ToMinifiedIatiActivityModel(m.aimsProject),
                         Fields = m.Fields,
                         TransactionFields = m.TransactionFields,

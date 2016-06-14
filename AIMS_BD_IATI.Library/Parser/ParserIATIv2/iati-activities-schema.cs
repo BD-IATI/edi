@@ -1401,7 +1401,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string @ref
         {
             get

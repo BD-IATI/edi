@@ -38,7 +38,7 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
             dataType: 'json'
         }).then(function (result) {
             $rootScope.RelevantActivities = $scope.RelevantActivities = result.data;
-
+            $scope.onFundSourceChanged();
             $scope.activeTabIndex = 1;
             $('#divView').slimScroll({ scrollTo: '0px' });
 
@@ -54,7 +54,7 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
     $scope.onFundSourceChanged = function () {
         var hasOtherDPsProject = false;
         for (var i = 0; i < $scope.RelevantActivities.length; i++) {
-            if ($scope.RelevantActivities[i].FundSourceIDnIATICode != $rootScope.getCookie('selectedFundSource').IDnIATICode) {
+            if (!$scope.RelevantActivities[i].AllID.startsWith($rootScope.getCookie('selectedFundSource').IDnIATICode)) {
                 hasOtherDPsProject = true;
                 break;
             }

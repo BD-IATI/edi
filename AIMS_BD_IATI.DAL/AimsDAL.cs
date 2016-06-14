@@ -38,7 +38,8 @@ namespace AIMS_BD_IATI.DAL
                                   {
                                       ID = fundSource.IATICode,
                                       Name = fundSource.FundSourceName + " (" + (fundSource.Acronym ?? "") + ")",
-                                      AimsFundSourceId = fundSource.Id
+                                      AimsFundSourceId = fundSource.Id,
+                                      FundSourceCategoryId = fundSource.FundSourceCategoryId
                                   }).ToList();
                 }
                 else
@@ -57,7 +58,8 @@ namespace AIMS_BD_IATI.DAL
                                       {
                                           ID = fundSource.IATICode,
                                           Name = fundSource.FundSourceName + " (" + (fundSource.Acronym ?? "") + ")",
-                                          AimsFundSourceId = fundSource.Id
+                                          AimsFundSourceId = fundSource.Id,
+                                          FundSourceCategoryId = fundSource.FundSourceCategoryId
                                       }).ToList();
 
                     }
@@ -78,11 +80,20 @@ namespace AIMS_BD_IATI.DAL
         }
         public string GetFundSourceIDnIATICode(string IatiCode)
         {
-            var fundSourceId = (from fundSource in dbContext.tblFundSources
-                                where fundSource.IATICode == IatiCode
-                                select fundSource.Id).FirstOrDefault();
 
-            return fundSourceId + "~" + IatiCode;
+            var fundSource = (from dp in dbContext.tblFundSources
+                               where dp.IATICode == IatiCode
+                               orderby dp.FundSourceName
+                               select new ExecutingAgencyLookupItem
+                               {
+                                   ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP,
+                                   ExecutingAgencyOrganizationTypeId = dp.FundSourceCategoryId,
+                                   ExecutingAgencyOrganizationId = dp.Id,
+                                   IATICode = dp.IATICode,
+                                   Name = dp.FundSourceName,
+                               }).FirstOrDefault();
+
+            return fundSource?.AllID;
         }
 
         /// <summary>
@@ -983,7 +994,9 @@ namespace AIMS_BD_IATI.DAL
             iatiActivityObj.IsDataSourceAIMS = true;
             iatiActivityObj.IsCofinancedProject = project.IsCofundedProject ?? false;
 
-            iatiActivityObj.FundSourceIDnIATICode = project.FundSourceId + "~" + project.tblFundSource?.IATICode;
+iatiActivityObj.AllID = project.FundSourceId + "~" + (project.tblFundSource?.IATICode??"") + "~"
+                    + (int)ExecutingAgencyType.DP + "~"
+                    + project.tblFundSource?.FundSourceCategoryId;
 
             iatiActivityObj.ProjectId = project.Id;
             //iati-activity
