@@ -1,10 +1,12 @@
-/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
+﻿/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+
 angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModal) {
     $scope.ImplementingOrgs = [];
     $scope.RelevantActivities = [];
     $scope.FundSources = [];
     $scope.activeTabIndex = 0;
+
     $http({
         url: apiprefix + '/api/IATIImport/GetAllImplementingOrg',
         method: 'POST',
@@ -16,15 +18,19 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
         $scope.ExecutingAgencyTypes = result.data.ExecutingAgencyTypes;
         $scope.ExecutingAgencies = result.data.ExecutingAgencies;
         //$rootScope.filterBDModel = null;
+
         for (var i = 0; i < $scope.ImplementingOrgs.length; i++) {
             var dis = $scope.GuessAgency($scope.ImplementingOrgs[i], false);
         }
-    }, function (response) {
+
+    },
+    function (response) {
     });
     $scope.GotoTab = function (indx) {
         $scope.activeTabIndex = indx;
-    };
+    }
     $scope.FilterDP = function () {
+
         $http({
             url: apiprefix + '/api/IATIImport/FilterDP',
             method: 'POST',
@@ -32,13 +38,18 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
             dataType: 'json'
         }).then(function (result) {
             $rootScope.RelevantActivities = $scope.RelevantActivities = result.data;
+
             $scope.activeTabIndex = 1;
             $('#divView').slimScroll({ scrollTo: '0px' });
+
             //deferred.resolve(result);
-        }, function (response) {
+        },
+        function (response) {
             //deferred.reject(response);
         });
+
     };
+
     $scope.hasOtherDPsProject = false;
     $scope.onFundSourceChanged = function () {
         var hasOtherDPsProject = false;
@@ -48,8 +59,10 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                 break;
             }
         }
+
         $scope.hasOtherDPsProject = hasOtherDPsProject;
     };
+
     $scope.SaveAndNext = function () {
         $http({
             method: 'POST',
@@ -65,53 +78,66 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
             else {
                 alert('Something wrong happening!');
             }
-        }, function (response) {
-            //deferred.reject(response);
-        });
-    };
+        },
+    function (response) {
+        //deferred.reject(response);
+    });
+
+    }
     $scope.NextWithoutSaving = function () {
         $timeout(function () {
             document.getElementById('btn4Projects').click(); //redirect
         });
-    };
+    }
+
     $scope.AddNewImplementingOrg = function (org) {
         var exAgencies = $scope.ExecutingAgencies;
         for (var i = 0; i < exAgencies.length; i++) {
             var distance = $scope.getEditDistance(org.Name.toLowerCase(), exAgencies[i].Name.toLowerCase());
             exAgencies[i].editDistance = distance;
         }
+
         var modalInstance = $uibModal.open({
             templateUrl: 'AddNewImplementingOrgView.html',
             controller: 'AddNewImplementingOrgController',
             resolve: { parentScope: $scope, org: org }
+
         });
+
         modalInstance.result.then(function (selectedOrg) {
-            if (selectedOrg != null) {
+            if (selectedOrg != null)
+            {
                 org.ExecutingAgencyTypeId = selectedOrg.ExecutingAgencyTypeId;
                 org.AllID = selectedOrg.AllID;
             }
-            else {
+            else
+            {
                 org.AllID = org.ExecutingAgencyOrganizationId + "~"
-                    + (org.ref || "") + "~"
-                    + org.ExecutingAgencyTypeId + "~"
-                    + org.ExecutingAgencyOrganizationTypeId + "~New~" + org.Name;
+                + (org.ref || "") + "~"
+                + org.ExecutingAgencyTypeId + "~" 
+                + org.ExecutingAgencyOrganizationTypeId + "~New~" + org.Name;
                 org.IATICode = org.ref;
+
                 $scope.ExecutingAgencies.push(org);
             }
         }, function () {
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
+
+
     $scope.GuessAgency = function (org, isFilterByType) {
         var IsNotFoundInAims = true;
         if (org['ref'] != null || org['ref'] != undefined) {
             var exa = $filter('filter')($scope.ExecutingAgencies, { IATICode: org['ref'] });
             if (exa.length > 0) {
                 org.AllID = exa[0].AllID;
-                org.ExecutingAgencyTypeId = 2; //(int)ExecutingAgencyType.DP;
+                org.ExecutingAgencyTypeId = 2;//(int)ExecutingAgencyType.DP;
                 IsNotFoundInAims = false;
             }
+
         }
+
         if (IsNotFoundInAims) {
             //try to set executing agency
             var agencyGuessed = null;
@@ -124,62 +150,74 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                     agencyGuessed = exAgencies[i];
                 }
             }
+
             if (agencyGuessed != null) {
                 var tolaratedDistance = isFilterByType ? (org.Name.length + agencyGuessed.Name.length) / 2 : ((org.Name.length + agencyGuessed.Name.length) / 2) * 50 / 100;
                 if (minDistance < tolaratedDistance) {
                     org.AllID = agencyGuessed.AllID;
-                    if (!isFilterByType)
-                        org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
+
+                    if (!isFilterByType) org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
                 }
             }
         }
-    };
+
+    }
+
     // Compute the edit distance between the two given strings
     $scope.getEditDistance = function (a, b) {
-        if (a.length == 0)
-            return b.length;
-        if (b.length == 0)
-            return a.length;
+        if (a.length == 0) return b.length;
+        if (b.length == 0) return a.length;
+
         var matrix = [];
+
         // increment along the first column of each row
         var i;
         for (i = 0; i <= b.length; i++) {
             matrix[i] = [i];
         }
+
         // increment each column in the first row
         var j;
         for (j = 0; j <= a.length; j++) {
             matrix[0][j] = j;
         }
+
         // Fill in the rest of the matrix
         for (i = 1; i <= b.length; i++) {
             for (j = 1; j <= a.length; j++) {
                 if (b.charAt(i - 1) == a.charAt(j - 1)) {
                     matrix[i][j] = matrix[i - 1][j - 1];
-                }
-                else {
+                } else {
                     matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, // substitution
-                    Math.min(matrix[i][j - 1] + 1, // insertion
-                    matrix[i - 1][j] + 1)); // deletion
+                                            Math.min(matrix[i][j - 1] + 1, // insertion
+                                                     matrix[i - 1][j] + 1)); // deletion
                 }
             }
         }
+
         return matrix[b.length][a.length];
     };
+
 });
+
 angular.module('iatiDataImporter').controller("AddNewImplementingOrgController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModalInstance, parentScope, org) {
+
     org.ExecutingAgencyType = org.ExecutingAgencyTypeId == 1 ? 'Govt.' :
-        org.ExecutingAgencyTypeId == 2 ? 'DP' :
-            org.ExecutingAgencyTypeId == 3 ? 'NGO' : 'Other';
+             org.ExecutingAgencyTypeId == 2 ? 'DP' :
+             org.ExecutingAgencyTypeId == 3 ? 'NGO' : 'Other';
+
     $scope.ExecutingAgencies = parentScope.ExecutingAgencies;
     $scope.org = org;
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
+
     $scope.Ok = function () {
         $uibModalInstance.close();
     };
+
     $scope.selectOrg = function (Org) {
         $uibModalInstance.close(Org);
     };
+
 });

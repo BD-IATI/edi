@@ -229,6 +229,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             relevantActivities?.ForEach(e =>
             {
                 if (e.ImplementingOrgs != null) projectsImpOrgs.AddRange(e.ImplementingOrgs);
+                e.FundSourceIDnIATICode = null;
             });
 
             foreach (var iOrg in _iOrgs)
@@ -579,7 +580,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                     activity.MappedProjectId = ra.MappedProjectId;
                     activity.MappedTrustFundId = ra.MappedTrustFundId;
                     activity.FundSourceIDnIATICode = ra.FundSourceIDnIATICode;
-
+                    activity.AllID = ra.AllID;
                     //var clientProperties = typeof(iatiactivity).GetProperties(BindingFlags.SetProperty).Where(w => w.GetCustomAttribute(typeof(Newtonsoft.Json.JsonIgnoreAttribute)) == null);
 
                     //foreach (PropertyInfo clientProperty in clientProperties)
@@ -630,6 +631,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 TotalDisbursmentThisDPOnly = iatiActivity.TotalDisbursmentThisDPOnly,
 
                 FundSourceIDnIATICode = iatiActivity.FundSourceIDnIATICode,
+                AllID = iatiActivity.AllID,
                 AimsFundSourceId = iatiActivity.AimsFundSourceId,
                 FundSource = iatiActivity.FundSource,
                 IATICode = iatiActivity.IATICode,

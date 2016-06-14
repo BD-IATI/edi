@@ -369,6 +369,25 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 //}
             }
         }
+        private string _AllID;
+        [XmlIgnore]
+        public string AllID
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(_AllID) ? ImplementingOrgs.n(0).AllID : _AllID;
+            }
+            set
+            {
+                _AllID = value;
+                ownedBy = value;
+                //foreach (var mproject in MatchedProjects)
+                //{
+                //    mproject.FundSourceIDnIATICode = value;
+                //}
+            }
+        }
+
         [XmlIgnore]
 
         public int AimsFundSourceId
@@ -927,6 +946,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         #region for filter other DP's projects
         public string FundSourceIDnIATICode { get; set; }
+        public string AllID { get; set; }
 
         public int AimsFundSourceId { get; set; }
 

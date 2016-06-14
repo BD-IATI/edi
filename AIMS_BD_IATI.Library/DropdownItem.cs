@@ -41,6 +41,7 @@ namespace AIMS_BD_IATI.Library
 
         public string Name { get; set; }
         public string IATICode { get; set; }
+        public string IDnIATICode { get { return ExecutingAgencyOrganizationId + "~"  + (IATICode ?? ""); } }
 
     }
 
