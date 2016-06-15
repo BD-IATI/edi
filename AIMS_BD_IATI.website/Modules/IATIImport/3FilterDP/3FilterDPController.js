@@ -1,6 +1,7 @@
 /// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
 angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModal) {
+    $('#divView').slimScroll({ scrollTo: '0px' });
     $scope.ImplementingOrgs = [];
     $scope.RelevantActivities = [];
     $scope.FundSources = [];
@@ -23,6 +24,7 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
     });
     $scope.GotoTab = function (indx) {
         $scope.activeTabIndex = indx;
+        $('#divView').slimScroll({ scrollTo: '0px' });
     };
     $scope.FilterDP = function () {
         $http({

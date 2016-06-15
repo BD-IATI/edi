@@ -325,12 +325,13 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             var iatiActivities = Sessions.ProjectMapModel?.IatiActivitiesNotInAims;
             foreach (var project in aimsProjects)
             {
-                if (iatiActivities.Count(c => c.ProjectId == project.ProjectId) == 1)
+                var mappedActivityCount = iatiActivities.Count(c => c.ProjectId == project.ProjectId);
+                if (mappedActivityCount== 1)
                 {
                     Sessions.ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(iatiActivities.Find(c => c.ProjectId == project.ProjectId), project) { IsManuallyMapped = true });
 
                 }
-                else
+                else if (mappedActivityCount > 1)
                 {
                     var groupedActivity = new iatiactivity();
                     var trns = new List<transaction>();

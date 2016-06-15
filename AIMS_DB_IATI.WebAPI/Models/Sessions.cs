@@ -34,24 +34,28 @@ namespace AIMS_DB_IATI.WebAPI.Models
 
             HostingEnvironment.QueueBackgroundWorkItem(async cancellationToken =>
             {
-                using (IAsyncDocumentSession DocumentSession = DocumentStore.OpenAsyncSession())
+                try
                 {
-                    //T d;
-                    if (value == null)
+                    using (IAsyncDocumentSession DocumentSession = DocumentStore.OpenAsyncSession())
                     {
-                        DocumentSession.Delete(docId);
-                    }
-                    else
-                    {
-                        //d = await DocumentSession.LoadAsync<T>(docId);
+                        //T d;
+                        if (value == null)
+                        {
+                            DocumentSession.Delete(docId);
+                        }
+                        else
+                        {
+                            //d = await DocumentSession.LoadAsync<T>(docId);
 
-                        //if (d == null)
-                        await DocumentSession.StoreAsync(value, docId);
+                            //if (d == null)
+                            await DocumentSession.StoreAsync(value, docId);
 
-                        //d = value;
+                            //d = value;
+                        }
+                        await DocumentSession.SaveChangesAsync();
                     }
-                    await DocumentSession.SaveChangesAsync();
                 }
+                catch { }
             });
         }
 

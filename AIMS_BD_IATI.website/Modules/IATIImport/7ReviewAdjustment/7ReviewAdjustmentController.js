@@ -1,4 +1,5 @@
 ﻿angular.module('iatiDataImporter').controller("7ReviewAdjustmentController", function ($rootScope, $scope, $http, $uibModal, $timeout) {
+    $('#divView').slimScroll({ scrollTo: '0px' });
 
     $http({
         method: 'POST',

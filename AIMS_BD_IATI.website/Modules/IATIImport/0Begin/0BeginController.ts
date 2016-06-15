@@ -1,5 +1,7 @@
 ﻿
 angular.module('iatiDataImporter').controller("0BeginController", function ($rootScope, $scope, $http, $timeout) {
+    $('#divView').slimScroll({ scrollTo: '0px' });
+
     $rootScope.models = {
         selected: false,
         IatiActivities: [],

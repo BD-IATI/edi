@@ -4,6 +4,7 @@
 angular.module('iatiDataImporter').controller("1HierarchyController", function ($rootScope, $scope, $http, $timeout) {
     $rootScope.hierarchyModel = null;
     $rootScope.HasChildActivity = false;
+    $('#divView').slimScroll({ scrollTo: '0px' });
 
 
     $http({

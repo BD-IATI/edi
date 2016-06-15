@@ -1,5 +1,6 @@
 ﻿angular.module('iatiDataImporter').controller("5MatchController", function ($rootScope, $scope, $http, $timeout) {
     $scope.models = $rootScope.models;
+    $('#divView').slimScroll({ scrollTo: '0px' });
 
     $scope.Commands = {
         saveData: function () {

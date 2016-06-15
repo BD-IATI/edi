@@ -1,4 +1,5 @@
 ﻿angular.module('iatiDataImporter').controller("4ProjectsController", function ($rootScope, $scope, $http, $timeout) {
+    $('#divView').slimScroll({ scrollTo: '0px' });
 
     $http({
         url: apiprefix + '/api/IATIImport/SubmitActivities',

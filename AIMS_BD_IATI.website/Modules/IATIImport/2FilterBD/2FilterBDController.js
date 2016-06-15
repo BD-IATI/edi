@@ -1,4 +1,6 @@
 ﻿angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope, $scope, $http, $timeout) {
+    $('#divView').slimScroll({ scrollTo: '0px' });
+
     $scope.activeTabIndex = 0;
     $scope.setTabIndex = function (index) { $scope.activeTabIndex = index; };
     $scope.nextFromTab0 = function () {
@@ -7,6 +9,7 @@
         else $timeout(function () {
             document.getElementById('btn3FilterDP').click(); //redirect
         });
+
     };
 
     //var selectedHierarchy = $rootScope.hierarchyModel ? $rootScope.hierarchyModel.SelectedHierarchy : null;
