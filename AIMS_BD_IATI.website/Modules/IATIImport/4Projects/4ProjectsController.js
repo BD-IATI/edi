@@ -7,16 +7,21 @@
         data: JSON.stringify($rootScope.RelevantActivities),
         dataType: 'json'
     }).then(function (result) {
-        var projects = result.data.AimsProjectsNotInIati;
-        $scope.AimsProjectsDrpSrc = [];
+        //var projects = result.data.AimsProjectsNotInIati;
+        //var matchedProjects = result.data.MatchedProjects;
 
-        for (var i = 0; i < projects.length; i++) {
+        $scope.AimsProjectsDrpSrc = result.data.AimsProjectsDrpSrc;
 
-            $scope.AimsProjectsDrpSrc.push({ ProjectId: projects[i].ProjectId, Title: projects[i].Title });
+        //for (var i = 0; i < projects.length; i++) {
 
-        }
+        //    $scope.AimsProjectsDrpSrc.push({ ProjectId: projects[i].ProjectId, Title: projects[i].Title });
+        //}
 
-        $scope.AimsProjectsDrpSrc.push({ ProjectId: -2, Title: 'Create New' });
+        //for (var i = 0; i < matchedProjects.length; i++) {
+        //    $scope.AimsProjectsDrpSrc.push({ ProjectId: matchedProjects[i].aimsProject.ProjectId, Title: matchedProjects[i].aimsProject.Title });
+        //}
+
+        $scope.AimsProjectsDrpSrc.push({ ID: -2, Name: 'Create New' });
 
         $rootScope.models = $scope.models = result.data;
 

@@ -299,7 +299,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             Sessions.CurrentStage = Stage.ShowProjects;
 
-            return ToMinifiedProjectMapModel(returnResult);
+            var r = ToMinifiedProjectMapModel(returnResult);
+
+            r.AimsProjectsDrpSrc = (from p in AimsProjects
+                                   select new LookupItem {
+                                       ID = p.ProjectId,
+                                       Name = p.Title
+                                   }).ToList();
+            return r;
         }
 
         #endregion
@@ -321,31 +328,22 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             //actual method starts here :)
 
             //add manually matched projects
-            var aimsProjects = Sessions.ProjectMapModel?.AimsProjectsNotInIati;
+            var aimsProjects = Sessions.activitiesContainer?.AimsProjects;
             var iatiActivities = Sessions.ProjectMapModel?.IatiActivitiesNotInAims;
             foreach (var project in aimsProjects)
             {
                 var mappedActivityCount = iatiActivities.Count(c => c.ProjectId == project.ProjectId);
-                if (mappedActivityCount== 1)
+                if (mappedActivityCount == 1)
                 {
-                    Sessions.ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(iatiActivities.Find(c => c.ProjectId == project.ProjectId), project) { IsManuallyMapped = true });
+                    var m = new ProjectFieldMapModel(iatiActivities.Find(c => c.ProjectId == project.ProjectId), project, false) { IsManuallyMapped = true };
+
+                    Sessions.ProjectMapModel.MatchedProjects.Add(m);
 
                 }
                 else if (mappedActivityCount > 1)
                 {
-                    var groupedActivity = new iatiactivity();
-                    var trns = new List<transaction>();
-                    var bgts = new List<budget>();
-                    var plnDis = new List<planneddisbursement>();
+                    iatiactivity groupedActivity = MergeToSingleActivity(iatiActivities.FindAll(c => c.ProjectId == project.ProjectId));
 
-                    foreach (var activity in iatiActivities.FindAll(c => c.ProjectId == project.ProjectId))
-                    {
-                        trns.AddRange(activity.transaction);
-                        bgts.AddRange(activity.budget);
-                        plnDis.AddRange(activity.planneddisbursement);
-                    }
-
-                    groupedActivity.transaction = trns.ToArray();
                     Sessions.ProjectMapModel.MatchedProjects.Add(new ProjectFieldMapModel(groupedActivity, project, false) { IsManuallyMapped = true, IsGrouped = true });
 
                 }
@@ -373,6 +371,27 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             }
 
             return true;
+        }
+
+        private static iatiactivity MergeToSingleActivity(List<iatiactivity> iatiActivities)
+        {
+            var groupedActivity = new iatiactivity();
+
+            var trns = new List<transaction>();
+            var bgts = new List<budget>();
+            var plnDis = new List<planneddisbursement>();
+
+            foreach (var activity in iatiActivities)
+            {
+                trns.AddRange(activity.transaction);
+                bgts.AddRange(activity.budget);
+                plnDis.AddRange(activity.planneddisbursement);
+            }
+            groupedActivity.transaction = trns.ToArray();
+            groupedActivity.budget = bgts.ToArray();
+            groupedActivity.planneddisbursement = plnDis.ToArray();
+
+            return groupedActivity;
         }
 
         //unused method > used for drag and drop before

@@ -1,4 +1,5 @@
 ﻿using AIMS_BD_IATI.DAL;
+using AIMS_BD_IATI.Library;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace AIMS_DB_IATI.WebAPI.Models.IATIImport
         public List<iatiactivityModel> AimsProjectsNotInIati { get; set; }
         public List<iatiactivityModel> NewProjectsToAddInAims { get; set; }
         public List<iatiactivityModel> ProjectsOwnedByOther { get; set; }
-
+        public List<LookupItem> AimsProjectsDrpSrc { get; internal set; }
     }
 
 }
