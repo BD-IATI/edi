@@ -374,7 +374,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             return true;
         }
 
-        //unused method
+        //unused method > used for drag and drop before
         [AcceptVerbs("GET", "POST")]
         public bool SubmitManualMatching(ProjectMapModel projectMapModel)
         {
@@ -560,6 +560,25 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             return ProjectFieldMapModel;
         }
 
+        [AcceptVerbs("GET", "POST")]
+        public int? UpdateTransactionByForce(Log log)
+        {
+            ProjectFieldMapModel ProjectFieldMapModel = aimsDbIatiDAL.GetTransactionMismatchedActivity(log.IatiIdentifier);
+
+            var margedProjects = ImportLogic.MergeProjects(new List<ProjectFieldMapModel> { ProjectFieldMapModel });
+
+            log.IsActive = false;
+            aimsDbIatiDAL.UpdateLog(log);
+            return aimsDAL.UpdateProjects(margedProjects, Sessions.UserId, false);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public int? SetIgnoreActivity(Log log)
+        {
+            log.IsActive = false;
+            aimsDbIatiDAL.UpdateLog(log);
+            return aimsDbIatiDAL.SetIgnoreActivity(log.IatiIdentifier);
+        }
         private static IEnumerable<iatiactivity> GetMatchedProjects(List<iatiactivity> relevantActivies, List<iatiactivity> AimsProjects)
         {
             Sessions.CurrentStage = Stage.MatchProjects;

@@ -242,7 +242,16 @@ namespace AIMS_BD_IATI.DAL
 
             return dbContext.SaveChanges();
         }
+        public int SetIgnoreActivity(string iatiIdentifier)
+        {
+                var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == iatiIdentifier);
+                if (a != null)
+                {
+                    a.IsIgnore = true;
+                }
 
+            return dbContext.SaveChanges();
+        }
         #endregion Save and Update Activites
 
         #region Get Activities
@@ -332,7 +341,7 @@ namespace AIMS_BD_IATI.DAL
         {
             var q = (from a in dbContext.Activities
                      let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
-                     where a.AssignedOrgId == dp && isNotMapped
+                     where a.AssignedOrgId == dp && isNotMapped && a.IsIgnore != true
                      orderby a.IatiIdentifier
                      select new ActivityModel
                      {
@@ -389,18 +398,14 @@ namespace AIMS_BD_IATI.DAL
                 aimsTransaction.IsConflicted = !isFoundInIati;
             }
 
-            return new ProjectFieldMapModel
-            {
-                iatiActivity = iatiActivity,
-                aimsProject = aimsProject,
-            };
+            return new ProjectFieldMapModel(iatiActivity,aimsProject);
         }
 
         private List<iatiactivity> GetNotMappedAimsProjects(string dp)
         {
             var mappedProjectIds = (from a in dbContext.Activities
                                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
-                                    where a.AssignedOrgId == dp && isMapped
+                                    where a.AssignedOrgId == dp && isMapped && a.IsIgnore != true
                                     select (a.ProjectId > 0 ? a.ProjectId :
                                     a.MappedProjectId > 0 ? a.MappedProjectId :
                                     a.MappedTrustFundId)).ToList();
@@ -729,7 +734,7 @@ namespace AIMS_BD_IATI.DAL
         {
             Log lastLog = dbContext.Logs.Where(w => w.OrgId == dp).OrderByDescending(o => o.Id).FirstOrDefault();
             DateTime lastDate = lastLog.n().DateTime.n().Value.Date;
-            var logs = dbContext.Logs.Where(w => w.OrgId == dp && w.DateTime >= lastDate).ToList();
+            var logs = dbContext.Logs.Where(w => w.OrgId == dp && w.DateTime >= lastDate && w.IsActive == true).ToList();
 
             return logs;
         }
@@ -741,6 +746,20 @@ namespace AIMS_BD_IATI.DAL
             using (var db = new AIMS_DB_IATIEntities())
             {
                 dbContext.Logs.Add(log);
+                return db.SaveChanges();
+            }
+        }
+        public int UpdateLog(Log log)
+        {
+            using (var db = new AIMS_DB_IATIEntities())
+            {
+                var ll = db.Logs.Where(f => f.LogType == log.LogType && f.IatiIdentifier == log.IatiIdentifier);
+
+                foreach (var item in ll)
+                {
+                    item.IsActive = log.IsActive;
+                }
+
                 return db.SaveChanges();
             }
         }

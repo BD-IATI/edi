@@ -46,7 +46,7 @@
                             <div class="col-sm-12">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                        <input type="radio" ng-model="ActionType" name="optionsRadios" id="optionsRadios1" value="option1" checked>
                                         Remove unmatched transactions from AIMS and stay up to date
                                         with IATI data
                                     </label>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <button type="submit" class="btn btn-warning">Resolve conflict &raquo;</button>
+                                <button ng-click="resolve()" class="btn btn-warning">Resolve conflict &raquo;</button>
                             </div>
                         </div>
                     </div>

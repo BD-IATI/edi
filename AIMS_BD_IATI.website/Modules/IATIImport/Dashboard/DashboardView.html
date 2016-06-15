@@ -108,7 +108,7 @@
                             <tr ng-repeat="log in model.FinancialDataMismatchedLogs | limitTo:5">
                                 <td ng-bind="log.DateTime | date:'yyyy-MM-dd'"></td>
                                 <td><span ng-bind="log.Message"></span> <code ng-bind="log.IatiIdentifier"></code></td>
-                                <td><a class="btn btn-default btn-sm" ng-click="OpenMergeConflictAlert(log.IatiIdentifier)">Resolve &raquo;</a></td>
+                                <td><a class="btn btn-default btn-sm" ng-click="OpenMergeConflictAlert(log)">Resolve &raquo;</a></td>
                             </tr>
                         </tbody>
                     </table>

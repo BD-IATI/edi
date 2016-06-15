@@ -147,16 +147,6 @@ namespace AIMS_DB_IATI.WebAPI.Models
                 SaveSession(value, UserId + DP.ID + MethodBase.GetCurrentMethod().Name.Substring(3));
             }
 
-            //get
-            //{
-            //    var id = UserId + MethodBase.GetCurrentMethod().Name.Substring(3);
-            //    return (HeirarchyModel)HttpContext.Current.Session[id];
-            //}
-            //set
-            //{
-            //    var id = UserId + MethodBase.GetCurrentMethod().Name.Substring(3);
-            //    HttpContext.Current.Session[id] = value;
-            //}
         }
 
         public static FilterBDModel filterBDModel
