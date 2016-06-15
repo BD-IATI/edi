@@ -104,9 +104,6 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
-    <Content Include="Raven.Studio.Html5.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Service References\AIMSSecurityService\AIMSUserManagementService.wsdl" />
     <None Include="Service References\AIMSSecurityService\AIMSUserManagementService.xsd">
       <SubType>Designer</SubType>
@@ -175,8 +172,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="TextFile1.txt" />
-    <Content Include="TextFile2.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
