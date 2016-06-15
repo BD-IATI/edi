@@ -22,5 +22,6 @@ namespace AIMS_BD_IATI.DAL
         public string Message { get; set; }
         public string ExceptionObj { get; set; }
         public Nullable<System.DateTime> DateTime { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     }
 }

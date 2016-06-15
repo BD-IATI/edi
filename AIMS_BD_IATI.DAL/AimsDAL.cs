@@ -294,7 +294,7 @@ namespace AIMS_BD_IATI.DAL
         #endregion TrustFund
 
         #region Update Projects
-        public int? UpdateProjects(List<iatiactivity> projects, string Iuser)
+        public int? UpdateProjects(List<iatiactivity> projects, string Iuser, bool checkMismatch = true)
         {
             var aimsCurrencies = from c in dbContext.tblCurrencies
                                  select new CurrencyLookupItem { Id = c.Id, IATICode = c.IATICode };
@@ -359,7 +359,7 @@ namespace AIMS_BD_IATI.DAL
                         // first check isFinancialDataMismathed
                         foreach (var MatchedProject in mergedproject.MatchedProjects)
                         {
-                            isFinancialDataMismathed = CheckTransactionMismatch(p, MatchedProject);
+                            isFinancialDataMismathed = CheckTransactionMismatch(p, MatchedProject, checkMismatch);
                             if (isFinancialDataMismathed) break;
                         }
                         //if Financial Data are Mismathed then continue with next project
@@ -377,180 +377,182 @@ namespace AIMS_BD_IATI.DAL
                         }
                     }
 
-                    isFinancialDataMismathed = CheckTransactionMismatch(p, mergedproject);
+                    isFinancialDataMismathed = CheckTransactionMismatch(p, mergedproject,checkMismatch);
                     if (isFinancialDataMismathed) continue;
 
                     DeleteTransactions(p, mergedproject);
 
                     UpdateTransactions(Iuser, aimsCurrencies, aimsAidCategories, defaultfinancetype, p, mergedproject);
 
-                    //we need to place this region at bottom due to checking isFinancialDataMismatched
-                    #region Other Fields
-                    p.Title = mergedproject.Title;
-                    p.Objective = mergedproject.Description;
-
-                    #region Document
-                    if (mergedproject.documentlink != null)
+                    if (checkMismatch)
                     {
-                        foreach (var document in mergedproject.documentlink)
+                        //we need to place this region at bottom due to checking isFinancialDataMismatched
+                        #region Other Fields
+                        p.Title = mergedproject.Title;
+                        p.Objective = mergedproject.Description;
+
+                        #region Document
+                        if (mergedproject.documentlink != null)
                         {
-
-                            var docTitle = document.title?.narrative.n(0).Value;
-                            var attachment = p.tblProjectAttachments.FirstOrDefault(f => f.AttachmentTitle == docTitle);
-
-                            if (attachment == null)
+                            foreach (var document in mergedproject.documentlink)
                             {
-                                attachment = new tblProjectAttachment();
-                                p.tblProjectAttachments.Add(attachment);
-                            }
 
-                            var docCatCode = document.category.n(0).code;
-                            var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == docCatCode);
+                                var docTitle = document.title?.narrative.n(0).Value;
+                                var attachment = p.tblProjectAttachments.FirstOrDefault(f => f.AttachmentTitle == docTitle);
 
-                            attachment.DocumentCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.OrderBy(o => o.Id).FirstOrDefault().Id;
-
-                            attachment.AttachmentTitle = docTitle;
-                            attachment.AttachmentFileURL = document.url;
-                            attachment.IUser = Iuser;
-                            attachment.IDate = DateTime.Now;
-                        }
-                    }
-                    #endregion
-
-                    #region Aid Type
-
-                    var AssistanceType = dbContext.tblAssistanceTypes.FirstOrDefault(f => f.IATICode.Contains(mergedproject.AidTypeCode));
-                    p.AssistanceTypeId = AssistanceType != null ? AssistanceType.Id : dbContext.tblAssistanceTypes.FirstOrDefault().Id;
-
-                    var ProjectType = dbContext.tblProjectTypes.FirstOrDefault(f => f.IATICode.Contains(mergedproject.AidTypeCode));
-                    p.ProjectTypeId = ProjectType != null ? ProjectType.Id : dbContext.tblProjectTypes.FirstOrDefault().Id;
-
-                    #endregion
-
-                    #region Dates
-                    p.AgreementSignDate = mergedproject.ActualStartDate == default(DateTime) ? mergedproject.PlannedStartDate.ToSqlDateTime() : mergedproject.ActualStartDate;
-                    p.PlannedProjectStartDate = mergedproject.PlannedStartDate.ToSqlDateTimeNull();
-                    p.ActualProjectStartDate = mergedproject.ActualStartDate.ToSqlDateTimeNull();
-                    p.PlannedProjectCompletionDate = mergedproject.PlannedEndDate.ToSqlDateTimeNull();
-                    p.RevisedProjectCompletionDate = mergedproject.ActualEndDate.ToSqlDateTimeNull();
-
-                    #endregion
-
-                    #region Status
-                    var statusCode = mergedproject.activitystatus?.code;
-                    var ImplementationStatus = dbContext.tblImplementationStatus.FirstOrDefault(f => f.IATICode.Contains(statusCode));
-
-                    p.ImplementationStatusId = ImplementationStatus == null ? default(int?) : ImplementationStatus.Id;
-
-                    #endregion
-
-                    #region Sector
-                    if (mergedproject.sector != null)
-                    {
-                        var totalPercentage = mergedproject.sector.Sum(s => s.percentage); // to prevent percentage being greater than 100
-                        foreach (var sector in mergedproject.sector)
-                        {
-                            if (sector.vocabulary == "1" || sector.vocabulary == "2")
-                            {
-                                var aimsSector = dbContext.tblSectors.FirstOrDefault(f => f.IATICode == sector.code);
-                                var aimsSubsector = dbContext.tblSubSectors.FirstOrDefault(f => f.IATICode == sector.code);
-
-                                var sectorId = aimsSector != null ?
-                                    aimsSector.Id : aimsSubsector != null ?
-                                    aimsSubsector.SectorId : 0;
-
-                                if (sectorId > 0)
+                                if (attachment == null)
                                 {
-                                    var SubsectorId = aimsSubsector != null ? aimsSubsector.Id : 0;
+                                    attachment = new tblProjectAttachment();
+                                    p.tblProjectAttachments.Add(attachment);
+                                }
 
-                                    var psector = p.tblProjectSectoralAllocations.FirstOrDefault(f => f.SectorId == sectorId && f.SubSectorId == SubsectorId);
+                                var docCatCode = document.category.n(0).code;
+                                var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == docCatCode);
 
-                                    if (psector == null)
+                                attachment.DocumentCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.OrderBy(o => o.Id).FirstOrDefault().Id;
+
+                                attachment.AttachmentTitle = docTitle;
+                                attachment.AttachmentFileURL = document.url;
+                                attachment.IUser = Iuser;
+                                attachment.IDate = DateTime.Now;
+                            }
+                        }
+                        #endregion
+
+                        #region Aid Type
+
+                        var AssistanceType = dbContext.tblAssistanceTypes.FirstOrDefault(f => f.IATICode.Contains(mergedproject.AidTypeCode));
+                        p.AssistanceTypeId = AssistanceType != null ? AssistanceType.Id : dbContext.tblAssistanceTypes.FirstOrDefault().Id;
+
+                        var ProjectType = dbContext.tblProjectTypes.FirstOrDefault(f => f.IATICode.Contains(mergedproject.AidTypeCode));
+                        p.ProjectTypeId = ProjectType != null ? ProjectType.Id : dbContext.tblProjectTypes.FirstOrDefault().Id;
+
+                        #endregion
+
+                        #region Dates
+                        p.AgreementSignDate = mergedproject.ActualStartDate == default(DateTime) ? mergedproject.PlannedStartDate.ToSqlDateTime() : mergedproject.ActualStartDate;
+                        p.PlannedProjectStartDate = mergedproject.PlannedStartDate.ToSqlDateTimeNull();
+                        p.ActualProjectStartDate = mergedproject.ActualStartDate.ToSqlDateTimeNull();
+                        p.PlannedProjectCompletionDate = mergedproject.PlannedEndDate.ToSqlDateTimeNull();
+                        p.RevisedProjectCompletionDate = mergedproject.ActualEndDate.ToSqlDateTimeNull();
+
+                        #endregion
+
+                        #region Status
+                        var statusCode = mergedproject.activitystatus?.code;
+                        var ImplementationStatus = dbContext.tblImplementationStatus.FirstOrDefault(f => f.IATICode.Contains(statusCode));
+
+                        p.ImplementationStatusId = ImplementationStatus == null ? default(int?) : ImplementationStatus.Id;
+
+                        #endregion
+
+                        #region Sector
+                        if (mergedproject.sector != null)
+                        {
+                            var totalPercentage = mergedproject.sector.Sum(s => s.percentage); // to prevent percentage being greater than 100
+                            foreach (var sector in mergedproject.sector)
+                            {
+                                if (sector.vocabulary == "1" || sector.vocabulary == "2")
+                                {
+                                    var aimsSector = dbContext.tblSectors.FirstOrDefault(f => f.IATICode == sector.code);
+                                    var aimsSubsector = dbContext.tblSubSectors.FirstOrDefault(f => f.IATICode == sector.code);
+
+                                    var sectorId = aimsSector != null ?
+                                        aimsSector.Id : aimsSubsector != null ?
+                                        aimsSubsector.SectorId : 0;
+
+                                    if (sectorId > 0)
                                     {
-                                        psector = new tblProjectSectoralAllocation();
-                                        p.tblProjectSectoralAllocations.Add(psector);
+                                        var SubsectorId = aimsSubsector != null ? aimsSubsector.Id : 0;
+
+                                        var psector = p.tblProjectSectoralAllocations.FirstOrDefault(f => f.SectorId == sectorId && f.SubSectorId == SubsectorId);
+
+                                        if (psector == null)
+                                        {
+                                            psector = new tblProjectSectoralAllocation();
+                                            p.tblProjectSectoralAllocations.Add(psector);
+                                        }
+                                        psector.SectorId = sectorId;
+                                        psector.SubSectorId = SubsectorId;
+                                        psector.TotalCommitmentPercent = sector.percentage.ToPercent(totalPercentage);
                                     }
-                                    psector.SectorId = sectorId;
-                                    psector.SubSectorId = SubsectorId;
-                                    psector.TotalCommitmentPercent = sector.percentage.ToPercent(totalPercentage);
                                 }
                             }
                         }
-                    }
-                    #endregion
+                        #endregion
 
-                    #region Location
-                    if (mergedproject.location != null)
-                    {
-                        foreach (var location in mergedproject.location)
+                        #region Location
+                        if (mergedproject.location != null)
                         {
-                            GeoLocation nearestGeoLocation = null;
-                            var administrative = location.administrative?.FirstOrDefault();
-                            if (administrative != null && administrative.vocabulary == "G1")
+                            foreach (var location in mergedproject.location)
                             {
-                                if (administrative.level == "1")
+                                GeoLocation nearestGeoLocation = null;
+                                var administrative = location.administrative?.FirstOrDefault();
+                                if (administrative != null && administrative.vocabulary == "G1")
                                 {
-                                    nearestGeoLocation = GetNearestGeoLocation(divisions, location);
-                                }
-                                else if (administrative.level == "2")
-                                {
+                                    if (administrative.level == "1")
+                                    {
+                                        nearestGeoLocation = GetNearestGeoLocation(divisions, location);
+                                    }
+                                    else if (administrative.level == "2")
+                                    {
 
+                                        nearestGeoLocation = GetNearestGeoLocation(districts, location);
+                                    }
+                                    else if (administrative.level == "3")
+                                    {
+
+                                        nearestGeoLocation = GetNearestGeoLocation(upazilas, location);
+                                    }
+                                }
+                                else
+                                {
                                     nearestGeoLocation = GetNearestGeoLocation(districts, location);
                                 }
-                                else if (administrative.level == "3")
+
+                                var aimsProjectLocation = p.tblProjectGeographicAllocations.FirstOrDefault(f => f.DivisionId == nearestGeoLocation.DivisionId && f.DistrictId == nearestGeoLocation.DistrictId && f.UpazilaId == nearestGeoLocation.UpazilaId);
+
+                                if (aimsProjectLocation == null)
                                 {
+                                    aimsProjectLocation = new tblProjectGeographicAllocation();
+                                    aimsProjectLocation.DistrictId = nearestGeoLocation.DivisionId;
+                                    aimsProjectLocation.DistrictId = nearestGeoLocation.DistrictId;
+                                    aimsProjectLocation.UpazilaId = nearestGeoLocation.UpazilaId;
 
-                                    nearestGeoLocation = GetNearestGeoLocation(upazilas, location);
+                                    p.tblProjectGeographicAllocations.Add(aimsProjectLocation);
                                 }
+
+                                aimsProjectLocation.TotalCommitmentPercentForDistrict = 100 / mergedproject.location.Count();
+
                             }
-                            else
-                            {
-                                nearestGeoLocation = GetNearestGeoLocation(districts, location);
-                            }
-
-                            var aimsProjectLocation = p.tblProjectGeographicAllocations.FirstOrDefault(f => f.DivisionId == nearestGeoLocation.DivisionId && f.DistrictId == nearestGeoLocation.DistrictId && f.UpazilaId == nearestGeoLocation.UpazilaId);
-
-                            if (aimsProjectLocation == null)
-                            {
-                                aimsProjectLocation = new tblProjectGeographicAllocation();
-                                aimsProjectLocation.DistrictId = nearestGeoLocation.DivisionId;
-                                aimsProjectLocation.DistrictId = nearestGeoLocation.DistrictId;
-                                aimsProjectLocation.UpazilaId = nearestGeoLocation.UpazilaId;
-
-                                p.tblProjectGeographicAllocations.Add(aimsProjectLocation);
-                            }
-
-                            aimsProjectLocation.TotalCommitmentPercentForDistrict = 100 / mergedproject.location.Count();
-
                         }
-                    }
-                    #endregion
+                        #endregion
 
-                    #region Executing Agency
-                    if (mergedproject.ImplementingOrgs.IsNotEmpty())
-                    {
-                        foreach (var ImplementingOrg in mergedproject.ImplementingOrgs)
+                        #region Executing Agency
+                        if (mergedproject.ImplementingOrgs.IsNotEmpty())
                         {
-
-                            var executingAgency = p.tblProjectExecutingAgencies.FirstOrDefault(f => f.ExecutingAgencyOrganizationId == ImplementingOrg.ExecutingAgencyOrganizationId);
-
-                            if (executingAgency == null)
+                            foreach (var ImplementingOrg in mergedproject.ImplementingOrgs)
                             {
-                                executingAgency = new tblProjectExecutingAgency { ExecutingAgencyOrganizationId = ImplementingOrg.ExecutingAgencyOrganizationId };
 
-                                p.tblProjectExecutingAgencies.Add(executingAgency);
+                                var executingAgency = p.tblProjectExecutingAgencies.FirstOrDefault(f => f.ExecutingAgencyOrganizationId == ImplementingOrg.ExecutingAgencyOrganizationId);
+
+                                if (executingAgency == null)
+                                {
+                                    executingAgency = new tblProjectExecutingAgency { ExecutingAgencyOrganizationId = ImplementingOrg.ExecutingAgencyOrganizationId };
+
+                                    p.tblProjectExecutingAgencies.Add(executingAgency);
+                                }
+
+                                executingAgency.ExecutingAgencyTypeId = ImplementingOrg.ExecutingAgencyTypeId.Value;
+
+                                executingAgency.ExecutingAgencyOrganizationTypeId = ImplementingOrg.ExecutingAgencyOrganizationTypeId;
+
                             }
-
-                            executingAgency.ExecutingAgencyTypeId = ImplementingOrg.ExecutingAgencyTypeId.Value;
-
-                            executingAgency.ExecutingAgencyOrganizationTypeId = ImplementingOrg.ExecutingAgencyOrganizationTypeId;
-
                         }
+                        #endregion
+
+                        #endregion
                     }
-                    #endregion
-
-                    #endregion
-
                     dbContext.SaveChanges();
 
                     mergedproject.ProjectId = p.Id;
@@ -844,8 +846,10 @@ namespace AIMS_BD_IATI.DAL
             }
         }
 
-        private bool CheckTransactionMismatch(tblProjectInfo p, iatiactivity MatchedProject)
+        private bool CheckTransactionMismatch(tblProjectInfo p, iatiactivity MatchedProject, bool checkMismatch = true)
         {
+            if (!checkMismatch) return false;
+            
             bool isFinancialDataMismathed = false;
             #region Commitments
             if (MatchedProject.IsCommitmentIncluded)
