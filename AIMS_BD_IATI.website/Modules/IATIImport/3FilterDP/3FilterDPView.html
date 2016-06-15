@@ -27,7 +27,8 @@
                                     organisations to those already captured in the AIMS.
                                     For each organisation listed below:
                                 </p>
-                                <p class="lead"><strong>Firstly</strong>,
+                                <p class="lead">
+                                    <strong>Firstly</strong>,
                                     click the green buttons to determine
                                     what type of organisation it is (Bangladesh
                                     Government, DP, or NGO/private sector). If it's not a specific
@@ -36,22 +37,25 @@
                                     <code>INTERNATIONAL NGO</code> or
                                     <code>OTHER</code>) then select
                                     <a class="btn btn-warning btn-xs">Unknown</a>.
-                                  </p>
-                                <p class="lead"><strong>Secondly</strong>,
-                                  click the drop-down box to select a
-                                  specific organisation. If the organisation
-                                  is not listed, click
-                                  <a class="btn btn-primary btn-xs">New</a> to
-                                  create a new organisation.
                                 </p>
-                                <p class="lead">We've tried to do this
-                                  automatically, where possible, but please
-                                  check the answers carefully.</p>
+                                <p class="lead">
+                                    <strong>Secondly</strong>,
+                                    click the drop-down box to select a
+                                    specific organisation. If the organisation
+                                    is not listed, click
+                                    <a class="btn btn-primary btn-xs">New</a> to
+                                    create a new organisation.
+                                </p>
+                                <p class="lead">
+                                    We've tried to do this
+                                    automatically, where possible, but please
+                                    check the answers carefully.
+                                </p>
                                 <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th st-sort="narrative[0].Value">Org name</th>
-                                            <th st-sort="ExecutingAgencyTypeId"  style="width:33%;">Org type</th>
+                                            <th st-sort="ExecutingAgencyTypeId" style="width:33%;">Org type</th>
                                             <th st-sort="AllID">Select organisation</th>
                                         </tr>
                                     </thead>
@@ -84,7 +88,8 @@
                                                             <option value="">Select one/Unclear</option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-sm-2 NoPadding" style="height:100%"> <!--ng-hide="org.AllID"-->
+                                                    <div class="col-sm-2 NoPadding" style="height:100%">
+                                                        <!--ng-hide="org.AllID"-->
                                                         <button class="btn btn-primary" ng-click="AddNewImplementingOrg(org)">New</button>
                                                     </div>
                                                 </div>
@@ -129,7 +134,7 @@
                                             <th st-sort="Title" style="min-width:200px">
                                                 Project Title
                                             </th>
-                                            <th>Implementing organisation</th>
+                                            <th style="width:33%;">Implementing organisation</th>
                                             <th>Managed by</th>
                                         </tr>
                                     </thead>
@@ -139,13 +144,14 @@
                                             <td><code>{{activity.IatiIdentifier}}</code></td>
                                             <td>{{activity.Title}}</td>
                                             <td>
-                                                <div ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
-                                                    {{ImplementingOrg.Name}}
-                                                </div>
+                                                <!--<code ng-bind="ImplementingOrg.ref" title="{ImplementingOrg.Name}}"></code>-->
+                                                <p ng-repeat="ImplementingOrg in activity.ImplementingOrgs" >
+                                                <span ng-bind="ImplementingOrg.AimsName" style="margin-bottom:2px; margin-right:2px;" class="label label-warning"></span>
+                                                </p>
                                             </td>
                                             <td>
                                                 <div class="form-group">
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12" ng-class="{'has-error':activity.ImplementingOrgs.length>1}">
                                                         <select class="form-control" ng-change="onFundSourceChanged()"
                                                                 ng-model="activity.AllID"
                                                                 ng-options="item.AllID as item.Name for item in FundSources">

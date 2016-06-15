@@ -1,5 +1,6 @@
 /// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+/// <reference path="../iatiimportapp.ts" />
 angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModal) {
     $('#divView').slimScroll({ scrollTo: '0px' });
     $scope.ImplementingOrgs = [];
