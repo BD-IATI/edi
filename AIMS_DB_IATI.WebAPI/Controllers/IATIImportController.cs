@@ -234,21 +234,22 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 projectsImpOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e =>
                 {
                     e.AllID = iOrg.AllID;
-                    var aimsName = Sessions.iOrgs.ExecutingAgencies.FirstOrDefault(f => f.AllID == iOrg.AllID)?.Name;
+                    var aimsName = Sessions.iOrgs.ExecutingAgencies.FirstOrDefault(f => f.AllID != Sessions.DP.AllID && f.AllID == iOrg.AllID)?.Name;
                     e.AimsName = aimsName;
                 });
                 projectsImpOrgs.FindAll(f => f.Name == iOrg.Name).ForEach(e =>
                 {
                     e.AllID = iOrg.AllID;
-                    var aimsName = Sessions.iOrgs.ExecutingAgencies.FirstOrDefault(f => f.AllID == iOrg.AllID)?.Name;
+
+                    var aimsName = Sessions.iOrgs.ExecutingAgencies.FirstOrDefault(f =>f.AllID != Sessions.DP.AllID &&  f.AllID == iOrg.AllID)?.Name;
                     e.AimsName = aimsName;
                 });
             }
 
             relevantActivities?.ForEach(e =>
             {
-                if (string.IsNullOrWhiteSpace(e.AllID) || !Sessions.iOrgs.FundSources.Exists(d=>d.AllID == e.AllID)) e.AllID = Sessions.DP.AllID;
-                
+                if (string.IsNullOrWhiteSpace(e.AllID) || !Sessions.iOrgs.FundSources.Exists(d => d.AllID == e.AllID)) e.AllID = Sessions.DP.AllID;
+
             });
 
             Sessions.CurrentStage = Stage.FilterDP;
