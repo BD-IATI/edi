@@ -341,7 +341,7 @@ namespace AIMS_BD_IATI.DAL
         {
             var q = (from a in dbContext.Activities
                      let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
-                     where a.AssignedOrgId == dp && isNotMapped && a.IsIgnore != true
+                     where a.OrgId == dp && a.AssignedOrgId == dp && isNotMapped && a.IsIgnore != true
                      orderby a.IatiIdentifier
                      select new ActivityModel
                      {
