@@ -244,11 +244,23 @@ namespace AIMS_BD_IATI.DAL
         }
         public int SetIgnoreActivity(string iatiIdentifier)
         {
-                var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == iatiIdentifier);
-                if (a != null)
-                {
-                    a.IsIgnore = true;
-                }
+            var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == iatiIdentifier);
+            if (a != null)
+            {
+                a.IsIgnore = true;
+            }
+
+            return dbContext.SaveChanges();
+        }
+        public int UnMapActivity(string iatiIdentifier)
+        {
+            var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == iatiIdentifier);
+            if (a != null)
+            {
+                a.ProjectId = null;
+                a.MappedProjectId = null;
+                a.MappedTrustFundId = null;
+            }
 
             return dbContext.SaveChanges();
         }
@@ -336,34 +348,6 @@ namespace AIMS_BD_IATI.DAL
                 AimsProjects = aimsActivities
             };
         }
-
-        public iatiactivityContainer GetNotMappedActivities(string dp)
-        {
-            var q = (from a in dbContext.Activities
-                     let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
-                     where a.OrgId == dp && a.AssignedOrgId == dp && isNotMapped && a.IsIgnore != true
-                     orderby a.IatiIdentifier
-                     select new ActivityModel
-                     {
-                         IatiActivity = a.IatiActivity,
-                         OrgId = a.OrgId,
-                         ProjectId = a.ProjectId,
-                         MappedProjectId = a.MappedProjectId,
-                         MappedTrustFundId = a.MappedTrustFundId,
-                         IsInclude = a.IsInclude
-                     }).ToList();
-
-            var iatiActivities = ParseXMLAndResolve(q);
-
-            var aimsActivities = GetNotMappedAimsProjects(dp);
-
-            return new iatiactivityContainer
-            {
-                iatiActivities = iatiActivities,
-                AimsProjects = aimsActivities
-            };
-        }
-
         public ProjectFieldMapModel GetTransactionMismatchedActivity(string iatiIdentifier)
         {
             var q = (from a in dbContext.Activities
@@ -398,7 +382,34 @@ namespace AIMS_BD_IATI.DAL
                 aimsTransaction.IsConflicted = !isFoundInIati;
             }
 
-            return new ProjectFieldMapModel(iatiActivity,aimsProject);
+            return new ProjectFieldMapModel(iatiActivity, aimsProject);
+        }
+
+        public iatiactivityContainer GetNotMappedActivities(string dp)
+        {
+            var q = (from a in dbContext.Activities
+                     let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
+                     where a.OrgId == dp && a.AssignedOrgId == dp && isNotMapped && a.IsIgnore != true
+                     orderby a.IatiIdentifier
+                     select new ActivityModel
+                     {
+                         IatiActivity = a.IatiActivity,
+                         OrgId = a.OrgId,
+                         ProjectId = a.ProjectId,
+                         MappedProjectId = a.MappedProjectId,
+                         MappedTrustFundId = a.MappedTrustFundId,
+                         IsInclude = a.IsInclude
+                     }).ToList();
+
+            var iatiActivities = ParseXMLAndResolve(q);
+
+            var aimsActivities = GetNotMappedAimsProjects(dp);
+
+            return new iatiactivityContainer
+            {
+                iatiActivities = iatiActivities,
+                AimsProjects = aimsActivities
+            };
         }
 
         private List<iatiactivity> GetNotMappedAimsProjects(string dp)
@@ -412,6 +423,46 @@ namespace AIMS_BD_IATI.DAL
 
 
             var aimsActivities = new AimsDAL().GetNotMappedAIMSProjectsInIATIFormat(dp, mappedProjectIds);
+            return aimsActivities;
+        }
+
+        public iatiactivityContainer GetMappedActivities(string dp)
+        {
+            var q = (from a in dbContext.Activities
+                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 
+                     where a.OrgId == dp && a.AssignedOrgId == dp && isMapped && a.IsIgnore != true
+                     orderby a.IatiIdentifier
+                     select new ActivityModel
+                     {
+                         IatiActivity = a.IatiActivity,
+                         OrgId = a.OrgId,
+                         ProjectId = a.ProjectId,
+                         MappedProjectId = a.MappedProjectId,
+                         MappedTrustFundId = a.MappedTrustFundId,
+                         IsInclude = a.IsInclude
+                     }).ToList();
+
+            var iatiActivities = ParseXMLAndResolve(q);
+
+            var aimsActivities = GetMappedAimsProjects(dp);
+
+            return new iatiactivityContainer
+            {
+                iatiActivities = iatiActivities,
+                AimsProjects = aimsActivities
+            };
+        }
+
+        private List<iatiactivity> GetMappedAimsProjects(string dp)
+        {
+            var mappedProjectIds = (from a in dbContext.Activities
+                                    let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 
+                                    where a.AssignedOrgId == dp && isMapped && a.IsIgnore != true
+                                    select (a.ProjectId > 0 ? a.ProjectId :
+                                    a.MappedProjectId)).ToList();
+
+
+            var aimsActivities = new AimsDAL().GetMappedAIMSProjectsInIATIFormat(dp, mappedProjectIds);
             return aimsActivities;
         }
 

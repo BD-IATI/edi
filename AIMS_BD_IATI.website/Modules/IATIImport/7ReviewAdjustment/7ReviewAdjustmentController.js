@@ -73,6 +73,24 @@
         //});
     };
 
+    $scope.UnlinkProject = function (MatchedProject) {
+        
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/IATIImport/UnlinkProject',
+            data: JSON.stringify(MatchedProject)
+        }).success(function (result) {
+
+            var index = $scope.models.MatchedProjects.indexOf(MatchedProject, 0);
+            if (index > -1) {
+                $scope.models.MatchedProjects.splice(index, 1);
+            }
+
+        });
+
+
+    };
+
     $scope.ImportProjects = function () {
         $http({
             method: 'POST',

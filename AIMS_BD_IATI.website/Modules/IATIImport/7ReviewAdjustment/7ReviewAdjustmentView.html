@@ -10,30 +10,32 @@
                 three icons:
             </p>
             <dl class="dl-horizontal lead">
-              <dt>
-                  <a class="btn btn-danger"><i class="glyphicon glyphicon-asterisk"></i></a>
-              </dt>
-              <dd>financial data is
-                significantly different between IATI and the AIMS
-                (5% or greater) &ndash; you may wish to
-                check these projects in some detail before proceeding</dd>
-            </dl>
-            <dl class="dl-horizontal lead">
-              <dt>
-                <a class="btn btn-sm btn-default">
-                    <i class="glyphicon glyphicon-pencil"></i>
-                </a>
-              </dt>
-              <dd>click to adjust import preferences (whether data comes from IATI or AIMS) for this specific project</dd>
+                <dt>
+                    <a class="btn btn-danger"><i class="glyphicon glyphicon-asterisk"></i></a>
+                </dt>
+                <dd>
+                    financial data is
+                    significantly different between IATI and the AIMS
+                    (5% or greater) &ndash; you may wish to
+                    check these projects in some detail before proceeding
+                </dd>
             </dl>
             <dl class="dl-horizontal lead">
                 <dt>
-                  <a class="btn btn-sm btn-default">
-                      <i class="glyphicon glyphicon-usd"></i>
-                  </a>
+                    <a class="btn btn-sm btn-default">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+                </dt>
+                <dd>click to adjust import preferences (whether data comes from IATI or AIMS) for this specific project</dd>
+            </dl>
+            <dl class="dl-horizontal lead">
+                <dt>
+                    <a class="btn btn-sm btn-default">
+                        <i class="glyphicon glyphicon-usd"></i>
+                    </a>
                 </dt>
                 <dd>click to view a detailed breakdown of financial transactions for this project</dd>
-              </dl>
+            </dl>
             <p class="lead">
                 When you're ready, click the
                 <a class="btn btn-success">Import projects</a> button at the bottom of the page to
@@ -46,6 +48,7 @@
         .row-even {
             background: #e0e0e0;
         }
+
         hr {
             margin-top: 0px;
             margin-bottom: 0px;
@@ -57,9 +60,20 @@
         <div class="col-md-12" style="padding-bottom: 10px;">
             <h3>
                 <span class="label label-danger" ng-show="isDiffGT5(m)"><i class="glyphicon glyphicon-asterisk"></i></span> {{m.iatiActivity.Title}}
-                <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)"><i class="glyphicon glyphicon-pencil"></i></a>
-                <a class="btn btn-sm btn-default" ng-click="OpenTransactionDetail(m)"><i class="glyphicon glyphicon-usd"></i></a>
                 <span ng-show="m.IsManuallyMapped" style="float:right; font-size:small" class="alert-danger">Manually Mapped</span>
+                <span class="pull-right">
+                    <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)" title="Set project specific adjustment"><i class="glyphicon glyphicon-pencil"></i></a>
+                    <a class="btn btn-sm btn-default" ng-click="OpenTransactionDetail(m)" title="Show Transaction Details"><i class="glyphicon glyphicon-usd"></i></a>
+                    <button type="button" class="btn btn-sm btn-danger"
+                            popover-title="Do you want to unlink this project?"
+                            uib-popover-template="'confirmUnlinkPopoverTemplate.html'"
+                            popover-append-to-body="true"
+                            popover-trigger="focus"
+                            popover-placement="auto">
+
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </span>
             </h3>
 
             <commitmentvsdisbursmentchart aims-commitment="{{m.aimsProject.TotalCommitmentThisDPOnly}}"
@@ -78,9 +92,14 @@
         <div class="col-md-12" style="padding-bottom: 10px;">
             <h3>
                 <span class="label label-danger"><i class="glyphicon glyphicon-asterisk"></i></span> {{iatiActivity.Title}}
-
-                <a class="btn btn-sm btn-default" ng-click="OpenTransactionDetail({iatiActivity:iatiActivity})"><i class="glyphicon glyphicon-usd"></i></a>
                 <span style="float:right; font-size:small" class="alert-danger">New Project</span>
+
+                <span class="pull-right">
+
+                    <a class="btn btn-sm btn-default" ng-click="OpenTransactionDetail({iatiActivity:iatiActivity})"><i class="glyphicon glyphicon-usd"></i></a>
+
+                    <a class="btn btn-sm btn-danger" title="Unlink"><i class="glyphicon glyphicon-remove"></i></a>
+                </span>
             </h3>
 
             <commitmentvsdisbursmentchart aims-commitment="{{0}}"
@@ -95,6 +114,21 @@
     </div>
     <hr />
     <a ng-click="ImportProjects()" class="btn btn-success">Import projects</a>
-                        <a id="btnGoDashboard" hidden ng-href="#/Dashboard"></a>
+    <a id="btnGoDashboard" hidden ng-href="#/Dashboard"></a>
 
 </div>
+
+<script type="text/ng-template" id="confirmUnlinkPopoverTemplate.html">
+    <div>
+        <div>
+            This will not remove any data already entered to the AIMS,
+            and you will be able to re-link the project from the start.
+            However, it will remove all stored preferences about
+            how to handle this project.
+        </div>
+        <br />
+
+        <button type="button" ng-click="UnlinkProject(m)" class="btn btn-primary">Yes, please unlink this project</button>
+        <button type="button" class="btn btn-default">No, not right now</button>
+    </div>
+</script>

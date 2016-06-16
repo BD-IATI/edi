@@ -989,7 +989,28 @@ namespace AIMS_BD_IATI.DAL
 
             return iatiactivities;
         }
+        public List<iatiactivity> GetMappedAIMSProjectsInIATIFormat(string dp, List<int?> mappedProjectIds)
+        {
 
+            var projects = (from project in dbContext.tblProjectInfoes
+                            join fundSource in dbContext.tblFundSources on project.FundSourceId equals fundSource.Id
+                            let isIATIactivity = project.IatiIdentifier != null || project.IatiIdentifier.Length > 0 || project.DPProjectNo != null || project.DPProjectNo.Length > 0
+                            let isMapped = mappedProjectIds.Contains(project.Id)
+                            where fundSource.IATICode == dp
+                            && isIATIactivity && isMapped
+                            select project);
+
+            List<iatiactivity> iatiactivities = new List<iatiactivity>();
+
+            foreach (var project in projects)
+            {
+                var iatiActivityObj = ConvertAimsToIati(project);
+
+                iatiactivities.Add(iatiActivityObj);
+            }
+
+            return iatiactivities;
+        }
         public iatiactivity GetAIMSProjectInIATIFormat(int? projectId)
         {
             var prj = dbContext.tblProjectInfoes.FirstOrDefault(f => f.Id == projectId);

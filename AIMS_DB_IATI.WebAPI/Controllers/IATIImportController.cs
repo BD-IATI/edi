@@ -528,7 +528,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (Sessions.ProjectMapModel.MatchedProjects.IsEmpty() && Sessions.ProjectMapModel.NewProjectsToAddInAims.IsEmpty())
             {
 
-                Sessions.activitiesContainer = aimsDbIatiDAL.GetAllActivities(Sessions.DP.ID);
+                Sessions.activitiesContainer = aimsDbIatiDAL.GetMappedActivities(Sessions.DP.ID);
                 var heirarchyModel = CalculateHierarchyMatching();
 
                 var filterBDModel = SubmitHierarchy(heirarchyModel);
@@ -556,6 +556,21 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             return ToMinifiedProjectMapModel(returnResult);
         }
+
+        [HttpPost]
+        public bool UnlinkProject(ProjectFieldMapModelMinified matchedProject)
+        {
+            if (matchedProject != null)
+            {
+                var matchedProjects = Sessions.ProjectMapModel.MatchedProjects;
+
+                matchedProjects.RemoveAll(r => r.aimsProject.ProjectId == matchedProject.aimsProject.ProjectId && r.iatiActivity.IatiIdentifier == matchedProject.iatiActivity.IatiIdentifier);
+
+                aimsDbIatiDAL.UnMapActivity(matchedProject.iatiActivity.IatiIdentifier);
+            }
+            return true;
+        }
+
         #endregion
 
         #region Import
