@@ -132,21 +132,21 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
 
     $scope.GuessAgency = function (org, isFilterByType) {
         var IsNotFoundInAims = true;
+        var exAgencies = isFilterByType ? $filter('filter')($scope.ExecutingAgencies, { ExecutingAgencyTypeId: org.ExecutingAgencyTypeId }) : $scope.ExecutingAgencies;
+
         if (org['ref'] != null || org['ref'] != undefined) {
-            var exa = $filter('filter')($scope.ExecutingAgencies, { IATICode: org['ref'] });
+            var exa = $filter('filter')(exAgencies, { IATICode: org['ref'] });
             if (exa.length > 0) {
                 org.AllID = exa[0].AllID;
-                org.ExecutingAgencyTypeId = 2;//(int)ExecutingAgencyType.DP;
                 IsNotFoundInAims = false;
+                if (!isFilterByType) org.ExecutingAgencyTypeId = exa[0].ExecutingAgencyTypeId;
             }
-
         }
 
         if (IsNotFoundInAims) {
             //try to set executing agency
             var agencyGuessed = null;
             var minDistance = 1000;
-            var exAgencies = isFilterByType ? $filter('filter')($scope.ExecutingAgencies, { ExecutingAgencyTypeId: org.ExecutingAgencyTypeId }) : $scope.ExecutingAgencies;
             for (var i = 0; i < exAgencies.length; i++) {
                 var distance = $scope.getEditDistance(org.Name.toLowerCase(), exAgencies[i].Name.toLowerCase());
                 if (minDistance > distance) {

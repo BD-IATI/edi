@@ -73,8 +73,8 @@
                                                     </div>
                                                 </div>-->
                                                 <div class="btn-group">
-                                                    <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uncheckable ng-click="GuessAgency(org, true)">BD Govt.</label>
-                                                    <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uncheckable ng-click="GuessAgency(org, true)">DP</label>
+                                                    <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uib-uncheckable ng-click="GuessAgency(org, true)">BD Govt.</label>
+                                                    <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uib-uncheckable ng-click="GuessAgency(org, true)">DP</label>
                                                     <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO / Private</label>
                                                     <label class="btn btn-sm btn-warning" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Unknown</label>
                                                 </div>
@@ -82,14 +82,13 @@
                                             <td style="min-width:300px;">
                                                 <div class="row">
                                                     <div class="col-sm-9">
-                                                        <select class="form-control"
+                                                        <select ng-disabled="org.ExecutingAgencyTypeId == 4" class="form-control"
                                                                 ng-model="org.AllID"
                                                                 ng-options="item.AllID as item.Name for item in ExecutingAgencies | filter: {ExecutingAgencyTypeId: org.ExecutingAgencyTypeId}">
                                                             <option value="">Select one/Unclear</option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-sm-2 NoPadding" style="height:100%">
-                                                        <!--ng-hide="org.AllID"-->
+                                                    <div class="col-sm-2 NoPadding" ng-hide="org.ExecutingAgencyTypeId == 4" style="height:100%">
                                                         <button class="btn btn-primary" ng-click="AddNewImplementingOrg(org)">New</button>
                                                     </div>
                                                 </div>
