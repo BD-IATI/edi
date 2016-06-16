@@ -10,6 +10,7 @@ iatiDataImporterApp.config(function ($routeProvider) {
         .when('/restart', {
             controller: 'DashboardController',
             templateUrl: 'Dashboard/DashboardView.html'
+
         })
         .when('/:name*', {
             templateUrl: function (params) {
@@ -18,7 +19,7 @@ iatiDataImporterApp.config(function ($routeProvider) {
         })
         .otherwise({ redirectTo: '/login' });
 });
-iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http','$timeout',
+iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http', '$timeout',
     function ($rootScope, $location, $cookieStore, $http, $timeout) {
         $rootScope.IsImportFromOtherDP = false;
         $rootScope.location = $location;
@@ -34,9 +35,14 @@ iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http','$ti
             if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
                 $location.path('/login');
             }
-            else if ($location.path() == '/restart')
-            {
-                
+            else if ($location.path() == '/restart') {
+                $rootScope.hierarchyModel = null;
+                $rootScope.HasChildActivity = false;
+                $rootScope.hierarchyModel = null;
+                        $rootScope.filterBDModel = null;
+                        $rootScope.RelevantActivities = null;
+
+
                 $http({
                     method: 'POST',
                     url: apiprefix + '/api/Dashboard/RestartSession',
@@ -45,7 +51,7 @@ iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http','$ti
 
                 }).success(function (result) {
                     $timeout(function () {
-                            location.hash = '/Dashboard';
+                        location.hash = '/Dashboard';
                     });
 
                 });

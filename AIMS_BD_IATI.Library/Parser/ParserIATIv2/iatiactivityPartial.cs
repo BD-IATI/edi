@@ -30,6 +30,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public List<iatiactivity> AimsProjects { get; set; }
 
         public bool HasChildActivity { get { return iatiActivities.Exists(e => e.relatedactivity?.Count(r => r != null && r.type == "2") > 0); } }
+        public bool IsHierarchyLoaded { get; set; }
 
 
     }
@@ -619,7 +620,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                code = code.Trim();
+                code = code?.Trim();
                 if (code == "A01") return "General budget support";
                 else if (code == "A02") return "Sector budget support";
                 else if (code == "B01") return "Core support to NGOs, other private bodies, PPPs and research institutes";

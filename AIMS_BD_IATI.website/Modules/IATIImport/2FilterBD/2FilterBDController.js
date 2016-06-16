@@ -20,7 +20,11 @@
         data: JSON.stringify($rootScope.hierarchyModel),
         dataType: 'json'
     }).then(function (result) {
-        $rootScope.filterBDModel = $scope.model = result.data;
+        if (result.data != null)
+            $rootScope.filterBDModel = $scope.model = result.data;
+        else
+            $scope.model = $rootScope.filterBDModel;
+
         //$rootScope.hierarchyModel = null;
         //deferred.resolve(result);
     },

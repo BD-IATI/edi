@@ -1,8 +1,8 @@
 /// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../iatiimportapp.ts" />
 angular.module('iatiDataImporter').controller("1HierarchyController", function ($rootScope, $scope, $http, $timeout) {
-    $rootScope.hierarchyModel = null;
-    $rootScope.HasChildActivity = false;
+    //$rootScope.hierarchyModel = null;
+    //$rootScope.HasChildActivity = false;
     $('#divView').slimScroll({ scrollTo: '0px' });
     $http({
         method: 'POST',
@@ -26,6 +26,8 @@ angular.module('iatiDataImporter').controller("1HierarchyController", function (
             data: JSON.stringify($rootScope.getCookie('selectedFundSource'))
         }).success(function (result) {
             if (result == null || result == undefined) {
+                $rootScope.hierarchyModel = null;
+                $rootScope.HasChildActivity = false;
                 $timeout(function () {
                     document.getElementById('btn2FilterBD').click(); //redirect
                 });

@@ -134,6 +134,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public FilterBDModel SubmitHierarchy(HeirarchyModel heirarchyModel)
         {
+            if (Sessions.activitiesContainer.IsHierarchyLoaded == true)
+                return null;
+
             var returnResult = new FilterBDModel();
             heirarchyModel = heirarchyModel ?? Sessions.heirarchyModel;
             if (heirarchyModel == null)
@@ -153,7 +156,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                     Sessions.activitiesContainer.iatiActivities = ImportLogic.LoadH2ActivitiesWithParent(Sessions.activitiesContainer?.iatiActivities);
                     returnResult.iatiActivities = ToMinifiedIatiActivitiesModel(Sessions.activitiesContainer.iatiActivities);
                 }
-
+                Sessions.activitiesContainer.IsHierarchyLoaded = true;
             }
 
             returnResult.iatiActivities = returnResult.iatiActivities.OrderByDescending(k => k.IsRelevant).ToList();

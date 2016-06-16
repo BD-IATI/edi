@@ -35,6 +35,11 @@ iatiDataImporterApp.run(['$rootScope', '$location', '$cookieStore', '$http', '$t
                 $location.path('/login');
             }
             else if ($location.path() == '/restart') {
+                $rootScope.hierarchyModel = null;
+                $rootScope.HasChildActivity = false;
+                $rootScope.hierarchyModel = null;
+                $rootScope.filterBDModel = null;
+                $rootScope.RelevantActivities = null;
                 $http({
                     method: 'POST',
                     url: apiprefix + '/api/Dashboard/RestartSession',
