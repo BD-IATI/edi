@@ -159,6 +159,30 @@ namespace AIMS_BD_IATI.DAL
                         {
                             matchedProject.aimsProject.Description = matchedProject.iatiActivity.Description;
                         }
+                        else if (field.Field == IatiFields.Activitystatus)
+                        {
+                            matchedProject.aimsProject.activitystatus = matchedProject.iatiActivity.activitystatus;
+                        }
+                        else if (field.Field == IatiFields.Document)
+                        {
+                            matchedProject.aimsProject.documentlink = matchedProject.iatiActivity.documentlink;
+                        }
+                        else if (field.Field == IatiFields.Sector)
+                        {
+                            matchedProject.aimsProject.sector = matchedProject.iatiActivity.sector;
+                        }
+                        else if (field.Field == IatiFields.Location)
+                        {
+                            matchedProject.aimsProject.location = matchedProject.iatiActivity.location;
+                        }
+                        else if (field.Field == IatiFields.ExecutingAgency)
+                        {
+                            matchedProject.aimsProject.participatingorg = matchedProject.iatiActivity.participatingorg;
+                        }
+                        else if (field.Field == IatiFields.Dates)
+                        {
+                            matchedProject.aimsProject.activitydate = matchedProject.iatiActivity.activitydate;
+                        }
 
                     }
                 }
@@ -274,8 +298,8 @@ namespace AIMS_BD_IATI.DAL
                 Fields.Add(new FieldMap
                 {
                     Field = IatiFields.Document,
-                    //AIMSValue = aimsProject.documentlink,
-                    //IATIValue = iatiActivity.documentlink,
+                    AIMSValue = (aimsProject.documentlink?.Count()??0) + " Document(s)",
+                    IATIValue = (iatiActivity.documentlink?.Count()??0) + " Document(s)",
                     IsSourceIATI = isSourceIATI
 
                 });
@@ -298,24 +322,24 @@ namespace AIMS_BD_IATI.DAL
                 Fields.Add(new FieldMap
                 {
                     Field = IatiFields.Sector,
-                    //AIMSValue = aimsProject.sector,
-                    //IATIValue = iatiActivity.sector,
+                    AIMSValue = (aimsProject.sector?.Count()??0) + " Sector(s)",
+                    IATIValue = (iatiActivity.sector?.Count()??0) + " Sector(s)",
                     IsSourceIATI = isSourceIATI
 
                 });
                 Fields.Add(new FieldMap
                 {
                     Field = IatiFields.Location,
-                    //AIMSValue = aimsProject.location,
-                    //IATIValue = iatiActivity.location,
+                    AIMSValue = (aimsProject.location?.Count()??0) + " Location(s)",
+                    IATIValue = (iatiActivity.location?.Count()??0) + " Location(s)",
                     IsSourceIATI = isSourceIATI
 
                 });
                 Fields.Add(new FieldMap
                 {
                     Field = IatiFields.ExecutingAgency,
-                    //AIMSValue = aimsProject.ImplementingOrgs,
-                    //IATIValue = iatiActivity.ImplementingOrgs,
+                    AIMSValue = (aimsProject.ImplementingOrgs?.Count()??0) + " Implementing Organization(s)",
+                    IATIValue = (iatiActivity.ImplementingOrgs?.Count()??0) + " Implementing Organization(s)",
                     IsSourceIATI = isSourceIATI
 
                 });

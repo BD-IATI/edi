@@ -445,7 +445,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             var savedPreferences = aimsDbIatiDAL.GetFieldMappingPreferenceGeneral(Sessions.DP.ID);
 
-            var returnModel = (from a in Sessions.ProjectMapModel?.MatchedProjects
+            var returnModel = (from a in Sessions.ProjectMapModel?.MatchedProjects ?? new List<ProjectFieldMapModel>()
                                select new ProjectFieldMapModel(a.iatiActivity, a.aimsProject, savedPreferences)).FirstOrDefault();
 
             if (returnModel == null)
@@ -581,7 +581,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             }
 
             Sessions.Clear();
-            return aimsDAL.UpdateProjects(margedProjects, Sessions.UserId);
+            return aimsDAL.UpdateProjects(margedProjects, Sessions.UserId,false);
         }
 
         #endregion
