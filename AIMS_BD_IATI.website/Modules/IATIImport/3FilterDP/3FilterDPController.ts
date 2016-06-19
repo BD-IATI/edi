@@ -101,14 +101,12 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
             exAgencies[i].editDistance = distance;
         }
 
-        var modalInstance = $uibModal.open({
+        $uibModal.open({
             templateUrl: 'AddNewImplementingOrgView.html',
             controller: 'AddNewImplementingOrgController',
             resolve: { parentScope: $scope, org: org }
 
-        });
-
-        modalInstance.result.then(function (selectedOrg) {
+        }).result.then(function (selectedOrg) {
             if (selectedOrg != null)
             {
                 org.ExecutingAgencyTypeId = selectedOrg.ExecutingAgencyTypeId;
@@ -123,6 +121,18 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                 org.IATICode = org.ref;
 
                 $scope.ExecutingAgencies.push(org);
+
+                $http({
+                    url: apiprefix + '/api/IATIImport/CreateNewExecutingAgency',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify(org)
+                }).then(function (result) {
+                    $scope.ExecutingAgencies = result.data.ExecutingAgencies;
+
+                },
+                    function (response) {
+                    });
             }
         }, function () {
             //$log.info('Modal dismissed at: ' + new Date());

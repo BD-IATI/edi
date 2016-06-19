@@ -25,7 +25,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="success">
+                                <tr ng-class="{'success' : model.H1Percent >= model.H2Percent}">
                                     <td>1</td>
                                     <td>
                                         <code>{{model.SampleIatiActivity.IatiIdentifier}}</code> {{model.SampleIatiActivity.Title}}
@@ -41,7 +41,7 @@
                                     </td>
                                 </tr>
 
-                                <tr ng-repeat-end>
+                                <tr ng-class="{'success' : model.H1Percent < model.H2Percent}">
                                     <td>2</td>
                                     <td>
                                         <p ng-repeat="ra in model.SampleIatiActivity.childActivities track by $index">

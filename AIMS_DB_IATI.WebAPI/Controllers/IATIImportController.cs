@@ -139,6 +139,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             var returnResult = new FilterBDModel();
             heirarchyModel = heirarchyModel ?? Sessions.heirarchyModel;
+
+            var iatiActivities = Sessions.activitiesContainer?.iatiActivities;
             if (heirarchyModel == null)
             {
                 returnResult.iatiActivities = ToMinifiedIatiActivitiesModel(Sessions.activitiesContainer?.iatiActivities);
@@ -148,22 +150,22 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
                 if (heirarchyModel.SelectedHierarchy == 1)
                 {
-                    Sessions.activitiesContainer.iatiActivities = ImportLogic.LoadH1ActivitiesWithChild(Sessions.activitiesContainer?.iatiActivities);
-                    returnResult.iatiActivities = ToMinifiedIatiActivitiesModel(Sessions.activitiesContainer.iatiActivities, false, true);
+                    iatiActivities = ImportLogic.LoadH1ActivitiesWithChild(iatiActivities);
+                    returnResult.iatiActivities = ToMinifiedIatiActivitiesModel(iatiActivities, false, true);
                 }
                 else
                 {
-                    Sessions.activitiesContainer.iatiActivities = ImportLogic.LoadH2ActivitiesWithParent(Sessions.activitiesContainer?.iatiActivities);
-                    returnResult.iatiActivities = ToMinifiedIatiActivitiesModel(Sessions.activitiesContainer.iatiActivities);
+                    iatiActivities = ImportLogic.LoadH2ActivitiesWithParent(iatiActivities);
+                    returnResult.iatiActivities = ToMinifiedIatiActivitiesModel(iatiActivities);
                 }
                 Sessions.activitiesContainer.IsHierarchyLoaded = true;
             }
-
             returnResult.iatiActivities = returnResult.iatiActivities.OrderByDescending(k => k.IsRelevant).ToList();
 
             Sessions.CurrentStage = Stage.FilterBD;
             Sessions.heirarchyModel = heirarchyModel;
             Sessions.filterBDModel = returnResult;
+            Sessions.activitiesContainer.iatiActivities = iatiActivities;
             return returnResult;
         }
 
@@ -244,7 +246,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 {
                     e.AllID = iOrg.AllID;
 
-                    var aimsName = Sessions.iOrgs.ExecutingAgencies.FirstOrDefault(f =>f.AllID != Sessions.DP.AllID &&  f.AllID == iOrg.AllID)?.Name;
+                    var aimsName = Sessions.iOrgs.ExecutingAgencies.FirstOrDefault(f => f.AllID != Sessions.DP.AllID && f.AllID == iOrg.AllID)?.Name;
                     e.AimsName = aimsName;
                 });
             }
@@ -599,7 +601,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             }
 
             Sessions.Clear();
-            return aimsDAL.UpdateProjects(margedProjects, Sessions.UserId,false);
+            return aimsDAL.UpdateProjects(margedProjects, Sessions.UserId, false);
         }
 
         #endregion
@@ -630,6 +632,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             log.IsActive = false;
             aimsDbIatiDAL.UpdateLog(log);
             return aimsDbIatiDAL.SetIgnoreActivity(log.IatiIdentifier);
+        }
+        [AcceptVerbs("GET", "POST")]
+        public int? CreateNewExecutingAgency(ExecutingAgencyLookupItem org)
+        {
+            return aimsDAL.CreateNewExecutingAgency(org, Sessions.UserId);
+            
         }
         private static IEnumerable<iatiactivity> GetMatchedProjects(List<iatiactivity> relevantActivies, List<iatiactivity> AimsProjects)
         {

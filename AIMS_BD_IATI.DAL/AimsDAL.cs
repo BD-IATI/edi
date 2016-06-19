@@ -543,7 +543,7 @@ namespace AIMS_BD_IATI.DAL
 
                             if (executingAgency == null)
                             {
-                                executingAgency = new tblProjectExecutingAgency { ExecutingAgencyOrganizationId = ImplementingOrg.ExecutingAgencyOrganizationId, IUser = Iuser,IDate=DateTime.Now };
+                                executingAgency = new tblProjectExecutingAgency { ExecutingAgencyOrganizationId = ImplementingOrg.ExecutingAgencyOrganizationId, IUser = Iuser, IDate = DateTime.Now };
 
                                 p.tblProjectExecutingAgencies.Add(executingAgency);
                             }
@@ -605,6 +605,39 @@ namespace AIMS_BD_IATI.DAL
 
             }
             return 1;
+        }
+
+        public int CreateNewExecutingAgency(ExecutingAgencyLookupItem org, string userId)
+        {
+            if (org.ExecutingAgencyTypeId == (int)ExecutingAgencyType.DP)
+            {
+
+            }
+            else if (org.ExecutingAgencyTypeId == (int)ExecutingAgencyType.Government)
+            {
+                //dbContext.tblMinistryAgencies.Add(new tblMinistryAgency {
+                //     AgencyName = org.Name,
+                //     IDate = DateTime.Now,
+                //     IUser = userId,
+
+                //});
+
+            }
+            else if (org.ExecutingAgencyTypeId == (int)ExecutingAgencyType.NGO)
+            {
+                var ent = dbContext.tblNGOCSOes.FirstOrDefault(f => f.NGOOrganizationName == org.Name);
+                if (ent == null)
+                    dbContext.tblNGOCSOes.Add(new tblNGOCSO
+                    {
+                        NGOOrganizationName = org.Name,
+                        NGOOrganizationTypeId = 1,
+                        IUser = userId,
+                        IDate = DateTime.Now
+                    });
+            }
+
+
+            return dbContext.SaveChanges();
         }
 
         public static GeoLocation GetNearestGeoLocation(List<GeoLocation> geoLocations, location location)
@@ -1156,7 +1189,7 @@ namespace AIMS_BD_IATI.DAL
             {
                 sectorList.Add(new sector
                 {
-                     narrative = Statix.getNarativeArray(sector.TotalCommitmentPercent.ToString()) 
+                    narrative = Statix.getNarativeArray(sector.TotalCommitmentPercent.ToString())
                 });
             }
             iatiActivityObj.sector = sectorList.ToArray();
