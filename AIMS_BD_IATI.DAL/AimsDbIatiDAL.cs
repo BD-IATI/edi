@@ -218,6 +218,18 @@ namespace AIMS_BD_IATI.DAL
             return dbContext.SaveChanges();
         }
 
+        public int RecallDelegatedActivity(ActivityModel activity)
+        {
+                var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier);
+                if (a != null)
+                {
+                    a.AssignedOrgId = a.OrgId;
+                    a.AssignedDate = DateTime.Now;
+                }
+
+            return dbContext.SaveChanges();
+        }
+
         public int MapActivities(List<iatiactivity> activities)
         {
             foreach (var activity in activities)
@@ -708,7 +720,9 @@ namespace AIMS_BD_IATI.DAL
                          IatiIdentifier = a.IatiIdentifier,
                          AssignedOrgId = a.AssignedOrgId,
                          AssignedDate = a.AssignedDate,
-                         IatiActivity = a.IatiActivity
+                         IatiActivity = a.IatiActivity,
+                         MappedProjectId = a.MappedProjectId,
+                         MappedTrustFundId = a.MappedTrustFundId
                      }).ToList();
 
             ParseXMLAndResolve(q);

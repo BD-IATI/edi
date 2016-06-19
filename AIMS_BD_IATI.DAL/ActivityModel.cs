@@ -32,5 +32,6 @@ namespace AIMS_BD_IATI.DAL
 
 
         public iatiactivity iatiActivity { get; set; }
+        public bool IsProccessed { get { return MappedProjectId > 0 || MappedTrustFundId > 0; } }
     }
 }

@@ -69,6 +69,20 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
+    $scope.RecallDelegatedActivity = function (da) {
+        if (da.IsProccessed == true) {
+            document.getElementById('btnRecallExplanation').click(); //Show explanation
+        }
+        else {
+            $http({
+                method: 'POST',
+                url: apiprefix + '/api/Dashboard/RecallDelegatedActivity',
+                data: JSON.stringify(da)
+            }).success(function (result) {
+                $scope.model.DelegatedActivities = result;
+            });
+        }
+    };
     $scope.timeSince = function (date) {
         if (date == null || date == undefined)
             return '';

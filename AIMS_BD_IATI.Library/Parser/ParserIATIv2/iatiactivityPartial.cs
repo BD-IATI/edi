@@ -97,12 +97,12 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         #endregion co-financed and trust fund projects
 
         [XmlIgnore]
-        public bool IsInclude { get; set; } //AIMS ProjectId
+        public bool IsInclude { get; set; }
         [XmlIgnore]
         public int ProjectId { get; set; } //AIMS ProjectId
         [XmlIgnore]
-        public int MappedProjectId { get; set; }
-        [XmlIgnore]
+        public int MappedProjectId { get; set; } //Used for co-finance projects
+[XmlIgnore]
         public int MappedTrustFundId { get; set; }
 
         [XmlIgnore]

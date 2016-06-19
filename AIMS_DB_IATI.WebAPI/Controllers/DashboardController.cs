@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AIMS_BD_IATI.Library;
+using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 
 namespace AIMS_DB_IATI.WebAPI.Controllers
 {
@@ -62,6 +63,16 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             //Sessions.DP = null;
             Sessions.Clear();
             return "";
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public List<ActivityModel> RecallDelegatedActivity(ActivityModel da)
+        {
+            aimsDbIatiDAL.RecallDelegatedActivity(da);
+
+            var das = aimsDbIatiDAL.GetDelegatedActivities(Sessions.DP.ID);
+            das.ForEach(f => f.AssignedOrgName = Sessions.FundSources?.Find(k => k.IATICode == f.AssignedOrgId)?.Name);
+            return das;
         }
     }
 }
