@@ -706,9 +706,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 TotalDisbursmentThisDPOnly = iatiActivity.TotalDisbursmentThisDPOnly,
 
                 AllID = iatiActivity.AllID,
-                AimsFundSourceId = iatiActivity.AimsFundSourceId,
-                FundSource = iatiActivity.FundSource,
-                IATICode = iatiActivity.IATICode,
+
                 IatiIdentifier = iatiActivity.IatiIdentifier,
                 Title = iatiActivity.Title,
                 Description = iatiActivity.Description,

@@ -759,7 +759,8 @@ namespace AIMS_BD_IATI.DAL
         public int GetNewActivityCount(string dp)
         {
             var q = (from a in dbContext.Activities
-                     let isNotMapped = a.ProjectId == null && a.MappedProjectId == null && a.MappedTrustFundId == null
+                     let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
+                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
                      where a.OrgId == dp && a.AssignedOrgId == dp && isNotMapped
                      select 1).Count();
             return q;
@@ -775,7 +776,7 @@ namespace AIMS_BD_IATI.DAL
         public int GetAssignedActivityCount(string dp)
         {
             var q = (from a in dbContext.Activities
-                     let isNotMapped = a.ProjectId == null && a.MappedProjectId == null && a.MappedTrustFundId == null
+                     let isNotMapped = (a.ProjectId ?? 0) == 0 && (a.MappedProjectId ?? 0) == 0 && (a.MappedTrustFundId ?? 0) == 0
                      let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 || a.MappedTrustFundId > 0
                      where a.AssignedOrgId == dp && a.OrgId != dp && isNotMapped
                      select 1).Count();

@@ -914,11 +914,31 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         #region for filter other DP's projects
         public string AllID { get; set; }
 
-        public int AimsFundSourceId { get; set; }
+        public int AimsFundSourceId
+        {
+            get { return string.IsNullOrWhiteSpace(AllID) ? 0 : Convert.ToInt32(AllID.Split('~')[0]); }
+        }
+        [XmlIgnore]
 
-        public string FundSource { get; set; }
+        public string FundSource
+        {
+            get
+            {
+                ExecutingAgencyLookupItem r;
+                if (iatiactivity.FundSources != null)
+                    r = iatiactivity.FundSources.FirstOrDefault(f => f.AllID == AllID);
+                else
+                    r = new ExecutingAgencyLookupItem();
 
-        public string IATICode { get; set; }
+                return r == null ? "" : r.Name;
+            }
+        }
+        [XmlIgnore]
+
+        public string IATICode
+        {
+            get { return string.IsNullOrWhiteSpace(AllID) ? "" : AllID.Split('~')[1]; }
+        }
         #endregion
 
         #region Wrappers
