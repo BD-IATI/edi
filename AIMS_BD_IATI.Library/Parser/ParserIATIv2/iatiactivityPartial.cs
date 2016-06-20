@@ -886,7 +886,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public bool? IsRelevant { get; set; }
 
         #region Financial Data
-
+        transaction[] transaction { get; set; }
         #region Commitments
         public List<transaction> Commitments { get; set; }
         public decimal TotalCommitment { get; set; }

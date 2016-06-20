@@ -64,7 +64,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute()]
         public string Value
         {
             get
@@ -167,7 +167,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("narrative")]
+        [ System.Xml.Serialization.XmlElementAttribute("narrative")]
         public narrative[] narrative
         {
             get
@@ -293,7 +293,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("narrative")]
+        [System.Xml.Serialization.XmlElementAttribute("narrative")]
         public narrative[] narrative
         {
             get
@@ -613,7 +613,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("iati-identifier")]
+        [System.Xml.Serialization.XmlElementAttribute("iati-identifier")]
         public iatiidentifier iatiidentifier
         {
             get
@@ -627,7 +627,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("reporting-org")]
+        [System.Xml.Serialization.XmlElementAttribute("reporting-org")]
         public reportingorg reportingorg
         {
             get
@@ -641,7 +641,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public textRequiredType title
         {
             get
@@ -935,7 +935,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("planned-disbursement")]
+        [System.Xml.Serialization.XmlElementAttribute("planned-disbursement")]
         public planneddisbursement[] planneddisbursement
         {
             get
@@ -963,7 +963,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("transaction")]
+        [System.Xml.Serialization.XmlElementAttribute("transaction")]
         public transaction[] transaction
         {
             get
@@ -1133,7 +1133,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute("default-currency")]
+        [System.Xml.Serialization.XmlAttributeAttribute("default-currency")]
         public string defaultcurrency
         {
             get
@@ -1260,7 +1260,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute()]
         public string Value
         {
             get
@@ -1373,7 +1373,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("narrative")]
+        [System.Xml.Serialization.XmlElementAttribute("narrative")]
         public narrative[] narrative
         {
             get
@@ -1415,7 +1415,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string type
         {
             get
@@ -1429,7 +1429,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string role
         {
             get
@@ -4220,7 +4220,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("period-start", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute("period-start", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public planneddisbursementPeriodstart periodstart
         {
             get
@@ -4234,7 +4234,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("period-end", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute("period-end", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public planneddisbursementPeriodend periodend
         {
             get
@@ -4248,7 +4248,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public currencyType value
         {
             get
@@ -4262,7 +4262,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("provider-org", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute("provider-org", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public planneddisbursementProviderorg providerorg
         {
             get
@@ -4276,7 +4276,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("receiver-org", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute("receiver-org", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public planneddisbursementReceiverorg receiverorg
         {
             get
@@ -4304,7 +4304,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string type
         {
             get
@@ -4362,7 +4362,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute("iso-date", DataType = "date")]
+        [ System.Xml.Serialization.XmlAttributeAttribute("iso-date", DataType = "date")]
         public System.DateTime isodate
         {
             get
@@ -4420,7 +4420,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute("iso-date", DataType = "date")]
+        [ System.Xml.Serialization.XmlAttributeAttribute("iso-date", DataType = "date")]
         public System.DateTime isodate
         {
             get
@@ -4470,7 +4470,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("narrative")]
+        [ System.Xml.Serialization.XmlElementAttribute("narrative")]
         public narrative[] narrative
         {
             get
@@ -4498,7 +4498,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string @ref
         {
             get
@@ -4526,7 +4526,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string type
         {
             get
@@ -4576,7 +4576,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("narrative")]
+        [ System.Xml.Serialization.XmlElementAttribute("narrative")]
         public narrative[] narrative
         {
             get
@@ -4604,7 +4604,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string @ref
         {
             get
@@ -4632,7 +4632,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string type
         {
             get
@@ -4824,7 +4824,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("provider-org", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute("provider-org", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public transactionProviderorg providerorg
         {
             get
@@ -4838,7 +4838,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("receiver-org", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute("receiver-org", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public transactionReceiverorg receiverorg
         {
             get
@@ -4866,7 +4866,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("sector", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute("sector", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public transactionSector[] sector
         {
             get
@@ -4880,7 +4880,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("recipient-country", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute("recipient-country", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public transactionRecipientcountry recipientcountry
         {
             get
@@ -4894,7 +4894,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("recipient-region", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute("recipient-region", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public transactionRecipientregion recipientregion
         {
             get
@@ -4936,7 +4936,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("aid-type", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [ System.Xml.Serialization.XmlElementAttribute("aid-type", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public transactionAidtype aidtype
         {
             get
@@ -4978,7 +4978,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string @ref
         {
             get
@@ -5064,7 +5064,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string code
         {
             get
@@ -5172,7 +5172,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("narrative")]
+        [ System.Xml.Serialization.XmlElementAttribute("narrative")]
         public narrative[] narrative
         {
             get
@@ -5200,7 +5200,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string @ref
         {
             get
@@ -5228,7 +5228,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string type
         {
             get
@@ -5278,7 +5278,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("narrative")]
+        [ System.Xml.Serialization.XmlElementAttribute("narrative")]
         public narrative[] narrative
         {
             get
@@ -5306,7 +5306,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string @ref
         {
             get
@@ -5334,7 +5334,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string type
         {
             get
@@ -5442,7 +5442,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("narrative")]
+        [ System.Xml.Serialization.XmlElementAttribute("narrative")]
         public narrative[] narrative
         {
             get
@@ -5470,7 +5470,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string vocabulary
         {
             get
@@ -5484,7 +5484,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute("vocabulary-uri", DataType = "anyURI")]
+        [ System.Xml.Serialization.XmlAttributeAttribute("vocabulary-uri", DataType = "anyURI")]
         public string vocabularyuri
         {
             get
@@ -5498,7 +5498,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string code
         {
             get
@@ -5544,7 +5544,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("narrative")]
+        [ System.Xml.Serialization.XmlElementAttribute("narrative")]
         public narrative[] narrative
         {
             get
@@ -5572,7 +5572,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string code
         {
             get
@@ -5622,7 +5622,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlElementAttribute("narrative")]
+        [ System.Xml.Serialization.XmlElementAttribute("narrative")]
         public narrative[] narrative
         {
             get
@@ -5650,7 +5650,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string code
         {
             get
@@ -5664,7 +5664,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string vocabulary
         {
             get
@@ -5678,7 +5678,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute("vocabulary-uri", DataType = "anyURI")]
+        [ System.Xml.Serialization.XmlAttributeAttribute("vocabulary-uri", DataType = "anyURI")]
         public string vocabularyuri
         {
             get
@@ -5736,7 +5736,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string code
         {
             get
@@ -5780,7 +5780,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         private System.Xml.XmlAttribute[] anyAttrField;
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAnyElementAttribute()]
+        [ System.Xml.Serialization.XmlAnyElementAttribute()]
         public System.Xml.XmlElement[] Any
         {
             get
@@ -5794,7 +5794,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string code
         {
             get
@@ -5852,7 +5852,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string code
         {
             get
@@ -5910,7 +5910,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         /// <remarks/>
-        [ServerSide, System.Xml.Serialization.XmlAttributeAttribute()]
+        [ System.Xml.Serialization.XmlAttributeAttribute()]
         public string code
         {
             get
