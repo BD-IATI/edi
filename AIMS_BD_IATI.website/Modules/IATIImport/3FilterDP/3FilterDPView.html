@@ -144,8 +144,8 @@
                                             <td>{{activity.Title}}</td>
                                             <td>
                                                 <!--<code ng-bind="ImplementingOrg.ref" title="{ImplementingOrg.Name}}"></code>-->
-                                                <p ng-repeat="ImplementingOrg in activity.ImplementingOrgs" >
-                                                <span ng-bind="ImplementingOrg.AimsName" style="margin-bottom:2px; margin-right:2px;" class="label label-warning"></span>
+                                                <p ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
+                                                    <span uib-popover="Original: {{ImplementingOrg.Name}}" popover-trigger="mouseenter"  ng-bind="ImplementingOrg.AimsName" style="margin-bottom:2px; margin-right:2px;" class="label label-warning"></span>
                                                 </p>
                                             </td>
                                             <td>
@@ -177,6 +177,7 @@
                                             popover-title="Delegate projects to other DPs?"
                                             uib-popover-template="'myPopoverTemplate.html'"
                                             popover-append-to-body="true"
+                                            popover-trigger="focus"
                                             popover-placement="auto">
                                         Next...
                                     </button>
