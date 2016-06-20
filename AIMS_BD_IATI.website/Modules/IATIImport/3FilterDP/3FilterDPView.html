@@ -145,8 +145,19 @@
                                             <td>
                                                 <!--<code ng-bind="ImplementingOrg.ref" title="{ImplementingOrg.Name}}"></code>-->
                                                 <p ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
-                                                    <span uib-popover="Original: {{ImplementingOrg.Name}}" popover-trigger="mouseenter"  ng-bind="ImplementingOrg.AimsName" style="margin-bottom:2px; margin-right:2px;" class="label label-warning"></span>
+                                                    <span ng-bind="ImplementingOrg.AimsName" style="margin-bottom:2px; margin-right:2px;" class="label label-warning"></span>
                                                 </p>
+                                                <button uib-popover-template="'iOrgPopoverTemplate.html'" popover-trigger="focus" popover-title="Implementing Organizations" type="button" class="btn btn-sm btn-default">...</button>
+                                                <script type="text/ng-template" id="iOrgPopoverTemplate.html">
+                                                    <table class="table table-striped table-condensed small">
+                                                        <tr><th>Original</th><th>Mapped to</th></tr>
+                                                        <tr ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
+                                                            <td ng-bind="ImplementingOrg.Name"></td>
+                                                            <td ng-bind="ImplementingOrg.AimsName || 'Not mapped'" style="min-width:100px"></td>
+                                                        </tr>
+                                                    </table>
+                                                </script>
+
                                             </td>
                                             <td>
                                                 <div class="form-group">
