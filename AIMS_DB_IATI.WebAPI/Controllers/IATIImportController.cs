@@ -722,6 +722,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 Description = iatiActivity.Description,
                 ReportingOrg = iatiActivity.ReportingOrg,
                 ImplementingOrgs = iatiActivity.ImplementingOrgs,
+                ExtendingOrgs = iatiActivity.ExtendingOrgs,
                 AidType = iatiActivity.AidType,
                 AidTypeCode = iatiActivity.AidTypeCode,
                 ActivityStatus = iatiActivity.ActivityStatus,

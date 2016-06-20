@@ -147,6 +147,9 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                         org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
                 }
             }
+            else {
+                org.ExecutingAgencyTypeId = 4;
+            }
         }
     };
     // Compute the edit distance between the two given strings

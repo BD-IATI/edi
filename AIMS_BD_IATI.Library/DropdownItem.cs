@@ -47,8 +47,10 @@ namespace AIMS_BD_IATI.Library
                     + (ExecutingAgencyTypeId??0) + "~" 
                     + ExecutingAgencyOrganizationTypeId; } }
 
+        private int? _ExecutingAgencyTypeId;
+
         public int ExecutingAgencyOrganizationId { get; set; }
-        public int? ExecutingAgencyTypeId { get; set; }
+        public int? ExecutingAgencyTypeId { get { return _ExecutingAgencyTypeId ?? 4; } set { _ExecutingAgencyTypeId = value; } }
         public int ExecutingAgencyOrganizationTypeId { get; set; }
 
         public string Name { get; set; }

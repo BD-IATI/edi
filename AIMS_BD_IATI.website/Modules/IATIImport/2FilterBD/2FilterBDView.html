@@ -18,9 +18,28 @@
                                     <li>less than 20% is tagged as Bangladesh</li>
                                     <li>the project is not currently being implemented (i.e. excluding pipeline and closed projects) </li>
                                 </ul>
+                                <div class="panel">
+                                    <p class="lead">
+                                        You can include or exclude projects for particular extending organization.
+                                    </p>
+                                    <table class="table table-striped">
+                                        <tr>
+                                            <th></th>
+                                            <th>Extending organizaion</th>
+                                        </tr>
+                                        <tr ng-repeat="eOrg in model.AllExtendingOrgs">
+                                            <td><input type="checkbox" ng-model="eOrg.IsRelevant"></td>
+                                            <td ng-bind="eOrg.Name"></td>
+                                        </tr>
+                                    </table>
+                                    <div class="btn-group">
+                                        <button class="btn btn-default" ng-click="filterByExtendingOrg()">Apply</button>
+                                    </div>
+                                </div>
                                 <p class="lead">
-                                  You can include or exclude other projects by clicking the checkboxes below.
+                                    You can include or exclude other projects by clicking the checkboxes below.
                                 </p>
+
                                 <hr>
                                 <table st-table="iatiActivities" st-safe-src="model.iatiActivities" class="table table-striped">
                                     <thead>
@@ -72,7 +91,7 @@
 
                 </uib-tab>
 
-                <uib-tab index="1" heading="2.2 Select project components">
+                <uib-tab index="1" heading="2.2 Select project components" ng-if="$root.HasChildActivity == true">
                     <br />
                     <p class="lead">
                         You can deselect individual project sub-components

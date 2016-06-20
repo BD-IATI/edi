@@ -174,6 +174,9 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                     if (!isFilterByType) org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
                 }
             }
+            else {
+                org.ExecutingAgencyTypeId = 4;
+            }
         }
 
     }

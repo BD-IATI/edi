@@ -460,6 +460,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return participatingorg?.Where(w => w?.role == "4")?.ToList();
             }
         }
+        [XmlIgnore]
+        public List<participatingorg> ExtendingOrgs
+        {
+            get
+            {
+                return participatingorg?.Where(w => w?.role == "3")?.ToList();
+            }
+        }
 
         [XmlIgnore]
         public string AidType
@@ -948,6 +956,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public string Description { get; set; }
         public string ReportingOrg { get; set; }
         public List<participatingorg> ImplementingOrgs { get; set; }
+        public List<participatingorg> ExtendingOrgs { get; set; }
 
         public string AidType { get; set; }
         public string AidTypeCode { get; set; }

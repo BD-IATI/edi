@@ -1,4 +1,7 @@
-﻿angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope, $scope, $http, $timeout) {
+﻿/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../iatiimportapp.ts" />
+
+angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope, $scope, $http, $timeout) {
     $('#divView').slimScroll({ scrollTo: '0px' });
 
     $scope.activeTabIndex = 0;
@@ -28,9 +31,18 @@
         //$rootScope.hierarchyModel = null;
         //deferred.resolve(result);
     },
-    function (response) {
-        //deferred.reject(response);
-    });
+        function (response) {
+            //deferred.reject(response);
+        });
 
+    $scope.filterByExtendingOrg = function () {
+        for (var eOrg of $scope.model.AllExtendingOrgs) {
+            var acts = $scope.model.iatiActivities as Array<any>;
+            acts = acts.filter(f => f.ExtendingOrgs && f.ExtendingOrgs.filter(fe => fe.Name == eOrg.Name).length > 0);
 
+            for (var act of acts) {
+                act.IsRelevant = false;
+            }
+        }
+    };
 });
