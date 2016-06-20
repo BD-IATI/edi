@@ -607,8 +607,10 @@ namespace AIMS_BD_IATI.DAL
             return 1;
         }
 
-        public int CreateNewExecutingAgency(ExecutingAgencyLookupItem org, string userId)
+        public ExecutingAgencyLookupItem CreateNewExecutingAgency(ExecutingAgencyLookupItem org, string userId)
         {
+            ExecutingAgencyLookupItem returnAgency = null;
+
             if (org.ExecutingAgencyTypeId == (int)ExecutingAgencyType.DP)
             {
 
@@ -627,17 +629,32 @@ namespace AIMS_BD_IATI.DAL
             {
                 var ent = dbContext.tblNGOCSOes.FirstOrDefault(f => f.NGOOrganizationName == org.Name);
                 if (ent == null)
-                    dbContext.tblNGOCSOes.Add(new tblNGOCSO
+                {
+                    ent = new tblNGOCSO
                     {
                         NGOOrganizationName = org.Name,
                         NGOOrganizationTypeId = 1,
                         IUser = userId,
                         IDate = DateTime.Now
-                    });
+                    };
+                    dbContext.tblNGOCSOes.Add(ent);
+
+                }
+
+                dbContext.SaveChanges();
+
+                returnAgency = new ExecutingAgencyLookupItem
+                {
+                    ExecutingAgencyTypeId = (int)ExecutingAgencyType.NGO,
+                    ExecutingAgencyOrganizationTypeId = ent.NGOOrganizationTypeId,
+                    ExecutingAgencyOrganizationId = ent.Id,
+                    Name = ent.NGOOrganizationName,
+                };
+
             }
 
 
-            return dbContext.SaveChanges();
+            return returnAgency;
         }
 
         public static GeoLocation GetNearestGeoLocation(List<GeoLocation> geoLocations, location location)

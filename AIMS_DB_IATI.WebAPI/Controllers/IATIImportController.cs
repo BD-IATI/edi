@@ -634,10 +634,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             return aimsDbIatiDAL.SetIgnoreActivity(log.IatiIdentifier);
         }
         [AcceptVerbs("GET", "POST")]
-        public int? CreateNewExecutingAgency(ExecutingAgencyLookupItem org)
+        public ExecutingAgencyLookupItem CreateNewExecutingAgency(ExecutingAgencyLookupItem org)
         {
-            return aimsDAL.CreateNewExecutingAgency(org, Sessions.UserId);
             
+
+            return aimsDAL.CreateNewExecutingAgency(org, Sessions.UserId);
+
         }
         private static IEnumerable<iatiactivity> GetMatchedProjects(List<iatiactivity> relevantActivies, List<iatiactivity> AimsProjects)
         {

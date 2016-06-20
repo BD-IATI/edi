@@ -26,8 +26,8 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
         }
 
     },
-    function (response) {
-    });
+        function (response) {
+        });
     $scope.GotoTab = function (indx) {
         $scope.activeTabIndex = indx;
         $('#divView').slimScroll({ scrollTo: '0px' });
@@ -48,9 +48,9 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
 
             //deferred.resolve(result);
         },
-        function (response) {
-            //deferred.reject(response);
-        });
+            function (response) {
+                //deferred.reject(response);
+            });
 
     };
 
@@ -83,9 +83,9 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                 alert('Something wrong happening!');
             }
         },
-    function (response) {
-        //deferred.reject(response);
-    });
+            function (response) {
+                //deferred.reject(response);
+            });
 
     }
     $scope.NextWithoutSaving = function () {
@@ -107,20 +107,18 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
             resolve: { parentScope: $scope, org: org }
 
         }).result.then(function (selectedOrg) {
-            if (selectedOrg != null)
-            {
+            if (selectedOrg != null) {
                 org.ExecutingAgencyTypeId = selectedOrg.ExecutingAgencyTypeId;
                 org.AllID = selectedOrg.AllID;
             }
-            else
-            {
-                org.AllID = org.ExecutingAgencyOrganizationId + "~"
-                + (org.ref || "") + "~"
-                + org.ExecutingAgencyTypeId + "~" 
-                + org.ExecutingAgencyOrganizationTypeId + "~New~" + org.Name;
-                org.IATICode = org.ref;
+            else {
+                //org.AllID = org.ExecutingAgencyOrganizationId + "~"
+                //+ (org.ref || "") + "~"
+                //+ org.ExecutingAgencyTypeId + "~" 
+                //+ org.ExecutingAgencyOrganizationTypeId + "~New~" + org.Name;
+                //org.IATICode = org.ref;
 
-                $scope.ExecutingAgencies.push(org);
+                //$scope.ExecutingAgencies.push(org);
 
                 $http({
                     url: apiprefix + '/api/IATIImport/CreateNewExecutingAgency',
@@ -128,7 +126,10 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                     dataType: 'json',
                     data: JSON.stringify(org)
                 }).then(function (result) {
-                    $scope.ExecutingAgencies = result.data.ExecutingAgencies;
+
+                    var newIorg = result.data;
+                    org.AllID = newIorg.AllID;
+                    $scope.ExecutingAgencies.push(newIorg);
 
                 },
                     function (response) {
@@ -203,8 +204,8 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                     matrix[i][j] = matrix[i - 1][j - 1];
                 } else {
                     matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, // substitution
-                                            Math.min(matrix[i][j - 1] + 1, // insertion
-                                                     matrix[i - 1][j] + 1)); // deletion
+                        Math.min(matrix[i][j - 1] + 1, // insertion
+                            matrix[i - 1][j] + 1)); // deletion
                 }
             }
         }
@@ -217,8 +218,8 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
 angular.module('iatiDataImporter').controller("AddNewImplementingOrgController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModalInstance, parentScope, org) {
 
     org.ExecutingAgencyType = org.ExecutingAgencyTypeId == 1 ? 'Govt.' :
-             org.ExecutingAgencyTypeId == 2 ? 'DP' :
-             org.ExecutingAgencyTypeId == 3 ? 'NGO' : 'Other';
+        org.ExecutingAgencyTypeId == 2 ? 'DP' :
+            org.ExecutingAgencyTypeId == 3 ? 'NGO' : 'Other';
 
     $scope.ExecutingAgencies = parentScope.ExecutingAgencies;
     $scope.org = org;

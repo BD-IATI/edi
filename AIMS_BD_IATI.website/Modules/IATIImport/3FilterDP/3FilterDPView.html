@@ -54,7 +54,7 @@
                                 <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th st-sort="narrative[0].Value">Org name</th>
+                                            <th st-sort="Name">Org name</th>
                                             <th st-sort="ExecutingAgencyTypeId" style="width:33%;">Org type</th>
                                             <th st-sort="AllID">Select organisation</th>
                                         </tr>
@@ -161,7 +161,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-group">
-                                                    <div class="col-sm-12" ng-class="{'has-error':activity.ImplementingOrgs.length>1}">
+                                                    <div class="col-sm-12" ng-class="{'has-error':(activity.ImplementingOrgs && activity.ImplementingOrgs.length>1)}">
                                                         <select class="form-control" ng-change="onFundSourceChanged()"
                                                                 ng-model="activity.AllID"
                                                                 ng-options="item.AllID as item.Name for item in FundSources">

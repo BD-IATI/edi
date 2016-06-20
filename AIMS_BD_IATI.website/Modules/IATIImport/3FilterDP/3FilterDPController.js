@@ -94,19 +94,21 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                 org.AllID = selectedOrg.AllID;
             }
             else {
-                org.AllID = org.ExecutingAgencyOrganizationId + "~"
-                    + (org.ref || "") + "~"
-                    + org.ExecutingAgencyTypeId + "~"
-                    + org.ExecutingAgencyOrganizationTypeId + "~New~" + org.Name;
-                org.IATICode = org.ref;
-                $scope.ExecutingAgencies.push(org);
+                //org.AllID = org.ExecutingAgencyOrganizationId + "~"
+                //+ (org.ref || "") + "~"
+                //+ org.ExecutingAgencyTypeId + "~" 
+                //+ org.ExecutingAgencyOrganizationTypeId + "~New~" + org.Name;
+                //org.IATICode = org.ref;
+                //$scope.ExecutingAgencies.push(org);
                 $http({
                     url: apiprefix + '/api/IATIImport/CreateNewExecutingAgency',
                     method: 'POST',
                     dataType: 'json',
                     data: JSON.stringify(org)
                 }).then(function (result) {
-                    $scope.ExecutingAgencies = result.data.ExecutingAgencies;
+                    var newIorg = result.data;
+                    org.AllID = newIorg.AllID;
+                    $scope.ExecutingAgencies.push(newIorg);
                 }, function (response) {
                 });
             }
