@@ -228,6 +228,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (_iOrgs == null) _iOrgs = Sessions.iOrgs.Orgs;
             var relevantActivities = Sessions.activitiesContainer?.RelevantActivities;
             var projectsImpOrgs = new List<participatingorg>();
+            var exAgencies = Sessions.iOrgs.ExecutingAgencies;
+
             relevantActivities?.ForEach(e =>
             {
                 if (e.ImplementingOrgs != null) projectsImpOrgs.AddRange(e.ImplementingOrgs);
@@ -236,19 +238,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             foreach (var iOrg in _iOrgs)
             {
-                projectsImpOrgs.FindAll(f => f.@ref == iOrg.@ref).ForEach(e =>
-                {
-                    e.AllID = iOrg.AllID;
-                    var aimsName = Sessions.iOrgs.ExecutingAgencies.FirstOrDefault(f => f.AllID != Sessions.DP.AllID && f.AllID == iOrg.AllID)?.Name;
-                    e.AimsName = aimsName;
-                });
-                projectsImpOrgs.FindAll(f => f.Name == iOrg.Name).ForEach(e =>
-                {
-                    e.AllID = iOrg.AllID;
-
-                    var aimsName = Sessions.iOrgs.ExecutingAgencies.FirstOrDefault(f => f.AllID != Sessions.DP.AllID && f.AllID == iOrg.AllID)?.Name;
-                    e.AimsName = aimsName;
-                });
+                projectsImpOrgs.FindAll(f => (iOrg.@ref != null && f.@ref == iOrg.@ref)
+                                              || (!string.IsNullOrWhiteSpace(iOrg.Name) && f.Name == iOrg.Name))
+                               .ForEach(e =>
+                               {
+                                   e.AllID = iOrg.AllID;
+                                   var aimsName = exAgencies.FirstOrDefault(f => f.AllID != Sessions.DP.AllID && f.AllID == iOrg.AllID)?.Name;
+                                   e.AimsName = aimsName;
+                               });
             }
 
             relevantActivities?.ForEach(e =>
@@ -636,7 +633,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public ExecutingAgencyLookupItem CreateNewExecutingAgency(ExecutingAgencyLookupItem org)
         {
-            
+
 
             return aimsDAL.CreateNewExecutingAgency(org, Sessions.UserId);
 

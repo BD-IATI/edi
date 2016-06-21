@@ -489,6 +489,8 @@ namespace AIMS_BD_IATI.DAL
                     {
                         foreach (var location in mergedproject.location)
                         {
+                            if (location.point == null) continue;
+
                             GeoLocation nearestGeoLocation = null;
                             var administrative = location.administrative?.FirstOrDefault();
                             if (administrative != null && administrative.vocabulary == "G1")
