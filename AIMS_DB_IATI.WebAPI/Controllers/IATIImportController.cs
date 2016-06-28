@@ -631,11 +631,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             return aimsDbIatiDAL.SetIgnoreActivity(log.IatiIdentifier);
         }
         [AcceptVerbs("GET", "POST")]
-        public ExecutingAgencyLookupItem CreateNewExecutingAgency(ExecutingAgencyLookupItem org)
+        public ExecutingAgencyLookupItem CreateNewExecutingAgency(participatingorg org)
         {
+            var nOrg = aimsDAL.CreateNewExecutingAgency(org, Sessions.UserId);
+            Sessions.iOrgs.ExecutingAgencies.Add(nOrg);
+            if (org.ExecutingAgencyTypeId == (int)ExecutingAgencyType.DP)
+                Sessions.iOrgs.FundSources.Add(nOrg);
 
-
-            return aimsDAL.CreateNewExecutingAgency(org, Sessions.UserId);
+            return nOrg;
 
         }
         private static IEnumerable<iatiactivity> GetMatchedProjects(List<iatiactivity> relevantActivies, List<iatiactivity> AimsProjects)

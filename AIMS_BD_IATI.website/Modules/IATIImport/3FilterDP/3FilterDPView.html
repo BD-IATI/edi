@@ -56,7 +56,7 @@
                                         <tr>
                                             <th st-sort="Name">Org name</th>
                                             <th st-sort="ExecutingAgencyTypeId" style="width:33%;">Org type</th>
-                                            <th st-sort="AllID">Select organisation</th>
+                                            <th st-sort="AllID" style="min-width:200px">Select organisation</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -133,8 +133,8 @@
                                             <th st-sort="Title" style="min-width:200px">
                                                 Project Title
                                             </th>
-                                            <th style="width:33%;">Implementing organisation</th>
-                                            <th>Managed by</th>
+                                            <th >Implementing organisation</th>
+                                            <th style="min-width:200px">Managed by</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -145,7 +145,7 @@
                                             <td>
                                                 <!--<code ng-bind="ImplementingOrg.ref" title="{ImplementingOrg.Name}}"></code>-->
                                                 <p ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
-                                                    <span ng-bind="ImplementingOrg.AimsName" style="margin-bottom:2px; margin-right:2px;" class="label label-warning"></span>
+                                                    <span ng-bind="ImplementingOrg.AimsName | limitTo:40" style="margin-bottom:2px; margin-right:2px;" class="label label-warning"></span>
                                                 </p>
                                                 <button uib-popover-template="'iOrgPopoverTemplate.html'" popover-trigger="focus" popover-title="Implementing Organizations" type="button" class="btn btn-sm btn-default">...</button>
                                                 <script type="text/ng-template" id="iOrgPopoverTemplate.html">

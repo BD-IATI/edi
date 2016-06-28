@@ -105,7 +105,7 @@ namespace AIMS_BD_IATI.DAL
             var piList = dbContext.tblProjectInfoes.GroupBy(q => q.FundSourceId).Select(x => x.FirstOrDefault().FundSourceId).ToList();
 
             var fundSources = (from dp in dbContext.tblFundSources
-                               where piList.Contains(dp.Id)
+                               //where piList.Contains(dp.Id)
                                orderby dp.FundSourceName
                                select new ExecutingAgencyLookupItem
                                {
@@ -609,22 +609,72 @@ namespace AIMS_BD_IATI.DAL
             return 1;
         }
 
-        public ExecutingAgencyLookupItem CreateNewExecutingAgency(ExecutingAgencyLookupItem org, string userId)
+        public ExecutingAgencyLookupItem CreateNewExecutingAgency(participatingorg org, string userId)
         {
             ExecutingAgencyLookupItem returnAgency = null;
 
             if (org.ExecutingAgencyTypeId == (int)ExecutingAgencyType.DP)
             {
+                //http://iatistandard.org/202/codelists/OrganisationType/
+
+                var fundsourceCategory = GetOtherFundSourceCategory(userId);
+                var cur = dbContext.tblCurrencies.FirstOrDefault(f=>f.IATICode == "USD");
+
+                var ent = dbContext.tblFundSources.FirstOrDefault(f => f.FundSourceName == org.Name || f.IATICode == org.@ref);
+                if (ent == null)
+                {
+                    ent = new tblFundSource
+                    {
+                        FundSourceCategoryId = fundsourceCategory.Id,
+                        CurrencyId = cur.Id,
+                        FundSourceName = org.Name,
+                        IATICode = org.@ref,
+                        IDate = DateTime.Now,
+                        IUser = userId,
+
+                    };
+                    dbContext.tblFundSources.Add(ent);
+                    dbContext.SaveChanges();
+                }
+
+
+                returnAgency = new ExecutingAgencyLookupItem
+                {
+                    ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP,
+                    ExecutingAgencyOrganizationTypeId = ent.FundSourceCategoryId,
+                    ExecutingAgencyOrganizationId = ent.Id,
+                    Name = ent.FundSourceName,
+                };
 
             }
             else if (org.ExecutingAgencyTypeId == (int)ExecutingAgencyType.Government)
             {
-                //dbContext.tblMinistryAgencies.Add(new tblMinistryAgency {
-                //     AgencyName = org.Name,
-                //     IDate = DateTime.Now,
-                //     IUser = userId,
+                tblMinistry ministry = GetNAMinistry(userId);
 
-                //});
+                var ent = dbContext.tblMinistryAgencies.FirstOrDefault(f => f.AgencyName == org.Name);
+                if (ent == null)
+                {
+                    ent = new tblMinistryAgency
+                    {
+                        MinistryId = ministry.Id,
+                        AgencyName = org.Name,
+                        
+                        IDate = DateTime.Now,
+                        IUser = userId,
+
+                    };
+                    dbContext.tblMinistryAgencies.Add(ent);
+                    dbContext.SaveChanges();
+                }
+
+
+                returnAgency = new ExecutingAgencyLookupItem
+                {
+                    ExecutingAgencyTypeId = (int)ExecutingAgencyType.Government,
+                    ExecutingAgencyOrganizationTypeId = ent.MinistryId,
+                    ExecutingAgencyOrganizationId = ent.Id,
+                    Name = ent.AgencyName,
+                };
 
             }
             else if (org.ExecutingAgencyTypeId == (int)ExecutingAgencyType.NGO)
@@ -635,15 +685,16 @@ namespace AIMS_BD_IATI.DAL
                     ent = new tblNGOCSO
                     {
                         NGOOrganizationName = org.Name,
-                        NGOOrganizationTypeId = 1,
+                        NGOOrganizationTypeId = dbContext.tblNGOOrganizationTypes.FirstOrDefault().Id,
+                        
                         IUser = userId,
                         IDate = DateTime.Now
                     };
-                    dbContext.tblNGOCSOes.Add(ent);
 
+                    dbContext.tblNGOCSOes.Add(ent);
+                    dbContext.SaveChanges();
                 }
 
-                dbContext.SaveChanges();
 
                 returnAgency = new ExecutingAgencyLookupItem
                 {
@@ -657,6 +708,50 @@ namespace AIMS_BD_IATI.DAL
 
 
             return returnAgency;
+        }
+
+        private tblMinistry GetNAMinistry(string userId)
+        {
+            var ministry = dbContext.tblMinistries.FirstOrDefault(f => f.Name == "Not Available");
+            if (ministry == null)
+            {
+                ministry = new tblMinistry
+                {
+                    Name = "Not Available",
+                    MinistryName = "Not Available",
+                    Type = "Other",
+                    IsActive = true,
+                    IUser = userId,
+                    IDate = DateTime.Now
+                };
+
+                dbContext.tblMinistries.Add(ministry);
+                dbContext.SaveChanges();
+
+            }
+
+            return ministry;
+        }
+
+        private tblFundSourceCategory GetOtherFundSourceCategory(string userId)
+        {
+            var fundsourceCategory = dbContext.tblFundSourceCategories.FirstOrDefault(f => f.IATICode == "15"); // 15 for Other; http://iatistandard.org/202/codelists/OrganisationType/
+            if (fundsourceCategory == null)
+            {
+                fundsourceCategory = new tblFundSourceCategory
+                {
+                    Name = "Other",
+                    IATICode = "15",
+                    IUser = userId,
+                    IDate = DateTime.Now
+                };
+
+                dbContext.tblFundSourceCategories.Add(fundsourceCategory);
+                dbContext.SaveChanges();
+
+            }
+
+            return fundsourceCategory;
         }
 
         public static GeoLocation GetNearestGeoLocation(List<GeoLocation> geoLocations, location location)

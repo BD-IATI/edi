@@ -298,8 +298,8 @@ namespace AIMS_BD_IATI.DAL
                 Fields.Add(new FieldMap
                 {
                     Field = IatiFields.Document,
-                    AIMSValue = (aimsProject.documentlink?.Count()??0) + " Document(s)",
-                    IATIValue = (iatiActivity.documentlink?.Count()??0) + " Document(s)",
+                    AIMSValue = (aimsProject.documentlink?.Count() ?? 0) + " Document(s)",
+                    IATIValue = (iatiActivity.documentlink?.Count() ?? 0) + " Document(s)",
                     IsSourceIATI = isSourceIATI
 
                 });
@@ -322,24 +322,24 @@ namespace AIMS_BD_IATI.DAL
                 Fields.Add(new FieldMap
                 {
                     Field = IatiFields.Sector,
-                    AIMSValue = (aimsProject.sector?.Count()??0) + " Sector(s)",
-                    IATIValue = (iatiActivity.sector?.Count()??0) + " Sector(s)",
+                    AIMSValue = (aimsProject.sector?.Count() ?? 0) + " Sector(s)",
+                    IATIValue = (iatiActivity.sector?.Count() ?? 0) + " Sector(s)",
                     IsSourceIATI = isSourceIATI
 
                 });
                 Fields.Add(new FieldMap
                 {
                     Field = IatiFields.Location,
-                    AIMSValue = (aimsProject.location?.Count()??0) + " Location(s)",
-                    IATIValue = (iatiActivity.location?.Count()??0) + " Location(s)",
+                    AIMSValue = (aimsProject.location?.Count() ?? 0) + " Location(s)",
+                    IATIValue = (iatiActivity.location?.Count() ?? 0) + " Location(s)",
                     IsSourceIATI = isSourceIATI
 
                 });
                 Fields.Add(new FieldMap
                 {
                     Field = IatiFields.ExecutingAgency,
-                    AIMSValue = (aimsProject.ImplementingOrgs?.Count()??0) + " Implementing Organization(s)",
-                    IATIValue = (iatiActivity.ImplementingOrgs?.Count()??0) + " Implementing Organization(s)",
+                    AIMSValue = (aimsProject.ImplementingOrgs?.Count() ?? 0) + " Implementing Organization(s)",
+                    IATIValue = (iatiActivity.ImplementingOrgs?.Count() ?? 0) + " Implementing Organization(s)",
                     IsSourceIATI = isSourceIATI
 
                 });

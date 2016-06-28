@@ -128,8 +128,11 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                 }).then(function (result) {
 
                     var newIorg = result.data;
-                    org.AllID = newIorg.AllID;
                     $scope.ExecutingAgencies.push(newIorg);
+                    if (org.ExecutingAgencyTypeId == 2) //2 for DP
+                        $scope.FundSources.push(newIorg);
+
+                    org.AllID = newIorg.AllID;
 
                 },
                     function (response) {

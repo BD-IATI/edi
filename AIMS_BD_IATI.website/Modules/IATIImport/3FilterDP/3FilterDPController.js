@@ -107,8 +107,10 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
                     data: JSON.stringify(org)
                 }).then(function (result) {
                     var newIorg = result.data;
-                    org.AllID = newIorg.AllID;
                     $scope.ExecutingAgencies.push(newIorg);
+                    if (org.ExecutingAgencyTypeId == 2)
+                        $scope.FundSources.push(newIorg);
+                    org.AllID = newIorg.AllID;
                 }, function (response) {
                 });
             }
