@@ -187,9 +187,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             var iOrgs = new List<participatingorg>();
             foreach (var activity in Sessions.activitiesContainer?.RelevantActivities)
             {
-                var participatingOrgs = activity.ImplementingOrgs ?? new List<participatingorg>();
+                if (activity.ImplementingOrgs != null)
+                    iOrgs.AddRange(activity.ImplementingOrgs);
 
-                iOrgs.AddRange(participatingOrgs);
 
             }
 
@@ -238,9 +238,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             foreach (var iOrg in _iOrgs)
             {
-                projectsImpOrgs.FindAll(f => (iOrg.@ref != null && f.@ref == iOrg.@ref)
-                                              || (!string.IsNullOrWhiteSpace(iOrg.Name) && f.Name == iOrg.Name))
-                               .ForEach(e =>
+                var pOrgs = projectsImpOrgs.FindAll(f => (!string.IsNullOrWhiteSpace(iOrg.Name) && f.Name == iOrg.Name));
+
+                if (pOrgs.Count == 0) projectsImpOrgs.FindAll(f => (iOrg.@ref != null && f.@ref == iOrg.@ref));
+
+                pOrgs.ForEach(e =>
                                {
                                    e.AllID = iOrg.AllID;
                                    var aimsName = exAgencies.FirstOrDefault(f => f.AllID != Sessions.DP.AllID && f.AllID == iOrg.AllID)?.Name;
@@ -248,10 +250,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                                });
             }
 
+            //set managing DP
             relevantActivities?.ForEach(e =>
             {
-                if (string.IsNullOrWhiteSpace(e.AllID) || !Sessions.iOrgs.FundSources.Exists(d => d.AllID == e.AllID)) e.AllID = Sessions.DP.AllID;
-
+                if (string.IsNullOrWhiteSpace(e.AllID) || !Sessions.iOrgs.FundSources.Exists(d => d.AllID == e.AllID))
+                    e.AllID = Sessions.DP.AllID;
             });
 
             Sessions.CurrentStage = Stage.FilterDP;
