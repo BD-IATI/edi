@@ -21,9 +21,9 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
         $scope.ExecutingAgencies = result.data.ExecutingAgencies;
         //$rootScope.filterBDModel = null;
 
-        for (var i = 0; i < $scope.ImplementingOrgs.length; i++) {
-            var dis = $scope.GuessAgency($scope.ImplementingOrgs[i], false);
-        }
+        //for (var i = 0; i < $scope.ImplementingOrgs.length; i++) {
+        //    var dis = $scope.GuessAgency($scope.ImplementingOrgs[i], false);
+        //}
 
     },
         function (response) {

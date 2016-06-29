@@ -197,19 +197,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             var exAgencies = aimsDAL.GetExecutingAgencies();
 
-            foreach (var org in distictOrgs)
-            {
-                //check for matching managing DP from AIMS
-                var managingDP = !string.IsNullOrWhiteSpace(org.@ref) ? managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.Contains(org.@ref)) : null;
-
-                //Add selected value
-                org.AllID = managingDP == null ? Sessions.DP.AllID : managingDP.AllID;
-
-            }
-
-
-            Sessions.CurrentStage = Stage.FilterDP;
-
             var returtResult = new iOrgs
             {
                 Orgs = distictOrgs.ToList(),
@@ -219,6 +206,21 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             };
             Sessions.iOrgs = returtResult;
+
+            foreach (var org in distictOrgs)
+            {
+                //check for matching managing DP from AIMS
+                var managingDP = !string.IsNullOrWhiteSpace(org.@ref) ? managingDPs.FirstOrDefault(q => q.IATICode != null && q.IATICode.Contains(org.@ref)) : null;
+
+                //Add selected value
+                org.AllID = managingDP == null ? Sessions.DP.AllID : managingDP.AllID;
+
+                GuessAgency(org, false);
+            }
+
+
+            Sessions.CurrentStage = Stage.FilterDP;
+
             return returtResult;
         }
 
@@ -768,7 +770,106 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
                     }).ToList();
         }
+
+        protected void GuessAgency(participatingorg org, bool isFilterByType)
+        {
+            var IsNotFoundInAims = true;
+
+            var exAgencies = Sessions.iOrgs.ExecutingAgencies;
+
+            //var exAgencies = isFilterByType ? $filter('filter')($scope.ExecutingAgencies, { ExecutingAgencyTypeId: org.ExecutingAgencyTypeId }) : $scope.ExecutingAgencies;
+
+            if (org.@ref != null)
+            {
+                var exa = exAgencies.Find(f => f.IATICode == org.@ref);
+                if (exa != null)
+                {
+                    org.AllID = exa.AllID;
+                    IsNotFoundInAims = false;
+                    if (!isFilterByType) org.ExecutingAgencyTypeId = exa.ExecutingAgencyTypeId;
+                }
+            }
+
+            if (IsNotFoundInAims)
+            {
+                //try to set executing agency
+                ExecutingAgencyLookupItem agencyGuessed = null;
+                var minDistance = 1000;
+                for (var i = 0; i < exAgencies.Count; i++)
+                {
+                    var distance = getEditDistance(org.Name.ToLower(), exAgencies[i].Name.ToLower());
+                    if (minDistance > distance)
+                    {
+                        minDistance = distance;
+                        agencyGuessed = exAgencies[i];
+                    }
+                }
+
+                if (agencyGuessed != null)
+                {
+                    var tolaratedDistance = isFilterByType ? (org.Name.Length + agencyGuessed.Name.Length) / 2 : ((org.Name.Length + agencyGuessed.Name.Length) / 2) * 50 / 100;
+                    if (minDistance < tolaratedDistance)
+                    {
+                        org.AllID = agencyGuessed.AllID;
+
+                        if (!isFilterByType) org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
+                    }
+                }
+                else
+                {
+                    org.ExecutingAgencyTypeId = 4;
+                }
+            }
+
+        }
+
+        // Compute the edit distance between the two given strings
+        protected int getEditDistance(string a, string b)
+        {
+            if (a.Length == 0) return b.Length;
+            if (b.Length == 0) return a.Length;
+
+            var matrix = new int[b.Length+1, a.Length+1];
+
+            // increment along the first column of each row
+            int i;
+            for (i = 0; i <= b.Length; i++)
+            {
+                matrix[i, 0] = i;
+            }
+
+            // increment each column in the first row
+            int j;
+            for (j = 0; j <= a.Length; j++)
+            {
+                matrix[0, j] = j;
+            }
+
+            // Fill in the rest of the matrix
+            for (i = 1; i <= b.Length; i++)
+            {
+                for (j = 1; j <= a.Length; j++)
+                {
+                    if (b[i - 1] == a[j - 1])
+                    {
+                        matrix[i, j] = matrix[i - 1, j - 1];
+                    }
+                    else
+                    {
+                        matrix[i, j] = Math.Min(matrix[i - 1, j - 1] + 1, // substitution
+                            Math.Min(matrix[i, j - 1] + 1, // insertion
+                                matrix[i - 1, j] + 1)); // deletion
+                    }
+                }
+            }
+
+            return matrix[b.Length, a.Length];
+        }
+
     }
+
+
+
 
 
 

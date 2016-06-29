@@ -414,7 +414,10 @@ namespace AIMS_BD_IATI.DAL
                      }).ToList();
 
             var iatiActivities = ParseXMLAndResolve(q);
-
+            foreach (var activity in iatiActivities)
+            {
+                LoadChildActivities(activity);
+            }
             var aimsActivities = GetNotMappedAimsProjects(dp);
 
             return new iatiactivityContainer
@@ -455,6 +458,10 @@ namespace AIMS_BD_IATI.DAL
                      }).ToList();
 
             var iatiActivities = ParseXMLAndResolve(q);
+            foreach (var activity in iatiActivities)
+            {
+                LoadChildActivities(activity);
+            }
 
             var aimsActivities = GetMappedAimsProjects(dp);
 
@@ -512,6 +519,7 @@ namespace AIMS_BD_IATI.DAL
 
                 var ras = (from a in dbContext.Activities
                            where a.IatiIdentifier.StartsWith(activity.IatiIdentifier)
+                                && a.Hierarchy == 2
                            select new ActivityModel
                            {
                                IatiActivity = a.IatiActivity,

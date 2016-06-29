@@ -105,7 +105,7 @@ namespace AIMS_BD_IATI.DAL
             var piList = dbContext.tblProjectInfoes.GroupBy(q => q.FundSourceId).Select(x => x.FirstOrDefault().FundSourceId).ToList();
 
             var fundSources = (from dp in dbContext.tblFundSources
-                               //where piList.Contains(dp.Id)
+                                   //where piList.Contains(dp.Id)
                                orderby dp.FundSourceName
                                select new ExecutingAgencyLookupItem
                                {
@@ -538,7 +538,7 @@ namespace AIMS_BD_IATI.DAL
                     #region Executing Agency
                     if (mergedproject.ImplementingOrgs.IsNotEmpty())
                     {
-                        foreach (var ImplementingOrg in mergedproject.ImplementingOrgs)
+                        foreach (var ImplementingOrg in mergedproject.ImplementingOrgs.Where(w => w.AllID != mergedproject.AllID))
                         {
 
                             var executingAgency = p.tblProjectExecutingAgencies.FirstOrDefault(f => f.ExecutingAgencyOrganizationId == ImplementingOrg.ExecutingAgencyOrganizationId);
@@ -618,7 +618,7 @@ namespace AIMS_BD_IATI.DAL
                 //http://iatistandard.org/202/codelists/OrganisationType/
 
                 var fundsourceCategory = GetOtherFundSourceCategory(userId);
-                var cur = dbContext.tblCurrencies.FirstOrDefault(f=>f.IATICode == "USD");
+                var cur = dbContext.tblCurrencies.FirstOrDefault(f => f.IATICode == "USD");
 
                 var ent = dbContext.tblFundSources.FirstOrDefault(f => f.FundSourceName == org.Name || f.IATICode == org.@ref);
                 if (ent == null)
@@ -658,7 +658,7 @@ namespace AIMS_BD_IATI.DAL
                     {
                         MinistryId = ministry.Id,
                         AgencyName = org.Name,
-                        
+
                         IDate = DateTime.Now,
                         IUser = userId,
 
@@ -686,7 +686,7 @@ namespace AIMS_BD_IATI.DAL
                     {
                         NGOOrganizationName = org.Name,
                         NGOOrganizationTypeId = dbContext.tblNGOOrganizationTypes.FirstOrDefault().Id,
-                        
+
                         IUser = userId,
                         IDate = DateTime.Now
                     };
@@ -1224,6 +1224,19 @@ namespace AIMS_BD_IATI.DAL
                 @ref = project.tblFundSource?.IATICode,
                 type = project.tblFundSource?.tblFundSourceCategory?.IATICode,
             });
+
+            if (project.tblProjectExecutingAgencies != null)
+                foreach (var executingAgency in project.tblProjectExecutingAgencies)
+                {
+                    participatingorgList.Add(new participatingorg
+                    {
+                        narrative = Statix.getNarativeArray("N/A"),
+                        role = "4",
+                        @ref = "N/A",
+                        type = "N/A",
+                    });
+                }
+
             //ToDo
             //iatiActivity.participatingorg[2] = new participatingorg
             //{
@@ -1562,6 +1575,8 @@ namespace AIMS_BD_IATI.DAL
             //crs-add
 
             //fss
+
+
             return iatiActivityObj;
         }
         private string getIdentifer(tblProjectInfo project)

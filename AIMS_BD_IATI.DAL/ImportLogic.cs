@@ -339,7 +339,7 @@ namespace AIMS_BD_IATI.DAL
                 {
                     Field = IatiFields.ExecutingAgency,
                     AIMSValue = (aimsProject.ImplementingOrgs?.Count() ?? 0) + " Implementing Organization(s)",
-                    IATIValue = (iatiActivity.ImplementingOrgs?.Count() ?? 0) + " Implementing Organization(s)",
+                    IATIValue = (iatiActivity.ImplementingOrgs?.Count(c=>c?.AllID != iatiActivity.AllID) ?? 0) + " Implementing Organization(s)",
                     IsSourceIATI = isSourceIATI
 
                 });
