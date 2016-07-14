@@ -294,7 +294,7 @@ namespace AIMS_BD_IATI.DAL
         #endregion TrustFund
 
         #region Update Projects
-        public int? UpdateProjects(List<iatiactivity> projects, string Iuser, bool checkMismatch = true)
+        public int? UpdateProjects(List<iatiactivity> projects, string Iuser, bool notCleanOldData = true)
         {
             var aimsCurrencies = from c in dbContext.tblCurrencies
                                  select new CurrencyLookupItem { Id = c.Id, IATICode = c.IATICode };
@@ -359,7 +359,7 @@ namespace AIMS_BD_IATI.DAL
                         // first check isFinancialDataMismathed
                         foreach (var MatchedProject in mergedproject.MatchedProjects)
                         {
-                            isFinancialDataMismathed = CheckTransactionMismatch(p, MatchedProject, checkMismatch);
+                            isFinancialDataMismathed = CheckTransactionMismatch(p, MatchedProject, notCleanOldData);
                             if (isFinancialDataMismathed) break;
                         }
                         //if Financial Data are Mismathed then continue with next project
@@ -377,7 +377,7 @@ namespace AIMS_BD_IATI.DAL
                         }
                     }
 
-                    isFinancialDataMismathed = CheckTransactionMismatch(p, mergedproject, checkMismatch);
+                    isFinancialDataMismathed = CheckTransactionMismatch(p, mergedproject, notCleanOldData);
                     if (isFinancialDataMismathed) continue;
 
                     DeleteTransactions(p, mergedproject);
@@ -391,6 +391,27 @@ namespace AIMS_BD_IATI.DAL
                     p.Title = mergedproject.Title;
                     p.Objective = mergedproject.Description;
 
+                    if (notCleanOldData == false)
+                    {
+
+                        foreach (var item in p.tblProjectAttachments.ToList())
+                        {
+                            dbContext.tblProjectAttachments.Remove(item);
+                        }
+                        foreach (var item in p.tblProjectSectoralAllocations.ToList())
+                        {
+                            dbContext.tblProjectSectoralAllocations.Remove(item);
+                        }
+
+                        foreach (var item in p.tblProjectGeographicAllocations.ToList())
+                        {
+                            dbContext.tblProjectGeographicAllocations.Remove(item);
+                        }
+                        foreach (var item in p.tblProjectExecutingAgencies.ToList())
+                        {
+                            dbContext.tblProjectExecutingAgencies.Remove(item);
+                        }
+                    }
                     #region Document
                     if (mergedproject.documentlink != null)
                     {

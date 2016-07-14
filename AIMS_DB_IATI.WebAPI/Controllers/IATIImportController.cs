@@ -294,7 +294,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             //for showing mathced projects side by side And field mapping later
             var MatchedProjects2 = (from i in relevantActiviesSession
-                                    from a in AimsProjects.Where(k => i.IatiIdentifier.Replace("-", "").EndsWith(k.IatiIdentifier.Replace("-", "")) || i.IatiIdentifier.Contains(k.IatiIdentifier))
+                                    from a in AimsProjects.Where(k => i.OriginalIatiIdentifier == k.OriginalIatiIdentifier)
                                     orderby i.IatiIdentifier
                                     select new ProjectFieldMapModel(i, a)
                                     ).ToList();
@@ -303,8 +303,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
 
             var AimsProjectNotInIati = AimsProjects
-                .ExceptBy(MatchedProjects, f => f.IatiIdentifier)
-                .ExceptBy(ProjectsOwnedByOther, f => f.IatiIdentifier)
+                .ExceptBy(MatchedProjects, f => f.OriginalIatiIdentifier)
+                .ExceptBy(ProjectsOwnedByOther, f => f.OriginalIatiIdentifier)
                 .ToList();
 
             var returnResult = new ProjectMapModel
@@ -650,13 +650,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             Sessions.CurrentStage = Stage.MatchProjects;
 
-            return from i in relevantActivies
-                   let isHierarchy2 = i.hierarchy == 2
-                   from a in AimsProjects.Where(k => i.IatiIdentifier.Replace("-", "").EndsWith(k.IatiIdentifier.Replace("-", "")) ||
-                   (isHierarchy2 ? false : i.IatiIdentifier.Contains(k.IatiIdentifier)))
-                   orderby i.IatiIdentifier
+            var q = from i in relevantActivies
+                    let isHierarchy2 = i.hierarchy == 2
+                    from a in AimsProjects.Where(k => i.OriginalIatiIdentifier==k.OriginalIatiIdentifier)
+                    orderby i.IatiIdentifier
 
-                   select i;
+                    select i;
+
+            return q;
         }
 
         private static void UpdateActivities(List<iatiactivityModel> clientActivities, List<iatiactivity> sessionActivities)

@@ -220,12 +220,12 @@ namespace AIMS_BD_IATI.DAL
 
         public int RecallDelegatedActivity(ActivityModel activity)
         {
-                var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier);
-                if (a != null)
-                {
-                    a.AssignedOrgId = a.OrgId;
-                    a.AssignedDate = DateTime.Now;
-                }
+            var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier);
+            if (a != null)
+            {
+                a.AssignedOrgId = a.OrgId;
+                a.AssignedDate = DateTime.Now;
+            }
 
             return dbContext.SaveChanges();
         }
@@ -420,6 +420,15 @@ namespace AIMS_BD_IATI.DAL
             }
             var aimsActivities = GetNotMappedAimsProjects(dp);
 
+            //since IATIIdentifier does not fully match between AIMS and IATI
+            foreach (var act in aimsActivities)
+            {
+                var mathcedIatiactivity = iatiActivities.Find(i => i.IatiIdentifier.Replace("-", "").EndsWith(act.IatiIdentifier.Replace("-", "")) ||
+                    (i.hierarchy == 2 ? false : i.IatiIdentifier.Contains(act.IatiIdentifier)));
+                if (act.IatiIdentifier != mathcedIatiactivity.IatiIdentifier)
+                    act.OriginalIatiIdentifier = mathcedIatiactivity?.IatiIdentifier;
+            }
+
             return new iatiactivityContainer
             {
                 iatiActivities = iatiActivities,
@@ -444,7 +453,7 @@ namespace AIMS_BD_IATI.DAL
         public iatiactivityContainer GetMappedActivities(string dp)
         {
             var q = (from a in dbContext.Activities
-                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 
+                     let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0
                      where a.OrgId == dp && a.AssignedOrgId == dp && isMapped && a.IsIgnore != true
                      orderby a.IatiIdentifier
                      select new ActivityModel
@@ -475,7 +484,7 @@ namespace AIMS_BD_IATI.DAL
         private List<iatiactivity> GetMappedAimsProjects(string dp)
         {
             var mappedProjectIds = (from a in dbContext.Activities
-                                    let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0 
+                                    let isMapped = a.ProjectId > 0 || a.MappedProjectId > 0
                                     where a.AssignedOrgId == dp && isMapped && a.IsIgnore != true
                                     select (a.ProjectId > 0 ? a.ProjectId :
                                     a.MappedProjectId)).ToList();

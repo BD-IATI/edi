@@ -414,6 +414,21 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 iatiidentifier.Value = value;
             }
         }
+        string _OriginalIatiIdentifier;
+        [XmlIgnore]
+        public string OriginalIatiIdentifier
+        {
+            get
+            {
+                return _OriginalIatiIdentifier??IatiIdentifier;
+            }
+
+            set
+            {
+                _OriginalIatiIdentifier = value;
+            }
+        }
+
         [XmlIgnore]
         public string Title
         {
@@ -615,6 +630,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //4 
+
         #endregion
         #endregion
 
