@@ -425,7 +425,7 @@ namespace AIMS_BD_IATI.DAL
             {
                 var mathcedIatiactivity = iatiActivities.Find(i => i.IatiIdentifier.Replace("-", "").EndsWith(act.IatiIdentifier.Replace("-", "")) ||
                     (i.hierarchy == 2 ? false : i.IatiIdentifier.Contains(act.IatiIdentifier)));
-                if (act.IatiIdentifier != mathcedIatiactivity.IatiIdentifier)
+                if (act.IatiIdentifier != mathcedIatiactivity?.IatiIdentifier)
                     act.OriginalIatiIdentifier = mathcedIatiactivity?.IatiIdentifier;
             }
 
