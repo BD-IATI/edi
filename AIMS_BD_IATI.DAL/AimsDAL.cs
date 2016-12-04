@@ -351,7 +351,6 @@ namespace AIMS_BD_IATI.DAL
                         p.IDate = DateTime.Now;
                         p.IUser = Iuser;
                         p.FundSourceId = mergedproject.AimsFundSourceId;
-                        p.IatiIdentifier = mergedproject.IatiIdentifier;
                         dbContext.tblProjectInfoes.Add(p);
                     }
                     else
@@ -390,6 +389,7 @@ namespace AIMS_BD_IATI.DAL
                     #region Other Fields
                     p.Title = mergedproject.Title;
                     p.Objective = mergedproject.Description;
+                    p.IatiIdentifier = mergedproject.OriginalIatiIdentifier;
 
                     if (notCleanOldData == false)
                     {

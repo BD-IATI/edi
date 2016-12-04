@@ -67,7 +67,11 @@ namespace AIMS_DB_IATI.WebAPI.Models
             if (d == null)
                 using (IDocumentSession DocumentSession = DocumentStore.OpenSession())
                 {
-                    d = DocumentSession.Load<T>(docId);
+                    try
+                    {
+                        d = DocumentSession.Load<T>(docId);
+                    }
+                    catch { }
                 }
             return d;
         }
