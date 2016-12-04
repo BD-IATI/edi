@@ -4,9 +4,9 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="AIMS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AIMS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
-warning 6002: The table/view 'AIMS_DB.dbo.CommonConfigType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CommonConfigType">
           <Key>
             <PropertyRef Name="TableName" />
@@ -570,8 +570,8 @@ warning 6002: The table/view 'AIMS_DB.dbo.CommonConfigType' does not have a prim
           <Property Name="AnalyticalWorkMissionId" Type="int" />
           <Property Name="DocumentTypeId" Type="int" />
           <Property Name="AttachmentNo" Type="varchar" MaxLength="50" />
-          <Property Name="AttachmentTitle" Type="varchar" MaxLength="250" />
-          <Property Name="AttachmentFileName" Type="varchar" MaxLength="250" />
+          <Property Name="AttachmentTitle" Type="varchar" MaxLength="2000" />
+          <Property Name="AttachmentFileName" Type="varchar" MaxLength="2000" />
           <Property Name="AttachmentMetaData" Type="varchar" MaxLength="1000" />
           <Property Name="AttachmentFilePath" Type="varchar" MaxLength="1000" />
           <Property Name="AttachmentFileURL" Type="varchar" MaxLength="1000" />
@@ -3111,8 +3111,8 @@ warning 6002: The table/view 'AIMS_DB.dbo.CommonConfigType' does not have a prim
           <Property Name="AnalyticalWorkMissionId" Type="Int32" />
           <Property Name="DocumentTypeId" Type="Int32" />
           <Property Name="AttachmentNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="AttachmentTitle" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="AttachmentFileName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="AttachmentTitle" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="AttachmentFileName" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Name="AttachmentMetaData" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="AttachmentFilePath" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="AttachmentFileURL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
