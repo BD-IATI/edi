@@ -18,11 +18,11 @@
                                     <li>less than 20% is tagged as Bangladesh</li>
                                     <li>the project is not currently being implemented (i.e. excluding pipeline and closed projects) </li>
                                 </ul>
-                                <div class="panel">
+                                <div class="panel" ng-if="model.AllExtendingOrgs.length > 1">
                                     <p class="lead">
                                         You can include or exclude projects for particular extending organization.
                                     </p>
-                                    <table class="table table-striped">
+                                    <table class="table table-striped" >
                                         <tr>
                                             <th></th>
                                             <th>Extending organizaion</th>
