@@ -776,6 +776,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             var IsNotFoundInAims = true;
 
+            if (org == null) return;
+
             var exAgencies = Sessions.iOrgs.ExecutingAgencies;
 
             //var exAgencies = isFilterByType ? $filter('filter')($scope.ExecutingAgencies, { ExecutingAgencyTypeId: org.ExecutingAgencyTypeId }) : $scope.ExecutingAgencies;
@@ -798,7 +800,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 var minDistance = 1000;
                 for (var i = 0; i < exAgencies.Count; i++)
                 {
-                    var distance = getEditDistance(org.Name.ToLower(), exAgencies[i].Name.ToLower());
+                    var distance = getEditDistance(org?.Name?.ToLower(), exAgencies[i].Name?.ToLower());
                     if (minDistance > distance)
                     {
                         minDistance = distance;
@@ -808,10 +810,10 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
                 if (agencyGuessed != null)
                 {
-                    var tolaratedDistance = isFilterByType ? (org.Name.Length + agencyGuessed.Name.Length) / 2 : ((org.Name.Length + agencyGuessed.Name.Length) / 2) * 50 / 100;
+                    var tolaratedDistance = isFilterByType ? (org?.Name?.Length + agencyGuessed?.Name?.Length) / 2 : ((org?.Name?.Length + agencyGuessed?.Name?.Length) / 2) * 50 / 100;
                     if (minDistance < tolaratedDistance)
                     {
-                        org.AllID = agencyGuessed.AllID;
+                        org.AllID = agencyGuessed?.AllID;
 
                         if (!isFilterByType) org.ExecutingAgencyTypeId = agencyGuessed.ExecutingAgencyTypeId;
                     }
@@ -827,8 +829,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         // Compute the edit distance between the two given strings
         protected int getEditDistance(string a, string b)
         {
-            if (a.Length == 0) return b.Length;
-            if (b.Length == 0) return a.Length;
+            if (a == null || a.Length == 0) return b.Length;
+            if (b == null || b.Length == 0) return a.Length;
 
             var matrix = new int[b.Length+1, a.Length+1];
 
