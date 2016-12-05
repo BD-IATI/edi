@@ -1271,7 +1271,7 @@ namespace AIMS_BD_IATI.DAL
             //other-identifier
 
             //activity-status
-            iatiActivityObj.activitystatus = new activitystatus { code = project.tblImplementationStatu.IATICode };
+            iatiActivityObj.activitystatus = new activitystatus { code = project.tblImplementationStatu?.IATICode };
 
             //activity-date
             List<activitydate> activitydateList = new List<activitydate>();
