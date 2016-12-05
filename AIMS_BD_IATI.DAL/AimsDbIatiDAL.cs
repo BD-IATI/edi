@@ -545,14 +545,15 @@ namespace AIMS_BD_IATI.DAL
                 List<transaction> transactions = new List<transaction>();
                 if (activity.transaction != null)
                     transactions = activity.transaction.ToList();
+                SetExchangedValues(activity);
 
-                foreach (var ra in relatedActivities)
-                {
-                    if (ra.transaction != null)
-                        transactions.AddRange(ra.transaction);
+                //foreach (var ra in relatedActivities)
+                //{
+                //    if (ra.transaction != null)
+                //        transactions.AddRange(ra.transaction);
 
-                    SetExchangedValues(ra);
-                }
+                //    SetExchangedValues(ra);
+                //}
                 activity.transaction = transactions.ToArray();
             }
 
