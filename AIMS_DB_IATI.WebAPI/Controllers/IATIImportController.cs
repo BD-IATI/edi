@@ -182,7 +182,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             }
 
             //actual method begins here
-            var managingDPs = GetAllFundSources();
+            var managingDPs = GetAllFundSources().FindAll(f=>!string.IsNullOrEmpty(f.IATICode));
 
             var iOrgs = new List<participatingorg>();
             foreach (var activity in Sessions.activitiesContainer?.RelevantActivities)
