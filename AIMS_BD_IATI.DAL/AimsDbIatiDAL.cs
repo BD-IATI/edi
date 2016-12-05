@@ -817,7 +817,7 @@ namespace AIMS_BD_IATI.DAL
         {
             Log lastLog = dbContext.Logs.Where(w => w.OrgId == dp).OrderByDescending(o => o.Id).FirstOrDefault();
             DateTime lastDate = lastLog.n().DateTime.n().Value.Date;
-            var logs = dbContext.Logs.Where(w => w.OrgId == dp && w.DateTime >= lastDate && w.IsActive == true).ToList();
+            var logs = dbContext.Logs.Where(w => w.OrgId == dp && w.DateTime >= lastDate && w.IsActive != false).ToList();
 
             return logs;
         }
