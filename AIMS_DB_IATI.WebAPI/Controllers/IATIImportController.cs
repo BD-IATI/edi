@@ -13,7 +13,7 @@ using System.Reflection;
 namespace AIMS_BD_IATI.WebAPI.Controllers
 {
     [RoutePrefix("api/IATIImport")]
-    [Authorize]
+    //[Authorize] commented allow all users
     public class IATIImportController : ApiController
     {
         AimsDAL aimsDAL = new AimsDAL();

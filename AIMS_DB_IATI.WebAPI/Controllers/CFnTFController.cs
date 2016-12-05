@@ -11,7 +11,7 @@ using MoreLinq;
 using AIMS_BD_IATI.Library;
 namespace AIMS_DB_IATI.WebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize] commented allow all users
     public class CFnTFController : ApiController
     {
         AimsDAL aimsDAL = new AimsDAL();
