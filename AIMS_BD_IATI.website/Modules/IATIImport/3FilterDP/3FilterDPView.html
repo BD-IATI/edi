@@ -182,8 +182,7 @@
                                 <span ng-hide="RelevantActivities.length == 0">
                                     <button ng-click="GotoTab(0)" class="btn btn-default">Back</button>
 
-                                    <button ng-show="hasOtherDPsProject"
-                                            type="button"
+                                    <a tabindex="0" ng-show="hasOtherDPsProject"
                                             class="btn btn-primary"
                                             popover-title="Delegate projects to other DPs?"
                                             uib-popover-template="'myPopoverTemplate.html'"
@@ -191,7 +190,7 @@
                                             popover-trigger="focus"
                                             popover-placement="auto">
                                         Next...
-                                    </button>
+                                    </a>
 
                                     <a id="btn4Projects" ng-hide='hasOtherDPsProject' class="btn btn-primary" ng-href="#/4Projects">Next</a>
                                 </span>
