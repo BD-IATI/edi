@@ -1121,6 +1121,7 @@ namespace AIMS_BD_IATI.DAL
                             let isIATIactivity = project.IatiIdentifier != null || project.IatiIdentifier.Length > 0 || project.DPProjectNo != null || project.DPProjectNo.Length > 0
                             where fundSource.IATICode == dp
                             && isIATIactivity
+                            orderby project.Title
                             select project);
 
             List<iatiactivity> iatiactivities = new List<iatiactivity>();
@@ -1144,6 +1145,7 @@ namespace AIMS_BD_IATI.DAL
                             let isNotMapped = !mappedProjectIds.Contains(project.Id)
                             where fundSource.IATICode == dp
                             && isIATIactivity && isNotMapped
+                            orderby project.Title
                             select project);
 
             List<iatiactivity> iatiactivities = new List<iatiactivity>();
@@ -1166,6 +1168,7 @@ namespace AIMS_BD_IATI.DAL
                             let isMapped = mappedProjectIds.Contains(project.Id)
                             where fundSource.IATICode == dp
                             && isIATIactivity && isMapped
+                            orderby project.Title
                             select project);
 
             List<iatiactivity> iatiactivities = new List<iatiactivity>();
