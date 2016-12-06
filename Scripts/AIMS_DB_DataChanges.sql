@@ -1,0 +1,35 @@
+-- Update IATICode for Implementing Status
+UPDATE [dbo].[tblImplementationStatus] SET [IATICode]=N'2' WHERE [Id]=1;
+UPDATE [dbo].[tblImplementationStatus] SET [IATICode]=N'3' WHERE [Id]=2;
+UPDATE [dbo].[tblImplementationStatus] SET [IATICode]=N'1' WHERE [Id]=3;
+UPDATE [dbo].[tblImplementationStatus] SET [IATICode]=N'6' WHERE [Id]=4;
+
+-- Update IATICode for Document Category
+UPDATE [dbo].[tblDocumentCategory] SET [IATICode]=N'A06' WHERE [Id]=2;
+UPDATE [dbo].[tblDocumentCategory] SET [IATICode]=N'B01' WHERE [Id]=4;
+UPDATE [dbo].[tblDocumentCategory] SET [IATICode]=N'B09' WHERE [Id]=6;
+UPDATE [dbo].[tblDocumentCategory] SET [IATICode]=N'A08' WHERE [Id]=9;
+UPDATE [dbo].[tblDocumentCategory] SET [IATICode]=N'A02' WHERE [Id]=11;
+
+-- Update IATICode for Fund Sources
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'GB-1|XM-DAC-12-1|GB-GOV-1' WHERE [Id]=1;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'46004' WHERE [Id]=2;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'41114|XM-DAC-41114' WHERE [Id]=4;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'CA-3|XM-DAC-301-3' WHERE [Id]=7;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'DK-1' WHERE [Id]=8;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'41119|XM-DAC-41119' WHERE [Id]=10;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'US-USAGOV|US-1' WHERE [Id]=11;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'DE-1' WHERE [Id]=15;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'CH-4' WHERE [Id]=19;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'NL-1|XM-DAC-7' WHERE [Id]=21;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'44000|44001|44002' WHERE [Id]=23;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'XI-IATI-EC_DEVCO|EU-1' WHERE [Id]=24;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'SE-0' WHERE [Id]=26;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'41304|XM-DAC-41304' WHERE [Id]=40;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'AU-5' WHERE [Id]=87;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'BE-10' WHERE [Id]=1529550;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'411124|XM-DAC-411124' WHERE [Id]=1529560;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'XM-DAC-918-3' WHERE [Id]=1529615;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'47045|XM-DAC-47045' WHERE [Id]=1529619;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'41120|XM-DAC-41120' WHERE [Id]=1529625;
+UPDATE [dbo].[tblFundSource] SET [IATICode]=N'47122|XM-DAC-47122' WHERE [Id]=1529634;
