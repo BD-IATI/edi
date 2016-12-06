@@ -242,7 +242,17 @@ namespace AIMS_DB_IATI.WebAPI.Models
                     : (List<ExecutingAgencyLookupItem>)HttpContext.Current.Session["FundSources"];
             }
             set { HttpContext.Current.Session["FundSources"] = value; }
+        }
 
+        public static List<ExecutingAgencyLookupItem> ManagingDPs
+        {
+            get
+            {
+                return HttpContext.Current.Session["ManagingDPs"] == null ?
+                    new List<ExecutingAgencyLookupItem>()
+                    : (List<ExecutingAgencyLookupItem>)HttpContext.Current.Session["ManagingDPs"];
+            }
+            set { HttpContext.Current.Session["ManagingDPs"] = value; }
         }
 
         public static List<iatiactivity> TrustFunds

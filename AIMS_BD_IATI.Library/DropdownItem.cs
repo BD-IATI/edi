@@ -25,8 +25,6 @@ namespace AIMS_BD_IATI.Library
                 + FundSourceCategoryId;
             }
         }
-
-
     }
 
     [Serializable]
@@ -36,7 +34,7 @@ namespace AIMS_BD_IATI.Library
         public string Name { get; set; }
         public string IATICode { get; set; }
         public string IDnIATICode { get { return ID + "~" + (IATICode ?? ""); } }
-
+        public bool IsManagingDP { get; set; }
     }
 
     [Serializable]
