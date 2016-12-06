@@ -102,7 +102,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public int ProjectId { get; set; } //AIMS ProjectId
         [XmlIgnore]
         public int MappedProjectId { get; set; } //Used for co-finance projects
-[XmlIgnore]
+        [XmlIgnore]
         public int MappedTrustFundId { get; set; }
 
         [XmlIgnore]
@@ -420,7 +420,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return _OriginalIatiIdentifier??IatiIdentifier;
+                return _OriginalIatiIdentifier ?? IatiIdentifier;
             }
 
             set
@@ -561,10 +561,20 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                         var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
 
-                        defaultaidtype.code = dominatingAidType == null ? "" : dominatingAidType.aidtype == null ? "" : dominatingAidType.aidtype.code;
+                        if (dominatingAidType != null && dominatingAidType.aidtype != null)
+                        {
+                            defaultaidtype.code = dominatingAidType.aidtype.code;
+                        }
+                        else
+                        {
+                            var dominatingAidTypeAcitvity = includedChildActivities.Where(w => !string.IsNullOrWhiteSpace(w.AidTypeCode))
+                                .OrderByDescending(o => o.TotalCommitment).FirstOrDefault();
+                            if (dominatingAidTypeAcitvity != null)
+                            {
+                                defaultaidtype.code = dominatingAidTypeAcitvity.AidTypeCode;
+                            }
+                        }
 
-
-                        //defaultaidtype.code = "A01";
 
                     }
 
