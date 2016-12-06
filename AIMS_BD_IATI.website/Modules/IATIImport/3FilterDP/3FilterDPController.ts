@@ -16,7 +16,7 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
         data: JSON.stringify($rootScope.filterBDModel)
     }).then(function (result) {
         $scope.ImplementingOrgs = result.data.Orgs;
-        $scope.FundSources = result.data.FundSources;
+        $scope.ManagingDPs = result.data.ManagingDPs;
         $scope.ExecutingAgencyTypes = result.data.ExecutingAgencyTypes;
         $scope.ExecutingAgencies = result.data.ExecutingAgencies;
         //$rootScope.filterBDModel = null;
