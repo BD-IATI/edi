@@ -19,4 +19,24 @@ namespace AIMS_BD_IATI.Library
 
         public Nullable<decimal> TAKA_PER_DOLLAR { get; set; }
     }
+
+    [Serializable]
+    public class ExchangeRateFederal
+    {
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Date formal 1995-01-02
+        /// </summary>
+        public DateTime Date { get; set; }
+        public decimal Rate { get; set; }
+        /// <summary>
+        /// ISO Codes of Currency
+        /// </summary>
+        public string Currency { get; set; }
+        /// <summary>
+        /// D = Daily
+        /// </summary>
+        public string Frequency { get; set; }
+    }
 }

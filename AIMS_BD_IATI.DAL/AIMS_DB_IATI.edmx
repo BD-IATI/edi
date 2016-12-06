@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="AIMS_DB_IATIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AIMS_DB_IATIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="Id" />
@@ -18,13 +18,26 @@
           <Property Name="DownloadDatePrev" Type="datetime" />
           <Property Name="Hierarchy" Type="int" />
           <Property Name="ParentHierarchy" Type="int" />
-          <Property Name="IsInclude" Type="bit" />
+          <Property Name="IsInclude" Type="bit" Nullable="false" />
           <Property Name="AssignedOrgId" Type="nvarchar" MaxLength="50" />
           <Property Name="AssignedDate" Type="datetime" />
           <Property Name="ProjectId" Type="int" />
           <Property Name="MappedProjectId" Type="int" />
           <Property Name="MappedTrustFundId" Type="int" />
-          <Property Name="IsIgnore" Type="bit" />
+          <Property Name="IsIgnore" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AIMS_DB_IATI.dbo.ExchageRateFederal' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ExchageRateFederal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Rate" Type="decimal" Precision="18" Scale="6" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="50" />
+          <Property Name="Frequency" Type="nvarchar" MaxLength="50" />
+          <Property Name="InsertDate" Type="datetime" />
         </EntityType>
         <EntityType Name="FieldMappingPreferenceActivity">
           <Key>
@@ -75,6 +88,16 @@
           <EntitySet Name="FieldMappingPreferenceDelegated" EntityType="Self.FieldMappingPreferenceDelegated" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FieldMappingPreferenceGeneral" EntityType="Self.FieldMappingPreferenceGeneral" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExchageRateFederal" EntityType="Self.ExchageRateFederal" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ExchageRateFederal].[Id] AS [Id], 
+    [ExchageRateFederal].[Date] AS [Date], 
+    [ExchageRateFederal].[Rate] AS [Rate], 
+    [ExchageRateFederal].[Currency] AS [Currency], 
+    [ExchageRateFederal].[Frequency] AS [Frequency], 
+    [ExchageRateFederal].[InsertDate] AS [InsertDate]
+    FROM [dbo].[ExchageRateFederal] AS [ExchageRateFederal]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -86,6 +109,7 @@
           <EntitySet Name="FieldMappingPreferenceDelegateds" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceDelegated" />
           <EntitySet Name="FieldMappingPreferenceGenerals" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral" />
           <EntitySet Name="Logs" EntityType="AIMS_DB_IATIModel.Log" />
+          <EntitySet Name="ExchageRateFederals" EntityType="AIMS_DB_IATIModel.ExchageRateFederal" />
         </EntityContainer>
         <EntityType Name="Activity">
           <Key>
@@ -100,13 +124,13 @@
           <Property Name="DownloadDatePrev" Type="DateTime" Precision="3" />
           <Property Name="Hierarchy" Type="Int32" />
           <Property Name="ParentHierarchy" Type="Int32" />
-          <Property Name="IsInclude" Type="Boolean" />
+          <Property Name="IsInclude" Type="Boolean" Nullable="false" />
           <Property Name="AssignedOrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AssignedDate" Type="DateTime" Precision="3" />
           <Property Name="ProjectId" Type="Int32" />
           <Property Name="MappedProjectId" Type="Int32" />
           <Property Name="MappedTrustFundId" Type="Int32" />
-          <Property Name="IsIgnore" Type="Boolean" />
+          <Property Name="IsIgnore" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="FieldMappingPreferenceActivity">
           <Key>
@@ -150,6 +174,17 @@
           <Property Name="ExceptionObj" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DateTime" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="ExchageRateFederal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Rate" Type="Decimal" Precision="18" Scale="6" />
+          <Property Name="Currency" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Frequency" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InsertDate" Type="DateTime" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -222,6 +257,18 @@
                 <ScalarProperty Name="IatiIdentifier" ColumnName="IatiIdentifier" />
                 <ScalarProperty Name="OrgId" ColumnName="OrgId" />
                 <ScalarProperty Name="LogType" ColumnName="LogType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExchageRateFederals">
+            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.ExchageRateFederal">
+              <MappingFragment StoreEntitySet="ExchageRateFederal">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
