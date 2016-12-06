@@ -17,7 +17,6 @@ namespace AIMS_BD_IATI.DAL
             foreach (var H1Activity in H1Activities)
             {
                 #region populate child activities
-                H1Activity.childActivities.Clear();
                 if (H1Activity.relatedactivity != null)
                 {
                     foreach (var ra in H1Activity.relatedactivity.Where(r => r.type == "2"))
@@ -31,6 +30,7 @@ namespace AIMS_BD_IATI.DAL
                         }
                     }
                 }
+                H1Activity.IsChildActivityLoaded = true;
                 #endregion
 
                 #region To Resolve participating org

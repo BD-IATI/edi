@@ -105,27 +105,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
 
 
-                #region Populate relatedActivities of the first activity as sample data
-                var parentActivities = Sessions.activitiesContainer?.iatiActivities.FindAll(x => x.hierarchy == 1);
-                foreach (var pa in parentActivities)
-                {
-                    if (pa.relatedactivity != null)
-                    {
-                        foreach (var ra in pa.relatedactivity.Where(r => r.type == "2"))
-                        {
-                            //load related activities
-                            var ha = Sessions.activitiesContainer?.iatiActivities.Find(f => f.IatiIdentifier == ra.@ref);
-
-                            if (ha != null)
-                            {
-                                pa.childActivities.Add(ha);
-                            }
-                        }
-                        returnResult.SampleIatiActivity = pa;
-                        break; //we have to show only one hierarchycal project as a sample
-                    }
-                }
-                #endregion
+                returnResult.SampleIatiActivity = Sessions.activitiesContainer?.iatiActivities.FindAll(x => x.hierarchy == 1).FirstOrDefault();
 
                 returnResult.SelectedHierarchy = returnResult.H1Percent >= returnResult.H2Percent ? 1 : 2;
 
