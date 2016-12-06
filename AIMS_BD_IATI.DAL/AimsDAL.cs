@@ -471,12 +471,26 @@ namespace AIMS_BD_IATI.DAL
                     #endregion
 
                     #region Dates
-
-                    p.AgreementSignDate = mergedproject.ActualStartDate == default(DateTime) ? mergedproject.PlannedStartDate.ToSqlDateTime() : mergedproject.ActualStartDate;
-                    p.PlannedProjectStartDate = mergedproject.PlannedStartDate.ToSqlDateTimeNull();
-                    p.ActualProjectStartDate = mergedproject.ActualStartDate.ToSqlDateTimeNull();
-                    p.PlannedProjectCompletionDate = mergedproject.PlannedEndDate.ToSqlDateTimeNull();
-                    p.RevisedProjectCompletionDate = mergedproject.ActualEndDate.ToSqlDateTimeNull();
+                    if (p.AgreementSignDate == null)
+                    {
+                        p.AgreementSignDate = mergedproject.ActualStartDate == default(DateTime) ? mergedproject.PlannedStartDate.ToSqlDateTime() : mergedproject.ActualStartDate;
+                    }
+                    if (p.PlannedProjectStartDate == null)
+                    {
+                        p.PlannedProjectStartDate = mergedproject.PlannedStartDate.ToSqlDateTimeNull();
+                    }
+                    if (p.ActualProjectStartDate == null)
+                    {
+                        p.ActualProjectStartDate = mergedproject.ActualStartDate.ToSqlDateTimeNull();
+                    }
+                    if (p.PlannedProjectCompletionDate == null)
+                    {
+                        p.PlannedProjectCompletionDate = mergedproject.PlannedEndDate.ToSqlDateTimeNull();
+                    }
+                    if (p.RevisedProjectCompletionDate == null)
+                    {
+                        p.RevisedProjectCompletionDate = mergedproject.ActualEndDate.ToSqlDateTimeNull();
+                    }
 
                     #endregion
 
