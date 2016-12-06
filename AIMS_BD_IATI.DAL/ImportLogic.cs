@@ -232,7 +232,7 @@ namespace AIMS_BD_IATI.DAL
 
                 //add all child activities if any and delete all transaction from child activities because we only need child activities to update IsInclude field in database
                 matchedProject.aimsProject.childActivities = matchedProject.iatiActivity.childActivities;
-                matchedProject.aimsProject.childActivities.ForEach(f => f.transaction = null);
+                //matchedProject.aimsProject.childActivities.ForEach(f => f.transaction = null);
 
                 margedProjects.Add(matchedProject.aimsProject);
             }

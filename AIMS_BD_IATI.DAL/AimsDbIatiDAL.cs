@@ -320,6 +320,8 @@ namespace AIMS_BD_IATI.DAL
 
             foreach (var iatiActivity in iatiActivities)
             {
+                LoadChildActivities(iatiActivity);
+                SetExchangedValues(iatiActivity);
 
                 #region Field Mapping Preference Delegateds
                 var FieldMappingPreferenceDelegateds = dbContext.FieldMappingPreferenceDelegateds.Where(w => w.IatiIdentifier == iatiActivity.IatiIdentifier).ToList();
@@ -337,8 +339,6 @@ namespace AIMS_BD_IATI.DAL
                 }
                 #endregion
 
-                LoadChildActivities(iatiActivity);
-                SetExchangedValues(iatiActivity);
 
             }
 
@@ -350,32 +350,33 @@ namespace AIMS_BD_IATI.DAL
             };
         }
 
-        public iatiactivityContainer GetAllActivities(string dp)
-        {
-            var q = (from a in dbContext.Activities
-                     where a.AssignedOrgId == dp
-                     orderby a.IatiIdentifier
-                     select new ActivityModel
-                     {
-                         IatiActivity = a.IatiActivity,
-                         OrgId = a.OrgId,
-                         ProjectId = a.ProjectId,
-                         MappedProjectId = a.MappedProjectId,
-                         MappedTrustFundId = a.MappedTrustFundId,
-                         IsInclude = a.IsInclude
-                     }).ToList();
+        //public iatiactivityContainer GetAllActivities(string dp)
+        //{
+        //    var q = (from a in dbContext.Activities
+        //             where a.AssignedOrgId == dp
+        //             orderby a.IatiIdentifier
+        //             select new ActivityModel
+        //             {
+        //                 IatiActivity = a.IatiActivity,
+        //                 OrgId = a.OrgId,
+        //                 ProjectId = a.ProjectId,
+        //                 MappedProjectId = a.MappedProjectId,
+        //                 MappedTrustFundId = a.MappedTrustFundId,
+        //                 IsInclude = a.IsInclude
+        //             }).ToList();
 
-            var iatiActivities = ParseXMLAndResolve(q);
+        //    var iatiActivities = ParseXMLAndResolve(q);
 
+            
 
-            var aimsActivities = new AimsDAL().GetAIMSProjectsInIATIFormat(dp);
+        //    var aimsActivities = new AimsDAL().GetAIMSProjectsInIATIFormat(dp);
 
-            return new iatiactivityContainer
-            {
-                iatiActivities = iatiActivities,
-                AimsProjects = aimsActivities
-            };
-        }
+        //    return new iatiactivityContainer
+        //    {
+        //        iatiActivities = iatiActivities,
+        //        AimsProjects = aimsActivities
+        //    };
+        //}
         public ProjectFieldMapModel GetTransactionMismatchedActivity(string iatiIdentifier)
         {
             var q = (from a in dbContext.Activities
@@ -512,10 +513,15 @@ namespace AIMS_BD_IATI.DAL
 
         #region Helper Methods
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="q"></param>
+        /// <returns></returns>
         private List<iatiactivity> ParseXMLAndResolve(List<ActivityModel> q)
         {
             var result = new List<iatiactivity>();
-            var serializer = new XmlSerializer(typeof(iatiactivity));
+            var serializer = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity));
 
             foreach (var a in q)
             {
@@ -535,12 +541,11 @@ namespace AIMS_BD_IATI.DAL
             return result;
         }
 
-        private void LoadChildActivities(iatiactivity activity)
+        public void LoadChildActivities(iatiactivity activity)
         {
             if (activity.HasChildActivity)
             {
                 var relatedActivities = new List<iatiactivity>();
-                var relatedActivity = new iatiactivity();
 
                 var ras = (from a in dbContext.Activities
                            where a.IatiIdentifier.StartsWith(activity.IatiIdentifier)
@@ -556,23 +561,23 @@ namespace AIMS_BD_IATI.DAL
                            }).ToList();
 
                 relatedActivities = ParseXMLAndResolve(ras);
-
                 //add all transaction of child activities to parent 
-                List<transaction> transactions = new List<transaction>();
-                if (activity.transaction != null)
-                {
-                    transactions = activity.transaction.ToList();
-                    SetExchangedValues(activity);
-                }
-                //foreach (var ra in relatedActivities)
+                //List<transaction> transactions = new List<transaction>();
+                //if (activity.transaction != null)
                 //{
-                //    if (ra.transaction != null)
-                //        transactions.AddRange(ra.transaction);
-
-                //    SetExchangedValues(ra);
+                //    transactions = activity.transaction.ToList();
+                //    SetExchangedValues(activity);
                 //}
-                activity.transaction = transactions.ToArray();
+                ////foreach (var ra in relatedActivities)
+                ////{
+                ////    if (ra.transaction != null)
+                ////        transactions.AddRange(ra.transaction);
+
+                ////    SetExchangedValues(ra);
+                ////}
+                //activity.transaction = transactions.ToArray();
             }
+            activity.IsChildActivityLoaded = true;
 
         }
 

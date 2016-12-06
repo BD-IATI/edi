@@ -86,10 +86,6 @@
       <Project>{eb82e9d6-c868-4155-8d20-5127c8ab1d1e}</Project>
       <Name>AIMS_BD_IATI.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AIMS_BD_IATI.Library\AIMS_BD_IATI.Library.csproj">
-      <Project>{7864245e-5463-4c47-b5ef-e44fe9748b84}</Project>
-      <Name>AIMS_BD_IATI.Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

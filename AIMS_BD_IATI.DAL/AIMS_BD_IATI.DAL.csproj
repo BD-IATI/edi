@@ -102,6 +102,8 @@
     <Compile Include="CommonConfigType.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DropdownItem.cs" />
+    <Compile Include="ExchangeRateModel.cs" />
     <Compile Include="FieldMappingPreferenceActivity.cs">
       <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
     </Compile>
@@ -112,12 +114,35 @@
       <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
     </Compile>
     <Compile Include="ImportLogic.cs" />
+    <Compile Include="Levenshtein.cs" />
     <Compile Include="Log.cs">
       <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
     </Compile>
     <Compile Include="Logger.cs" />
+    <Compile Include="NullChecker.cs" />
+    <Compile Include="Parser\Fields.cs" />
+    <Compile Include="Parser\IConverterIATI.cs" />
+    <Compile Include="Parser\IParserIATI.cs" />
+    <Compile Include="Parser\IXmlResult.cs" />
+    <Compile Include="Parser\ParserIATIv1\iati-activities-schema.cs">
+      <DependentUpon>iati-activities-schema.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Parser\ParserIATIv1\iati-activities-schema.designer.cs">
+      <DependentUpon>iati-activities-schema.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Parser\ParserIATIv1\ParserIATIv1.cs" />
+    <Compile Include="Parser\ParserIATIv1\XmlResultv1.cs" />
+    <Compile Include="Parser\ParserIATIv2\ConvertIATIv2.cs" />
+    <Compile Include="Parser\ParserIATIv2\iati-activities-schema.cs">
+      <DependentUpon>iati-activities-schema.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Parser\ParserIATIv2\iatiactivityPartial.cs" />
+    <Compile Include="Parser\ParserIATIv2\ICurrency.cs" />
+    <Compile Include="Parser\ParserIATIv2\ParserIATIv2.cs" />
+    <Compile Include="Parser\ParserIATIv2\XmlResultv2.cs" />
     <Compile Include="Partials\AIMS_DB_IATIEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Statix.cs" />
     <Compile Include="tblAgreementType.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
@@ -304,6 +329,7 @@
     <Compile Include="tblVerificationStatu.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="XmlTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="AIMS_DB.edmx">
@@ -343,16 +369,26 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
+    <None Include="Parser\ParserIATIv1\iati-activities-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Parser\ParserIATIv1\iati-common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Parser\ParserIATIv1\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Parser\ParserIATIv2\iati-activities-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Parser\ParserIATIv2\iati-common.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AIMS_BD_IATI.Library\AIMS_BD_IATI.Library.csproj">
-      <Project>{7864245e-5463-4c47-b5ef-e44fe9748b84}</Project>
-      <Name>AIMS_BD_IATI.Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

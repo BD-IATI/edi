@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AIMS_BD_IATI.DAL;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Device.Location;
@@ -116,8 +117,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         public List<iatiactivity> childActivities { get; set; }
         [XmlIgnore]
         private List<iatiactivity> includedChildActivities { get {
-                if (!IsChildActivityLoaded)
-                    AimsDbIatiDAL
+                if (HasChildActivity && !IsChildActivityLoaded) {
+                    new AimsDbIatiDAL().LoadChildActivities(this);
+                }
                 return 
                     childActivities.FindAll(f => f.IsInclude == null || f.IsInclude != false);
             } }
