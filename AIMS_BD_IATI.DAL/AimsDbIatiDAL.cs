@@ -545,14 +545,15 @@ namespace AIMS_BD_IATI.DAL
                 List<transaction> transactions = new List<transaction>();
                 if (activity.transaction != null)
                     transactions = activity.transaction.ToList();
+                SetExchangedValues(activity);
 
-                foreach (var ra in relatedActivities)
-                {
-                    if (ra.transaction != null)
-                        transactions.AddRange(ra.transaction);
+                //foreach (var ra in relatedActivities)
+                //{
+                //    if (ra.transaction != null)
+                //        transactions.AddRange(ra.transaction);
 
-                    SetExchangedValues(ra);
-                }
+                //    SetExchangedValues(ra);
+                //}
                 activity.transaction = transactions.ToArray();
             }
 
@@ -817,7 +818,7 @@ namespace AIMS_BD_IATI.DAL
         {
             Log lastLog = dbContext.Logs.Where(w => w.OrgId == dp).OrderByDescending(o => o.Id).FirstOrDefault();
             DateTime lastDate = lastLog.n().DateTime.n().Value.Date;
-            var logs = dbContext.Logs.Where(w => w.OrgId == dp && w.DateTime >= lastDate && w.IsActive == true).ToList();
+            var logs = dbContext.Logs.Where(w => w.OrgId == dp && w.DateTime >= lastDate && w.IsActive != false).ToList();
 
             return logs;
         }
