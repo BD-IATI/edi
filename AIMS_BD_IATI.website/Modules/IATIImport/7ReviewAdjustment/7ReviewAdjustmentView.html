@@ -59,7 +59,9 @@
     <div class="row" ng-repeat="m in models.MatchedProjects">
         <div class="col-md-12" style="padding-bottom: 10px;">
             <h3>
-                <span class="label label-danger" ng-show="isDiffGT5(m)"><i class="glyphicon glyphicon-asterisk"></i></span> {{m.iatiActivity.Title}}
+                <span class="label label-danger" ng-show="isDiffGT5(m)"><i class="glyphicon glyphicon-asterisk" title="Significant difference!"></i></span> 
+                <!--<span>disbursmentDiff: {{disbursmentDiff(m)}} <br/> commitmentDiff: {{commitmentDiff(m)}}</span>-->
+                {{m.iatiActivity.Title}}
                 <span ng-show="m.IsManuallyMapped" style="float:right; font-size:small" class="alert-danger">Manually Mapped</span>
                 <span class="pull-right">
                     <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)" title="Set project specific adjustment"><i class="glyphicon glyphicon-pencil"></i></a>

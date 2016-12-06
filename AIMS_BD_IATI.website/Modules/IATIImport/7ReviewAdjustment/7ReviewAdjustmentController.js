@@ -14,19 +14,24 @@
 
         var denominator = m.iatiActivity.TotalDisbursmentThisDPOnly < m.aimsProject.TotalDisbursmentThisDPOnly ? m.iatiActivity.TotalDisbursmentThisDPOnly : m.aimsProject.TotalDisbursmentThisDPOnly;
 
-        return (numerator / denominator) * 100;
+        var diff = (numerator / denominator) * 100;
+        return diff;
     }
     $scope.commitmentDiff = function (m) {
         var numerator = m.iatiActivity.TotalCommitmentThisDPOnly >= m.aimsProject.TotalCommitmentThisDPOnly ? m.iatiActivity.TotalCommitmentThisDPOnly : m.aimsProject.TotalCommitmentThisDPOnly;
 
         var denominator = m.iatiActivity.TotalCommitmentThisDPOnly < m.aimsProject.TotalCommitmentThisDPOnly ? m.iatiActivity.TotalCommitmentThisDPOnly : m.aimsProject.TotalCommitmentThisDPOnly;
 
-        return (numerator / denominator) * 100;
-
+        var diff = (numerator / denominator) * 100;
+        return diff;
     }
     $scope.isDiffGT5 = function (mkl) {
 
-        return Math.abs(($scope.disbursmentDiff(mkl) - $scope.commitmentDiff(mkl)) / 2) > 5;
+        var cDiff = $scope.commitmentDiff(mkl);
+        var dDiff = $scope.disbursmentDiff(mkl);
+        var avgDiff = ((dDiff + cDiff) / 2);
+
+        return avgDiff > 120; //difference tolerance %
     }
 
     $scope.OpenProjectSpecificAdjustment = function (MatchedProject) {
