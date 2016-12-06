@@ -656,7 +656,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         {
             foreach (var activity in sessionActivities)
             {
-                var ra = clientActivities.Find(f => f.IatiIdentifier == activity.IatiIdentifier);
+                var ra = clientActivities?.FirstOrDefault(f => f.IatiIdentifier == activity.IatiIdentifier);
                 if (ra != null)
                 {
                     activity.IsRelevant = ra.IsRelevant;
@@ -666,7 +666,10 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                     activity.MappedTrustFundId = ra.MappedTrustFundId;
                     activity.AllID = ra.AllID;
 
-                   // ra.childActivities
+                    if (activity.HasChildActivity)
+                    {
+                        UpdateActivities(ra.childActivities, activity.childActivities);
+                    }
                     //var clientProperties = typeof(iatiactivity).GetProperties(BindingFlags.SetProperty).Where(w => w.GetCustomAttribute(typeof(Newtonsoft.Json.JsonIgnoreAttribute)) == null);
 
                     //foreach (PropertyInfo clientProperty in clientProperties)
