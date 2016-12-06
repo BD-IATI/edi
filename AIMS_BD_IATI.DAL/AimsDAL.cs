@@ -97,15 +97,35 @@ namespace AIMS_BD_IATI.DAL
         }
 
         /// <summary>
-        /// Get Managing DPs
+        /// Get Fund Sources or Development Partners
         /// </summary>
         /// <returns></returns>
         public List<ExecutingAgencyLookupItem> GetAllFundSources()
         {
+            var fundSources = (from dp in dbContext.tblFundSources
+                               orderby dp.FundSourceName
+                               select new ExecutingAgencyLookupItem
+                               {
+                                   ExecutingAgencyTypeId = (int)ExecutingAgencyType.DP,
+                                   ExecutingAgencyOrganizationTypeId = dp.FundSourceCategoryId,
+                                   ExecutingAgencyOrganizationId = dp.Id,
+                                   IATICode = dp.IATICode,
+                                   Name = dp.FundSourceName,
+                               }).ToList();
+
+            return fundSources;
+        }
+
+        /// <summary>
+        /// Get Managing DPs
+        /// </summary>
+        /// <returns></returns>
+        public List<ExecutingAgencyLookupItem> GetAllManagingDPs()
+        {
             var piList = dbContext.tblProjectInfoes.GroupBy(q => q.FundSourceId).Select(x => x.FirstOrDefault().FundSourceId).ToList();
 
             var fundSources = (from dp in dbContext.tblFundSources
-                                   //where piList.Contains(dp.Id)
+                               where piList.Contains(dp.Id)
                                orderby dp.FundSourceName
                                select new ExecutingAgencyLookupItem
                                {

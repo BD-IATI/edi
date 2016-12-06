@@ -21,16 +21,23 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
         void SetStatics()
         {
-            if (Sessions.FundSources.Count == 0)
+            if (Sessions.FundSources?.Count <= 0)
                 Sessions.FundSources = aimsDAL.GetAllFundSources();
 
             iatiactivity.FundSources = Sessions.FundSources;
+
+            if (Sessions.ManagingDPs?.Count <= 0)
+                Sessions.ManagingDPs = aimsDAL.GetAllManagingDPs();
         }
+
+        /// <summary>
+        /// Since we have no access to session at library project, so we pass it in a static variables
+        /// </summary>
         public IATIImportController()
         {
-            SetStatics();//since we have no access to session at library project, so we pass it in a static variables
-
+            SetStatics();
         }
+
         #region Dropdown Load
         [HttpGet]
         public List<LookupItem> GetExecutingAgencyTypes()
@@ -50,6 +57,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         public List<ExecutingAgencyLookupItem> GetAllFundSources()
         {
             return Sessions.FundSources;
+        }
+
+        [HttpGet]
+        public List<ExecutingAgencyLookupItem> GetAllManagingDPs()
+        {
+            return Sessions.ManagingDPs;
         }
         #endregion
 
@@ -180,8 +193,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 UpdateActivities(filterDBModel.iatiActivities, Sessions.activitiesContainer.iatiActivities);
             }
 
-            //actual method begins here
-            var managingDPs = GetAllFundSources().FindAll(f=>!string.IsNullOrEmpty(f.IATICode));
+            //Get Managing DPs
+            var managingDPs = GetAllManagingDPs();
 
             var iOrgs = new List<participatingorg>();
             foreach (var activity in Sessions.activitiesContainer?.RelevantActivities)
