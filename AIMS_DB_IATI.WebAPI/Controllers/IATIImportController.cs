@@ -66,7 +66,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         }
         #endregion
 
-        #region HierarchyData
+        #region 1. HierarchyData
         [AcceptVerbs("GET", "POST")]
         public HeirarchyModel GetHierarchyData(DPLookupItem dp)
         {
@@ -143,7 +143,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         #endregion
 
 
-        #region FilterBD
+        #region 2. FilterBD
         [AcceptVerbs("GET", "POST")]
         public FilterBDModel SubmitHierarchy(HeirarchyModel heirarchyModel)
         {
@@ -183,7 +183,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         }
         #endregion
 
-        #region FilterDP
+        #region 3 FilterDP
         [AcceptVerbs("GET", "POST")]
         public iOrgs GetAllImplementingOrg(FilterBDModel filterDBModel)
         {
@@ -344,7 +344,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
         #endregion
 
-        #region Match
+        #region 4. Match
         [AcceptVerbs("GET", "POST")]
         public bool SubmitManualMatchingUsingDropdown(ProjectMapModelMinified projectMapModel)
         {
@@ -458,7 +458,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
         #endregion
 
-        #region Preferences
+        #region 5. Preferences
         [HttpGet]
         public ProjectFieldMapModel GetGeneralPreferences()
         {
@@ -535,7 +535,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         }
         #endregion
 
-        #region ReviewAdjustment
+        #region 6. ReviewAdjustment
         [HttpPost]
         public ProjectMapModelMinified GetProjectsToMap(ProjectFieldMapModel GeneralPreference)
         {
