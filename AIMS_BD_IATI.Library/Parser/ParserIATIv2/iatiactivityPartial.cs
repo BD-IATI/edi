@@ -344,7 +344,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                     Transactions.AddRange(ra.transaction.Where(p => p.transactiontype?.code == transactiontypecode));
                 }
             }
-            return Transactions;
+            return Transactions.OrderByDescending(s=>s.transactiondate.isodate).ToList();
         }
 
         #endregion Helper Methods
