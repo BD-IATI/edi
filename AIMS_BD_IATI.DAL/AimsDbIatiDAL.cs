@@ -532,7 +532,7 @@ namespace AIMS_BD_IATI.DAL
                 }
                 a.iatiActivity.MappedProjectId = a.MappedProjectId ?? 0;
                 a.iatiActivity.MappedTrustFundId = a.MappedTrustFundId ?? 0;
-                a.iatiActivity.IsInclude = a.IsInclude ?? true;
+                a.iatiActivity.IsInclude = a.IsInclude;
 
                 a.iatiActivity.AllID = new AimsDAL().GetFundSourceIDnIATICode(a.OrgId);
 

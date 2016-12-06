@@ -98,7 +98,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         #endregion co-financed and trust fund projects
 
         [XmlIgnore]
-        public bool? IsInclude { get; set; }
+        public bool IsInclude { get; set; }
         [XmlIgnore]
         public bool IsChildActivityLoaded { get; set; }
         [XmlIgnore]
@@ -121,7 +121,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                     new AimsDbIatiDAL().LoadChildActivities(this);
                 }
                 return 
-                    childActivities.FindAll(f => f.IsInclude == null || f.IsInclude != false);
+                    childActivities.FindAll(f => f.IsInclude == true);
             } }
 
         [XmlIgnore]
@@ -346,11 +346,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 }
             }
 
-            foreach (var ra in MatchedProjects)
+            if (IsCofinancedProject)
             {
-                if (ra.transaction != null)
+                foreach (var ra in MatchedProjects)
                 {
-                    Transactions.AddRange(ra.transaction.Where(p => p.transactiontype?.code == transactiontypecode));
+                    if (ra.transaction != null)
+                    {
+                        Transactions.AddRange(ra.transaction.Where(p => p.transactiontype?.code == transactiontypecode));
+                    }
                 }
             }
             return Transactions.OrderByDescending(s=>s.transactiondate.isodate).ToList();

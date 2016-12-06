@@ -22,8 +22,8 @@ namespace AIMS_BD_IATI.DAL
         public Nullable<System.DateTime> DownloadDatePrev { get; set; }
         public Nullable<int> Hierarchy { get; set; }
         public Nullable<int> ParentHierarchy { get; set; }
-        public Nullable<bool> IsInclude { get; set; }
-        public Nullable<bool> IsIgnore { get; set; }
+        public bool IsInclude { get; set; }
+        public bool IsIgnore { get; set; }
         public string AssignedOrgId { get; set; }
         public string AssignedOrgName { get; set; }
         public Nullable<System.DateTime> AssignedDate { get; set; }
