@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <h2>
                 <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-                7. Review and import
+                6. Review and import
             </h2>
             <p class="lead">
                 Your projects are listed below. You can see more detail about a project with the following
@@ -61,7 +61,8 @@
             <h3>
                 <span class="label label-danger" ng-show="isDiffGT5(m)"><i class="glyphicon glyphicon-asterisk" title="Significant difference!"></i></span> 
                 <!--<span>disbursmentDiff: {{disbursmentDiff(m)}} <br/> commitmentDiff: {{commitmentDiff(m)}}</span>-->
-                {{m.iatiActivity.Title}}
+                {{m.iatiActivity.Title}} 
+                <label class="label label-default" ng-bind="m.iatiActivity.IatiIdentifier">{{m.iatiActivity.IatiIdentifier}}</label>
                 <span ng-show="m.IsManuallyMapped" style="float:right; font-size:small" class="alert-danger">Manually Mapped</span>
                 <span class="pull-right">
                     <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)" title="Set project specific adjustment"><i class="glyphicon glyphicon-pencil"></i></a>
