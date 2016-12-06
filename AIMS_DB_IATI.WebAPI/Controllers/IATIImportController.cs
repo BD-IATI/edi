@@ -660,10 +660,13 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 if (ra != null)
                 {
                     activity.IsRelevant = ra.IsRelevant;
+                    activity.IsInclude = ra.IsInclude;
                     activity.ProjectId = ra.ProjectId;
                     activity.MappedProjectId = ra.MappedProjectId;
                     activity.MappedTrustFundId = ra.MappedTrustFundId;
                     activity.AllID = ra.AllID;
+
+                   // ra.childActivities
                     //var clientProperties = typeof(iatiactivity).GetProperties(BindingFlags.SetProperty).Where(w => w.GetCustomAttribute(typeof(Newtonsoft.Json.JsonIgnoreAttribute)) == null);
 
                     //foreach (PropertyInfo clientProperty in clientProperties)
@@ -692,7 +695,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 IsCommitmentIncluded = iatiActivity.IsCommitmentIncluded,
                 IsDisbursmentIncluded = iatiActivity.IsDisbursmentIncluded,
                 IsPlannedDisbursmentIncluded = iatiActivity.IsPlannedDisbursmentIncluded,
-                IsInclude = iatiActivity.IsInclude??true,
+                IsInclude = iatiActivity.IsInclude,
 
                 ProjectId = iatiActivity.ProjectId,
                 MappedProjectId = iatiActivity.MappedProjectId,

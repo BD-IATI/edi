@@ -18,13 +18,13 @@
           <Property Name="DownloadDatePrev" Type="datetime" />
           <Property Name="Hierarchy" Type="int" />
           <Property Name="ParentHierarchy" Type="int" />
-          <Property Name="IsInclude" Type="bit" />
+          <Property Name="IsInclude" Type="bit" Nullable="false" />
           <Property Name="AssignedOrgId" Type="nvarchar" MaxLength="50" />
           <Property Name="AssignedDate" Type="datetime" />
           <Property Name="ProjectId" Type="int" />
           <Property Name="MappedProjectId" Type="int" />
           <Property Name="MappedTrustFundId" Type="int" />
-          <Property Name="IsIgnore" Type="bit" />
+          <Property Name="IsIgnore" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="FieldMappingPreferenceActivity">
           <Key>
@@ -100,13 +100,13 @@
           <Property Name="DownloadDatePrev" Type="DateTime" Precision="3" />
           <Property Name="Hierarchy" Type="Int32" />
           <Property Name="ParentHierarchy" Type="Int32" />
-          <Property Name="IsInclude" Type="Boolean" />
+          <Property Name="IsInclude" Type="Boolean" Nullable="false" />
           <Property Name="AssignedOrgId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AssignedDate" Type="DateTime" Precision="3" />
           <Property Name="ProjectId" Type="Int32" />
           <Property Name="MappedProjectId" Type="Int32" />
           <Property Name="MappedTrustFundId" Type="Int32" />
-          <Property Name="IsIgnore" Type="Boolean" />
+          <Property Name="IsIgnore" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="FieldMappingPreferenceActivity">
           <Key>
