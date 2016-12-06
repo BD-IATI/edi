@@ -143,6 +143,7 @@ namespace AIMS_BD_IATI.DAL
                 else
                 {
                     activity.DownloadDate = DateTime.Now;
+                    activity.IsInclude = true;
                     dbContext.Activities.Add(activity);
 
                     dbContext.Logs.Add(new Log

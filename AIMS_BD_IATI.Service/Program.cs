@@ -20,14 +20,15 @@ namespace AIMS_BD_IATI.Service
         {
             try
             {
-                //Logger.Write("");
-                //Logger.Write(" ******************** START IATI PROCESS *********************** ");
+                Logger.Write("");
+                Logger.Write(" ******************** START IATI PROCESS *********************** ");
 
-                //ParseIATI();
+                ParseIATI();
 
-                //Logger.Write(" ********************** END IATI PROCESS ********************* ");
-                //Logger.Write("");
+                Logger.Write(" ********************** END IATI PROCESS ********************* ");
+                Logger.Write("");
 
+                Logger.Write("");
                 Logger.Write("");
                 Logger.Write(" ******************** START EXCHANGE RATE PROCESS *********************** ");
 

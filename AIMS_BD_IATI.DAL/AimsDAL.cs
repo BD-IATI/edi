@@ -471,6 +471,7 @@ namespace AIMS_BD_IATI.DAL
                     #endregion
 
                     #region Dates
+
                     p.AgreementSignDate = mergedproject.ActualStartDate == default(DateTime) ? mergedproject.PlannedStartDate.ToSqlDateTime() : mergedproject.ActualStartDate;
                     p.PlannedProjectStartDate = mergedproject.PlannedStartDate.ToSqlDateTimeNull();
                     p.ActualProjectStartDate = mergedproject.ActualStartDate.ToSqlDateTimeNull();
@@ -495,8 +496,8 @@ namespace AIMS_BD_IATI.DAL
                         {
                             if (sector.vocabulary == "1" || sector.vocabulary == "2")
                             {
-                                var aimsSector = dbContext.tblSectors.FirstOrDefault(f => f.IATICode == sector.code);
-                                var aimsSubsector = dbContext.tblSubSectors.FirstOrDefault(f => f.IATICode == sector.code);
+                                var aimsSector = dbContext.tblSectors.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
+                                var aimsSubsector = dbContext.tblSubSectors.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
 
                                 var sectorId = aimsSector != null ?
                                     aimsSector.Id : aimsSubsector != null ?
