@@ -97,7 +97,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         #endregion co-financed and trust fund projects
 
         [XmlIgnore]
-        public bool IsInclude { get; set; }
+        public bool? IsInclude { get; set; }
         [XmlIgnore]
         public int ProjectId { get; set; } //AIMS ProjectId
         [XmlIgnore]
@@ -113,7 +113,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public List<iatiactivity> childActivities { get; set; }
         [XmlIgnore]
-        private List<iatiactivity> includedChildActivities { get { return childActivities.FindAll(f => f.IsInclude == true); } }
+        private List<iatiactivity> includedChildActivities { get { return childActivities.FindAll(f => f.IsInclude == null || f.IsInclude != false); } }
 
         [XmlIgnore]
         public List<iatiactivity> MatchedProjects { get; set; }
@@ -496,18 +496,18 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 return defaultaidtype?.name;
                 //return "Undefined";
             }
-            set
-            {
-                if (!string.IsNullOrWhiteSpace(value))
-                    defaultaidtype = new defaultaidtype { name = value };
-            }
+            //set
+            //{
+            //    if (!string.IsNullOrWhiteSpace(value))
+            //        defaultaidtype = new defaultaidtype { name = value };
+            //}
         }
         [XmlIgnore]
         public string AidTypeCode
         {
             get
             {
-                if (defaultaidtype != null && !string.IsNullOrWhiteSpace(defaultaidtype.code))
+                if (!string.IsNullOrWhiteSpace(defaultaidtype?.code))
                 {
                     return defaultaidtype.code;
                 }
@@ -533,47 +533,48 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                     }
                     else
                     {
-                        var allChildAticitiesTrans = new List<transaction>();
-                        foreach (var ra in includedChildActivities)
-                        {
-                            if (ra.transaction != null)
-                            {
-                                foreach (var item in ra.transaction)
-                                {
-                                    if (item.aidtype == null)
-                                        item.aidtype = new transactionAidtype { code = ra.defaultaidtype?.code };
-                                    allChildAticitiesTrans.Add(item);
+                        //var allChildAticitiesTrans = new List<transaction>();
+                        //foreach (var ra in includedChildActivities)
+                        //{
+                        //    if (ra.transaction != null)
+                        //    {
+                        //        foreach (var item in ra.transaction)
+                        //        {
+                        //            if (item.aidtype == null)
+                        //                item.aidtype = new transactionAidtype { code = ra.defaultaidtype?.code };
+                        //            allChildAticitiesTrans.Add(item);
 
-                                }
-                            }
+                        //        }
+                        //    }
 
-                        }
+                        //}
 
-                        var commitmentTrans = allChildAticitiesTrans.FindAll(c => c.transactiontype?.code == "2");
+                        //var commitmentTrans = allChildAticitiesTrans.FindAll(c => c.transactiontype?.code == "2");
 
-                        var kk = (from t in commitmentTrans
-                                  group t by new { t.aidtype, t.value } into g
-                                  select new
-                                  {
-                                      g.Key.aidtype,
-                                      Sum = g.Sum(s => s.value?.Value)
-                                  }).ToList();
+                        //var kk = (from t in commitmentTrans
+                        //          group t by new { t.aidtype, t.value } into g
+                        //          select new
+                        //          {
+                        //              g.Key.aidtype,
+                        //              Sum = g.Sum(s => s.value?.Value)
+                        //          }).ToList();
 
-                        var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
+                        //var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
 
-                        if (dominatingAidType != null && dominatingAidType.aidtype != null)
-                        {
-                            defaultaidtype.code = dominatingAidType.aidtype.code;
-                        }
-                        else
-                        {
-                            var dominatingAidTypeAcitvity = includedChildActivities.Where(w => !string.IsNullOrWhiteSpace(w.AidTypeCode))
+                        //if (!string.IsNullOrWhiteSpace(dominatingAidType?.aidtype?.code))
+                        //{
+                        //    defaultaidtype.code = dominatingAidType.aidtype.code;
+                        //}
+                        //else
+                        //{
+                        var dominatingAidTypeAcitvity = childActivities
                                 .OrderByDescending(o => o.TotalCommitment).FirstOrDefault();
-                            if (dominatingAidTypeAcitvity != null)
-                            {
-                                defaultaidtype.code = dominatingAidTypeAcitvity.AidTypeCode;
-                            }
+
+                        if (dominatingAidTypeAcitvity != null)
+                        {
+                            defaultaidtype.code = dominatingAidTypeAcitvity.AidTypeCode;
                         }
+                        //}
 
 
                     }
@@ -581,11 +582,11 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                     return defaultaidtype.code;
                 }
             }
-            set
-            {
-                if (!string.IsNullOrWhiteSpace(value))
-                    defaultaidtype = new Parser.ParserIATIv2.defaultaidtype { code = value };
-            }
+            //set
+            //{
+            //    if (!string.IsNullOrWhiteSpace(value))
+            //        defaultaidtype = new Parser.ParserIATIv2.defaultaidtype { code = value };
+            //}
         }
 
         [XmlIgnore]

@@ -29,6 +29,6 @@ namespace AIMS_BD_IATI.DAL
         public Nullable<int> ProjectId { get; set; }
         public Nullable<int> MappedProjectId { get; set; }
         public Nullable<int> MappedTrustFundId { get; set; }
-        public Nullable<bool> IsIgnore { get; set; }
+        public Nullable<bool> IsIgnore { get; set; } 
     }
 }

@@ -168,7 +168,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             Sessions.activitiesContainer.iatiActivities = iatiActivities;
             return returnResult;
         }
-
         #endregion
 
         #region FilterDP
@@ -189,8 +188,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             {
                 if (activity.ImplementingOrgs != null)
                     iOrgs.AddRange(activity.ImplementingOrgs);
-
-
+                //to set included child activities for hierarchical projects
+                aimsDbIatiDAL.SetIncludeActivities(activity.childActivities);
             }
 
             var distictOrgs = iOrgs.DistinctBy(l => l.Name).OrderBy(o => o.Name);
@@ -627,7 +626,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             aimsDbIatiDAL.UpdateLog(log);
             return aimsDAL.UpdateProjects(margedProjects, Sessions.UserId, false);
         }
-
+        //userd for merge conflict activities
         [AcceptVerbs("GET", "POST")]
         public int? SetIgnoreActivity(Log log)
         {
@@ -690,6 +689,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
         public iatiactivityModel ToMinifiedIatiActivityModel(iatiactivity iatiActivity, bool includeTransactions = false, bool includeChilds = false, bool includeMatched = false)
         {
+            var aidTypeActivity = iatiActivity.childActivities.OrderByDescending(o => o.TotalCommitment).FirstOrDefault();
+
             return new iatiactivityModel
             {
                 IsDataSourceAIMS = iatiActivity.IsDataSourceAIMS,
@@ -698,7 +699,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 IsCommitmentIncluded = iatiActivity.IsCommitmentIncluded,
                 IsDisbursmentIncluded = iatiActivity.IsDisbursmentIncluded,
                 IsPlannedDisbursmentIncluded = iatiActivity.IsPlannedDisbursmentIncluded,
-                IsInclude = iatiActivity.IsInclude,
+                IsInclude = iatiActivity.IsInclude??true,
 
                 ProjectId = iatiActivity.ProjectId,
                 MappedProjectId = iatiActivity.MappedProjectId,
@@ -729,8 +730,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 ReportingOrg = iatiActivity.ReportingOrg,
                 ImplementingOrgs = iatiActivity.ImplementingOrgs,
                 ExtendingOrgs = iatiActivity.ExtendingOrgs,
-                AidType = iatiActivity.AidType,
-                AidTypeCode = iatiActivity.AidTypeCode,
+                AidTypeCode = string.IsNullOrWhiteSpace(iatiActivity.AidTypeCode) ? aidTypeActivity?.AidTypeCode : iatiActivity.AidTypeCode,
+                AidType =string.IsNullOrWhiteSpace(iatiActivity.AidType) ? aidTypeActivity?.AidType : iatiActivity.AidType,
                 ActivityStatus = iatiActivity.ActivityStatus,
 
                 PlannedStartDate = iatiActivity.PlannedStartDate,

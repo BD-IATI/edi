@@ -254,6 +254,22 @@ namespace AIMS_BD_IATI.DAL
 
             return dbContext.SaveChanges();
         }
+
+        public int SetIncludeActivities(List<iatiactivity> iatiActivities)
+        {
+            foreach (var item in iatiActivities)
+            {
+                var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == item.IatiIdentifier);
+                if (a != null)
+                {
+                    a.IsInclude = item.IsInclude;
+                }
+
+            }
+
+            return dbContext.SaveChanges();
+        }
+        //userd for merge conflict activities
         public int SetIgnoreActivity(string iatiIdentifier)
         {
             var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == iatiIdentifier);
@@ -544,9 +560,10 @@ namespace AIMS_BD_IATI.DAL
                 //add all transaction of child activities to parent 
                 List<transaction> transactions = new List<transaction>();
                 if (activity.transaction != null)
+                {
                     transactions = activity.transaction.ToList();
-                SetExchangedValues(activity);
-
+                    SetExchangedValues(activity);
+                }
                 //foreach (var ra in relatedActivities)
                 //{
                 //    if (ra.transaction != null)
