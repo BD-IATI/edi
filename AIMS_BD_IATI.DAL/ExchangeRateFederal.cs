@@ -12,7 +12,7 @@ namespace AIMS_BD_IATI.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class ExchageRateFederal
+    public partial class ExchangeRateFederal
     {
         public long Id { get; set; }
         public Nullable<System.DateTime> Date { get; set; }

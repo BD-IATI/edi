@@ -83,9 +83,15 @@ namespace AIMS_BD_IATI.Service
 
         private static void ParseExchangeRate()
         {
-            ExchangeRateParser obj = new ExchangeRateParser();
+            var obj = new ExchangeRateParser();
             var url = Common.exchangeRate_url;
             var list = obj.SplitCSV(url);
+            Logger.Write("INFO: " + list.Count() + " Exchange Rates are dowloaded.");
+
+            var count = new AimsDbIatiDAL().SaveExchangeRateFedaral(list);
+
+            Logger.Write("INFO: " + count + " Exchange Rates are stored in Database");
+            Logger.Write("");
         }
     }
 

@@ -28,7 +28,9 @@
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'AIMS_DB_IATI.dbo.ExchageRateFederal' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="ExchageRateFederal">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AIMS_DB_IATI.dbo.ExchangeRateFederal' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ExchangeRateFederal">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -88,15 +90,15 @@ warning 6002: The table/view 'AIMS_DB_IATI.dbo.ExchageRateFederal' does not have
           <EntitySet Name="FieldMappingPreferenceDelegated" EntityType="Self.FieldMappingPreferenceDelegated" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FieldMappingPreferenceGeneral" EntityType="Self.FieldMappingPreferenceGeneral" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ExchageRateFederal" EntityType="Self.ExchageRateFederal" store:Type="Tables" store:Schema="dbo">
+          <EntitySet Name="ExchangeRateFederal" EntityType="Self.ExchangeRateFederal" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [ExchageRateFederal].[Id] AS [Id], 
-    [ExchageRateFederal].[Date] AS [Date], 
-    [ExchageRateFederal].[Rate] AS [Rate], 
-    [ExchageRateFederal].[Currency] AS [Currency], 
-    [ExchageRateFederal].[Frequency] AS [Frequency], 
-    [ExchageRateFederal].[InsertDate] AS [InsertDate]
-    FROM [dbo].[ExchageRateFederal] AS [ExchageRateFederal]</DefiningQuery>
+    [ExchangeRateFederal].[Id] AS [Id], 
+    [ExchangeRateFederal].[Date] AS [Date], 
+    [ExchangeRateFederal].[Rate] AS [Rate], 
+    [ExchangeRateFederal].[Currency] AS [Currency], 
+    [ExchangeRateFederal].[Frequency] AS [Frequency], 
+    [ExchangeRateFederal].[InsertDate] AS [InsertDate]
+    FROM [dbo].[ExchangeRateFederal] AS [ExchangeRateFederal]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -109,7 +111,7 @@ warning 6002: The table/view 'AIMS_DB_IATI.dbo.ExchageRateFederal' does not have
           <EntitySet Name="FieldMappingPreferenceDelegateds" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceDelegated" />
           <EntitySet Name="FieldMappingPreferenceGenerals" EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral" />
           <EntitySet Name="Logs" EntityType="AIMS_DB_IATIModel.Log" />
-          <EntitySet Name="ExchageRateFederals" EntityType="AIMS_DB_IATIModel.ExchageRateFederal" />
+          <EntitySet Name="ExchangeRateFederals" EntityType="AIMS_DB_IATIModel.ExchangeRateFederal" />
         </EntityContainer>
         <EntityType Name="Activity">
           <Key>
@@ -175,7 +177,7 @@ warning 6002: The table/view 'AIMS_DB_IATI.dbo.ExchageRateFederal' does not have
           <Property Name="DateTime" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
         </EntityType>
-        <EntityType Name="ExchageRateFederal">
+        <EntityType Name="ExchangeRateFederal">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -261,9 +263,9 @@ warning 6002: The table/view 'AIMS_DB_IATI.dbo.ExchageRateFederal' does not have
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ExchageRateFederals">
-            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.ExchageRateFederal">
-              <MappingFragment StoreEntitySet="ExchageRateFederal">
+          <EntitySetMapping Name="ExchangeRateFederals">
+            <EntityTypeMapping TypeName="AIMS_DB_IATIModel.ExchangeRateFederal">
+              <MappingFragment StoreEntitySet="ExchangeRateFederal">
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
                 <ScalarProperty Name="Frequency" ColumnName="Frequency" />
                 <ScalarProperty Name="Currency" ColumnName="Currency" />
