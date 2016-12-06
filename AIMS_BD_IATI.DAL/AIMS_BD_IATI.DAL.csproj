@@ -103,6 +103,9 @@
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DropdownItem.cs" />
+    <Compile Include="ExchangeRateFederal.cs">
+      <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>
+    </Compile>
     <Compile Include="ExchangeRateModel.cs" />
     <Compile Include="FieldMappingPreferenceActivity.cs">
       <DependentUpon>AIMS_DB_IATI.tt</DependentUpon>

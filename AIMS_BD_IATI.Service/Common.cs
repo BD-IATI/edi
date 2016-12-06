@@ -31,6 +31,20 @@ namespace AIMS_BD_IATI.Service
         {
             get { return ConfigurationManager.AppSettings["iati_stream"]; }
         }
+
+        public static string exchangeRate_url
+        {
+            get { return ConfigurationManager.AppSettings["exchangeRate_url"]; }
+        }
+
+        public static decimal ParseDecimal(object value)
+        {
+            decimal result = 0;
+
+            decimal.TryParse(value.ToString(), out result);
+
+            return result;
+        }
     }
 
 }

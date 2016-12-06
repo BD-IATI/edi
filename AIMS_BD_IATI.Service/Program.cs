@@ -20,12 +20,20 @@ namespace AIMS_BD_IATI.Service
         {
             try
             {
+                //Logger.Write("");
+                //Logger.Write(" ******************** START IATI PROCESS *********************** ");
+
+                //ParseIATI();
+
+                //Logger.Write(" ********************** END IATI PROCESS ********************* ");
+                //Logger.Write("");
+
                 Logger.Write("");
-                Logger.Write(" ******************** START *********************** ");
+                Logger.Write(" ******************** START EXCHANGE RATE PROCESS *********************** ");
 
-                ParseIATI();
+                ParseExchangeRate();
 
-                Logger.Write(" ********************** END ********************* ");
+                Logger.Write(" ********************** END EXCHANGE RATE PROCESS ********************* ");
                 Logger.Write("");
             }
 
@@ -73,6 +81,18 @@ namespace AIMS_BD_IATI.Service
             Logger.Write("INFO: " + "Saved Converted Data to File");
         }
 
+        private static void ParseExchangeRate()
+        {
+            var obj = new ExchangeRateParser();
+            var url = Common.exchangeRate_url;
+            var list = obj.SplitCSV(url);
+            Logger.Write("INFO: " + list.Count() + " Exchange Rates are dowloaded.");
+
+            var count = new AimsDbIatiDAL().SaveExchangeRateFedaral(list);
+
+            Logger.Write("INFO: " + count + " Exchange Rates are stored in Database");
+            Logger.Write("");
+        }
     }
 
     public class Parser
@@ -218,8 +238,38 @@ namespace AIMS_BD_IATI.Service
             }
         }
 
-
     }
 
+    public class ExchangeRateParser
+    {
+        public List<ExchangeRateFederal> SplitCSV(string url)
+        {
+            string fileList = GetCSV(url);
 
+            var list = from line in fileList.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Skip(1)
+                       let columns = line.Split(',')
+                       select new ExchangeRateFederal
+                       {
+                           Date = Convert.ToDateTime(columns[0]),
+                           Rate = Common.ParseDecimal(columns[1]),
+                           Currency = (columns[2]),
+                           Frequency = (columns[3])
+                       };
+
+            return list.ToList();
+        }
+
+        public string GetCSV(string url)
+        {
+            var req = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+            var resp = (System.Net.HttpWebResponse)req.GetResponse();
+
+            var sr = new System.IO.StreamReader(resp.GetResponseStream());
+
+            string results = sr.ReadToEnd();
+            sr.Close();
+
+            return results;
+        }
+    }
 }

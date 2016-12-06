@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using AIMS_BD_IATI.Library;
+using AIMS_BD_IATI.DAL;
+
 namespace AIMS_BD_IATI.DAL
 {
     public class AimsDbIatiDAL
@@ -833,6 +835,31 @@ namespace AIMS_BD_IATI.DAL
         }
 
         #endregion Get Dashboard Infos
+
+
+        public int SaveExchangeRateFedaral(List<ExchangeRateFederal> list)
+        {
+            int counter = 0;
+            foreach (var obj in list)
+            {
+                var a = dbContext.ExchangeRateFederals.FirstOrDefault(x => x.Date == obj.Date && x.Currency == obj.Currency);
+                if (a == null)
+                {
+                    a = new ExchangeRateFederal();
+                    a.InsertDate = DateTime.Now;
+
+                    dbContext.ExchangeRateFederals.Add(a);
+                }
+                a.Date = obj.Date;
+                a.Rate = obj.Rate;
+                a.Currency = obj.Currency;
+                a.Frequency = obj.Frequency;
+
+                Console.Write("\r Exchange Rate Counter: {0}   ", counter++);
+            }
+
+            return dbContext.SaveChanges();
+        }
 
         public int InsertLog(Log log)
         {

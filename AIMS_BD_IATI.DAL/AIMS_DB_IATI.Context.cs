@@ -30,5 +30,6 @@ namespace AIMS_BD_IATI.DAL
         public virtual DbSet<FieldMappingPreferenceDelegated> FieldMappingPreferenceDelegateds { get; set; }
         public virtual DbSet<FieldMappingPreferenceGeneral> FieldMappingPreferenceGenerals { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<ExchangeRateFederal> ExchangeRateFederals { get; set; }
     }
 }

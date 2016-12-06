@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceDelegated" Width="1.5" PointX="2.75" PointY="3.75" />
         <EntityTypeShape EntityType="AIMS_DB_IATIModel.FieldMappingPreferenceGeneral" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="AIMS_DB_IATIModel.Log" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="AIMS_DB_IATIModel.ExchangeRateFederal" Width="1.5" PointX="6.625" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
