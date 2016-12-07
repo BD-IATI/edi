@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{353BBB51-0272-4B64-B31B-76184EBDDB66}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <TypeScriptToolsVersion>2.0</TypeScriptToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="About.html" />
+    <Content Include="app.css" />
+    <Content Include="App.js" />
+    <Content Include="app.ts.js" />
+    <Content Include="Contact.html" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\select.css" />
+    <Content Include="Content\select.min.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="Content\ui-bootstrap-csp.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Home.html" />
+    <Content Include="index.html" />
+    <Content Include="Modules\Authentication\AuthenticationServices.js" />
+    <Content Include="Modules\Authentication\LoginController.js" />
+    <Content Include="Modules\Authentication\LoginView.html" />
+    <Content Include="Modules\IATIImport\0Begin\0BeginView.html" />
+    <Content Include="Modules\IATIImport\1Hierarchy\1HierarchyView.html" />
+    <Content Include="Modules\IATIImport\2FilterBD\2FilterBDView.html" />
+    <Content Include="Modules\IATIImport\3FilterDP\3FilterDPView.html" />
+    <Content Include="Modules\IATIImport\4Projects\4ProjectsController.js" />
+    <Content Include="Modules\IATIImport\4Projects\4ProjectsView.html" />
+    <Content Include="Modules\IATIImport\5Match\5MatchController.js" />
+    <Content Include="Modules\IATIImport\5Match\5MatchView.html" />
+    <Content Include="Modules\IATIImport\6GeneralPreferences\6GeneralPreferencesController.js" />
+    <Content Include="Modules\IATIImport\6GeneralPreferences\6GeneralPreferencesView.html" />
+    <Content Include="Modules\IATIImport\7ReviewAdjustment\7ReviewAdjustmentController.js" />
+    <Content Include="Modules\IATIImport\7ReviewAdjustment\7ReviewAdjustmentView.html" />
+    <Content Include="Modules\IATIImport\8ProjectSpecificAdjustment\8ProjectSpecificAdjustmentController.js" />
+    <Content Include="Modules\IATIImport\8ProjectSpecificAdjustment\8ProjectSpecificAdjustmentView.html" />
+    <Content Include="Modules\IATIImport\9Cofinancing\9CofinancingController.js" />
+    <Content Include="Modules\IATIImport\9Cofinancing\9CofinancingView.html" />
+    <Content Include="Modules\IATIImport\9OtherDPsActivities\9OtherDPsActivitiesController.js" />
+    <Content Include="Modules\IATIImport\9OtherDPsActivities\9OtherDPsActivitiesView.html" />
+    <Content Include="Modules\IATIImport\9TFnCF\9TFnCFController.js" />
+    <Content Include="Modules\IATIImport\9TFnCF\9TFnCFView.html" />
+    <Content Include="Modules\IATIImport\Dashboard\CofinancingModal.html" />
+    <Content Include="Modules\IATIImport\Dashboard\DashboardView.html" />
+    <Content Include="Modules\IATIImport\Dashboard\ImportPreferenceModal.html" />
+    <Content Include="Modules\IATIImport\Dashboard\TrustFundModal.html" />
+    <Content Include="Modules\IATIImport\FinishImport\FinishImportController.js" />
+    <Content Include="Modules\IATIImport\FinishImport\FinishImportView.html" />
+    <Content Include="Modules\IATIImport\IATIImportIndex.html" />
+    <Content Include="Modules\IATIImport\MergeConflictAlert\MergeConflictAlertController.js" />
+    <Content Include="Modules\IATIImport\MergeConflictAlert\MergeConflictAlertView.html" />
+    <Content Include="Modules\IATIImport\Templates\CofinancingTemplete.html" />
+    <Content Include="Modules\IATIImport\Templates\FieldMappingTemplete.html" />
+    <Content Include="Modules\IATIImport\Templates\TrustFundTemplete.html" />
+    <Content Include="Modules\IATIImport\Transaction\TransactionController.js" />
+    <Content Include="Modules\IATIImport\Transaction\TransactionView.html" />
+    <Content Include="Scripts\angular-animate.js" />
+    <Content Include="Scripts\angular-animate.min.js" />
+    <Content Include="Scripts\angular-aria.js" />
+    <Content Include="Scripts\angular-aria.min.js" />
+    <Content Include="Scripts\angular-cookies.js" />
+    <Content Include="Scripts\angular-cookies.min.js" />
+    <Content Include="Scripts\angular-csp.css" />
+    <Content Include="Scripts\angular-filter\angular-filter.js" />
+    <Content Include="Scripts\angular-filter\angular-filter.min.js" />
+    <Content Include="Scripts\angular-highcharts.js" />
+    <Content Include="Scripts\angular-loader.js" />
+    <Content Include="Scripts\angular-loader.min.js" />
+    <Content Include="Scripts\angular-message-format.js" />
+    <Content Include="Scripts\angular-message-format.min.js" />
+    <Content Include="Scripts\angular-messages.js" />
+    <Content Include="Scripts\angular-messages.min.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-resource.js" />
+    <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-sanitize.js" />
+    <Content Include="Scripts\angular-sanitize.min.js" />
+    <Content Include="Scripts\angular-scenario.js" />
+    <Content Include="Scripts\angular-spinner.js" />
+    <Content Include="Scripts\angular-spinner.min.js" />
+    <Content Include="Scripts\angular-touch.js" />
+    <Content Include="Scripts\angular-touch.min.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\AngularDragAndDrop\angular-drag-and-drop-lists.js" />
+    <Content Include="Scripts\AngularDragAndDrop\angular-drag-and-drop-lists.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\chart.js" />
+    <Content Include="Scripts\highcharts\adapters\mootools-adapter.js" />
+    <Content Include="Scripts\highcharts\adapters\mootools-adapter.src.js" />
+    <Content Include="Scripts\highcharts\adapters\prototype-adapter.js" />
+    <Content Include="Scripts\highcharts\adapters\prototype-adapter.src.js" />
+    <Content Include="Scripts\highcharts\adapters\standalone-framework.js" />
+    <Content Include="Scripts\highcharts\adapters\standalone-framework.src.js" />
+    <Content Include="Scripts\highcharts\highcharts-more.js" />
+    <Content Include="Scripts\highcharts\highcharts-more.src.js" />
+    <Content Include="Scripts\highcharts\highcharts.js" />
+    <Content Include="Scripts\highcharts\highcharts.src.js" />
+    <Content Include="Scripts\highcharts\highstock.js" />
+    <Content Include="Scripts\highcharts\highstock.src.js" />
+    <Content Include="Scripts\highcharts\modules\annotations.js" />
+    <Content Include="Scripts\highcharts\modules\annotations.src.js" />
+    <Content Include="Scripts\highcharts\modules\canvas-tools.js" />
+    <Content Include="Scripts\highcharts\modules\canvas-tools.src.js" />
+    <Content Include="Scripts\highcharts\modules\data.js" />
+    <Content Include="Scripts\highcharts\modules\data.src.js" />
+    <Content Include="Scripts\highcharts\modules\exporting.js" />
+    <Content Include="Scripts\highcharts\modules\exporting.src.js" />
+    <Content Include="Scripts\highcharts\modules\funnel.js" />
+    <Content Include="Scripts\highcharts\modules\funnel.src.js" />
+    <Content Include="Scripts\highcharts\modules\heatmap.js" />
+    <Content Include="Scripts\highcharts\modules\heatmap.src.js" />
+    <Content Include="Scripts\highcharts\modules\map.js" />
+    <Content Include="Scripts\highcharts\modules\map.src.js" />
+    <Content Include="Scripts\highcharts\themes\dark-blue.js" />
+    <Content Include="Scripts\highcharts\themes\dark-green.js" />
+    <Content Include="Scripts\highcharts\themes\gray.js" />
+    <Content Include="Scripts\highcharts\themes\grid.js" />
+    <Content Include="Scripts\highcharts\themes\skies.js" />
+    <Content Include="Scripts\jquery-2.2.1.js" />
+    <Content Include="Scripts\jquery-2.2.1.min.js" />
+    <Content Include="Scripts\jquery.slimscroll.js" />
+    <Content Include="Scripts\jquery.slimscroll.min.js" />
+    <Content Include="Scripts\select.js" />
+    <Content Include="Scripts\select.min.js" />
+    <Content Include="Scripts\smart-table.js" />
+    <Content Include="Scripts\smart-table.min.js" />
+    <Content Include="Scripts\spin.js" />
+    <Content Include="Scripts\spin.min.js" />
+    <Content Include="Scripts\spinner.js" />
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Modules\IATIImport\0Begin\0BeginController.ts" />
+    <TypeScriptCompile Include="Modules\IATIImport\1Hierarchy\1HierarchyController.ts" />
+    <TypeScriptCompile Include="Modules\IATIImport\2FilterBD\2FilterBDController.ts" />
+    <TypeScriptCompile Include="Modules\IATIImport\3FilterDP\3FilterDPController.ts" />
+    <TypeScriptCompile Include="Modules\IATIImport\Dashboard\DashboardController.ts" />
+    <TypeScriptCompile Include="Modules\IATIImport\IATIImportApp.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-component-router.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery.slimScroll\jquery.slimScroll.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\web.config" />
+    <Content Include="packages.config" />
+    <Content Include="tsconfig.json" />
+    <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Scripts\angular-aria.min.js.map" />
+    <Content Include="Scripts\angular-cookies.min.js.map" />
+    <Content Include="Scripts\angular-loader.min.js.map" />
+    <Content Include="Scripts\angular-message-format.min.js.map" />
+    <Content Include="Scripts\angular-messages.min.js.map" />
+    <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <Content Include="Scripts\angular-touch.min.js.map" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\errors.json" />
+    <Content Include="Scripts\jquery-2.2.1.min.map" />
+    <Content Include="Scripts\smart-table.min.js.map" />
+    <Content Include="Scripts\version.json" />
+    <Content Include="Scripts\angular-spinner.min.js.map" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>AIMS_BD_IATI.ImportSite</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52493</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/IATIImportSite</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+</Project>

@@ -1,0 +1,58 @@
+﻿
+<div role="tabpanel" class="tab-pane active" id="begin" ng-controller="0BeginController">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Select a DP to begin import</h2>
+            <p class="lead">
+                Select a DP from the drop-down box below to
+                begin import of IATI data into the AIMS. No data will be
+                imported at this stage.
+            </p>
+            <hr>
+
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <span class="col-sm-2">
+                                <label for="beginDPselect" class="col-sm-2 control-label">Development Partner</label>
+                            </span>
+                            <span class="col-sm-8">
+                                <!--<ui-select ng-model="$root.selectedFundSource" ng-change="$root.putCookie('selectedFundSource',$root.selectedFundSource)">
+                                    <ui-select-match placeholder="Select">{{$select.selected.ID}}</ui-select-match>
+                                    <ui-select-choices repeat="FundSource in FundSources | filter: {Name: $select.search}">
+                                        <span ng-bind="FundSource.Name"></span>
+                                    </ui-select-choices>
+                                </ui-select>-->
+
+                                <select class="form-control" id="beginDPselect"
+                                        ng-model="$root.selectedFundSource" ng-change="$root.putCookie('selectedFundSource',$root.selectedFundSource)"
+                                        ng-options="item as item.Name for item in FundSources">
+                                    <option value="">Select one...</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="col-sm-2">
+                                <!--<label for="orgIdentifier" class="col-sm-2 control-label">Identifier(s)</label>-->
+                            </span>
+                            <span class="col-sm-8">
+                                <label ng-repeat="orgIdentifier in $root.selectedFundSource.ID.split('|')" class="label-default label" ng-bind="orgIdentifier" style="margin-right:2px;" />
+                            </span>
+                        </div>
+                        <div class="form-group" ng-show="selectedFundSource != null">
+                            <div class="col-md-12 btnFooter">
+                                <a hidden ng-href="#/9OtherDPsActivities">Import Other DPs Activities</a>
+                                <a id="btnDashboard" class="btn btn-primary" ng-href="#/Dashboard">Next</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+

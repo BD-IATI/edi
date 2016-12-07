@@ -1,0 +1,76 @@
+﻿<div role="tabpanel" class="tab-pane active" id="hierarchy" ng-controller="1HierarchyController">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 1. Project structure</h2>
+
+            <p class="lead alert alert-success" ng-show="model.H1Percent + model.H2Percent > 0">
+                It looks like you use multiple levels of activities in your IATI data (for example, projects and sub-components).We've compared your IATI data with projects found in the AIMS, and recommend you proceed with level <span ng-bind="::model.SelectedHierarchy"></span>.
+                You only need to adjust the selection below if you disagree.
+            </p>
+            <p class="lead alert alert-danger" ng-show="model.H1Percent + model.H2Percent <= 0">
+                It looks like you use multiple levels of activities in your data (for example, projects and sub-components). We've compared your activities against those found in the AIMS, but we could not match any of your projects in IATI to the AIMS. Before proceeding, we recommend you go back to the AIMS and check your activities are using the same project codes in the AIMS as those used in IATI.
+            </p>
+
+            <hr>
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Level</th>
+                                    <th>Sample data</th>
+                                    <th>% matched</th>
+                                    <th>Select</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-class="{'success' : model.H1Percent >= model.H2Percent}">
+                                    <td>1</td>
+                                    <td>
+                                        <code>{{model.SampleIatiActivity.IatiIdentifier}}</code> {{model.SampleIatiActivity.Title}}
+                                    </td>
+
+                                    <td>{{model.H1Percent}}</td>
+                                    <td>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="{{model.SampleIatiActivity.IatiIdentifier}}" value="1" ng-model="model.SelectedHierarchy">
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr ng-class="{'success' : model.H1Percent < model.H2Percent}">
+                                    <td>2</td>
+                                    <td>
+                                        <p ng-repeat="ra in model.SampleIatiActivity.childActivities track by $index">
+                                            <code>{{ra.IatiIdentifier}}</code> {{ra.Title}}
+                                        </p>
+                                    </td>
+                                    <td>{{model.H2Percent}}</td>
+                                    <td>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="{{model.SampleIatiActivity.IatiIdentifier}}" value="2" ng-model="model.SelectedHierarchy">
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12 btnFooter">
+                        <a class="btn btn-default" ng-href="#/0Begin">Back</a>
+                        <a class="btn btn-primary" ng-href="#/2FilterBD">Next</a>
+                        <a id="btn2FilterBD" hidden ng-href="#/2FilterBD">Next</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

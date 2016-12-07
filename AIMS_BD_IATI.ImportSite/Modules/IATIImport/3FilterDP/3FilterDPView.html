@@ -1,0 +1,259 @@
+﻿<style>
+    .NoPadding {
+        padding: 0px;
+    }
+</style>
+<div role="tabpanel" class="tab-pane active" id="filterDP" ng-controller="3FilterDPController">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 3. Implementing organisations</h2>
+            <p class="lead">
+                We need to map your projects' implementing organisations
+                to those already captured in the AIMS.
+                In order to avoid double-counting, we also need
+                to establish which of your projects are managed by other DPs.
+            </p>
+            <hr>
+            
+            <uib-tabset active="activeTabIndex">
+                <uib-tab index="0" heading="3.1 Determine organisation">
+                    <form class="form-horizontal">
+
+                        <div class="row">
+                            <div class="col-md-12 NoPadding">
+                                <h3>Determine implementing organisation</h3>
+                                <p class="lead">
+                                    We need to map your projects' implementing
+                                    organisations to those already captured in the AIMS.
+                                    For each organisation listed below:
+                                </p>
+                                <p class="lead">
+                                    <strong>Firstly</strong>,
+                                    click the green buttons to determine
+                                    what type of organisation it is (Bangladesh
+                                    Government, DP, or NGO/private sector). If it's not a specific
+                                    organisation (if it states something
+                                    general like
+                                    <code>INTERNATIONAL NGO</code> or
+                                    <code>OTHER</code>) then select
+                                    <a class="btn btn-warning btn-xs">Unknown</a>.
+                                </p>
+                                <p class="lead">
+                                    <strong>Secondly</strong>,
+                                    click the drop-down box to select a
+                                    specific organisation. If the organisation
+                                    is not listed, click
+                                    <a class="btn btn-primary btn-xs">New</a> to
+                                    create a new organisation.
+                                </p>
+                                <p class="lead">
+                                    We've tried to do this
+                                    automatically, where possible, but please
+                                    check the answers carefully.
+                                </p>
+                                <table st-table="iOrgs" st-safe-src="ImplementingOrgs" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th st-sort="Name">Org name</th>
+                                            <th st-sort="ExecutingAgencyTypeId" style="width:33%;">Org type</th>
+                                            <th st-sort="AllID" style="min-width:200px">Select organisation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="org in iOrgs">
+                                            <td><code>{{org.Name}}</code></td>
+                                            <td>
+                                                <!--<div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <select class="form-control"
+                                                                ng-model="org.ExecutingAgencyTypeId"
+                                                                ng-options="item.ID as item.Name for item in ExecutingAgencyTypes">
+                                                            <option value="">Select one...</option>
+                                                        </select>
+                                                    </div>
+                                                </div>-->
+                                                <div class="btn-group">
+                                                    <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="1" uib-uncheckable ng-click="GuessAgency(org, true)">BD Govt.</label>
+                                                    <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="2" uib-uncheckable ng-click="GuessAgency(org, true)">DP</label>
+                                                    <label class="btn btn-sm btn-success" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="3" uib-uncheckable ng-click="GuessAgency(org, true)">NGO / Private</label>
+                                                    <label class="btn btn-sm btn-warning" ng-model="org.ExecutingAgencyTypeId" uib-btn-radio="4" uib-uncheckable ng-click="GuessAgency(org, true)">Unknown</label>
+                                                </div>
+                                            </td>
+                                            <td style="min-width:300px;">
+                                                <div class="row">
+                                                    <div class="col-sm-9">
+                                                        <select ng-disabled="org.ExecutingAgencyTypeId == 4" class="form-control"
+                                                                ng-model="org.AllID"
+                                                                ng-options="item.AllID as item.Name for item in ExecutingAgencies | filter: {ExecutingAgencyTypeId: org.ExecutingAgencyTypeId}">
+                                                            <option value="">Select one/Unclear</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 NoPadding" ng-hide="org.ExecutingAgencyTypeId == 4" style="height:100%">
+                                                        <button class="btn btn-primary" ng-click="AddNewImplementingOrg(org)">New</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12 btnFooter">
+                                <a class="btn btn-default" ng-href="#/2FilterBD">Back</a>
+                                <button ng-click="FilterDP()" class="btn btn-primary">Next</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </uib-tab>
+
+                <uib-tab index="1" heading="3.2 Determine Managing DP" ng-click="FilterDP()">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>Determine Managing DP</h3>
+                                <p class="lead">
+                                    We need to establish which of your projects are managed by another DP.
+                                    Using your answers in the previous step, we have tried to
+                                    automatically determine this for you to review,
+                                    but please check carefully.
+                                </p>
+                                <hr />
+
+                                <table st-table="rActivities" st-safe-src="RelevantActivities" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th st-sort="IatiIdentifier" style="min-width:120px">
+                                                Project ID
+                                            </th>
+                                            <th st-sort="Title" style="min-width:200px">
+                                                Project Title
+                                            </th>
+                                            <th >Implementing organisation</th>
+                                            <th style="min-width:200px">Managed by</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="activity in rActivities">
+
+                                            <td><code>{{activity.IatiIdentifier}}</code></td>
+                                            <td>{{activity.Title}}</td>
+                                            <td>
+                                                <!--<code ng-bind="ImplementingOrg.ref" title="{ImplementingOrg.Name}}"></code>-->
+                                                <p ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
+                                                    <span ng-bind="ImplementingOrg.AimsName | limitTo:40" style="margin-bottom:2px; margin-right:2px;" class="label label-warning"></span>
+                                                </p>
+                                                <button uib-popover-template="'iOrgPopoverTemplate.html'" popover-trigger="focus" popover-title="Implementing Organizations" type="button" class="btn btn-sm btn-default">...</button>
+                                                <script type="text/ng-template" id="iOrgPopoverTemplate.html">
+                                                    <table class="table table-striped table-condensed small">
+                                                        <tr><th>Original</th><th>Mapped to</th></tr>
+                                                        <tr ng-repeat="ImplementingOrg in activity.ImplementingOrgs">
+                                                            <td ng-bind="ImplementingOrg.Name"></td>
+                                                            <td ng-bind="ImplementingOrg.AimsName || 'Not mapped'" style="min-width:100px"></td>
+                                                        </tr>
+                                                    </table>
+                                                </script>
+
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <div class="col-sm-12" ng-class="{'has-error':(activity.ImplementingOrgs && activity.ImplementingOrgs.length>1)}">
+                                                        <select class="form-control" ng-change="onFundSourceChanged()"
+                                                                ng-model="activity.AllID"
+                                                                ng-options="item.AllID as item.Name for item in ManagingDPs">
+                                                            <option value="">Select one...</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 btnFooter">
+                                <span ng-hide="RelevantActivities.length == 0">
+                                    <button ng-click="GotoTab(0)" class="btn btn-default">Back</button>
+
+                                    <a tabindex="0" ng-show="hasOtherDPsProject"
+                                            class="btn btn-primary"
+                                            popover-title="Delegate projects to other DPs?"
+                                            uib-popover-template="'myPopoverTemplate.html'"
+                                            popover-append-to-body="true"
+                                            popover-trigger="focus"
+                                            popover-placement="auto">
+                                        Next...
+                                    </a>
+
+                                    <a id="btn4Projects" ng-hide='hasOtherDPsProject' class="btn btn-primary" ng-href="#/4Projects">Next</a>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+
+                </uib-tab>
+            </uib-tabset>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/ng-template" id="myPopoverTemplate.html">
+    <div>
+        <div>Some of your projects are managed by other DPs. Would you like to delegate those projects now?</div>
+        <br />
+
+        <button type="button" ng-click="SaveAndNext()" class="btn btn-primary">Yes, please delegate them</button>
+        <button type="button" ng-click="NextWithoutSaving()" class="btn btn-default">No, not right now</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="AddNewImplementingOrgView.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()">&times;</button>
+        <h2 class="modal-title">
+            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+            Add New Implementing Organization
+        </h2>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    Org Name: <b ng-bind="org.Name"></b><br />
+                    Org Type: <b ng-bind="org.ExecutingAgencyType"></b><br />
+                    Org ID: <b ng-bind="org.ref"></b><br />
+                </div>
+                <p class="lead">
+                    We have found the following matched organization from AIMS. Click to select.
+                </p>
+
+                <hr />
+
+                <div>
+                    <div>
+                        <label ng-repeat="exa in ExecutingAgencies | orderBy : 'editDistance' | limitTo: 5" class="btn btn-block btn-success" ng-click="selectOrg(exa)" ng-bind="exa.Name"></label>
+
+                    </div>
+                </div>
+                <hr />
+                <p class="lead">
+                    Howover you can add this implementing organization in the AIMS.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="Ok()">Add</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

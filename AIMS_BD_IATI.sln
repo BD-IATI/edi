@@ -7,29 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.Service", "AIM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.DAL", "AIMS_BD_IATI.DAL\AIMS_BD_IATI.DAL.csproj", "{EB82E9D6-C868-4155-8D20-5127C8AB1D1E}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "IATIImportSite", "http://localhost/IATIImportSite", "{A1C78BEC-7231-4970-B959-2E9FD87BD257}"
-	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "false"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_4118"
-		Debug.AspNetCompiler.PhysicalPath = "AIMS_BD_IATI.website\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_4118\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_4118"
-		Release.AspNetCompiler.PhysicalPath = "AIMS_BD_IATI.website\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_4118\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "AIMS_BD_IATI.website\"
-		DefaultWebSiteLanguage = "Visual C#"
-		StartServerOnDebug = "false"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.WebAPI", "AIMS_DB_IATI.WebAPI\AIMS_BD_IATI.WebAPI.csproj", "{7DED54C5-0325-48BA-9908-F51B485EB0EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.UnitTest", "AIMS_BD_IATI.UnitTest\AIMS_BD_IATI.UnitTest.csproj", "{D5754AE2-6884-41C4-9434-C31FD6730DFC}"
@@ -38,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Performance1.psess = Performance1.psess
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.ImportSite", "AIMS_BD_IATI.ImportSite\AIMS_BD_IATI.ImportSite.csproj", "{353BBB51-0272-4B64-B31B-76184EBDDB66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +32,6 @@ Global
 		{EB82E9D6-C868-4155-8D20-5127C8AB1D1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB82E9D6-C868-4155-8D20-5127C8AB1D1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB82E9D6-C868-4155-8D20-5127C8AB1D1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A1C78BEC-7231-4970-B959-2E9FD87BD257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1C78BEC-7231-4970-B959-2E9FD87BD257}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1C78BEC-7231-4970-B959-2E9FD87BD257}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1C78BEC-7231-4970-B959-2E9FD87BD257}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{7DED54C5-0325-48BA-9908-F51B485EB0EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7DED54C5-0325-48BA-9908-F51B485EB0EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DED54C5-0325-48BA-9908-F51B485EB0EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -65,6 +40,10 @@ Global
 		{D5754AE2-6884-41C4-9434-C31FD6730DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5754AE2-6884-41C4-9434-C31FD6730DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5754AE2-6884-41C4-9434-C31FD6730DFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{353BBB51-0272-4B64-B31B-76184EBDDB66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{353BBB51-0272-4B64-B31B-76184EBDDB66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{353BBB51-0272-4B64-B31B-76184EBDDB66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{353BBB51-0272-4B64-B31B-76184EBDDB66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
