@@ -16,9 +16,14 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
     //[Authorize] commented allow all users
     public class IATIImportController : ApiController
     {
+        #region Init
         AimsDAL aimsDAL = new AimsDAL();
         AimsDbIatiDAL aimsDbIatiDAL = new AimsDbIatiDAL();
 
+
+        /// <summary>
+        /// Since we have no access to session at library project, so we pass it in a static variables
+        /// </summary>
         void SetStatics()
         {
             if (Sessions.FundSources?.Count <= 0)
@@ -29,14 +34,12 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (Sessions.ManagingDPs?.Count <= 0)
                 Sessions.ManagingDPs = aimsDAL.GetAllManagingDPs();
         }
-
-        /// <summary>
-        /// Since we have no access to session at library project, so we pass it in a static variables
-        /// </summary>
         public IATIImportController()
         {
             SetStatics();
         }
+
+        #endregion
 
         #region Dropdown Load
         [HttpGet]
@@ -121,7 +124,6 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             return returnResult;
         }
         #endregion
-
 
         #region 2. FilterBD
         [AcceptVerbs("GET", "POST")]
@@ -600,6 +602,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
         #endregion
 
+        #region Misc
         [AcceptVerbs("GET", "POST")]
         public ProjectFieldMapModel GetMatchedProjectByIatiIdentifier(string iatiIdentifier)
         {
@@ -644,7 +647,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             var q = from i in relevantActivies
                     let isHierarchy2 = i.hierarchy == 2
-                    from a in AimsProjects.Where(k => i.OriginalIatiIdentifier==k.OriginalIatiIdentifier)
+                    from a in AimsProjects.Where(k => i.OriginalIatiIdentifier == k.OriginalIatiIdentifier)
                     orderby i.IatiIdentifier
 
                     select i;
@@ -652,6 +655,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             return q;
         }
 
+        #endregion
+
+        #region Mapper
         private static void UpdateActivities(List<iatiactivityModel> clientActivities, List<iatiactivity> sessionActivities)
         {
             foreach (var activity in sessionActivities)
@@ -730,7 +736,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                 ImplementingOrgs = iatiActivity.ImplementingOrgs,
                 ExtendingOrgs = iatiActivity.ExtendingOrgs,
                 AidTypeCode = string.IsNullOrWhiteSpace(iatiActivity.AidTypeCode) ? aidTypeActivity?.AidTypeCode : iatiActivity.AidTypeCode,
-                AidType =string.IsNullOrWhiteSpace(iatiActivity.AidType) ? aidTypeActivity?.AidType : iatiActivity.AidType,
+                AidType = string.IsNullOrWhiteSpace(iatiActivity.AidType) ? aidTypeActivity?.AidType : iatiActivity.AidType,
                 ActivityStatus = iatiActivity.ActivityStatus,
 
                 PlannedStartDate = iatiActivity.PlannedStartDate,
@@ -772,6 +778,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
                     }).ToList();
         }
 
+        #endregion
+
+        #region Utility
         protected void GuessAgency(participatingorg org, bool isFilterByType)
         {
             var IsNotFoundInAims = true;
@@ -832,7 +841,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             if (a == null || a.Length == 0) return b.Length;
             if (b == null || b.Length == 0) return a.Length;
 
-            var matrix = new int[b.Length+1, a.Length+1];
+            var matrix = new int[b.Length + 1, a.Length + 1];
 
             // increment along the first column of each row
             int i;
@@ -869,6 +878,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             return matrix[b.Length, a.Length];
         }
 
+        #endregion
     }
 
 
