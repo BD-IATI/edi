@@ -11,7 +11,7 @@
 
     <script src="../../Scripts/jquery-2.2.1.min.js"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>
-    <script src="../../Scripts/jquery.slimscroll.min.js"></script>
+    <script src="../../Scripts/jquery.slimscroll.js"></script>
 
     <script src="../../Scripts/angular.min.js"></script>
     <script src="../../Scripts/angular-route.min.js"></script>
@@ -20,10 +20,10 @@
 
     <script src="../../Scripts/angular-filter/angular-filter.js"></script>
 
-    <script src="../../Scripts/select.min.js"></script>
+    <!--<script src="../../Scripts/select.min.js"></script>
     <script src="../../Scripts/select2.min.js"></script>
     <link href="../../Content/css/select2.min.css" rel="stylesheet" />
-
+-->
     <script src="../../Scripts/AngularDragAndDrop/angular-drag-and-drop-lists.min.js"></script>
 
     <script src="../../Scripts/spin.min.js"></script>
@@ -213,7 +213,10 @@
         $(function () {
             $('#divView').slimScroll({
                 height: '100%',
-                //wheelStep: 3
+                alwaysVisible: true,
+                wheelStep: 10,
+                enableKeyNavigation: true,
+                railVisible : true,
             });
         });
 
