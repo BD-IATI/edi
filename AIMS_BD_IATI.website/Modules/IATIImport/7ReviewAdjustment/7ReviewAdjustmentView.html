@@ -60,7 +60,7 @@
         <div class="col-md-12" style="padding-bottom: 10px;">
             <h3>
                 <span class="label label-danger" ng-show="isDiffGT5(m)"><i class="glyphicon glyphicon-asterisk" title="Significant difference!"></i></span> 
-                <label class="label label-default" ng-bind="m.iatiActivity.IatiIdentifier"></label>
+                <code ng-bind="m.iatiActivity.IatiIdentifier"></code>
                 {{m.iatiActivity.Title}} 
                 <span ng-show="m.IsManuallyMapped" style="float:right; font-size:small" class="alert-danger">Manually Mapped</span>
                 <span class="pull-right">
