@@ -355,6 +355,8 @@ namespace AIMS_BD_IATI.DAL
                                 Longitude = (double)d.GPSLongitude
                             }).ToList();
 
+            var aimsSubsectors = dbContext.tblSubSectors.Where(w => w.IATICode.Length > 0).ToList();
+
             foreach (var mergedproject in projects)
             {
                 try
@@ -505,12 +507,12 @@ namespace AIMS_BD_IATI.DAL
                     #region Sector
                     if (mergedproject.sector != null)
                     {
-                        var totalPercentage = mergedproject.sector.Sum(s => s.percentage); // to prevent percentage being greater than 100
-                        foreach (var sector in mergedproject.sector)
+                        var distinctSectors = mergedproject.sector;//.DistinctBy(k => k.code);
+                        foreach (var sector in distinctSectors)
                         {
-                            if (sector.vocabulary == "DAC" || sector.vocabulary == "1" ||sector.vocabulary == "2")
+                            if (sector.vocabulary == "DAC" || sector.vocabulary == "1" || sector.vocabulary == "2")
                             {
-                                var aimsSubsector = dbContext.tblSubSectors.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
+                                var aimsSubsector = aimsSubsectors.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
 
                                 if (aimsSubsector != null)
                                 {
@@ -527,7 +529,21 @@ namespace AIMS_BD_IATI.DAL
                                     }
                                     psector.SectorId = aimsSubsector.SectorId;
                                     psector.SubSectorId = aimsSubsector.Id;
-                                    psector.TotalCommitmentPercent = sector.percentage.ToPercent(totalPercentage);
+
+                                    var subSectorIatiCodes = aimsSubsector.IATICode.Split('|');
+                                    decimal totalPercentage = 0;
+                                    foreach (var subSectorIatiCode in subSectorIatiCodes)
+                                    {
+                                        var _sector = distinctSectors.FirstOrDefault(f => f.code == subSectorIatiCode);
+                                        if (_sector != null)
+                                        {
+                                            totalPercentage += _sector.percentage;
+                                            _sector.vocabulary = ""; // to prevent multiple calculations
+                                        }
+                                    }
+
+                                    psector.TotalCommitmentPercent = totalPercentage > 100 ? 100 : totalPercentage;
+
                                 }
                             }
                         }
