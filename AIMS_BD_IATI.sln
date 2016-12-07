@@ -11,11 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.WebAPI", "AIMS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.UnitTest", "AIMS_BD_IATI.UnitTest\AIMS_BD_IATI.UnitTest.csproj", "{D5754AE2-6884-41C4-9434-C31FD6730DFC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51D82A02-6DC6-48D9-A2D9-1F4B5E271769}"
-	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.ImportSite", "AIMS_BD_IATI.ImportSite\AIMS_BD_IATI.ImportSite.csproj", "{353BBB51-0272-4B64-B31B-76184EBDDB66}"
 EndProject
 Global
