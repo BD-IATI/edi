@@ -507,7 +507,7 @@ namespace AIMS_BD_IATI.DAL
                     #region Sector
                     if (mergedproject.sector != null)
                     {
-                        var distinctSectors = mergedproject.sector;//.DistinctBy(k => k.code);
+                        var distinctSectors = mergedproject.sector.DistinctBy(k => k.code);
                         foreach (var sector in distinctSectors)
                         {
                             if (sector.vocabulary == "DAC" || sector.vocabulary == "1" || sector.vocabulary == "2")
