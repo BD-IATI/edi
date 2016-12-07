@@ -1,0 +1,17 @@
+﻿{
+  "compileOnSave": true,
+
+  "compilerOptions": {
+    "declaration": true,
+    "emitBOM": true,
+    "experimentalDecorators": true,
+    "noEmitOnError": true,
+    "outFile": "app.ts.js",
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "target": "es5"
+  },
+    "exclude": [
+        
+    ]
+}
