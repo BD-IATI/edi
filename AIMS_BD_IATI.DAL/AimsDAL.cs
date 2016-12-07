@@ -508,20 +508,14 @@ namespace AIMS_BD_IATI.DAL
                         var totalPercentage = mergedproject.sector.Sum(s => s.percentage); // to prevent percentage being greater than 100
                         foreach (var sector in mergedproject.sector)
                         {
-                            if (sector.vocabulary == "1" || sector.vocabulary == "2")
+                            if (sector.vocabulary == "DAC" || sector.vocabulary == "1" ||sector.vocabulary == "2")
                             {
-                                var aimsSector = dbContext.tblSectors.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
                                 var aimsSubsector = dbContext.tblSubSectors.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
 
-                                var sectorId = aimsSector != null ?
-                                    aimsSector.Id : aimsSubsector != null ?
-                                    aimsSubsector.SectorId : 0;
-
-                                if (sectorId > 0)
+                                if (aimsSubsector != null)
                                 {
-                                    var SubsectorId = aimsSubsector != null ? aimsSubsector.Id : 0;
 
-                                    var psector = p.tblProjectSectoralAllocations.FirstOrDefault(f => f.SectorId == sectorId && f.SubSectorId == SubsectorId);
+                                    var psector = p.tblProjectSectoralAllocations.FirstOrDefault(f => f.SubSectorId == aimsSubsector.Id);
 
                                     if (psector == null)
                                     {
@@ -531,8 +525,8 @@ namespace AIMS_BD_IATI.DAL
                                         psector.IDate = DateTime.Now;
 
                                     }
-                                    psector.SectorId = sectorId;
-                                    psector.SubSectorId = SubsectorId;
+                                    psector.SectorId = aimsSubsector.SectorId;
+                                    psector.SubSectorId = aimsSubsector.Id;
                                     psector.TotalCommitmentPercent = sector.percentage.ToPercent(totalPercentage);
                                 }
                             }
