@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace AIMS_BD_IATI.DAL
     {
         public static void Write(string Text)
         {
-            string dirPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\Log\\";
+            string dirPath = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? "" + "\\Log\\";
 
             DirectoryInfo directoryInfo = new DirectoryInfo(dirPath);
             if (!directoryInfo.Exists)
@@ -56,7 +57,11 @@ namespace AIMS_BD_IATI.DAL
             catch { }
             finally
             {
-                Write(type + " " + message);
+                try
+                {
+                    Write(type + " " + message);
+                }
+                catch { }
             }
         }
 

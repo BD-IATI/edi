@@ -356,7 +356,7 @@ namespace AIMS_BD_IATI.DAL
                             }).ToList();
 
             var aimsSubsectors = dbContext.tblSubSectors.Where(w => w.IATICode.Length > 0).ToList();
-            var aimsThematicAreas = dbContext.tblThematicMarkers.Where(w => w.IATICode.Length > 0).ToList();
+            var aimsThematicMarkers = dbContext.tblThematicMarkers.Where(w => w.IATICode.Length > 0).ToList();
 
             foreach (var mergedproject in projects)
             {
@@ -511,7 +511,7 @@ namespace AIMS_BD_IATI.DAL
                         var distinctSectors = mergedproject.sector.DistinctBy(k => k.code);
                         foreach (var sector in distinctSectors)
                         {
-                            if (new string[] { "DAC", "1", "2" }.Contains(sector.vocabulary))
+                            if (sector.vocabulary != "imported") //this condition is moved to sector property setter 
                             {
                                 #region Subsector
                                 var aimsSubsector = aimsSubsectors.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
@@ -540,7 +540,7 @@ namespace AIMS_BD_IATI.DAL
                                         if (_sector != null)
                                         {
                                             totalPercentage += _sector.percentage;
-                                            _sector.vocabulary = ""; // to prevent multiple calculations
+                                            _sector.vocabulary = "imported"; // to prevent multiple calculations
                                         }
                                     }
 
@@ -550,12 +550,12 @@ namespace AIMS_BD_IATI.DAL
                                 #endregion
 
                                 #region Thematic Area
-                                var aimsThematicArea = aimsThematicAreas.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
+                                var aimsThematicMarker = aimsThematicMarkers.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
 
-                                if (aimsThematicArea != null)
+                                if (aimsThematicMarker != null)
                                 {
 
-                                    var pThematicArea = p.tblProjectThematicMarkers.FirstOrDefault(f => f.SelectedThematicMarkerId == aimsThematicArea.Id);
+                                    var pThematicArea = p.tblProjectThematicMarkers.FirstOrDefault(f => f.SelectedThematicMarkerId == aimsThematicMarker.Id);
 
                                     if (pThematicArea == null)
                                     {
@@ -565,9 +565,9 @@ namespace AIMS_BD_IATI.DAL
                                         pThematicArea.IDate = DateTime.Now;
 
                                     }
-                                    pThematicArea.SelectedThematicMarkerId = pThematicArea.Id;
+                                    pThematicArea.SelectedThematicMarkerId = aimsThematicMarker.Id;
 
-                                    var thematicAreaIatiCodes = aimsThematicArea.IATICode.Split('|');
+                                    var thematicAreaIatiCodes = aimsThematicMarker.IATICode.Split('|');
                                     decimal totalPercentage = 0;
                                     foreach (var subSectorIatiCode in thematicAreaIatiCodes)
                                     {
@@ -575,14 +575,15 @@ namespace AIMS_BD_IATI.DAL
                                         if (_sector != null)
                                         {
                                             totalPercentage += _sector.percentage;
-                                            _sector.vocabulary = ""; // to prevent multiple calculations
+                                            _sector.vocabulary = "imported"; // to prevent multiple calculations
                                         }
                                     }
 
                                     pThematicArea.TotalCommitmentPercent = totalPercentage > 100 ? 100 : totalPercentage;
 
+                                    #endregion
+
                                 }
-                                #endregion
 
                             }
                         }
