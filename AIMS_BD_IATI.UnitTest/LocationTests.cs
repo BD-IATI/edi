@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AIMS_BD_IATI.DAL;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace AIMS_BD_IATI.UnitTest
 {
@@ -38,6 +39,19 @@ namespace AIMS_BD_IATI.UnitTest
 
             Assert.AreEqual("Chittagong", nearestGeoLocation.Name);
         }
+
+        [TestMethod]
+        public void GetListContainsTest()
+        {
+            var resultTrue = new string[] { "DAC", "1", "2" }.Contains("DAC");
+            var resultFalse = new string[] { "DAC", "1", "2" }.Contains("10");
+
+
+
+            Assert.AreEqual(true, resultTrue);
+            Assert.AreEqual(false, resultFalse);
+        }
+
         private static System.Collections.Generic.List<GeoLocation> NewMethod()
         {
             var dbContext = new AIMS_DBEntities();

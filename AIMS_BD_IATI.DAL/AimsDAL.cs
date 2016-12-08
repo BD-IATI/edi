@@ -356,6 +356,7 @@ namespace AIMS_BD_IATI.DAL
                             }).ToList();
 
             var aimsSubsectors = dbContext.tblSubSectors.Where(w => w.IATICode.Length > 0).ToList();
+            var aimsThematicAreas = dbContext.tblThematicMarkers.Where(w => w.IATICode.Length > 0).ToList();
 
             foreach (var mergedproject in projects)
             {
@@ -510,8 +511,9 @@ namespace AIMS_BD_IATI.DAL
                         var distinctSectors = mergedproject.sector.DistinctBy(k => k.code);
                         foreach (var sector in distinctSectors)
                         {
-                            if (sector.vocabulary == "DAC" || sector.vocabulary == "1" || sector.vocabulary == "2")
+                            if (new string[] { "DAC", "1", "2" }.Contains(sector.vocabulary))
                             {
+                                #region Subsector
                                 var aimsSubsector = aimsSubsectors.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
 
                                 if (aimsSubsector != null)
@@ -545,6 +547,43 @@ namespace AIMS_BD_IATI.DAL
                                     psector.TotalCommitmentPercent = totalPercentage > 100 ? 100 : totalPercentage;
 
                                 }
+                                #endregion
+
+                                #region Thematic Area
+                                var aimsThematicArea = aimsThematicAreas.FirstOrDefault(f => ("|" + f.IATICode + "|").Contains("|" + sector.code + "|"));
+
+                                if (aimsThematicArea != null)
+                                {
+
+                                    var pThematicArea = p.tblProjectThematicMarkers.FirstOrDefault(f => f.SelectedThematicMarkerId == aimsThematicArea.Id);
+
+                                    if (pThematicArea == null)
+                                    {
+                                        pThematicArea = new tblProjectThematicMarker();
+                                        p.tblProjectThematicMarkers.Add(pThematicArea);
+                                        pThematicArea.IUser = Iuser;
+                                        pThematicArea.IDate = DateTime.Now;
+
+                                    }
+                                    pThematicArea.SelectedThematicMarkerId = pThematicArea.Id;
+
+                                    var thematicAreaIatiCodes = aimsThematicArea.IATICode.Split('|');
+                                    decimal totalPercentage = 0;
+                                    foreach (var subSectorIatiCode in thematicAreaIatiCodes)
+                                    {
+                                        var _sector = distinctSectors.FirstOrDefault(f => f.code == subSectorIatiCode);
+                                        if (_sector != null)
+                                        {
+                                            totalPercentage += _sector.percentage;
+                                            _sector.vocabulary = ""; // to prevent multiple calculations
+                                        }
+                                    }
+
+                                    pThematicArea.TotalCommitmentPercent = totalPercentage > 100 ? 100 : totalPercentage;
+
+                                }
+                                #endregion
+
                             }
                         }
                     }

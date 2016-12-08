@@ -11,30 +11,6 @@ namespace AIMS_BD_IATI.UnitTest
     [TestClass]
     public class SerializableTest
     {
-        [TestMethod]
-        public void test1()
-        {
-
-            string nn = "";
-
-            var assemblies = new List<Assembly> { Assembly.Load("AIMS_BD_IATI.DAL")
-                , Assembly.Load("AIMS_BD_IATI.Library") 
-                , Assembly.Load("AIMS_DB_IATI.WebAPI")}; 
-            foreach (var assembly in assemblies)
-            {
-                var types = assembly.GetTypes();
-                foreach (var type in types)
-                {
-                    if (AttributeHelper.GetAttribute<SerializableAttribute>(type) == null)
-                    {
-                       nn += ", " + type.Name;
-                    }
-                }
-
-            }
-
-            Assert.AreEqual("", nn);
-        }
 
 
     }
