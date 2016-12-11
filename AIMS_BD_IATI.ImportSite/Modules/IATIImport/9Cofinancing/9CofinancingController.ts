@@ -1,4 +1,9 @@
-﻿angular.module('iatiDataImporter').controller("9CofinancingController", function ($rootScope, $timeout, $scope, $http,$uibModalInstance, model) {
+﻿/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+
+angular.module('iatiDataImporter').controller("9CofinancingController", function ($rootScope : RootScopeModel, $timeout, $scope, $http, $uibModalInstance, model) {
         $scope.AssignedActivities = $rootScope.AssignedActivities;
     if (model == undefined || model == null) {
 

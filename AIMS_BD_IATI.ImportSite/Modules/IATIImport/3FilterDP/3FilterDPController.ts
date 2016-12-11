@@ -1,8 +1,9 @@
-﻿/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+﻿/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
  
-angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModal) {
+angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope : RootScopeModel, $scope, $http, $timeout, $filter, $uibModal) {
     $('#divView').slimScroll({ scrollTo: '0px' });
     $scope.ImplementingOrgs = [];
     $scope.RelevantActivities = [];
@@ -221,7 +222,7 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
 
 });
 
-angular.module('iatiDataImporter').controller("AddNewImplementingOrgController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModalInstance, parentScope, org) {
+angular.module('iatiDataImporter').controller("AddNewImplementingOrgController", function ($rootScope : RootScopeModel, $scope, $http, $timeout, $filter, $uibModalInstance, parentScope, org) {
 
     org.ExecutingAgencyType = org.ExecutingAgencyTypeId == 1 ? 'Govt.' :
         org.ExecutingAgencyTypeId == 2 ? 'DP' :

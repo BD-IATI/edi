@@ -1,4 +1,9 @@
-﻿angular.module('iatiDataImporter').controller("6GeneralPreferencesController", function ($rootScope, $scope, $http, $timeout,$uibModalInstance) {
+﻿/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+
+angular.module('iatiDataImporter').controller("6GeneralPreferencesController", function ($rootScope: RootScopeModel, $scope, $http, $timeout, $uibModalInstance) {
     $rootScope.GeneralPreference = {};
     $http({
         method: 'GET',

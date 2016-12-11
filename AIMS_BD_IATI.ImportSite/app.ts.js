@@ -107,6 +107,7 @@ iatiDataImporterApp.directive('navigationOtherDp', function ($rootScope, $locati
     };
 });
 /// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../authentication/definitions.d.ts" />
 angular.module('iatiDataImporter').controller("0BeginController", function ($rootScope, $scope, $http, $timeout) {
     $('#divView').slimScroll({ scrollTo: '0px' });
     $rootScope.models = {
@@ -132,6 +133,7 @@ angular.module('iatiDataImporter').controller("0BeginController", function ($roo
 });
 /// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../authentication/definitions.d.ts" />
 angular.module('iatiDataImporter').controller("1HierarchyController", function ($rootScope, $scope, $http, $timeout) {
     //$rootScope.hierarchyModel = null;
     //$rootScope.HasChildActivity = false;
@@ -222,9 +224,10 @@ angular.module('iatiDataImporter').controller("2FilterBDController", function ($
         }
     };
 });
-/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
 angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModal) {
     $('#divView').slimScroll({ scrollTo: '0px' });
     $scope.ImplementingOrgs = [];
@@ -427,6 +430,375 @@ angular.module('iatiDataImporter').controller("AddNewImplementingOrgController",
         $uibModalInstance.close(Org);
     };
 });
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+angular.module('iatiDataImporter').controller("4ProjectsController", function ($rootScope, $scope, $http, $timeout) {
+    $('#divView').slimScroll({ scrollTo: '0px' });
+    $http({
+        url: apiprefix + '/api/IATIImport/SubmitActivities',
+        method: 'POST',
+        data: JSON.stringify($rootScope.RelevantActivities),
+        dataType: 'json'
+    }).then(function (result) {
+        //var projects = result.data.AimsProjectsNotInIati;
+        //var matchedProjects = result.data.MatchedProjects;
+        $scope.AimsProjectsDrpSrc = result.data.AimsProjectsDrpSrc;
+        //for (var i = 0; i < projects.length; i++) {
+        //    $scope.AimsProjectsDrpSrc.push({ ProjectId: projects[i].ProjectId, Title: projects[i].Title });
+        //}
+        //for (var i = 0; i < matchedProjects.length; i++) {
+        //    $scope.AimsProjectsDrpSrc.push({ ProjectId: matchedProjects[i].aimsProject.ProjectId, Title: matchedProjects[i].aimsProject.Title });
+        //}
+        $scope.AimsProjectsDrpSrc.push({ ID: -2, Name: 'Create New' });
+        $rootScope.models = $scope.models = result.data;
+        //$rootScope.RelevantActivities = null;
+        //deferred.resolve(result);
+    }, function (response) {
+        //deferred.reject(response);
+    });
+    $scope.saveData = function () {
+        $http({
+            url: apiprefix + '/api/IATIImport/SubmitManualMatchingUsingDropdown',
+            method: 'POST',
+            data: JSON.stringify($scope.models),
+            dataType: 'json'
+        }).then(function (result) {
+            $timeout(function () {
+                document.getElementById('btn6GeneralPreferences').click(); //redirect
+            });
+            //deferred.resolve(result);
+        }, function (response) {
+            //deferred.reject(response);
+        });
+    };
+});
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+angular.module('iatiDataImporter').controller("5MatchController", function ($rootScope, $scope, $http, $timeout) {
+    $scope.models = $rootScope.models;
+    $('#divView').slimScroll({ scrollTo: '0px' });
+    $scope.Commands = {
+        saveData: function () {
+            $http({
+                url: apiprefix + '/api/IATIImport/SubmitManualMatching',
+                method: 'POST',
+                data: JSON.stringify($scope.models),
+                dataType: 'json'
+            }).then(function (result) {
+                $timeout(function () {
+                    document.getElementById('btn6GeneralPreferences').click(); //redirect
+                });
+                //deferred.resolve(result);
+            }, function (response) {
+                //deferred.reject(response);
+            });
+        }
+    };
+});
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+angular.module('iatiDataImporter').controller("6GeneralPreferencesController", function ($rootScope, $scope, $http, $timeout, $uibModalInstance) {
+    $rootScope.GeneralPreference = {};
+    $http({
+        method: 'GET',
+        url: apiprefix + '/api/IATIImport/GetGeneralPreferences',
+    }).success(function (result) {
+        $rootScope.GeneralPreference = $scope.model = result;
+    });
+    $scope.Save = function () {
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/IATIImport/SaveGeneralPreferences',
+            data: JSON.stringify($rootScope.GeneralPreference),
+            dataType: 'json'
+        }).then(function (result) {
+            if (result.data != null || result.data != undefined) {
+                $timeout(function () {
+                    $uibModalInstance.dismiss('cancel');
+                });
+            }
+            else {
+                alert('Something wrong happening!');
+            }
+        }, function (response) {
+            //deferred.reject(response);
+        });
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+    $scope.SaveAndNext = function () {
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/IATIImport/SaveGeneralPreferences',
+            data: JSON.stringify($rootScope.GeneralPreference),
+            dataType: 'json'
+        }).then(function (result) {
+            if (result.data != null || result.data != undefined) {
+                $timeout(function () {
+                    document.getElementById('btn7ReviewAdjustment').click(); //redirect
+                });
+            }
+            else {
+                alert('Something wrong happening!');
+            }
+        }, function (response) {
+            //deferred.reject(response);
+        });
+    };
+    $scope.NextWithoutSaving = function () {
+        $timeout(function () {
+            document.getElementById('btn7ReviewAdjustment').click(); //redirect
+        });
+    };
+});
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+angular.module('iatiDataImporter').controller("7ReviewAdjustmentController", function ($rootScope, $scope, $http, $uibModal, $timeout) {
+    $('#divView').slimScroll({ scrollTo: '0px' });
+    $http({
+        method: 'POST',
+        url: apiprefix + '/api/IATIImport/GetProjectsToMap',
+        data: JSON.stringify($rootScope.GeneralPreference)
+    }).success(function (result) {
+        $scope.models = result;
+    });
+    $scope.disbursmentDiff = function (m) {
+        var numerator = m.iatiActivity.TotalDisbursmentThisDPOnly >= m.aimsProject.TotalDisbursmentThisDPOnly ? m.iatiActivity.TotalDisbursmentThisDPOnly : m.aimsProject.TotalDisbursmentThisDPOnly;
+        var denominator = m.iatiActivity.TotalDisbursmentThisDPOnly < m.aimsProject.TotalDisbursmentThisDPOnly ? m.iatiActivity.TotalDisbursmentThisDPOnly : m.aimsProject.TotalDisbursmentThisDPOnly;
+        var diff = (numerator / denominator) * 100;
+        return diff;
+    };
+    $scope.commitmentDiff = function (m) {
+        var numerator = m.iatiActivity.TotalCommitmentThisDPOnly >= m.aimsProject.TotalCommitmentThisDPOnly ? m.iatiActivity.TotalCommitmentThisDPOnly : m.aimsProject.TotalCommitmentThisDPOnly;
+        var denominator = m.iatiActivity.TotalCommitmentThisDPOnly < m.aimsProject.TotalCommitmentThisDPOnly ? m.iatiActivity.TotalCommitmentThisDPOnly : m.aimsProject.TotalCommitmentThisDPOnly;
+        var diff = (numerator / denominator) * 100;
+        return diff;
+    };
+    $scope.isDiffGT5 = function (mkl) {
+        var cDiff = $scope.commitmentDiff(mkl);
+        var dDiff = $scope.disbursmentDiff(mkl);
+        var avgDiff = ((dDiff + cDiff) / 2);
+        return avgDiff > 120; //difference tolerance %
+    };
+    $scope.OpenProjectSpecificAdjustment = function (MatchedProject) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            templateUrl: '8ProjectSpecificAdjustment/8ProjectSpecificAdjustmentView.html',
+            controller: '8ProjectSpecificAdjustmentController',
+            size: 'lg',
+            resolve: {
+                MatchedProject: function () {
+                    return MatchedProject;
+                }
+            }
+        });
+        //modalInstance.result.then(function (selectedItem) {
+        //    $scope.selected = selectedItem;
+        //}, function () {
+        //    //$log.info('Modal dismissed at: ' + new Date());
+        //});
+    };
+    $scope.OpenTransactionDetail = function (MatchedProject) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            templateUrl: 'Transaction/TransactionView.html',
+            controller: 'TransactionController',
+            size: 'lg',
+            resolve: {
+                MatchedProject: function () {
+                    return MatchedProject;
+                }
+            }
+        });
+        //modalInstance.result.then(function (selectedItem) {
+        //    $scope.selected = selectedItem;
+        //}, function () {
+        //    //$log.info('Modal dismissed at: ' + new Date());
+        //});
+    };
+    $scope.UnlinkProject = function (MatchedProject) {
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/IATIImport/UnlinkProject',
+            data: JSON.stringify(MatchedProject)
+        }).success(function (result) {
+            var index = $scope.models.MatchedProjects.indexOf(MatchedProject, 0);
+            if (index > -1) {
+                $scope.models.MatchedProjects.splice(index, 1);
+            }
+        });
+    };
+    $scope.ImportProjects = function () {
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/IATIImport/ImportProjects',
+            data: JSON.stringify($scope.models)
+        }).success(function (result) {
+            $timeout(function () {
+                alert("Projects are imported.");
+                document.getElementById('btnGoDashboard').click(); //redirect
+            });
+        });
+    };
+});
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+angular.module('iatiDataImporter').controller("8ProjectSpecificAdjustmentController", function ($rootScope, $timeout, $uibModalInstance, $scope, $http, MatchedProject) {
+    $scope.model = MatchedProject;
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.Save = function () {
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/IATIImport/SaveActivityPreferences',
+            data: JSON.stringify($scope.model),
+            dataType: 'json'
+        }).then(function (result) {
+            if (result.data != null || result.data != undefined) {
+                $timeout(function () {
+                    $uibModalInstance.close();
+                });
+            }
+            else {
+                alert('Something wrong happening!');
+            }
+        }, function (response) {
+            //deferred.reject(response);
+        });
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+angular.module('iatiDataImporter').controller("9CofinancingController", function ($rootScope, $timeout, $scope, $http, $uibModalInstance, model) {
+    $scope.AssignedActivities = $rootScope.AssignedActivities;
+    if (model == undefined || model == null) {
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/CFnTF/SubmitAssignedActivities',
+            data: JSON.stringify($rootScope.AssignedActivities)
+        }).success(function (result) {
+            $scope.model = result;
+        });
+    }
+    else {
+        $scope.model = model;
+    }
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+    $scope.SavePreferences = function () {
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/CFnTF/SavePreferences',
+            data: JSON.stringify($scope.model)
+        }).success(function (result) {
+            alert('saved');
+            //$scope.model = result;
+        });
+    };
+    $scope.GetSumOfPlannedDisbursments = function (prjArray) {
+        var sum = 0;
+        for (var i in prjArray) {
+            sum = sum + Number(prjArray[i].TotalPlannedDisbursment);
+        }
+        return sum;
+    };
+    $scope.ChangeIsCommitmentIncluded = function (prjArray) {
+        for (var i = 1; i < prjArray.length; i++) {
+            prjArray[i].IsCommitmentIncluded = !prjArray[i].IsCommitmentIncluded;
+        }
+    };
+    $scope.ChangeIsDisbursmentIncluded = function (prjArray) {
+        for (var i = 1; i < prjArray.length; i++) {
+            prjArray[i].IsDisbursmentIncluded = !prjArray[i].IsDisbursmentIncluded;
+        }
+    };
+    $scope.ChangeIsPlannedDisbursmentIncluded = function (prjArray) {
+        for (var i = 1; i < prjArray.length; i++) {
+            prjArray[i].IsPlannedDisbursmentIncluded = !prjArray[i].IsPlannedDisbursmentIncluded;
+        }
+    };
+});
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+angular.module('iatiDataImporter').controller("9OtherDPsActivitiesController", function ($rootScope, $timeout, $scope, $http, $uibModal, $filter) {
+    $rootScope.IsImportFromOtherDP = true;
+    $http({
+        method: 'GET',
+        url: apiprefix + '/api/CFnTF/GetAssignedActivities',
+        params: { dp: $rootScope.getCookie('selectedFundSource').ID }
+    }).success(function (result) {
+        $rootScope.AssignedActivities = $scope.AssignedActivities = result.AssignedActivities;
+        $rootScope.AimsProjects = $scope.AimsProjects = result.AimsProjects;
+        $rootScope.TrustFunds = $scope.TrustFunds = result.TrustFunds;
+    });
+    $scope.OpenTFnCF = function (activity) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            templateUrl: '9TFnCF/9TFnCFView.html',
+            controller: '9TFnCFController',
+            size: 'lg',
+            windowClass: 'full-modal-window',
+            resolve: {
+                Activity: function () {
+                    return activity;
+                },
+                Project: function () {
+                    var project = $filter('filter')($scope.Projects, { ProjectId: activity.MappedProjectId })[0];
+                    return project;
+                }
+            }
+        });
+        //modalInstance.result.then(function (selectedItem) {
+        //    $scope.selected = selectedItem;
+        //}, function () {
+        //    //$log.info('Modal dismissed at: ' + new Date());
+        //});
+    };
+});
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+angular.module('iatiDataImporter').controller("9TFnCFController", function ($rootScope, $uibModalInstance, $timeout, $scope, $http, Activity, Project) {
+    $scope.Activity = Activity;
+    $scope.Project = Project;
+    $http({
+        method: 'GET',
+        url: apiprefix + '/api/IATIImport/GetTrustFundDetails',
+        params: { trustFundId: Activity.MappedTrustFundId }
+    }).success(function (result) {
+        $scope.TrustFundDetails = result;
+    });
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
 /// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../iatiimportapp.ts" />
 angular.module('iatiDataImporter').controller("DashboardController", function ($rootScope, $scope, $http, $uibModal, $timeout) {
@@ -569,6 +941,65 @@ angular.module('iatiDataImporter').filter('sumByKey', function () {
             sum += parseFloat(data[i][key]);
         }
         return sum;
+    };
+});
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+angular.module('iatiDataImporter').controller("FinishImportController", function ($rootScope, $scope, $http, $timeout) {
+});
+/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+angular.module('iatiDataImporter').controller("MergeConflictAlertController", function ($rootScope, $timeout, $uibModalInstance, $scope, $http, log) {
+    $scope.ActionType = '';
+    $http({
+        method: 'GET',
+        url: apiprefix + '/api/IATIImport/GetMatchedProjectByIatiIdentifier',
+        dataType: 'json',
+        params: { iatiIdentifier: log.IatiIdentifier }
+    }).success(function (result) {
+        $scope.model = result;
+    });
+    $scope.resolve = function () {
+        if ($scope.ActionType == 'option1') {
+            $http({
+                method: 'POST',
+                url: apiprefix + '/api/IATIImport/UpdateTransactionByForce',
+                dataType: 'json',
+                data: JSON.stringify(log)
+            }).success(function (result) {
+            });
+        }
+        else if ($scope.ActionType = 'option2') {
+            $http({
+                method: 'POST',
+                url: apiprefix + '/api/IATIImport/SetIgnoreActivity',
+                dataType: 'json',
+                data: JSON.stringify(log)
+            }).success(function (result) {
+            });
+        }
+        else {
+        }
+        $uibModalInstance.close(log);
+    };
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+angular.module('iatiDataImporter').controller("TransactionController", function ($rootScope, $timeout, $uibModalInstance, $scope, $http, MatchedProject) {
+    $scope.model = MatchedProject;
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
     };
 });
 //# sourceMappingURL=app.ts.js.map

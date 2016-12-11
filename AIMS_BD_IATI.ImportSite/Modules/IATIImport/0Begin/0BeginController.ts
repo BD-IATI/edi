@@ -1,6 +1,9 @@
 ﻿/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../../authentication/definitions.d.ts" />
 
-angular.module('iatiDataImporter').controller("0BeginController", function ($rootScope, $scope, $http, $timeout) {
+
+
+angular.module('iatiDataImporter').controller("0BeginController", function ($rootScope : RootScopeModel, $scope, $http, $timeout) {
     $('#divView').slimScroll({ scrollTo: '0px' });
 
     $rootScope.models = {

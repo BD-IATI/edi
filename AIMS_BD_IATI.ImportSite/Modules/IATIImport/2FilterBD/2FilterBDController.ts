@@ -2,7 +2,7 @@
 /// <reference path="../IatiImportApp.ts" />
 /// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
 
-angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope, $scope, $http, $timeout) {
+angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope : RootScopeModel, $scope, $http, $timeout) {
     $('#divView').slimScroll({ scrollTo: '0px' });
 
     $scope.activeTabIndex = 0;
