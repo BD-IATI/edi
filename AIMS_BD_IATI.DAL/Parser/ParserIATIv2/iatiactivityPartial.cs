@@ -116,13 +116,18 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         [XmlIgnore]
         public List<iatiactivity> childActivities { get; set; }
         [XmlIgnore]
-        private List<iatiactivity> includedChildActivities { get {
-                if (HasChildActivity && !IsChildActivityLoaded) {
+        private List<iatiactivity> includedChildActivities
+        {
+            get
+            {
+                if (HasChildActivity && !IsChildActivityLoaded)
+                {
                     new AimsDbIatiDAL().LoadChildActivities(this);
                 }
-                return 
+                return
                     childActivities.FindAll(f => f.IsInclude == true);
-            } }
+            }
+        }
 
         [XmlIgnore]
         public List<iatiactivity> MatchedProjects { get; set; }
@@ -165,6 +170,39 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
 
         #region Financial Data
+        [XmlIgnore]
+        public List<transaction> AllTransactions
+        {
+            get
+            {
+                var Transactions = new List<transaction>();
+
+                if (transaction != null)
+                {
+                    Transactions.AddRange(transaction);
+                }
+
+                foreach (var ra in includedChildActivities)
+                {
+                    if (ra.transaction != null)
+                    {
+                        Transactions.AddRange(ra.transaction);
+                    }
+                }
+
+                if (IsCofinancedProject)
+                {
+                    foreach (var ra in MatchedProjects)
+                    {
+                        if (ra.transaction != null)
+                        {
+                            Transactions.AddRange(ra.transaction);
+                        }
+                    }
+                }
+                return Transactions;
+            }
+        }
 
         #region Commitments
         [XmlIgnore]
@@ -331,32 +369,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         private List<transaction> GetTransactions(string transactiontypecode)
         {
-            var Transactions = new List<transaction>();
-
-            if (transaction != null)
-            {
-                Transactions.AddRange(transaction.Where(p => p.transactiontype?.code == transactiontypecode));
-            }
-
-            foreach (var ra in includedChildActivities)
-            {
-                if (ra.transaction != null)
-                {
-                    Transactions.AddRange(ra.transaction.Where(p => p.transactiontype?.code == transactiontypecode));
-                }
-            }
-
-            if (IsCofinancedProject)
-            {
-                foreach (var ra in MatchedProjects)
-                {
-                    if (ra.transaction != null)
-                    {
-                        Transactions.AddRange(ra.transaction.Where(p => p.transactiontype?.code == transactiontypecode));
-                    }
-                }
-            }
-            return Transactions.OrderByDescending(s=>s.transactiondate.isodate).ToList();
+            return AllTransactions.FindAll(f => f.transactiontype?.code == transactiontypecode).OrderByDescending(s => s.transactiondate.isodate).ToList();
         }
 
         #endregion Helper Methods
@@ -526,79 +539,22 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 else
                 {
                     defaultaidtype = new defaultaidtype();
-                    if (transaction != null)
-                    {
-                        var commitmentTrans = transaction.Where(c => c.transactiontype?.code == "2");
 
-                        var kk = from t in commitmentTrans
-                                 group t by new { t.aidtype, t.value } into g
-                                 select new
-                                 {
-                                     g.Key.aidtype,
-                                     Sum = g.Sum(s => s.value?.Value)
-                                 };
+                    var kk = from t in Commitments
+                             group t by new { t.aidtype, t.value } into g
+                             select new
+                             {
+                                 g.Key.aidtype,
+                                 Sum = g.Sum(s => s.value?.Value)
+                             };
 
-                        var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
+                    var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
 
-                        defaultaidtype.code = dominatingAidType == null ? "" : dominatingAidType.aidtype == null ? "" : dominatingAidType.aidtype.code;
-
-                    }
-                    else
-                    {
-                        //var allChildAticitiesTrans = new List<transaction>();
-                        //foreach (var ra in includedChildActivities)
-                        //{
-                        //    if (ra.transaction != null)
-                        //    {
-                        //        foreach (var item in ra.transaction)
-                        //        {
-                        //            if (item.aidtype == null)
-                        //                item.aidtype = new transactionAidtype { code = ra.defaultaidtype?.code };
-                        //            allChildAticitiesTrans.Add(item);
-
-                        //        }
-                        //    }
-
-                        //}
-
-                        //var commitmentTrans = allChildAticitiesTrans.FindAll(c => c.transactiontype?.code == "2");
-
-                        //var kk = (from t in commitmentTrans
-                        //          group t by new { t.aidtype, t.value } into g
-                        //          select new
-                        //          {
-                        //              g.Key.aidtype,
-                        //              Sum = g.Sum(s => s.value?.Value)
-                        //          }).ToList();
-
-                        //var dominatingAidType = kk.OrderByDescending(k => k.Sum).FirstOrDefault();
-
-                        //if (!string.IsNullOrWhiteSpace(dominatingAidType?.aidtype?.code))
-                        //{
-                        //    defaultaidtype.code = dominatingAidType.aidtype.code;
-                        //}
-                        //else
-                        //{
-                        var dominatingAidTypeAcitvity = childActivities
-                                .OrderByDescending(o => o.TotalCommitment).FirstOrDefault();
-
-                        if (dominatingAidTypeAcitvity != null)
-                        {
-                            defaultaidtype.code = dominatingAidTypeAcitvity.AidTypeCode;
-                        }
-                        //}
-
-
-                    }
+                    defaultaidtype.code = dominatingAidType == null ? "" : dominatingAidType.aidtype == null ? "" : dominatingAidType.aidtype.code;
 
                     return defaultaidtype.code;
                 }
             }
-            //set
-            //{
-            //    if (!string.IsNullOrWhiteSpace(value))
-            //        defaultaidtype = new Parser.ParserIATIv2.defaultaidtype { code = value };
-            //}
         }
 
         [XmlIgnore]

@@ -370,7 +370,7 @@ namespace AIMS_BD_IATI.DAL
 
         //    var iatiActivities = ParseXMLAndResolve(q);
 
-            
+
 
         //    var aimsActivities = new AimsDAL().GetAIMSProjectsInIATIFormat(dp);
 
@@ -407,7 +407,7 @@ namespace AIMS_BD_IATI.DAL
 
             foreach (var aimsTransaction in aimsProject.transaction)
             {
-                var isFoundInIati = iatiActivity.transaction.Any(a => a.transactiontype?.code == aimsTransaction.transactiontype?.code
+                var isFoundInIati = iatiActivity.AllTransactions.Any(a => a.transactiontype?.code == aimsTransaction.transactiontype?.code
                     && a.transactiondate?.isodate == aimsTransaction.transactiondate?.isodate
                     && Math.Floor(a.ValUSD) == Math.Floor(aimsTransaction.ValUSD));
 
@@ -573,11 +573,10 @@ namespace AIMS_BD_IATI.DAL
 
         public void SetExchangedValues(iatiactivity activity)
         {
-            if (activity.transaction != null)
-                foreach (var tr in activity.transaction)
-                {
-                    SetCurrencyExRateAndVal(tr, activity.defaultcurrency, tr.transactiondate?.isodate ?? default(DateTime));
-                }
+            foreach (var tr in activity.AllTransactions)
+            {
+                SetCurrencyExRateAndVal(tr, activity.defaultcurrency, tr.transactiondate?.isodate ?? default(DateTime));
+            }
 
             if (activity.budget != null)
                 foreach (var tr in activity.budget)
