@@ -244,7 +244,7 @@ namespace AIMS_BD_IATI.DAL
                     providerorg = new transactionProviderorg { narrative = Statix.getNarativeArray(trustFundDetail.FundSourceName) },
                     value = new currencyType { currency = Statix.Currency, Value = trustFundDetail.Amount ?? 0 },
                 };
-                new AimsDbIatiDAL().SetCurrencyExRateAndVal(tr, Statix.Currency);
+                AimsDbIatiDAL.SetCurrencyExRateAndVal(tr.value, Statix.Currency);
                 trustFundModel.transactionsInAims.Add(tr);
             }
 

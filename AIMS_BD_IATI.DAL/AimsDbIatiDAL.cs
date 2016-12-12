@@ -15,7 +15,7 @@ namespace AIMS_BD_IATI.DAL
     {
         #region Declarations
         AIMS_DB_IATIEntities dbContext = new AIMS_DB_IATIEntities();
-        List<ExchangeRateModel> ExchangeRates
+        public static List<ExchangeRateModel> ExchangeRates
         {
             get;
             set;
@@ -24,6 +24,10 @@ namespace AIMS_BD_IATI.DAL
 
         #region Constructors
         public AimsDbIatiDAL()
+        {
+        }
+
+        static AimsDbIatiDAL()
         {
             ExchangeRates = new List<ExchangeRateModel>();
         }
@@ -324,7 +328,7 @@ namespace AIMS_BD_IATI.DAL
             foreach (var iatiActivity in iatiActivities)
             {
                 LoadChildActivities(iatiActivity);
-                SetExchangedValues(iatiActivity);
+                //SetExchangedValues(iatiActivity);
 
                 #region Field Mapping Preference Delegateds
                 var FieldMappingPreferenceDelegateds = dbContext.FieldMappingPreferenceDelegateds.Where(w => w.IatiIdentifier == iatiActivity.IatiIdentifier).ToList();
@@ -515,6 +519,7 @@ namespace AIMS_BD_IATI.DAL
         }
 
         #region Helper Methods
+        XmlSerializer serializer = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity));
 
         /// <summary>
         /// 
@@ -524,7 +529,6 @@ namespace AIMS_BD_IATI.DAL
         private List<iatiactivity> ParseXMLAndResolve(List<ActivityModel> q)
         {
             var result = new List<iatiactivity>();
-            var serializer = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity));
 
             foreach (var a in q)
             {
@@ -539,6 +543,7 @@ namespace AIMS_BD_IATI.DAL
                 a.iatiActivity.AllID = new AimsDAL().GetFundSourceIDnIATICode(a.OrgId);
 
                 SetExchangedValues(a.iatiActivity);
+
                 result.Add(a.iatiActivity);
             }
             return result;
@@ -546,7 +551,7 @@ namespace AIMS_BD_IATI.DAL
 
         public void LoadChildActivities(iatiactivity activity)
         {
-            if (activity.HasChildActivity)
+            if (activity.HasChildActivity && activity.childActivities.IsEmpty())
             {
                 var relatedActivities = new List<iatiactivity>();
 
@@ -567,37 +572,39 @@ namespace AIMS_BD_IATI.DAL
 
                 activity.childActivities = relatedActivities;
             }
+
             activity.IsChildActivityLoaded = true;
 
         }
 
         public void SetExchangedValues(iatiactivity activity)
         {
-            foreach (var tr in activity.AllTransactions)
-            {
-                SetCurrencyExRateAndVal(tr, activity.defaultcurrency, tr.transactiondate?.isodate ?? default(DateTime));
-            }
+            if (activity.transaction != null)
+                foreach (var tr in activity.transaction)
+                {
+                    SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency, tr.transactiondate?.isodate ?? default(DateTime));
+                }
 
             if (activity.budget != null)
                 foreach (var tr in activity.budget)
                 {
-                    SetCurrencyExRateAndVal(tr, activity.defaultcurrency);
+                    SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency);
 
                 }
 
             if (activity.planneddisbursement != null)
                 foreach (var tr in activity.planneddisbursement)
                 {
-                    SetCurrencyExRateAndVal(tr, activity.defaultcurrency);
+                    SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency);
 
                 }
         }
 
-        public void SetCurrencyExRateAndVal(ICurrency tr, string defaultcurrency, DateTime trDate = default(DateTime))
+        public static void SetCurrencyExRateAndVal(currencyType tr, string defaultcurrency, DateTime trDate = default(DateTime))
         {
-            tr.value.currency = tr.value.currency ?? defaultcurrency;
+            tr.currency = tr.currency ?? defaultcurrency;
 
-            var cur = tr.value.currency;
+            var cur = tr.currency;
 
             if (ExchangeRates.Exists(e => e.ISO_CURRENCY_CODE == cur) == false)
             {
@@ -607,7 +614,7 @@ namespace AIMS_BD_IATI.DAL
 
             var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
 
-            var valDate = tr.value.valuedate == default(DateTime) ? trDate : tr.value.valuedate;
+            var valDate = tr.valuedate == default(DateTime) ? trDate : tr.valuedate;
 
             var nearestPast = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault();
             var nearestPastDate = nearestPast == null ? default(DateTime) : nearestPast.DATE;
@@ -619,11 +626,11 @@ namespace AIMS_BD_IATI.DAL
 
             var curExchangeRate = exchangeRates.Where(k => k.DATE == nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
 
-            tr.value.BBexchangeRateDate = curExchangeRate?.DATE ?? default(DateTime).ToSqlDateTime();
-            tr.value.BBexchangeRateUSD = curExchangeRate?.DOLLAR_PER_CURRENCY ?? 0;
-            tr.value.ValueInUSD = tr.value.Value * tr.value.BBexchangeRateUSD;
-            tr.value.BBexchangeRateBDT = curExchangeRate?.TAKA_PER_DOLLAR ?? 0;
-            tr.value.ValueInBDT = tr.value.ValueInUSD * tr.value.BBexchangeRateBDT;
+            tr.BBexchangeRateDate = curExchangeRate?.DATE ?? default(DateTime).ToSqlDateTime();
+            tr.BBexchangeRateUSD = curExchangeRate?.DOLLAR_PER_CURRENCY ?? 0;
+            tr.ValueInUSD = tr.Value * tr.BBexchangeRateUSD;
+            tr.BBexchangeRateBDT = curExchangeRate?.TAKA_PER_DOLLAR ?? 0;
+            tr.ValueInBDT = tr.ValueInUSD * tr.BBexchangeRateBDT;
 
         }
 

@@ -17,7 +17,7 @@ namespace AIMS_BD_IATI.DAL
             foreach (var H1Activity in H1Activities)
             {
                 #region populate child activities
-                if (H1Activity.relatedactivity != null)
+                if (!H1Activity.IsChildActivityLoaded && H1Activity.childActivities.IsEmpty() && H1Activity.HasChildActivity)
                 {
                     foreach (var ra in H1Activity.relatedactivity.Where(r => r.type == "2"))
                     {
@@ -232,7 +232,7 @@ namespace AIMS_BD_IATI.DAL
 
                 //add all child activities if any and delete all transaction from child activities because we only need child activities to update IsInclude field in database
                 matchedProject.aimsProject.childActivities = matchedProject.iatiActivity.childActivities;
-                //matchedProject.aimsProject.childActivities.ForEach(f => f.transaction = null);
+                matchedProject.aimsProject.childActivities.ForEach(f => f.transaction = null);
 
                 margedProjects.Add(matchedProject.aimsProject);
             }

@@ -120,7 +120,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                if (HasChildActivity && !IsChildActivityLoaded)
+                if (!IsChildActivityLoaded && childActivities.IsEmpty() && HasChildActivity)
                 {
                     new AimsDbIatiDAL().LoadChildActivities(this);
                 }
@@ -800,6 +800,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
+                
                 return value?.ValueInUSD ?? 0;
             }
         }
