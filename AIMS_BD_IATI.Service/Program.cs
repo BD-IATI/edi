@@ -12,14 +12,10 @@ using System.Data.Entity.Validation;
 using System.Threading;
 using System.Xml.Serialization;
 
-namespace AIMS_BD_IATI.Service
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            try
-            {
+namespace AIMS_BD_IATI.Service {
+    class Program {
+        static void Main(string[] args) {
+            try {
                 Logger.Write("");
                 Logger.Write(" ******************** START IATI PROCESS *********************** ");
 
@@ -36,10 +32,7 @@ namespace AIMS_BD_IATI.Service
 
                 Logger.Write(" ********************** END EXCHANGE RATE PROCESS ********************* ");
                 Logger.Write("");
-            }
-
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Logger.WriteToDbAndFile(ex, LogType.Error);
             }
         }
@@ -48,42 +41,44 @@ namespace AIMS_BD_IATI.Service
         /// Parse IATI XML data from IATI data store and converts from v1 to v2
         /// </summary>
         /// <returns></returns>
-        private static void ParseIATI()
-        {
+        private static void ParseIATI() {
 
             //Get list of FundSource from AIMS DB
             AimsDAL _AimsDAL = new AimsDAL();
             var fundSources = _AimsDAL.GetFundSources();//.FindAll(q => q.IATICode == "SE-0");
 
             int i = 1;
-            foreach (var fundSource in fundSources)
-            {
+            foreach (var fundSource in fundSources) {
 
-                Thread th = new Thread(new ThreadStart(() =>
-                {
+                Thread th = new Thread(new ThreadStart(() => {
                     Parser p = new Parser();
-                    p.Parse(fundSources.Count, i++, fundSource);
+                    //Pilot purpose only
+                    //usaid demo data:  
+                    if (fundSource.IATICode == "US-USAGOV|US-1|USAIDManualData") {
+                        p.Parse(fundSources.Count, i++, fundSource, "http://test.brough.io/usaid/iati/iati-activities.xml");
+                    } else {
+                        //p.Parse(fundSources.Count, i++, fundSource);
+                    }
                     p = null;
                 }));
                 th.Start();
 
                 th.Join();
             }
+
         }
         /// <summary>
         /// Save Converted Data to File
         /// </summary>
         /// <param name="returnResult2"></param>
-        private static void SaveToDisk(XmlResultv2 returnResult2)
-        {
+        private static void SaveToDisk(XmlResultv2 returnResult2) {
             var serializer = ParserIATIv2.serializer;
             TextWriter writer = new StreamWriter("D:\\xxv2.01.xml");
             serializer.Serialize(writer, returnResult2);
             Logger.Write("INFO: " + "Saved Converted Data to File");
         }
 
-        private static void ParseExchangeRate()
-        {
+        private static void ParseExchangeRate() {
             var obj = new ExchangeRateParser();
             var url = Common.exchangeRate_url;
             var list = obj.SplitCSV(url);
@@ -96,13 +91,11 @@ namespace AIMS_BD_IATI.Service
         }
     }
 
-    public class Parser
-    {
+    public class Parser {
         static XmlSerializer iatiactivitySerealizer = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity), new XmlRootAttribute("iati-activity"));
 
 
-        public void Parse(int fundSourcesCount, int i, tblFundSource fundSource)
-        {
+        public void Parse(int fundSourcesCount, int i, tblFundSource fundSource, string URL = null) {
 
 
 
@@ -111,8 +104,7 @@ namespace AIMS_BD_IATI.Service
             string activitiesURL;
             XmlResultv2 returnResult2;
             XmlResultv1 returnResult1;
-            try
-            {
+            try {
                 Logger.Write("");
                 Logger.Write(i + "/" + fundSourcesCount + " " + fundSource.FundSourceName + " (" + fundSource.IATICode + ")");
                 Logger.Write("-------------------->");
@@ -125,7 +117,10 @@ namespace AIMS_BD_IATI.Service
                 //activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=BD&reporting-org=CA-3&stream=True" //"http://localhost:1000/UploadedFiles/activity_GB-1_2.xml";
                 //single activity : "http://datastore.iatistandard.org/api/1/access/activity.xml?iati-identifier=CA-3-A035529001
                 //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=CA-3
-                activitiesURL = Common.iati_url + "recipient-country=" + Common.iati_recipient_country + "&reporting-org=" + fundSource.IATICode + "&stream=" + Common.iati_stream;
+                if (URL == null)
+                    activitiesURL = Common.iati_url + "recipient-country=" + Common.iati_recipient_country + "&reporting-org=" + fundSource.IATICode + "&stream=" + Common.iati_stream;
+                else
+                    activitiesURL = URL;
                 returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
 
                 Logger.Write("INFO: " + "Parsing...");
@@ -150,18 +145,13 @@ namespace AIMS_BD_IATI.Service
                 #endregion
 
                 iatiactivityArray = returnResult2?.iatiactivities?.iatiactivity;
-                if (iatiactivityArray != null)
-                {
+                if (iatiactivityArray != null) {
                     SaveToDB(fundSource, iatiactivityArray);
                 }
-            }
-            catch (DbEntityValidationException ex)
-            {
+            } catch (DbEntityValidationException ex) {
                 string messages = "";
-                foreach (var validationErrors in ex.EntityValidationErrors)
-                {
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                    {
+                foreach (var validationErrors in ex.EntityValidationErrors) {
+                    foreach (var validationError in validationErrors.ValidationErrors) {
                         messages += string.Format("\nProperty: {0} Error: {1}",
                                                 validationError.PropertyName,
                                                 validationError.ErrorMessage);
@@ -169,9 +159,7 @@ namespace AIMS_BD_IATI.Service
                 }
                 Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, null, messages);
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Logger.WriteToDbAndFile(ex, LogType.Error, fundSource.IATICode);
             }
         }
@@ -181,8 +169,7 @@ namespace AIMS_BD_IATI.Service
         /// Save Data To DB
         /// </summary>
         /// <param name="returnResult2"></param>
-        private void SaveToDB(tblFundSource fundSource, AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray)
-        {
+        private void SaveToDB(tblFundSource fundSource, AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray) {
 
             int counter = 1;
             int successfullySavedActivityCounter = 0;
@@ -190,20 +177,16 @@ namespace AIMS_BD_IATI.Service
 
             Logger.Write("INFO: " + "Total Activity found: " + totalActivity);
             Console.WriteLine();
-            if (totalActivity > 0)
-            {
-                foreach (var iatiactivityItem in iatiactivityArray)
-                {
-                    try
-                    {
+            if (totalActivity > 0) {
+                foreach (var iatiactivityItem in iatiactivityArray) {
+                    try {
                         var Activity = new Activity();
 
                         Activity.OrgId = Activity.AssignedOrgId = fundSource.IATICode;// iatiactivityItem.reportingorg?.@ref;
                         Activity.IatiIdentifier = iatiactivityItem.IatiIdentifier;
                         Activity.Hierarchy = iatiactivityItem.hierarchy;
 
-                        using (StringWriter ww = new StringWriter())
-                        {
+                        using (StringWriter ww = new StringWriter()) {
                             iatiactivitySerealizer.Serialize(ww, iatiactivityItem);
                             Activity.IatiActivity = ww.ToString();
                         }
@@ -212,14 +195,10 @@ namespace AIMS_BD_IATI.Service
 
                         Console.Write("\r Activity Counter: {0}   ", counter++);
 
-                    }
-                    catch (DbEntityValidationException ex)
-                    {
+                    } catch (DbEntityValidationException ex) {
                         string messages = "";
-                        foreach (var validationErrors in ex.EntityValidationErrors)
-                        {
-                            foreach (var validationError in validationErrors.ValidationErrors)
-                            {
+                        foreach (var validationErrors in ex.EntityValidationErrors) {
+                            foreach (var validationError in validationErrors.ValidationErrors) {
                                 messages += string.Format("\nProperty: {0} Error: {1}",
                                                         validationError.PropertyName,
                                                         validationError.ErrorMessage);
@@ -227,9 +206,7 @@ namespace AIMS_BD_IATI.Service
                         }
                         Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, iatiactivityItem.IatiIdentifier, messages);
 
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         Logger.WriteToDbAndFile(ex, LogType.Error, fundSource.IATICode, iatiactivityItem.IatiIdentifier);
                     }
 
@@ -241,16 +218,13 @@ namespace AIMS_BD_IATI.Service
 
     }
 
-    public class ExchangeRateParser
-    {
-        public List<ExchangeRateFederal> SplitCSV(string url)
-        {
+    public class ExchangeRateParser {
+        public List<ExchangeRateFederal> SplitCSV(string url) {
             string fileList = GetCSV(url);
 
             var list = from line in fileList.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Skip(1)
                        let columns = line.Split(',')
-                       select new ExchangeRateFederal
-                       {
+                       select new ExchangeRateFederal {
                            Date = Convert.ToDateTime(columns[0]),
                            Rate = Common.ParseDecimal(columns[1]),
                            Currency = (columns[2]),
@@ -260,8 +234,7 @@ namespace AIMS_BD_IATI.Service
             return list.ToList();
         }
 
-        public string GetCSV(string url)
-        {
+        public string GetCSV(string url) {
             var req = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
             var resp = (System.Net.HttpWebResponse)req.GetResponse();
 
