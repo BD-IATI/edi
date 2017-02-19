@@ -945,7 +945,7 @@ namespace AIMS_BD_IATI.DAL
             #region Commitments
             if (MatchedProject.IsCommitmentIncluded)
             {
-                foreach (var trn in MatchedProject.CommitmentsThisDPOnly)
+                foreach (var trn in MatchedProject.Commitments)
                 {
 
                     var aimsCommitment = new tblProjectFundingCommitment();
@@ -1031,7 +1031,7 @@ namespace AIMS_BD_IATI.DAL
             {
 
 
-                foreach (var trn in MatchedProject.DisbursmentsThisDPOnly)
+                foreach (var trn in MatchedProject.Disbursments)
                 {
                     var aimsDisbursment = new tblProjectFundingActualDisbursement();
                     p.tblProjectFundingActualDisbursements.Add(aimsDisbursment);
