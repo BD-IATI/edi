@@ -1,10 +1,10 @@
 ﻿/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
-/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+
  
 angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope : RootScopeModel, $scope, $http, $timeout, $filter, $uibModal) {
-    $('#divView').slimScroll({ scrollTo: '0px' });
+    //$('#divView').slimScroll({ scrollTo: '0px' });
     $scope.ImplementingOrgs = [];
     $scope.RelevantActivities = [];
     $scope.FundSources = [];
@@ -31,7 +31,7 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
         });
     $scope.GotoTab = function (indx) {
         $scope.activeTabIndex = indx;
-        $('#divView').slimScroll({ scrollTo: '0px' });
+        //$('#divView').slimScroll({ scrollTo: '0px' });
 
     }
     $scope.FilterDP = function () {
@@ -45,7 +45,7 @@ angular.module('iatiDataImporter').controller("3FilterDPController", function ($
             $rootScope.RelevantActivities = $scope.RelevantActivities = result.data;
             $scope.onFundSourceChanged();
             $scope.activeTabIndex = 1;
-            $('#divView').slimScroll({ scrollTo: '0px' });
+            //$('#divView').slimScroll({ scrollTo: '0px' });
 
             //deferred.resolve(result);
         },

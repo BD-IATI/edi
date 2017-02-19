@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
-/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+
 
 angular.module('iatiDataImporter').controller("8ProjectSpecificAdjustmentController", function ($rootScope: RootScopeModel, $timeout, $uibModalInstance, $scope, $http, MatchedProject) {
 

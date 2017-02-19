@@ -176,7 +176,6 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\jquery.slimScroll\jquery.slimScroll.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>

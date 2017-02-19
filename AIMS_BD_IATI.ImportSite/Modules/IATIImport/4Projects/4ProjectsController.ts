@@ -1,10 +1,10 @@
 ﻿/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
-/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
+
 
 angular.module('iatiDataImporter').controller("4ProjectsController", function ($rootScope: RootScopeModel, $scope, $http, $timeout) {
-    $('#divView').slimScroll({ scrollTo: '0px' });
+    //$('#divView').slimScroll({ scrollTo: '0px' });
 
     $http({
         url: apiprefix + '/api/IATIImport/SubmitActivities',

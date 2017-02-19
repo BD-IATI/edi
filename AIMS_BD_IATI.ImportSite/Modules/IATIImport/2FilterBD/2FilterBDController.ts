@@ -1,9 +1,8 @@
 ﻿/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
-/// <reference path="../../../scripts/typings/jquery.slimscroll/jquery.slimscroll.d.ts" />
 
 angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope : RootScopeModel, $scope, $http, $timeout) {
-    $('#divView').slimScroll({ scrollTo: '0px' });
+    ////$('#divView').slimScroll({ scrollTo: '0px' });
 
     $scope.activeTabIndex = 0;
     $scope.setTabIndex = function (index) { $scope.activeTabIndex = index; };
