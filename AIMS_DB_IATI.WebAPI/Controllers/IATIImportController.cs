@@ -165,7 +165,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         }
         #endregion
 
-        #region 3 FilterDP
+        #region 3. FilterDP
         [AcceptVerbs("GET", "POST")]
         public iOrgs GetAllImplementingOrg(FilterBDModel filterDBModel)
         {
