@@ -10,7 +10,7 @@
 
     <script src="../../Scripts/jquery-2.2.1.min.js"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>
-    <script src="../../Scripts/jquery.slimscroll.js"></script>
+    <!--<script src="../../Scripts/jquery.slimscroll.js"></script>-->
 
     <script src="../../Scripts/angular.min.js"></script>
     <script src="../../Scripts/angular-route.min.js"></script>
@@ -202,7 +202,7 @@
                 <!--<ul navigation-Other-Dp ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>-->
                 <!-- Tab panes -->
             </div>
-            <div id="divView">
+            <div id="divView" style="height: 100%;" class="col-sm-9">
 
                 <div ng-view class="tab-content" style="padding-bottom:25px;">
                 </div>
@@ -215,13 +215,13 @@
 
     <script type="text/javascript">
         $(function () {
-            $('#divView').slimScroll({
-                height: '100%',
-                alwaysVisible: true,
-                wheelStep: 10,
-                enableKeyNavigation: true,
-                railVisible: true,
-            });
+            //$('#divView').slimScroll({
+            //    height: '100%',
+            //    alwaysVisible: true,
+            //    wheelStep: 10,
+            //    enableKeyNavigation: true,
+            //    railVisible: true,
+            //});
         });
         window.onbeforeunload = function () {
             return "Dude, are you sure you want to refresh? Think of the kittens!";
