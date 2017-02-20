@@ -10,7 +10,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>IATI projects matched to the AIMS</h3>
+                    <h3> IATI projects matched to the AIMS: <span ng-bind="models.MatchedProjects.length"></span></h3>
                     <table st-table="MatchedProjects" st-safe-src="models.MatchedProjects" class="table table-striped">
                         <thead>
                             <tr>
@@ -35,7 +35,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>IATI projects not found in the AIMS</h3>
+                    <h3>IATI projects not found in the AIMS: <span ng-bind="models.IatiActivitiesNotInAims.length"></span></h3>
                     <p class="lead">
                         The following projects were found in
                         IATI but not in the AIMS. You can manually map them to
@@ -90,7 +90,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>AIMS projects not found in IATI</h3>
+                    <h3> AIMS projects not found in IATI: <span ng-bind="models.AimsProjectsNotInIati.length"></span></h3>
                     <div class="alert alert-danger" ng-show="models.AimsProjectsNotInIati.length > 0">
                         <p>
                             Some projects were found in the AIMS, but not in
@@ -140,7 +140,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Projects managed by other DPs</h3>
+                    <h3>Projects managed by other DPs: <span ng-bind="models.ProjectsOwnedByOther.length"></span></h3>
                     <table st-table="ProjectsOwnedByOther" st-safe-src="models.ProjectsOwnedByOther" class="table" ng-show="models.ProjectsOwnedByOther.length > 0">
                         <thead>
                             <tr>
