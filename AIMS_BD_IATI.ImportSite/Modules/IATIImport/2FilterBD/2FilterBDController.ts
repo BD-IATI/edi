@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 
-angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope : RootScopeModel, $scope, $http, $timeout) {
+angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope: RootScopeModel, $scope, $http, $timeout) {
     ////$('#divView').slimScroll({ scrollTo: '0px' });
 
     $scope.activeTabIndex = 0;
@@ -53,4 +53,21 @@ angular.module('iatiDataImporter').controller("2FilterBDController", function ($
             }
         }
     };
+
+    $scope.IncludeAll = function () {
+        var acts = $scope.model.iatiActivities as Array<any>;
+        for (var act of acts) {
+            act.IsRelevant = true;
+
+        }
+    };
+
+    $scope.ExcludeAll = function () {
+        var acts = $scope.model.iatiActivities as Array<any>;
+        for (var act of acts) {
+            act.IsRelevant = false;
+
+        }
+    };
+
 });

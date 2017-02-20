@@ -224,6 +224,20 @@ angular.module('iatiDataImporter').controller("2FilterBDController", function ($
             }
         }
     };
+    $scope.IncludeAll = function () {
+        var acts = $scope.model.iatiActivities;
+        for (var _i = 0, acts_2 = acts; _i < acts_2.length; _i++) {
+            var act = acts_2[_i];
+            act.IsRelevant = true;
+        }
+    };
+    $scope.ExcludeAll = function () {
+        var acts = $scope.model.iatiActivities;
+        for (var _i = 0, acts_3 = acts; _i < acts_3.length; _i++) {
+            var act = acts_3[_i];
+            act.IsRelevant = false;
+        }
+    };
 });
 /// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Authentication/definitions.d.ts" />
