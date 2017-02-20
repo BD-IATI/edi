@@ -540,17 +540,17 @@ namespace AIMS_BD_IATI.DAL {
             }
 
 
-            var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderBy(o => o.DATE);
+            var exchangeRates = ExchangeRates.Where(k => k.ISO_CURRENCY_CODE == cur).OrderByDescending(o => o.DATE);
 
             var valDate = tr.valuedate == default(DateTime) ? trDate : tr.valuedate;
 
             var nearestPast = exchangeRates.Where(k => k.DATE <= valDate).FirstOrDefault();
             var nearestPastDate = nearestPast == null ? default(DateTime) : nearestPast.DATE;
-            var nearestFuture = exchangeRates.Where(k => k.DATE >= valDate).FirstOrDefault();
+
+            var nearestFuture = exchangeRates.Where(k => k.DATE >= valDate).LastOrDefault();
             var nearestFutureDate = nearestFuture == null ? default(DateTime) : nearestFuture.DATE;
 
             var nearestDate = (nearestFutureDate - valDate).TotalDays <= (valDate - nearestPastDate).TotalDays ? nearestFutureDate : nearestPastDate;
-
 
             var curExchangeRate = exchangeRates.Where(k => k.DATE == nearestDate).FirstOrDefault() ?? exchangeRates.FirstOrDefault();
 
