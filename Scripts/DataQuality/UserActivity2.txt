@@ -1,0 +1,5 @@
+SELECT T.* 
+FROM UserActivity T
+WHERE T.RecordInfo IN ('Commitment', 'Planned Disbursement', 'Actual Disbursement', 'Expenditure')
+ORDER BY T.ManagingDP, T.ProjectId
+
