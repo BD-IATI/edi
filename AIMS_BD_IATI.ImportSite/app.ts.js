@@ -126,8 +126,10 @@ angular.module('iatiDataImporter').controller("0BeginController", function ($roo
     }).success(function (result) {
         $scope.FundSources = result;
         $timeout(function () {
-            if ($scope.FundSources.length == 1)
+            if ($scope.FundSources.length == 1) {
+                $rootScope.putCookie('selectedFundSource', $scope.FundSources[0]);
                 document.getElementById('btnDashboard').click(); //redirect
+            }
         });
     });
 });

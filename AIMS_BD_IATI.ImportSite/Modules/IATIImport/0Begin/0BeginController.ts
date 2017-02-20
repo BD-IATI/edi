@@ -3,7 +3,7 @@
 
 
 
-angular.module('iatiDataImporter').controller("0BeginController", function ($rootScope : RootScopeModel, $scope, $http, $timeout) {
+angular.module('iatiDataImporter').controller("0BeginController", function ($rootScope: RootScopeModel, $scope, $http, $timeout) {
     //$('#divView').slimScroll({ scrollTo: '0px' });
 
     $rootScope.models = {
@@ -15,7 +15,7 @@ angular.module('iatiDataImporter').controller("0BeginController", function ($roo
         NewProjectsToAddInAims: [],
         ProjectsOwnedByOther: []
     };
-	   
+
     $scope.FundSources = [];
 
     $http({
@@ -26,9 +26,11 @@ angular.module('iatiDataImporter').controller("0BeginController", function ($roo
         $scope.FundSources = result;
 
         $timeout(function () {
-            if($scope.FundSources.length == 1)
+            if ($scope.FundSources.length == 1) {
+                $rootScope.putCookie('selectedFundSource', $scope.FundSources[0]);
                 document.getElementById('btnDashboard').click(); //redirect
-            });
+            }
+        });
     });
 
 });

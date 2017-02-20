@@ -11,6 +11,9 @@
     AimsProjects;
     TrustFunds;
 
+
+    putCookie(a, b);
+
 }
 declare class Highcharts {
     static Chart(a);
