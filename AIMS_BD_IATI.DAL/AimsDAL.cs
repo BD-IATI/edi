@@ -650,7 +650,9 @@ namespace AIMS_BD_IATI.DAL {
                 var fundsourceCategory = GetOtherFundSourceCategory(userId);
                 var cur = dbContext.tblCurrencies.FirstOrDefault(f => f.IATICode == "USD");
 
-                var ent = dbContext.tblFundSources.FirstOrDefault(f => f.FundSourceName == org.Name || f.IATICode == org.@ref);
+                var iatiCode = string.IsNullOrEmpty(org.@ref) ? org.Name.Replace(" ", "-") : org.@ref;
+
+                var ent = dbContext.tblFundSources.FirstOrDefault(f => f.FundSourceName == org.Name || f.IATICode == iatiCode);
                 if (ent == null) {
                     ent = new tblFundSource {
                         FundSourceCategoryId = fundsourceCategory.Id,
@@ -958,8 +960,7 @@ namespace AIMS_BD_IATI.DAL {
 
         private void DeleteTransactions(tblProjectInfo p, iatiactivity MatchedProject) {
             //Commitments
-            if (MatchedProject.IsCommitmentIncluded)
-            {
+            if (MatchedProject.IsCommitmentIncluded) {
                 var aimsCommitments = p.tblProjectFundingCommitments.Where(w => w.FundSourceId == MatchedProject.AimsFundSourceId).ToList();
 
                 foreach (var cc in aimsCommitments) {
