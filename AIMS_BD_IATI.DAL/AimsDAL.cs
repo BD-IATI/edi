@@ -1534,22 +1534,27 @@ namespace AIMS_BD_IATI.DAL {
 
         #endregion Get Aims data in Iati format
 
-        public List<ExchangeRateModel> GetExchangesRateToUSD(string fromCurrencyISOcode, DateTime? date = null) {
-            var q = (from e in dbContext.tblExchangeRateBBApis.Where(k => k.ISO_CURRENCY_CODE == fromCurrencyISOcode
-                && (date == null ? true : k.DATE == date))
-                     select new ExchangeRateModel {
-                         DATE = e.DATE,
-                         ISO_CURRENCY_CODE = e.ISO_CURRENCY_CODE,
+        public List<ExchangeRateModel> GetExchangesRateToUSD(string fromCurrencyISOcode) {
+            var result = new List<ExchangeRateModel>();
 
-                         DOLLAR_PER_CURRENCY = e.DOLLAR_PER_CURRENCY,
-                         CURRENCY_PER_DOLLAR = e.CURRENCY_PER_DOLLAR,
+            var q = dbContext.vwExchangeRateBBApis.Where(k => k.ISO_CURRENCY_CODE == fromCurrencyISOcode).ToList();
 
-                         TAKA_PER_DOLLAR = e.TAKA_PER_CURRENCY / e.DOLLAR_PER_CURRENCY
-                     })
-                .ToList();
+            foreach (var e in q) {
+                try {
+                    result.Add(new ExchangeRateModel {
+                        DATE = e.DATE.Value,
+                        ISO_CURRENCY_CODE = e.ISO_CURRENCY_CODE,
+
+                        DOLLAR_PER_CURRENCY = e.DOLLAR_PER_CURRENCY,
+                        CURRENCY_PER_DOLLAR = e.CURRENCY_PER_DOLLAR,
+
+                        TAKA_PER_DOLLAR = e.TAKA_PER_CURRENCY.Value / e.DOLLAR_PER_CURRENCY.Value
+                    });
+                } catch (Exception ex) { }
+            }
 
 
-            return q;
+            return result;
         }
     }
 

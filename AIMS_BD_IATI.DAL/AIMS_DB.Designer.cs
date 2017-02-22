@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'F:\Faruque\Projects\AIMS_UNDP\04. CODES\AIMS_BD_IATI\AIMS_BD_IATI.DAL\AIMS_DB.edmx'. 
+﻿// T4 code generation is enabled for model 'E:\Backup_2016.12.26\Faruque\Projects\AIMS_UNDP\04. CODES\AIMS_BD_IATI\AIMS_BD_IATI.DAL\AIMS_DB.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

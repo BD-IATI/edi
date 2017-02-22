@@ -896,7 +896,7 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Acronym" Type="varchar" MaxLength="20" />
-          <Property Name="IATICode" Type="varchar" MaxLength="50" />
+          <Property Name="IATICode" Type="varchar" MaxLength="1000" />
           <Property Name="SortOrder" Type="int" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
@@ -929,7 +929,7 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
           <Property Name="SectorId" Type="int" Nullable="false" />
           <Property Name="SubSectorName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Acronym" Type="varchar" MaxLength="20" />
-          <Property Name="IATICode" Type="varchar" MaxLength="50" />
+          <Property Name="IATICode" Type="varchar" MaxLength="1000" />
           <Property Name="SortOrder" Type="int" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
@@ -944,7 +944,7 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Acronym" Type="varchar" MaxLength="20" />
-          <Property Name="IATICode" Type="varchar" MaxLength="50" />
+          <Property Name="IATICode" Type="varchar" MaxLength="1000" />
           <Property Name="SortOrder" Type="int" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
@@ -1086,6 +1086,22 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
           <Property Name="EUser" Type="varchar" MaxLength="50" />
           <Property Name="IDate" Type="datetime" Nullable="false" />
           <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AIMS_DB_Demo.dbo.vwExchangeRateBBApi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExchangeRateBBApi">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CURRENCY_NAME" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="DATE" Type="datetime" />
+          <Property Name="ISO_CURRENCY_CODE" Type="varchar" MaxLength="50" />
+          <Property Name="CURRENCY_NAME" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CURRENCY_PER_TAKA" Type="decimal" Precision="20" Scale="13" />
+          <Property Name="TAKA_PER_CURRENCY" Type="decimal" Precision="12" Scale="6" />
+          <Property Name="DOLLAR_PER_CURRENCY" Type="decimal" Precision="20" Scale="13" />
+          <Property Name="CURRENCY_PER_DOLLAR" Type="decimal" Precision="12" Scale="6" />
         </EntityType>
         <Association Name="FK_tblAIDEffectivenessIndicators_tblAIDEffectivenessResourceTiedType">
           <End Role="tblAIDEffectivenessResourceTiedType" Type="Self.tblAIDEffectivenessResourceTiedType" Multiplicity="0..1" />
@@ -2165,6 +2181,18 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
     [CommonConfigType].[SortOrder] AS [SortOrder], 
     [CommonConfigType].[ModuleId] AS [ModuleId]
     FROM [dbo].[CommonConfigType] AS [CommonConfigType]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExchangeRateBBApi" EntityType="Self.vwExchangeRateBBApi" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExchangeRateBBApi].[Id] AS [Id], 
+    [vwExchangeRateBBApi].[DATE] AS [DATE], 
+    [vwExchangeRateBBApi].[ISO_CURRENCY_CODE] AS [ISO_CURRENCY_CODE], 
+    [vwExchangeRateBBApi].[CURRENCY_NAME] AS [CURRENCY_NAME], 
+    [vwExchangeRateBBApi].[CURRENCY_PER_TAKA] AS [CURRENCY_PER_TAKA], 
+    [vwExchangeRateBBApi].[TAKA_PER_CURRENCY] AS [TAKA_PER_CURRENCY], 
+    [vwExchangeRateBBApi].[DOLLAR_PER_CURRENCY] AS [DOLLAR_PER_CURRENCY], 
+    [vwExchangeRateBBApi].[CURRENCY_PER_DOLLAR] AS [CURRENCY_PER_DOLLAR]
+    FROM [dbo].[vwExchangeRateBBApi] AS [vwExchangeRateBBApi]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_tblAIDEffectivenessIndicators_tblAIDEffectivenessResourceTiedType" Association="Self.FK_tblAIDEffectivenessIndicators_tblAIDEffectivenessResourceTiedType">
             <End Role="tblAIDEffectivenessResourceTiedType" EntitySet="tblAIDEffectivenessResourceTiedType" />
@@ -3507,7 +3535,7 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Acronym" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="IATICode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IATICode" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="SortOrder" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
@@ -3546,7 +3574,7 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
           <Property Name="SectorId" Type="Int32" Nullable="false" />
           <Property Name="SubSectorName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Acronym" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="IATICode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IATICode" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="SortOrder" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
@@ -3564,7 +3592,7 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Acronym" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="IATICode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IATICode" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="SortOrder" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
@@ -5150,6 +5178,7 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
             <End Role="tblUserProject" EntitySet="tblUserProjects" />
           </AssociationSet>
           <EntitySet Name="tblExchangeRateBBApis" EntityType="AIMS_DBModel.tblExchangeRateBBApi" />
+          <EntitySet Name="vwExchangeRateBBApis" EntityType="AIMS_DBModel.vwExchangeRateBBApi" />
         </EntityContainer>
         <EntityType Name="tblExchangeRateBBApi">
           <Key>
@@ -5163,6 +5192,20 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
           <Property Name="TAKA_PER_CURRENCY" Type="Decimal" Precision="38" Scale="28" />
           <Property Name="DOLLAR_PER_CURRENCY" Type="Decimal" Precision="38" Scale="28" />
           <Property Name="CURRENCY_PER_DOLLAR" Type="Decimal" Precision="38" Scale="28" />
+        </EntityType>
+        <EntityType Name="vwExchangeRateBBApi">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CURRENCY_NAME" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="DATE" Type="DateTime" Precision="3" />
+          <Property Name="ISO_CURRENCY_CODE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CURRENCY_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CURRENCY_PER_TAKA" Type="Decimal" Precision="20" Scale="13" />
+          <Property Name="TAKA_PER_CURRENCY" Type="Decimal" Precision="12" Scale="6" />
+          <Property Name="DOLLAR_PER_CURRENCY" Type="Decimal" Precision="20" Scale="13" />
+          <Property Name="CURRENCY_PER_DOLLAR" Type="Decimal" Precision="12" Scale="6" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6300,6 +6343,20 @@ warning 6002: The table/view 'AIMS_DB_Demo.dbo.CommonConfigType' does not have a
           <EntitySetMapping Name="tblExchangeRateBBApis">
             <EntityTypeMapping TypeName="AIMS_DBModel.tblExchangeRateBBApi">
               <MappingFragment StoreEntitySet="tblExchangeRateBBApi">
+                <ScalarProperty Name="CURRENCY_PER_DOLLAR" ColumnName="CURRENCY_PER_DOLLAR" />
+                <ScalarProperty Name="DOLLAR_PER_CURRENCY" ColumnName="DOLLAR_PER_CURRENCY" />
+                <ScalarProperty Name="TAKA_PER_CURRENCY" ColumnName="TAKA_PER_CURRENCY" />
+                <ScalarProperty Name="CURRENCY_PER_TAKA" ColumnName="CURRENCY_PER_TAKA" />
+                <ScalarProperty Name="CURRENCY_NAME" ColumnName="CURRENCY_NAME" />
+                <ScalarProperty Name="ISO_CURRENCY_CODE" ColumnName="ISO_CURRENCY_CODE" />
+                <ScalarProperty Name="DATE" ColumnName="DATE" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExchangeRateBBApis">
+            <EntityTypeMapping TypeName="AIMS_DBModel.vwExchangeRateBBApi">
+              <MappingFragment StoreEntitySet="vwExchangeRateBBApi">
                 <ScalarProperty Name="CURRENCY_PER_DOLLAR" ColumnName="CURRENCY_PER_DOLLAR" />
                 <ScalarProperty Name="DOLLAR_PER_CURRENCY" ColumnName="DOLLAR_PER_CURRENCY" />
                 <ScalarProperty Name="TAKA_PER_CURRENCY" ColumnName="TAKA_PER_CURRENCY" />

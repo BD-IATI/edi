@@ -332,6 +332,9 @@
     <Compile Include="tblVerificationStatu.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="vwExchangeRateBBApi.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="XmlTools.cs" />
   </ItemGroup>
   <ItemGroup>

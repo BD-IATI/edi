@@ -88,5 +88,6 @@ namespace AIMS_BD_IATI.DAL
         public virtual DbSet<tblVerificationStatu> tblVerificationStatus { get; set; }
         public virtual DbSet<CommonConfigType> CommonConfigTypes { get; set; }
         public virtual DbSet<tblExchangeRateBBApi> tblExchangeRateBBApis { get; set; }
+        public virtual DbSet<vwExchangeRateBBApi> vwExchangeRateBBApis { get; set; }
     }
 }
