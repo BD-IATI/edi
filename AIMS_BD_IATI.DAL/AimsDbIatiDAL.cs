@@ -513,23 +513,25 @@ namespace AIMS_BD_IATI.DAL {
 
         public void SetExchangedValues(iatiactivity activity) {
             try {
-            if (activity.transaction != null)
-                foreach (var tr in activity.transaction) {
-                    SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency, tr.transactiondate?.isodate ?? default(DateTime));
-                }
+                if (activity.transaction != null)
+                    foreach (var tr in activity.transaction) {
+                        SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency, tr.transactiondate?.isodate ?? default(DateTime));
+                    }
 
-            if (activity.budget != null)
-                foreach (var tr in activity.budget) {
-                    SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency);
+                if (activity.budget != null)
+                    foreach (var tr in activity.budget) {
+                        SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency);
 
-                }
+                    }
 
-            if (activity.planneddisbursement != null)
-                foreach (var tr in activity.planneddisbursement) {
-                    SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency);
+                if (activity.planneddisbursement != null)
+                    foreach (var tr in activity.planneddisbursement) {
+                        SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency);
 
-                }
-            } catch(Exception ex) { }
+                    }
+            } catch (Exception ex) {
+                Logger.WriteToDbAndFile(ex, LogType.Error, activity.IATICode, activity.IatiIdentifier, "Failed to set Set Currency Exchanged Values");
+            }
         }
 
         public static void SetCurrencyExRateAndVal(currencyType tr, string defaultcurrency, DateTime trDate = default(DateTime)) {
