@@ -394,7 +394,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         [XmlIgnore]
         public string OriginalIatiIdentifier {
             get {
-                return _OriginalIatiIdentifier ?? IatiIdentifier;
+                return string.IsNullOrWhiteSpace(_OriginalIatiIdentifier) ? IatiIdentifier : _OriginalIatiIdentifier;
             }
 
             set {
