@@ -1,4 +1,5 @@
 ﻿using AIMS_BD_IATI.DAL;
+using MoreLinq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -496,6 +497,52 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                 activitystatus.name = value;
             }
 
+        }
+
+        [XmlIgnore]
+        public IEnumerable<sector> AllSectors {
+            get {
+
+                var _distictSectors = new List<sector>();
+
+                if (sector != null || sector.Count() > 0) {
+                    _distictSectors.AddRange(sector);
+                } else {
+                    List<sector> _Sectors = new List<sector>();
+                    var totalCommitment = TotalCommitment > 0 ? TotalCommitment : 100;
+
+                    foreach (var tr in Commitments) {
+                        if (tr.sector != null) {
+                            _Sectors.AddRange(tr.sector?.Select(s => {
+                                return new sector {
+                                    code = s.code,
+                                    narrative = s.narrative,
+                                    percentageSpecified = true,
+                                    vocabulary = s.vocabulary,
+                                    vocabularyuri = s.vocabularyuri,
+                                    percentage = (tr.ValUSD / totalCommitment) * 100
+                                };
+                            }));
+                        }
+                    }
+
+                    _distictSectors = _Sectors.GroupBy(g => g.code).Select(s => {
+                        var fs = s.First();
+                        return new sector {
+                            code = fs.code,
+                            narrative = fs.narrative,
+                            percentageSpecified = true,
+                            vocabulary = fs.vocabulary,
+                            vocabularyuri = fs.vocabularyuri,
+                            percentage = s.Sum(a => a.percentage)
+
+                        };
+                    }).ToList();
+
+                }
+
+                return _distictSectors;
+            }
         }
 
         #region activitydate

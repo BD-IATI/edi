@@ -570,11 +570,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public int? ImportProjects(ProjectMapModelMinified projectMapModel)
         {
-            var matchedProjects = Sessions.ProjectMapModel.MatchedProjects;
+            var matchedProjects = Sessions.ProjectMapModel?.MatchedProjects;
 
             foreach (var mp in matchedProjects)
             {
-                var v = projectMapModel.MatchedProjects.Find(f => f.iatiActivity.IatiIdentifier == mp.iatiActivity.IatiIdentifier);
+                var v = projectMapModel?.MatchedProjects.Find(f => f.iatiActivity?.IatiIdentifier == mp.iatiActivity?.IatiIdentifier);
 
                 mp.Fields = v.Fields;
                 mp.TransactionFields = v.TransactionFields;

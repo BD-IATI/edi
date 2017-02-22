@@ -267,8 +267,8 @@ namespace AIMS_BD_IATI.DAL {
                 //});
                 Fields.Add(new FieldMap {
                     Field = IatiFields.Sector,
-                    AIMSValue = (aimsProject.sector?.Count() ?? 0) + " Sector(s)",
-                    IATIValue = (iatiActivity.sector?.Count() ?? 0) + " Sector(s)",
+                    AIMSValue = (aimsProject.AllSectors?.Count() ?? 0)  + " Sector(s)",
+                    IATIValue = (iatiActivity.AllSectors?.Count() ?? 0) + " Sector(s)",
                     IsSourceIATI = isSourceIATI
 
                 });

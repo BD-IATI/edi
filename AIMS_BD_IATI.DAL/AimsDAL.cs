@@ -506,9 +506,9 @@ namespace AIMS_BD_IATI.DAL
                     #endregion
 
                     #region Sector
-                    if (mergedproject.sector != null)
+                    if (mergedproject.AllSectors?.Count() > 0)
                     {
-                        var distinctSectors = mergedproject.sector.DistinctBy(k => k.code);
+                        var distinctSectors = mergedproject.AllSectors?.DistinctBy(k => k.code);
                         foreach (var sector in distinctSectors)
                         {
                             if (sector.vocabulary != "imported") //this condition is moved to sector property setter 
