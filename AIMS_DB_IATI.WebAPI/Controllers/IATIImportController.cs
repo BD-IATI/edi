@@ -470,10 +470,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             List<FieldMappingPreferenceGeneral> entities = new List<FieldMappingPreferenceGeneral>();
 
-            var fields = generalPreferences.Fields;
-            fields.AddRange(generalPreferences.TransactionFields);
-
-            foreach (var fieldMap in fields)
+            foreach (var fieldMap in generalPreferences.AllFields)
             {
                 var entity = new FieldMappingPreferenceGeneral
                 {
@@ -496,10 +493,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             List<FieldMappingPreferenceActivity> entities = new List<FieldMappingPreferenceActivity>();
 
-            var fields = activityPreferences.Fields;
-            fields.AddRange(activityPreferences.TransactionFields);
 
-            foreach (var fieldMap in fields)
+            foreach (var fieldMap in activityPreferences.AllFields)
             {
                 var entity = new FieldMappingPreferenceActivity
                 {

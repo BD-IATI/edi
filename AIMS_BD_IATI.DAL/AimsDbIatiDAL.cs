@@ -512,6 +512,7 @@ namespace AIMS_BD_IATI.DAL {
         }
 
         public void SetExchangedValues(iatiactivity activity) {
+            try {
             if (activity.transaction != null)
                 foreach (var tr in activity.transaction) {
                     SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency, tr.transactiondate?.isodate ?? default(DateTime));
@@ -528,6 +529,7 @@ namespace AIMS_BD_IATI.DAL {
                     SetCurrencyExRateAndVal(tr.value, activity.defaultcurrency);
 
                 }
+            } catch(Exception ex) { }
         }
 
         public static void SetCurrencyExRateAndVal(currencyType tr, string defaultcurrency, DateTime trDate = default(DateTime)) {

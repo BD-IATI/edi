@@ -94,17 +94,21 @@ namespace AIMS_BD_IATI.DAL {
 
                 var activityPreference = new AimsDbIatiDAL().GetFieldMappingPreferenceActivity(mapModel.iatiActivity.IatiIdentifier);
 
-                var fields = mapModel.Fields.ToList();
-                fields.AddRange(mapModel.TransactionFields);
+                //var fields = mapModel.Fields.ToList();
+                //fields.AddRange(mapModel.TransactionFields);
 
-                foreach (var field in fields) {
+                //var generalPrefencesFields = generalPreferences.Fields.ToList();
+                //generalPrefencesFields.AddRange(generalPreferences.TransactionFields);
+
+                foreach (var field in mapModel.AllFields) {
                     //get GetFieldMappingPreferenceActivity for this field
                     var activityFieldSource = activityPreference.Find(f => f.FieldName == field.Field);
                     if (activityFieldSource != null) {
                         field.IsSourceIATI = activityFieldSource.IsSourceIATI;
                     } else // apply general preferences
                       {
-                        var generalFieldSource = generalPreferences.Fields.Find(f => f.Field == field.Field);
+                        var generalFieldSource = generalPreferences.AllFields.Find(f => f.Field == field.Field);
+
                         if (generalFieldSource != null)
                             field.IsSourceIATI = generalFieldSource.IsSourceIATI;
 
@@ -195,6 +199,11 @@ namespace AIMS_BD_IATI.DAL {
         public iatiactivity aimsProject { get; set; }
         public List<FieldMap> Fields { get; set; }
         public List<FieldMap> TransactionFields { get; set; }
+        public List<FieldMap> AllFields {
+            get {
+                return Fields.Union(TransactionFields).ToList();
+            }
+        }
         public string Id { get; set; }
 
         public ProjectFieldMapModel() {
@@ -305,13 +314,11 @@ namespace AIMS_BD_IATI.DAL {
             List<FieldMappingPreferenceGeneral> generalPreferences)
             : this(_iatiActivity, _aimsProject) {
             foreach (var preference in generalPreferences) {
-                var field = Fields.Find(f => f.Field == preference.FieldName);
+
+                var field = AllFields.Find(f => f.Field == preference.FieldName);
                 if (field != null)
                     field.IsSourceIATI = preference.IsSourceIATI;
 
-                var transactionField = TransactionFields.Find(f => f.Field == preference.FieldName);
-                if (transactionField != null)
-                    transactionField.IsSourceIATI = preference.IsSourceIATI;
             }
         }
 

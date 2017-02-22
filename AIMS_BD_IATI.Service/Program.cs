@@ -24,14 +24,14 @@ namespace AIMS_BD_IATI.Service {
                 Logger.Write(" ********************** END IATI PROCESS ********************* ");
                 Logger.Write("");
 
-                Logger.Write("");
-                Logger.Write("");
-                Logger.Write(" ******************** START EXCHANGE RATE PROCESS *********************** ");
+                //Logger.Write("");
+                //Logger.Write("");
+                //Logger.Write(" ******************** START EXCHANGE RATE PROCESS *********************** ");
 
-                ParseExchangeRate();
+                //ParseExchangeRate();
 
-                Logger.Write(" ********************** END EXCHANGE RATE PROCESS ********************* ");
-                Logger.Write("");
+                //Logger.Write(" ********************** END EXCHANGE RATE PROCESS ********************* ");
+                //Logger.Write("");
             } catch (Exception ex) {
                 Logger.WriteToDbAndFile(ex, LogType.Error);
             }
