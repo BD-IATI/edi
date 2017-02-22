@@ -505,7 +505,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
                 var _distictSectors = new List<sector>();
 
-                if (sector != null || sector.Count() > 0) {
+                if (sector != null && sector.Count() > 0) {
                     _distictSectors.AddRange(sector);
                 } else {
                     List<sector> _Sectors = new List<sector>();

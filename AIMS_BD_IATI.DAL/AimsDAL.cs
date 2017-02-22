@@ -958,7 +958,8 @@ namespace AIMS_BD_IATI.DAL {
 
         private void DeleteTransactions(tblProjectInfo p, iatiactivity MatchedProject) {
             //Commitments
-            if (MatchedProject.IsPlannedDisbursmentIncluded) {
+            if (MatchedProject.IsCommitmentIncluded)
+            {
                 var aimsCommitments = p.tblProjectFundingCommitments.Where(w => w.FundSourceId == MatchedProject.AimsFundSourceId).ToList();
 
                 foreach (var cc in aimsCommitments) {
