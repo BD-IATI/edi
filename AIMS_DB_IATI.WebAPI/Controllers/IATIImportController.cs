@@ -600,6 +600,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers {
                     activity.MappedTrustFundId = ra.MappedTrustFundId;
                     activity.AllID = ra.AllID;
 
+
+
                     if (activity.HasChildActivity) {
                         UpdateActivities(ra.childActivities, activity.childActivities);
                     }
@@ -690,7 +692,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers {
                         IsManuallyMapped = m.IsManuallyMapped,
                         IsGrouped = m.IsGrouped,
                         iatiActivity = ToMinifiedIatiActivityModel(m.iatiActivity, true),
-                        aimsProject = ToMinifiedIatiActivityModel(m.aimsProject),
+                        aimsProject = ToMinifiedIatiActivityModel(m.aimsProject, true),
                         Fields = m.Fields,
                         TransactionFields = m.TransactionFields,
                         Id = m.Id
