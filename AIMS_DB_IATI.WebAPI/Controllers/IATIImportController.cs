@@ -476,11 +476,13 @@ namespace AIMS_BD_IATI.WebAPI.Controllers {
                 var relevantActivities = FilterDP(iOrgs.Orgs);
                 var projectMapModel = SubmitActivities(relevantActivities);
 
+            } else {
+                Sessions.CurrentStage = Stage.ReviewAdjustment;
+
             }
 
             ImportLogic.SetFieldMappingPreferences(Sessions.ProjectMapModel.MatchedProjects, Sessions.GeneralPreferences);
 
-            Sessions.CurrentStage = Stage.ReviewAdjustment;
             var returnResult = new ProjectMapModel {
                 MatchedProjects = Sessions.ProjectMapModel.MatchedProjects,
                 IatiActivitiesNotInAims = null,
