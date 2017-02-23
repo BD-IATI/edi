@@ -192,7 +192,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                         }
                     }
                 }
-                return Transactions;
+                return Transactions.OrderByDescending(o => o.transactiondate?.isodate).ToList();
             }
         }
 
@@ -239,7 +239,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                         }
                     }
                 }
-                return plannedDisbursments;
+                return plannedDisbursments.OrderByDescending(o => o.value?.valuedate).ToList();
             }
         }
         [XmlIgnore]
@@ -329,7 +329,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         }
 
         private List<transaction> GetTransactions(string transactiontypecode) {
-            return AllTransactions.FindAll(f => f.transactiontype?.code == transactiontypecode).OrderByDescending(s => s.transactiondate.isodate).ToList();
+            return AllTransactions.FindAll(f => f.transactiontype?.code == transactiontypecode).ToList();
         }
 
         #endregion Helper Methods

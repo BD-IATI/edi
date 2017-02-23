@@ -47,7 +47,7 @@
                         <tr ng-repeat="tr in model.iatiActivity.Commitments">
                             <td ng-bind="tr.ProviderOrg"></td>
                             <td ng-bind="tr.value.currency"></td>
-                            <td ng-bind="tr.value.Value"></td>
+                            <td ng-bind="tr.value.Value | number:2"></td>
                             <td ng-bind="tr.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td ng-bind="tr.value.valuedate | date:'yyyy-MM-dd'"></td>
                             <td ng-bind="tr.value.BBexchangeRateUSD | number:2"></td>
@@ -79,7 +79,7 @@
                         <tr ng-repeat="tr in model.iatiActivity.Disbursments">
                             <td ng-bind="tr.ProviderOrg"></td>
                             <td ng-bind="tr.value.currency"></td>
-                            <td ng-bind="tr.value.Value"></td>
+                            <td ng-bind="tr.value.Value | number:2"></td>
                             <td ng-bind="tr.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td ng-bind="tr.value.valuedate | date:'yyyy-MM-dd'"></td>
                             <td ng-bind="tr.value.BBexchangeRateUSD | number:2"></td>
@@ -116,7 +116,7 @@
                         <tr ng-repeat="commitment in model.iatiActivity.Commitments">
                             <td ng-bind="commitment.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td ng-bind="commitment.ProviderOrg"></td>
-                            <td ng-bind="commitment.ValUSD"></td>
+                            <td ng-bind="commitment.ValUSD | number:2"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -137,7 +137,7 @@
                         <tr ng-class="{'danger' : commitment.IsConflicted}" ng-repeat="commitment in model.aimsProject.Commitments | orderBy:'IsConflicted'">
                             <td ng-bind="commitment.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td ng-bind="commitment.ProviderOrg"></td>
-                            <td ng-bind="commitment.ValUSD"></td>
+                            <td ng-bind="commitment.ValUSD | number:2"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -164,7 +164,7 @@
                         <tr ng-repeat="disbursement in model.iatiActivity.Disbursments">
                             <td ng-bind="disbursement.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td ng-bind="disbursement.ProviderOrg"></td>
-                            <td ng-bind="disbursement.ValUSD"></td>
+                            <td ng-bind="disbursement.ValUSD | number:2"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -186,7 +186,7 @@
                         <tr ng-class="{'danger' : disbursement.IsConflicted}" ng-repeat="disbursement in model.aimsProject.Disbursments | orderBy:'IsConflicted'">
                             <td ng-bind="disbursement.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td ng-bind="disbursement.ProviderOrg"></td>
-                            <td ng-bind="disbursement.ValUSD"></td>
+                            <td ng-bind="disbursement.ValUSD | number:2"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -213,7 +213,7 @@
                         <tr ng-repeat="pdisbursement in model.iatiActivity.PlannedDisbursments">
                             <td ng-bind="pdisbursement.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
                             <td ng-bind="pdisbursement.ProviderOrg"></td>
-                            <td ng-bind="pdisbursement.ValUSD"></td>
+                            <td ng-bind="pdisbursement.ValUSD | number:2"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -234,7 +234,7 @@
                         <tr ng-class="{'danger' : pdisbursement.IsConflicted}" ng-repeat="pdisbursement in model.aimsProject.PlannedDisbursments | orderBy:'IsConflicted'">
                             <td ng-bind="pdisbursement.valuedate | date:'yyyy-MM-dd'"></td>
                             <td ng-bind="pdisbursement.ProviderOrg"></td>
-                            <td ng-bind="pdisbursement.ValUSD"></td>
+                            <td ng-bind="pdisbursement.ValUSD | number:2"></td>
                         </tr>
                     </tbody>
                 </table>
