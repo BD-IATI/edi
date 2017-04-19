@@ -15,6 +15,7 @@ namespace AIMS_BD_IATI.Library
         public static string RecipientCountry { get { return "BD"; } }
         public static string RecipientCountryName { get { return "Bangladesh"; } }
         public static string Currency { get { return "USD"; } }
+        public static string SysUser { get { return "system"; } }
         public static string Language { get { return "en"; } }
         public static string DocumentURL { get { return "http://aims.erd.gov.bd/AIMS/ProjectInfo/DownloadAttachment?Id="; } }
 

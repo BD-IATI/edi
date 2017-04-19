@@ -85,7 +85,7 @@ namespace AIMS_BD_IATI.DAL {
                                         + (int)ExecutingAgencyType.DP + "~"
                                         + fundSource.FundSourceCategoryId;
                                 //step 7: update aims database with margedActivities
-                                aimsDAL.UpdateProjects(mergedActivities, "system");
+                                aimsDAL.UpdateProjects(mergedActivities, Statix.SysUser);
                             } else {
                                 dbContext.Logs.Add(new Log {
                                     IatiIdentifier = activity.IatiIdentifier,
@@ -108,7 +108,7 @@ namespace AIMS_BD_IATI.DAL {
 
                                 aimsProject.MatchedProjects.Add(iatiActivity);
                                 //step 7: update aims database with margedActivities
-                                aimsDAL.UpdateCofinanceProjects(new List<iatiactivity> { aimsProject }, "system");
+                                aimsDAL.UpdateCofinanceProjects(new List<iatiactivity> { aimsProject }, Statix.SysUser);
                             } else {
                                 dbContext.Logs.Add(new Log {
                                     IatiIdentifier = activity.IatiIdentifier,
