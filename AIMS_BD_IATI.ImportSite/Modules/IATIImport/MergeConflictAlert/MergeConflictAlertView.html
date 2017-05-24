@@ -77,49 +77,72 @@
         </div>
         <div class="row">
             <div class="col-md-5 col-md-offset-1">
-                <h4>Transactions in IATI</h4>
+                <h4>Commitments in IATI</h4>
                 <table class="table">
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Type</th>
-                            <th>Value</th>
+                            <th>Value $</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="commitment in model.iatiActivity.Commitments">
                             <td ng-bind="commitment.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
-                            <td>Commitment</td>
-                            <td ng-bind="commitment.ValUSD"></td>
-                        </tr>
-                        <tr ng-repeat="disbursement in model.iatiActivity.Disbursments">
-                            <td ng-bind="disbursement.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
-                            <td>Disbursement</td>
-                            <td ng-bind="disbursement.ValUSD"></td>
+                            <td ng-bind="commitment.ValUSD | number:2"></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="col-md-5">
-                <h4>Transactions in AIMS</h4>
+                <h4>Commitments in AIMS</h4>
                 <table class="table">
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Type</th>
-                            <th>Value</th>
+                            <th>Value $</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr  ng-class="{'danger' : commitment.IsConflicted}" ng-repeat="commitment in model.aimsProject.Commitments | orderBy:'IsConflicted'">
                             <td ng-bind="commitment.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
-                            <td>Commitment</td>
-                            <td ng-bind="commitment.ValUSD"></td>
+                            <td ng-bind="commitment.ValUSD | number:2"></td>
                         </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5 col-md-offset-1">
+                <h4>Disbursement in IATI</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Value $</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="disbursement in model.iatiActivity.Disbursments">
+                            <td ng-bind="disbursement.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="disbursement.ValUSD | number:2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-5">
+                <h4>Disbursement in AIMS</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Value $</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <tr ng-class="{'danger' : disbursement.IsConflicted}" ng-repeat="disbursement in model.aimsProject.Disbursments | orderBy:'IsConflicted'">
                             <td ng-bind="disbursement.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
-                            <td>Disbursement</td>
-                            <td ng-bind="disbursement.ValUSD"></td>
+                            <td ng-bind="disbursement.ValUSD | number:2"></td>
                         </tr>
                     </tbody>
                 </table>
