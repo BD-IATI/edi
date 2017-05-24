@@ -506,6 +506,19 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                 var _distictSectors = new List<sector>();
 
                 if (sector != null && sector.Count() > 0) {
+
+                    var totalPercent = sector.Sum(w => w.percentage);
+                    if (totalPercent < 100)
+                    {
+                        var remainingPercent = 100 - totalPercent;
+
+                        var sectorsWithoutPercent = sector.Where(w => w.percentageSpecified != true || w.percentage <= 0);
+
+                        var percent = remainingPercent / sectorsWithoutPercent.Count();
+
+                        sectorsWithoutPercent.ForEach(e => e.percentage = percent);
+                    }
+
                     _distictSectors.AddRange(sector);
                 } else {
                     List<sector> _Sectors = new List<sector>();
