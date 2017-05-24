@@ -552,7 +552,10 @@ namespace AIMS_BD_IATI.WebAPI.Controllers {
         public int? UpdateTransactionByForce(Log log) {
             ProjectFieldMapModel ProjectFieldMapModel = aimsDbIatiDAL.GetTransactionMismatchedActivity(log.IatiIdentifier);
 
-            var margedProjects = ImportLogic.MergeProjects(new List<ProjectFieldMapModel> { ProjectFieldMapModel });
+            var ProjectFieldMapModels = new List<ProjectFieldMapModel> { ProjectFieldMapModel };
+
+            ImportLogic.SetFieldMappingPreferences(ProjectFieldMapModels, GetGeneralPreferences());
+            var margedProjects = ImportLogic.MergeProjects(ProjectFieldMapModels);
 
             log.IsActive = false;
             aimsDbIatiDAL.UpdateLog(log);
