@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\dDrive.pubxml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
     <None Include="Service References\AIMSSecurityService\AIMSUserManagementService.wsdl" />
     <None Include="Service References\AIMSSecurityService\AIMSUserManagementService.xsd">
