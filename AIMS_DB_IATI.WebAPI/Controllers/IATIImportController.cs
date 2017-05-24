@@ -545,6 +545,10 @@ namespace AIMS_BD_IATI.WebAPI.Controllers {
         public ProjectFieldMapModel GetMatchedProjectByIatiIdentifier(string iatiIdentifier) {
             ProjectFieldMapModel ProjectFieldMapModel = aimsDbIatiDAL.GetTransactionMismatchedActivity(iatiIdentifier);
 
+            var ProjectFieldMapModels = new List<ProjectFieldMapModel> { ProjectFieldMapModel };
+
+            ImportLogic.SetFieldMappingPreferences(ProjectFieldMapModels, GetGeneralPreferences());
+
             return ProjectFieldMapModel;
         }
 
