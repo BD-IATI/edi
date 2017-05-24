@@ -606,22 +606,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                 var _distictSectors = new List<sector>();
 
-                if (sector != null && sector.Count() > 0)
+                var projectLevelSector = sector?.Where(w => new string[] { null, string.Empty, "DAC", "1", "2" }.Contains(w.vocabulary));
+                if (projectLevelSector != null && projectLevelSector.Count() > 0)
                 {
-
-                    var totalPercent = sector.Sum(w => w.percentage);
-                    if (totalPercent < 100)
-                    {
-                        var remainingPercent = 100 - totalPercent;
-
-                        var sectorsWithoutPercent = sector.Where(w => w.percentageSpecified != true || w.percentage <= 0);
-
-                        var percent = remainingPercent / sectorsWithoutPercent.Count();
-
-                        sectorsWithoutPercent.ForEach(e => e.percentage = percent);
-                    }
-
-                    _distictSectors.AddRange(sector);
+                    _distictSectors.AddRange(projectLevelSector);
                 }
                 else
                 {
@@ -630,9 +618,11 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                     foreach (var tr in Commitments)
                     {
-                        if (tr.sector != null)
+                        var trLevelSector = tr.sector?.Where(w => new string[] { null, string.Empty, "DAC", "1", "2" }.Contains(w.vocabulary));
+
+                        if (trLevelSector != null && trLevelSector.Count() > 0)
                         {
-                            _Sectors.AddRange(tr.sector?.Select(s =>
+                            _Sectors.AddRange(trLevelSector.Select(s =>
                             {
                                 return new sector
                                 {
@@ -662,6 +652,26 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                         };
                     }).ToList();
 
+                }
+
+                var totalPercent = _distictSectors.Sum(w => w.percentage);
+                if (totalPercent < 100)
+                {
+                    var remainingPercent = 100 - totalPercent;
+
+                    var sectorsWithoutPercent = _distictSectors.Where(w => w.percentageSpecified != true || w.percentage <= 0);
+
+                    if (sectorsWithoutPercent.Count() > 0)
+                    {
+                        var percent = remainingPercent / sectorsWithoutPercent.Count();
+
+                        sectorsWithoutPercent.ForEach(e => e.percentage = percent);
+                    }
+                    else
+                    {
+                        _distictSectors.ForEach(e => e.percentage += remainingPercent / _distictSectors.Count());
+
+                    }
                 }
 
                 return _distictSectors;

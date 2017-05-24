@@ -805,7 +805,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
             set
             {
-                this.sectorField = value?.Where(w => new string[] { null, string.Empty, "DAC", "1", "2" }.Contains(w.vocabulary)).ToArray();
+                this.sectorField = value;
             }
         }
 
