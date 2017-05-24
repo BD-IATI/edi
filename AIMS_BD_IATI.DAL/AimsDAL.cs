@@ -485,9 +485,10 @@ namespace AIMS_BD_IATI.DAL
                     #region Executing Agency
                     try
                     {
-                        if (mergedproject.ImplementingOrgs.IsNotEmpty())
+                        var iOrgs = mergedproject.ImplementingOrgs.FindAll(f => f.ExecutingAgencyTypeId != null);
+                        if (iOrgs.IsNotEmpty())
                         {
-                            foreach (var ImplementingOrg in mergedproject.ImplementingOrgs.Where(w => w.AllID != mergedproject.AllID))
+                            foreach (var ImplementingOrg in iOrgs.Where(w => w.AllID != mergedproject.AllID))
                             {
 
                                 var executingAgency = p.tblProjectExecutingAgencies.FirstOrDefault(f => f.ExecutingAgencyOrganizationId == ImplementingOrg.ExecutingAgencyOrganizationId);
@@ -503,7 +504,7 @@ namespace AIMS_BD_IATI.DAL
                                 executingAgency.ExecutingAgencyOrganizationTypeId = ImplementingOrg.ExecutingAgencyOrganizationTypeId;
                                 executingAgency.ExecutingAgencyOrganizationId = ImplementingOrg.ExecutingAgencyOrganizationId;
 
-                                if (mergedproject.ImplementingOrgs.Count == 1)
+                                if (iOrgs.Count == 1)
                                 {
                                     executingAgency.IsLeadAgency = true;
                                 }
