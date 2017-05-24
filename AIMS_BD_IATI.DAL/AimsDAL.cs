@@ -416,6 +416,7 @@ namespace AIMS_BD_IATI.DAL
                     p.Title = mergedproject.Title;
                     p.Objective = mergedproject.Description;
                     p.IatiIdentifier = mergedproject.OriginalIatiIdentifier;
+                    p.DPProjectNo = string.IsNullOrWhiteSpace(p.DPProjectNo) ? mergedproject.OriginalIatiIdentifier : p.DPProjectNo;
 
                     if (notCleanOldData == false)
                     {
