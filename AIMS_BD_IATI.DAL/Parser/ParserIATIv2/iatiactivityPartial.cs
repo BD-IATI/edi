@@ -11,13 +11,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
-    public class ServerSideAttribute : Attribute {
+namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
+{
+    public class ServerSideAttribute : Attribute
+    {
 
     }
     [Serializable]
-    public class iatiactivityContainer {
-        public iatiactivityContainer() {
+    public class iatiactivityContainer
+    {
+        public iatiactivityContainer()
+        {
             iatiActivities = new List<iatiactivity>();
             NewProjects = new List<iatiactivity>();
         }
@@ -33,7 +37,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
     }
     [Serializable]
-    public class TrustFundModel {
+    public class TrustFundModel
+    {
         //public string Id { get; set; }
         public int TrustFundId { get; set; }
         public string TFIdentifier { get; set; }
@@ -41,21 +46,24 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         public List<transaction> transactionsInAims { get; set; }
         public List<iatiactivity> iatiactivities { get; set; }
         public decimal TotalCommitment { get { return transactionsInAims.Count > 0 ? transactionsInAims.Sum(s => s.value.ValueInUSD) : 0; } }
-        public TrustFundModel() {
+        public TrustFundModel()
+        {
             transactionsInAims = new List<transaction>();
             iatiactivities = new List<iatiactivity>();
         }
 
     }
     [Serializable]
-    public class CFnTFModel {
+    public class CFnTFModel
+    {
         //public string Id { get; set; }
         public List<iatiactivity> AimsProjects { get; set; }
         public List<iatiactivity> AssignedActivities { get; set; }
         public List<LookupItem> TrustFunds { get; set; }
         public List<TrustFundModel> TrustFundDetails { get; set; }
 
-        public CFnTFModel() {
+        public CFnTFModel()
+        {
             AimsProjects = new List<iatiactivity>();
             AssignedActivities = new List<iatiactivity>();
             TrustFunds = new List<LookupItem>();
@@ -63,9 +71,11 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         }
     }
 
-    public partial class iatiactivity {
+    public partial class iatiactivity
+    {
 
-        public iatiactivity() {
+        public iatiactivity()
+        {
             childActivities = new List<iatiactivity>();
             MatchedProjects = new List<iatiactivity>();
         }
@@ -107,9 +117,12 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         [XmlIgnore]
         public List<iatiactivity> childActivities { get; set; }
         [XmlIgnore]
-        private List<iatiactivity> includedChildActivities {
-            get {
-                if (!IsChildActivityLoaded && childActivities.IsEmpty() && HasChildActivity) {
+        private List<iatiactivity> includedChildActivities
+        {
+            get
+            {
+                if (!IsChildActivityLoaded && childActivities.IsEmpty() && HasChildActivity)
+                {
                     new AimsDbIatiDAL().LoadChildActivities(this);
                 }
                 return
@@ -121,10 +134,13 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         public List<iatiactivity> MatchedProjects { get; set; }
 
         [XmlIgnore]
-        public decimal PercentToBD {
-            get {
+        public decimal PercentToBD
+        {
+            get
+            {
                 decimal bdPercent = 0;
-                if (recipientcountry != null) {
+                if (recipientcountry != null)
+                {
                     var bd = recipientcountry?.FirstOrDefault(f => f?.code == "BD");
 
                     if (recipientcountry.Count() == 1)
@@ -135,7 +151,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                         bdPercent = 0;
                 }
 
-                if (bdPercent == 0) {
+                if (bdPercent == 0)
+                {
                     //var allRecepeintCountries = Commitments.Select(s=>s.recipientcountry);
 
                     //var BDCount = allRecepeintCountries.Count(s=>s.code == "BD");
@@ -144,10 +161,13 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                     var BDCommitmentAmount = Commitments.FindAll(s => s.recipientcountry?.code == "BD").Sum(s => s.ValUSD);
                     var NotBDCommitmentAmount = Commitments.FindAll(s => s.recipientcountry?.code != "BD").Sum(s => s.ValUSD);
 
-                    try {
+                    try
+                    {
                         bdPercent = (BDCommitmentAmount / (BDCommitmentAmount + NotBDCommitmentAmount)) * 100;
 
-                    } catch (Exception ex) {
+                    }
+                    catch (Exception ex)
+                    {
                         bdPercent = 100;
                     }
                 }
@@ -160,34 +180,45 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         [XmlIgnore]
         public bool? isRelevant;
         [XmlIgnore]
-        public bool? IsRelevant {
-            get {
+        public bool? IsRelevant
+        {
+            get
+            {
                 return isRelevant ?? PercentToBD >= 20 && activitystatus?.code == "2";
             }
-            set {
+            set
+            {
                 isRelevant = value;
             }
         }
 
         #region Financial Data
         [XmlIgnore]
-        public List<transaction> AllTransactions {
-            get {
+        public List<transaction> AllTransactions
+        {
+            get
+            {
                 var Transactions = new List<transaction>();
 
-                if (transaction != null) {
+                if (transaction != null)
+                {
                     Transactions.AddRange(transaction);
                 }
 
-                foreach (var ra in includedChildActivities) {
-                    if (ra.transaction != null) {
+                foreach (var ra in includedChildActivities)
+                {
+                    if (ra.transaction != null)
+                    {
                         Transactions.AddRange(ra.transaction);
                     }
                 }
 
-                if (IsCofinancedProject) {
-                    foreach (var ra in MatchedProjects) {
-                        if (ra.transaction != null) {
+                if (IsCofinancedProject)
+                {
+                    foreach (var ra in MatchedProjects)
+                    {
+                        if (ra.transaction != null)
+                        {
                             Transactions.AddRange(ra.transaction);
                         }
                     }
@@ -198,27 +229,35 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
         #region Commitments
         [XmlIgnore]
-        public List<transaction> Commitments {
-            get {
+        public List<transaction> Commitments
+        {
+            get
+            {
                 return GetTransactions(ConvertIATIv2.gettransactionCode("C"));
             }
         }
         [XmlIgnore]
-        public decimal TotalCommitment {
-            get {
+        public decimal TotalCommitment
+        {
+            get
+            {
                 return Math.Round(Commitments.Sum(s => s.ValUSD), 2);
             }
         }
 
         [XmlIgnore]
-        public List<transaction> CommitmentsThisDPOnly {
-            get {
+        public List<transaction> CommitmentsThisDPOnly
+        {
+            get
+            {
                 return Commitments.FindAll(f => string.IsNullOrWhiteSpace(f.providerorg?.@ref) || IATICode.Contains(f.providerorg?.@ref));
             }
         }
         [XmlIgnore]
-        public decimal TotalCommitmentThisDPOnly {
-            get {
+        public decimal TotalCommitmentThisDPOnly
+        {
+            get
+            {
                 return Math.Round(CommitmentsThisDPOnly.Sum(s => s.ValUSD), 2);
             }
         }
@@ -227,14 +266,21 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
         #region Planned Disbursements
         [XmlIgnore]
-        public List<planneddisbursement> PlannedDisbursments {
-            get {
+        public List<planneddisbursement> PlannedDisbursments
+        {
+            get
+            {
                 var plannedDisbursments = new List<Parser.ParserIATIv2.planneddisbursement>();
-                if (this.budget != null || IsDataSourceAIMS) {
+                if (this.budget != null || IsDataSourceAIMS)
+                {
                     plannedDisbursments.AddRange(GetPlannedDisbursments(this));
-                } else {
-                    foreach (var ra in includedChildActivities) {
-                        if (ra.budget != null) {
+                }
+                else
+                {
+                    foreach (var ra in includedChildActivities)
+                    {
+                        if (ra.budget != null)
+                        {
                             plannedDisbursments.AddRange(GetPlannedDisbursments(ra));
                         }
                     }
@@ -243,8 +289,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
             }
         }
         [XmlIgnore]
-        public decimal TotalPlannedDisbursment {
-            get {
+        public decimal TotalPlannedDisbursment
+        {
+            get
+            {
                 return Math.Round(PlannedDisbursments.Sum(s => s.ValUSD), 2);
             }
         }
@@ -252,8 +300,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
         #region Disbursments
         [XmlIgnore]
-        public List<transaction> Disbursments {
-            get {
+        public List<transaction> Disbursments
+        {
+            get
+            {
                 var disbursments = GetTransactions(ConvertIATIv2.gettransactionCode("D"));
                 //expenditures in IATI are also treated as disbursments in AIMS
                 disbursments.AddRange(GetTransactions(ConvertIATIv2.gettransactionCode("E")));
@@ -261,21 +311,27 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
             }
         }
         [XmlIgnore]
-        public decimal TotalDisbursment {
-            get {
+        public decimal TotalDisbursment
+        {
+            get
+            {
                 return Math.Round(Disbursments.Sum(s => s.ValUSD), 2);
             }
         }
 
         [XmlIgnore]
-        public List<transaction> DisbursmentsThisDPOnly {
-            get {
+        public List<transaction> DisbursmentsThisDPOnly
+        {
+            get
+            {
                 return Disbursments.FindAll(f => string.IsNullOrWhiteSpace(f.providerorg?.@ref) || IATICode.Contains(f.providerorg?.@ref));
             }
         }
         [XmlIgnore]
-        public decimal TotalDisbursmentThisDPOnly {
-            get {
+        public decimal TotalDisbursmentThisDPOnly
+        {
+            get
+            {
                 return Math.Round(DisbursmentsThisDPOnly.Sum(s => s.ValUSD), 2);
             }
         }
@@ -283,22 +339,26 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         #endregion Disbursments
 
         #region Helper Methods
-        private List<planneddisbursement> GetPlannedDisbursments(iatiactivity activity) {
+        private List<planneddisbursement> GetPlannedDisbursments(iatiactivity activity)
+        {
             List<planneddisbursement> planneddisbursements = new List<planneddisbursement>();
 
-            if (activity.planneddisbursement != null) {
+            if (activity.planneddisbursement != null)
+            {
                 //get planned disbursements
                 planneddisbursements.AddRange(activity.planneddisbursement);
             }
 
-            if (activity.budget != null) {
+            if (activity.budget != null)
+            {
                 budget[] budgets = activity.budget;
 
                 //get planned from budget
                 var originalBudgets = budgets.Where(w => w.type == "1").ToList();
                 var revisedBudgets = budgets.Where(w => w.type == "2").ToList();
 
-                foreach (var revisedBudget in revisedBudgets) {
+                foreach (var revisedBudget in revisedBudgets)
+                {
                     originalBudgets.RemoveAll(r =>
                         (
                         r.periodstart?.isodate >= revisedBudget.periodstart?.isodate && r.periodstart?.isodate <= revisedBudget.periodend?.isodate
@@ -316,8 +376,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                 margedBudgets.AddRange(originalBudgets);
                 margedBudgets.AddRange(revisedBudgets);
 
-                foreach (var item in margedBudgets) {
-                    planneddisbursements.Add(new planneddisbursement {
+                foreach (var item in margedBudgets)
+                {
+                    planneddisbursements.Add(new planneddisbursement
+                    {
                         periodstart = new planneddisbursementPeriodstart { isodate = item.periodstart?.isodate ?? default(DateTime) },
                         periodend = new planneddisbursementPeriodend { isodate = item.periodend?.isodate ?? default(DateTime) },
                         value = item.value
@@ -328,7 +390,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
             return planneddisbursements;
         }
 
-        private List<transaction> GetTransactions(string transactiontypecode) {
+        private List<transaction> GetTransactions(string transactiontypecode)
+        {
             return AllTransactions.FindAll(f => f.transactiontype?.code == transactiontypecode).ToList();
         }
 
@@ -341,24 +404,30 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
         private string _AllID;
         [XmlIgnore]
-        public string AllID {
-            get {
+        public string AllID
+        {
+            get
+            {
                 return string.IsNullOrWhiteSpace(_AllID) ? ImplementingOrgs.n(0).AllID : _AllID;
             }
-            set {
+            set
+            {
                 _AllID = value;
             }
         }
 
         [XmlIgnore]
 
-        public int AimsFundSourceId {
+        public int AimsFundSourceId
+        {
             get { return string.IsNullOrWhiteSpace(AllID) ? 0 : Convert.ToInt32(AllID.Split('~')[0]); }
         }
         [XmlIgnore]
 
-        public string FundSource {
-            get {
+        public string FundSource
+        {
+            get
+            {
                 ExecutingAgencyLookupItem r;
                 if (FundSources != null)
                     r = FundSources.FirstOrDefault(f => f.AllID == AllID);
@@ -370,7 +439,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         }
         [XmlIgnore]
 
-        public string IATICode {
+        public string IATICode
+        {
             get { return string.IsNullOrWhiteSpace(AllID) ? "" : AllID.Split('~')[1]; }
         }
         #endregion
@@ -378,13 +448,16 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         #region Wrappers
 
         [XmlIgnore]
-        public string IatiIdentifier {
-            get {
+        public string IatiIdentifier
+        {
+            get
+            {
                 var identifier = iatiidentifier?.Value;
                 return identifier != null && identifier.Length > 50 ? identifier.Substring(0, 40) + "*truncated" : identifier ?? "";
             }
 
-            set {
+            set
+            {
                 if (iatiidentifier == null)
                     iatiidentifier = new iatiidentifier();
                 iatiidentifier.Value = value;
@@ -392,39 +465,50 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         }
         string _OriginalIatiIdentifier;
         [XmlIgnore]
-        public string OriginalIatiIdentifier {
-            get {
+        public string OriginalIatiIdentifier
+        {
+            get
+            {
                 return string.IsNullOrWhiteSpace(_OriginalIatiIdentifier) ? IatiIdentifier : _OriginalIatiIdentifier;
             }
 
-            set {
+            set
+            {
                 _OriginalIatiIdentifier = value;
             }
         }
 
         [XmlIgnore]
-        public string Title {
-            get {
+        public string Title
+        {
+            get
+            {
                 return title?.narrative.n(0).Value;
             }
-            set {
+            set
+            {
                 if (title == null)
                     title = new textRequiredType();
                 title.narrative = Statix.getNarativeArray(value);
             }
         }
         [XmlIgnore]
-        public string Description {
-            get {
+        public string Description
+        {
+            get
+            {
                 return description.n(0).narrative.n(0).Value;
             }
-            set {
+            set
+            {
                 description.n(0).narrative = Statix.getNarativeArray(value);
             }
         }
         [XmlIgnore]
-        public string ReportingOrg {
-            get {
+        public string ReportingOrg
+        {
+            get
+            {
                 return reportingorg?.narrative.n(0).Value;
             }
             //set
@@ -434,21 +518,27 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
             //}
         }
         [XmlIgnore]
-        public List<participatingorg> ImplementingOrgs {
-            get {
+        public List<participatingorg> ImplementingOrgs
+        {
+            get
+            {
                 return participatingorg?.Where(w => w?.role == "4")?.ToList();
             }
         }
         [XmlIgnore]
-        public List<participatingorg> ExtendingOrgs {
-            get {
+        public List<participatingorg> ExtendingOrgs
+        {
+            get
+            {
                 return participatingorg?.Where(w => w?.role == "3")?.ToList();
             }
         }
 
         [XmlIgnore]
-        public string AidType {
-            get {
+        public string AidType
+        {
+            get
+            {
                 string code;
                 if (defaultaidtype == null) // for initializing
                     code = AidTypeCode;
@@ -463,16 +553,22 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
             //}
         }
         [XmlIgnore]
-        public string AidTypeCode {
-            get {
-                if (!string.IsNullOrWhiteSpace(defaultaidtype?.code)) {
+        public string AidTypeCode
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(defaultaidtype?.code))
+                {
                     return defaultaidtype.code;
-                } else {
+                }
+                else
+                {
                     defaultaidtype = new defaultaidtype();
 
                     var kk = from t in Commitments
                              group t by new { t.aidtype, t.value } into g
-                             select new {
+                             select new
+                             {
                                  g.Key.aidtype,
                                  Sum = g.Sum(s => s.value?.Value)
                              };
@@ -487,11 +583,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         }
 
         [XmlIgnore]
-        public string ActivityStatus {
-            get {
+        public string ActivityStatus
+        {
+            get
+            {
                 return activitystatus?.name;
             }
-            set {
+            set
+            {
                 if (activitystatus == null)
                     activitystatus = new activitystatus();
                 activitystatus.name = value;
@@ -500,12 +599,15 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         }
 
         [XmlIgnore]
-        public IEnumerable<sector> AllSectors {
-            get {
+        public IEnumerable<sector> AllSectors
+        {
+            get
+            {
 
                 var _distictSectors = new List<sector>();
 
-                if (sector != null && sector.Count() > 0) {
+                if (sector != null && sector.Count() > 0)
+                {
 
                     var totalPercent = sector.Sum(w => w.percentage);
                     if (totalPercent < 100)
@@ -520,14 +622,20 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                     }
 
                     _distictSectors.AddRange(sector);
-                } else {
+                }
+                else
+                {
                     List<sector> _Sectors = new List<sector>();
                     var totalCommitment = TotalCommitment > 0 ? TotalCommitment : 100;
 
-                    foreach (var tr in Commitments) {
-                        if (tr.sector != null) {
-                            _Sectors.AddRange(tr.sector?.Select(s => {
-                                return new sector {
+                    foreach (var tr in Commitments)
+                    {
+                        if (tr.sector != null)
+                        {
+                            _Sectors.AddRange(tr.sector?.Select(s =>
+                            {
+                                return new sector
+                                {
                                     code = s.code,
                                     narrative = s.narrative,
                                     percentageSpecified = true,
@@ -539,9 +647,11 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                         }
                     }
 
-                    _distictSectors = _Sectors.GroupBy(g => g.code).Select(s => {
+                    _distictSectors = _Sectors.GroupBy(g => g.code).Select(s =>
+                    {
                         var fs = s.First();
-                        return new sector {
+                        return new sector
+                        {
                             code = fs.code,
                             narrative = fs.narrative,
                             percentageSpecified = true,
@@ -560,29 +670,37 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
         #region activitydate
         [XmlIgnore]
-        public DateTime PlannedStartDate {
-            get {
+        public DateTime PlannedStartDate
+        {
+            get
+            {
                 var sdate = activitydate?.FirstOrDefault(f => f?.type == "1");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //1
         [XmlIgnore]
-        public DateTime ActualStartDate {
-            get {
+        public DateTime ActualStartDate
+        {
+            get
+            {
                 var sdate = activitydate?.FirstOrDefault(f => f?.type == "2");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //2
         [XmlIgnore]
-        public DateTime PlannedEndDate {
-            get {
+        public DateTime PlannedEndDate
+        {
+            get
+            {
                 var sdate = activitydate?.FirstOrDefault(f => f?.type == "3");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
         } //3
         [XmlIgnore]
-        public DateTime ActualEndDate {
-            get {
+        public DateTime ActualEndDate
+        {
+            get
+            {
                 var sdate = activitydate?.FirstOrDefault(f => f?.type == "4");
                 return sdate == null ? default(DateTime) : sdate.isodate;
             }
@@ -593,11 +711,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
     }
 
-    public partial class defaultaidtype {
+    public partial class defaultaidtype
+    {
 
         [XmlIgnore]
-        public string name {
-            get {
+        public string name
+        {
+            get
+            {
                 code = code?.Trim();
                 if (code == "A01")
                     return "General budget support";
@@ -632,7 +753,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                 else
                     return "";
             }
-            set {
+            set
+            {
                 value = value.Trim();
                 if (value == "General budget support")
                     code = "A01";
@@ -670,10 +792,13 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
         }
     }
-    public partial class activitystatus {
+    public partial class activitystatus
+    {
         [XmlIgnore]
-        public string name {
-            get {
+        public string name
+        {
+            get
+            {
                 if (code == "1")
                     return "Pipeline/identification";
                 else if (code == "2")
@@ -689,7 +814,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
                 else
                     return "";
             }
-            set {
+            set
+            {
                 if (value == "Pipeline/identification")
                     code = "1";
                 else if (value == "Implementation")
@@ -713,7 +839,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
     }
 
-    public partial class participatingorg {
+    public partial class participatingorg
+    {
         public int? _ExecutingAgencyTypeId { get; set; }
         [XmlIgnore]
         public int? ExecutingAgencyTypeId { get { return _ExecutingAgencyTypeId ?? GetAimsExAgencyTypeIdByOrgType(type); } set { _ExecutingAgencyTypeId = value; } }
@@ -732,16 +859,20 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         public string AimsName { get; set; }
 
         [XmlIgnore]
-        public string Name {
-            get {
+        public string Name
+        {
+            get
+            {
                 return narrative.n(0).Value;
             }
-            set {
+            set
+            {
                 narrative = Statix.getNarativeArray(value);
             }
         }
 
-        private int? GetAimsExAgencyTypeIdByOrgType(string t) {
+        private int? GetAimsExAgencyTypeIdByOrgType(string t)
+        {
             int? r = null;
 
             //10  Government
@@ -767,7 +898,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
     }
 
 
-    public partial class currencyType {
+    public partial class currencyType
+    {
         [XmlIgnore]
         public DateTime BBexchangeRateDate { get; set; }
 
@@ -786,13 +918,17 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
 
     }
 
-    public partial class transaction : ICurrency {
+    public partial class transaction : ICurrency
+    {
         [XmlIgnore]
-        public string ProviderOrg {
-            get {
+        public string ProviderOrg
+        {
+            get
+            {
                 return providerorg?.narrative.n(0).Value;
             }
-            set {
+            set
+            {
                 if (providerorg == null)
                     providerorg = new transactionProviderorg();
                 providerorg.narrative = Statix.getNarativeArray(value);
@@ -800,8 +936,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         }
 
         [XmlIgnore]
-        public decimal ValUSD {
-            get {
+        public decimal ValUSD
+        {
+            get
+            {
 
                 return value?.ValueInUSD ?? 0;
             }
@@ -810,13 +948,17 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         public bool IsConflicted { get; set; }
 
     }
-    public partial class planneddisbursement : ICurrency {
+    public partial class planneddisbursement : ICurrency
+    {
         [XmlIgnore]
-        public string ProviderOrg {
-            get {
+        public string ProviderOrg
+        {
+            get
+            {
                 return providerorg?.narrative.n(0).Value;
             }
-            set {
+            set
+            {
                 if (providerorg == null)
                     providerorg = new planneddisbursementProviderorg();
                 providerorg.narrative = Statix.getNarativeArray(value);
@@ -824,34 +966,42 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         }
 
         [XmlIgnore]
-        public decimal ValUSD {
-            get {
+        public decimal ValUSD
+        {
+            get
+            {
                 return value?.ValueInUSD ?? 0;
             }
         }
     }
-    public partial class budget : ICurrency {
+    public partial class budget : ICurrency
+    {
     }
-    public partial class locationPoint {
-        public double GetLatitude() {
+    public partial class locationPoint
+    {
+        public double GetLatitude()
+        {
             double lat = 0;
             double.TryParse(pos.Substring(0, pos.IndexOf(' ')), out lat);
             return lat;
         }
-        public double GetLongitude() {
+        public double GetLongitude()
+        {
             double lon = 0;
             double.TryParse(pos.Substring(pos.IndexOf(' ') + 1), out lon);
             return lon;
         }
 
-        public GeoCoordinate GetGeoCoordinate() {
+        public GeoCoordinate GetGeoCoordinate()
+        {
             return new GeoCoordinate(GetLatitude(), GetLongitude());
         }
 
     }
 
     [Serializable]
-    public class iatiactivityModel {
+    public class iatiactivityModel
+    {
         public bool IsDataSourceAIMS { get; set; }
 
         #region co-financed and trust fund projects
@@ -909,13 +1059,16 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         #region for filter other DP's projects
         public string AllID { get; set; }
 
-        public int AimsFundSourceId {
+        public int AimsFundSourceId
+        {
             get { return string.IsNullOrWhiteSpace(AllID) ? 0 : Convert.ToInt32(AllID.Split('~')[0]); }
         }
         [XmlIgnore]
 
-        public string FundSource {
-            get {
+        public string FundSource
+        {
+            get
+            {
                 ExecutingAgencyLookupItem r;
                 if (iatiactivity.FundSources != null)
                     r = iatiactivity.FundSources.FirstOrDefault(f => f.AllID == AllID);
@@ -927,7 +1080,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2 {
         }
         [XmlIgnore]
 
-        public string IATICode {
+        public string IATICode
+        {
             get { return string.IsNullOrWhiteSpace(AllID) ? "" : AllID.Split('~')[1]; }
         }
         #endregion
