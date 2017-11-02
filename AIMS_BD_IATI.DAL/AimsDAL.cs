@@ -1002,7 +1002,7 @@ namespace AIMS_BD_IATI.DAL
                     {
                         var existingTrnInAIMS = p.tblProjectFundingCommitments.FirstOrDefault(f => f.FundSourceId == MatchedProject.AimsFundSourceId
                         && f.CommitmentAgreementSignDate == trn.transactiondate?.isodate
-                        && f.CommittedAmountInUSD == trn.value?.ValueInUSD);
+                        && f.CommittedAmount == trn.value?.Value);
 
                         if (existingTrnInAIMS != null) continue;
                     }
@@ -1056,7 +1056,7 @@ namespace AIMS_BD_IATI.DAL
                         var existingTrnInAIMS = p.tblProjectFundingPlannedDisbursements.FirstOrDefault(f => f.FundSourceId == MatchedProject.AimsFundSourceId
                         && f.PlannedDisbursementPeriodFromDate == trn.periodstart?.isodate
                         && f.PlannedDisbursementPeriodToDate == trn.periodend?.isodate
-                        && f.PlannedDisburseAmountInUSD == trn.value?.ValueInUSD);
+                        && f.PlannedDisburseAmount == trn.value?.Value);
 
                         if (existingTrnInAIMS != null) continue;
                     }
@@ -1107,7 +1107,7 @@ namespace AIMS_BD_IATI.DAL
                         var existingTrnInAIMS = p.tblProjectFundingActualDisbursements.FirstOrDefault(f => f.FundSourceId == MatchedProject.AimsFundSourceId
                         && f.DisbursementDate == trn.transactiondate?.isodate
                         && f.DisbursementToDate == trn.transactiondate?.isodate
-                        && f.DisbursedAmountInUSD == trn.value?.ValueInUSD);
+                        && f.DisbursedAmount == trn.value?.Value);
 
                         if (existingTrnInAIMS != null) continue;
                     }
