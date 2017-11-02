@@ -1210,7 +1210,7 @@ namespace AIMS_BD_IATI.DAL
                     {
                         var trandate = aimsCommitment.CommitmentAgreementSignDate ?? p.AgreementSignDate;
 
-                        var notExistInIATI = !iatiCommitments.Exists(e => e.transactiondate?.isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsCommitment.CommittedAmountInUSD ?? 0));
+                        //var notExistInIATI = !iatiCommitments.Exists(e => e.transactiondate?.isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsCommitment.CommittedAmountInUSD ?? 0));
 
                         isFinancialDataMismathed = true;
 
@@ -1244,7 +1244,7 @@ namespace AIMS_BD_IATI.DAL
                     {
                         var trandate = aimsDisbursement.DisbursementToDate ?? aimsDisbursement.DisbursementDate;
 
-                        var notExistInIATI = !iatiDisbursements.Exists(e => e.transactiondate?.isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsDisbursement.DisbursedAmountInUSD ?? 0));
+                        //var notExistInIATI = !iatiDisbursements.Exists(e => e.transactiondate?.isodate.Date == trandate && Math.Floor(e.ValUSD) == Math.Floor(aimsDisbursement.DisbursedAmountInUSD ?? 0));
 
                         isFinancialDataMismathed = true;
 
