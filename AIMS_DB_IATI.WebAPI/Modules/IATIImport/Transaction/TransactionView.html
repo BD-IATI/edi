@@ -1,0 +1,252 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()">&times;</button>
+    <h2 class="modal-title">
+        <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+        Financial transactions
+    </h2>
+</div>
+<div class="modal-body">
+    <div role="tabpanel" class="tab-pane active" id="transactions">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">
+                    You can see below a summary of financial
+                    data that would be imported to the AIMS for your activities.
+                </p>
+                <hr />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2 ng-bind="model.iatiActivity.Title"></h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <h3>Transactions in IATI</h3>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Commitments</h4>
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Provider Org</th>
+                            <th>Original currency</th>
+                            <th>Original value</th>
+                            <th>Transaction date</th>
+                            <th>Value date</th>
+                            <th>BB USD exchange rate</th>
+                            <th>BB exchange rate date</th>
+                            <th>USD value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="tr in model.iatiActivity.Commitments">
+                            <td ng-bind="tr.ProviderOrg"></td>
+                            <td ng-bind="tr.value.currency"></td>
+                            <td ng-bind="tr.value.Value | number:2"></td>
+                            <td ng-bind="tr.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="tr.value.valuedate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="tr.value.BBexchangeRateUSD | number:2"></td>
+                            <td ng-bind="tr.value.BBexchangeRateDate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="tr.value.ValueInUSD | number:2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Disbursements</h4>
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Provider Org</th>
+                            <th>Original currency</th>
+                            <th>Original value</th>
+                            <th>Transaction date</th>
+                            <th>Value date</th>
+                            <th>BB USD exchange rate</th>
+                            <th>BB exchange rate date</th>
+                            <th>USD value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="tr in model.iatiActivity.Disbursments">
+                            <td ng-bind="tr.ProviderOrg"></td>
+                            <td ng-bind="tr.value.currency"></td>
+                            <td ng-bind="tr.value.Value | number:2"></td>
+                            <td ng-bind="tr.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="tr.value.valuedate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="tr.value.BBexchangeRateUSD | number:2"></td>
+                            <td ng-bind="tr.value.BBexchangeRateDate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="tr.value.ValueInUSD | number:2"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr />
+        <div class="row">
+            <h3>Comparison with AIMS</h3>
+        </div>
+
+        <div class="row">
+            <h4><a role="button" data-toggle="collapse" data-target="#divCompareCommitments">Commitments</a></h4>
+        </div>
+
+        <div id="divCompareCommitments" class="row collapse">
+            <div class="col-md-6">
+                <h4>IATI</h4>
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="min-width:100px">Date</th>
+                            <th>Provider Org</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="commitment in model.iatiActivity.Commitments">
+                            <td ng-bind="commitment.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="commitment.ProviderOrg"></td>
+                            <td ng-bind="commitment.ValUSD | number:2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <h4>AIMS</h4>
+
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="min-width:100px">Date</th>
+                            <th>Provider Org</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-class="{'danger' : commitment.IsConflicted}" ng-repeat="commitment in model.aimsProject.Commitments | orderBy:'IsConflicted'">
+                            <td ng-bind="commitment.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="commitment.ProviderOrg"></td>
+                            <td ng-bind="commitment.ValUSD | number:2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <h4><a role="button" data-toggle="collapse" data-target="#divCompareDisbursements"> Disbursements</a></h4>
+        </div>
+
+        <div id="divCompareDisbursements" class="row collapse">
+            <div class="col-md-6">
+                <h4>IATI</h4>
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="min-width:100px">Date</th>
+                            <th>Provider Org</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr ng-repeat="disbursement in model.iatiActivity.Disbursments">
+                            <td ng-bind="disbursement.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="disbursement.ProviderOrg"></td>
+                            <td ng-bind="disbursement.ValUSD | number:2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-md-6">
+                <h4>AIMS</h4>
+
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="min-width:100px">Date</th>
+                            <th>Provider Org</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-class="{'danger' : disbursement.IsConflicted}" ng-repeat="disbursement in model.aimsProject.Disbursments | orderBy:'IsConflicted'">
+                            <td ng-bind="disbursement.transactiondate.isodate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="disbursement.ProviderOrg"></td>
+                            <td ng-bind="disbursement.ValUSD | number:2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <h4><a role="button" data-toggle="collapse" data-target="#divComparePlannedDisbursements">Planned Disbursements</a></h4>
+        </div>
+
+        <div id="divComparePlannedDisbursements" class="row collapse">
+            <div class="col-md-6">
+                <h4>IATI</h4>
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="min-width:100px">Period Start</th>
+                            <th>Provider Org</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr ng-repeat="pdisbursement in model.iatiActivity.PlannedDisbursments">
+                            <td title="End {{pdisbursement.periodend.isodate | date:'yyyy-MM-dd'}}" ng-bind="pdisbursement.periodstart.isodate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="pdisbursement.ProviderOrg"></td>
+                            <td ng-bind="pdisbursement.ValUSD | number:2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-md-6">
+                <h4>AIMS</h4>
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="min-width:100px">Period Start</th>
+                            <th>Provider Org</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-class="{'danger' : pdisbursement.IsConflicted}" ng-repeat="pdisbursement in model.aimsProject.PlannedDisbursments | orderBy:'IsConflicted'">
+                            <td title="End {{pdisbursement.periodend.isodate | date:'yyyy-MM-dd'}}" ng-bind="pdisbursement.periodstart.isodate | date:'yyyy-MM-dd'"></td>
+                            <td ng-bind="pdisbursement.ProviderOrg"></td>
+                            <td ng-bind="pdisbursement.ValUSD | number:2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">Close</button>
+    <!--<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>-->
+</div>
+
+

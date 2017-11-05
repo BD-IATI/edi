@@ -1,0 +1,242 @@
+<!-- saved from url=(0037)http://test.brough.io/bd/sprint2.htm? -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>IATI-AIMS import tool</title>
+
+    <link href="../../Content/ui-bootstrap-csp.css" rel="stylesheet" />
+    <link href="../../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../../Content/style.css" rel="stylesheet" />
+
+    <script src="../../Scripts/jquery-2.2.1.min.js"></script>
+    <script src="../../Scripts/bootstrap.min.js"></script>
+    <!--<script src="../../Scripts/jquery.slimscroll.js"></script>-->
+
+    <script src="../../Scripts/angular.min.js"></script>
+    <script src="../../Scripts/angular-route.min.js"></script>
+    <script src="../../Scripts/angular-cookies.min.js"></script>
+    <script src="../../Scripts/angular-animate.min.js"></script>
+
+    <script src="../../Scripts/angular-filter/angular-filter.js"></script>
+
+    <script src="../../Scripts/AngularDragAndDrop/angular-drag-and-drop-lists.min.js"></script>
+
+    <script src="../../Scripts/spin.min.js"></script>
+    <script src="../../Scripts/spinner.js"></script>
+
+    <script src="../../Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+
+    <script src="../../Scripts/smart-table.min.js"></script>
+
+    <script src="../../Scripts/highcharts/highcharts.js"></script>
+
+
+
+    <!--//apps starts here-->
+    <script src="../Authentication/AuthenticationServices.js"></script>
+    <script src="../Authentication/LoginController.js"></script>
+
+    <script src="../../app.ts.js"></script>
+    <script src="7ReviewAdjustment/commitmentvsdisbursmentchart.js"></script>
+    <!--<script src="IATIImportApp.js"></script>
+    <script src="0Begin/0BeginController.js"></script>
+    <script src="1Hierarchy/1HierarchyController.js"></script>
+    <script src="2FilterBD/2FilterBDController.js"></script>
+    <script src="3FilterDP/3FilterDPController.js"></script>
+    <script src="4Projects/4ProjectsController.js"></script>
+    <script src="5Match/5MatchController.js"></script>
+    <script src="6GeneralPreferences/6GeneralPreferencesController.js"></script>
+    <script src="7ReviewAdjustment/7ReviewAdjustmentController.js"></script>
+    <script src="8ProjectSpecificAdjustment/8ProjectSpecificAdjustmentController.js"></script>
+    <script src="9OtherDPsActivities/9OtherDPsActivitiesController.js"></script>
+    <script src="9TFnCF/9TFnCFController.js"></script>
+    <script src="9Cofinancing/9CofinancingController.js"></script>
+
+    <script src="Dashboard/DashboardController.js"></script>
+    <script src="MergeConflictAlert/MergeConflictAlertController.js"></script>
+    <script src="Transaction/TransactionController.js"></script>
+    -->
+
+
+    <style>
+        .btnFooter {
+            text-align: right;
+        }
+
+        .popover {
+            min-width: 400px;
+        }
+
+        /*.popover > .arrow {
+            left: 90% !important;
+        }*/
+
+        .full-modal-window .modal-dialog {
+            width: 95%;
+        }
+
+        html {
+            /*overflow-y: -moz-scrollbars-vertical;
+            overflow: hidden;*/
+        }
+
+        .top-buffer {
+            margin-top: 5px;
+        }
+    </style>
+
+    <style>
+        .sortorder:after {
+            content: '\25b2';
+        }
+
+        .sortorder.reverse:after {
+            content: '\25bc';
+        }
+
+        .st-sort-ascent:after {
+            content: '\25B2';
+        }
+
+        .st-sort-descent:after {
+            content: '\25BC';
+        }
+    </style>
+    <style>
+        .tab-pane {
+            margin: 0px 15px;
+        }
+
+        .nav-pills > li > a {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+            color: #000;
+            background-color: #fff;
+        }
+
+        .nav-pills > li > a, .nav-pills > li > a:hover, .nav-pills > li > a:focus {
+            color: #000;
+            background-color: #dff0d8;
+        }
+        /*.scrollable{
+            overflow-y: -moz-scrollbars-vertical;
+            overflow-y: auto;
+            height:100%;
+        }*/
+    </style>
+</head>
+<body ng-app="iatiDataImporter">
+    <header>
+        <nav id="main" class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <!--Menu-->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#/Dashboard">
+                        <span class="glyphicon glyphicon-home"></span>&nbsp;AIMS IATI Import
+                    </a>
+                </div>
+
+                <div class="nav navbar-nav navbar-right" ng-show="globals.currentUser.username.length > 0">
+
+                    <div class="pull-left" style="margin-top:5px;">
+                        <a class="btn btn-warning"
+                           popover-title="Are you sure?"
+                           uib-popover-template="'confirmRestartTemplate.html'"
+                           popover-append-to-body="true"
+                           popover-placement="auto"
+                           popover-trigger="outsideClick"
+                           popover-is-open="globals.showConfirmRestart">
+                            <span class="glyphicon glyphicon-repeat"></span>
+                            Restart
+                        </a>
+                    </div>
+
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <span class="hidden-xs">{{globals.currentUser.username}}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="col-lg-12 top-buffer">
+                                        <a href="#/Dashboard" class="btn btn-sm btn-success col-lg-12">
+                                            <span class="glyphicon glyphicon-home"></span>&nbsp;Dashboard
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-12 top-buffer">
+                                        <a href="#/0Begin" class="btn btn-sm btn-primary col-lg-12">
+                                            <span class="glyphicon glyphicon-refresh"></span>&nbsp;Switch DP
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-12 top-buffer">
+                                        <a href="#/login" class="btn btn-sm btn-danger col-lg-12">
+                                            <span class="glyphicon glyphicon-off"></span>&nbsp;Logout
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <span us-spinner="{radius:30, width:8, length: 16, position: 'fixed'}"></span>
+            <!-- Nav tabs -->
+            <div class="col-sm-3" style="height: 100%;
+    background-color: #dff0d8; padding: 10px 0px 5px 5px">
+                <ul navigation ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>
+                <!--<ul navigation-Other-Dp ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>-->
+                <!-- Tab panes -->
+            </div>
+            <div id="divView" style="height: 100%;" class="col-sm-9">
+
+                <div ng-view class="tab-content" style="padding-bottom:25px;">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script type="text/javascript">
+        $(function () {
+            //$('#divView').slimScroll({
+            //    height: '100%',
+            //    alwaysVisible: true,
+            //    wheelStep: 10,
+            //    enableKeyNavigation: true,
+            //    railVisible: true,
+            //});
+        });
+        window.onbeforeunload = function () {
+            return "Dude, are you sure you want to refresh? Think of the kittens!";
+        }
+    </script>
+
+    <script type="text/ng-template" id="confirmRestartTemplate.html">
+        <div>
+            <div>If you restart the import process then your decisions will be lost. Are you sure you want to do this?</div>
+            <br />
+
+            <a type="button" href="#/restart" class="btn btn-primary" ng-click="globals.showConfirmRestart = false">Yes</a>
+            <a type="button" href="" class="btn btn-default" ng-click="globals.showConfirmRestart = false">No</a>
+        </div>
+    </script>
+
+</body>
+</html>
