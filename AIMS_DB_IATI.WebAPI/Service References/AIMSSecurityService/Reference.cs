@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
+namespace AIMS_DB_IATI.Web.AIMSSecurityService {
     using System.Runtime.Serialization;
     using System;
     
@@ -17,18 +17,18 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityBase", Namespace="http://schemas.datacontract.org/2004/07/PrimaryBaseLibrary")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserRoleInfo))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Company))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Department))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.Role))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.UserRoleInfo))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.Menu))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.Right))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.Company))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.Department))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.Employee))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.Application))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.Module))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AIMS_DB_IATI.Web.AIMSSecurityService.User))]
     public partial class EntityBase : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -58,7 +58,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Role", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class Role : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class Role : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ApplicationIdField;
@@ -225,7 +225,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UserRoleInfo", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class UserRoleInfo : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class UserRoleInfo : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int RoleIdField;
@@ -280,7 +280,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UserGroup", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class UserGroup : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class UserGroup : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ApplicationIdField;
@@ -367,7 +367,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="RoleGroup", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class RoleGroup : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class RoleGroup : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ApplicationIdField;
@@ -422,7 +422,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Menu", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class Menu : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class Menu : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ApplicationIdField;
@@ -765,7 +765,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Right", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class Right : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class Right : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ApplicationIdField;
@@ -948,7 +948,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Company", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class Company : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class Company : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string AddressField;
@@ -1099,7 +1099,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Department", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class Department : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class Department : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string strCompanyIdField;
@@ -1154,7 +1154,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Employee", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class Employee : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class Employee : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ApplicationIdField;
@@ -1337,7 +1337,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Application", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class Application : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class Application : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ApplicationIdField;
@@ -1408,7 +1408,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Module", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class Module : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class Module : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ApplicationIdField;
@@ -1511,7 +1511,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="User", Namespace="http://schemas.datacontract.org/2004/07/Entity")]
     [System.SerializableAttribute()]
-    public partial class User : AIMS_DB_IATI.WebAPI.AIMSSecurityService.EntityBase {
+    public partial class User : AIMS_DB_IATI.Web.AIMSSecurityService.EntityBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ApplicationIdField;
@@ -1887,10 +1887,10 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     public interface IAIMSUserManagementService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertUserData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertUserDataResponse")]
-        int InsertUserData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user);
+        int InsertUserData(AIMS_DB_IATI.Web.AIMSSecurityService.User user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertUserData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertUserDataResponse")]
-        System.Threading.Tasks.Task<int> InsertUserDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user);
+        System.Threading.Tasks.Task<int> InsertUserDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.User user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/DeleteUserData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/DeleteUserDataResponse")]
         void DeleteUserData(int id);
@@ -1899,58 +1899,58 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
         System.Threading.Tasks.Task DeleteUserDataAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateUserData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateUserDataResponse")]
-        int UpdateUserData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user);
+        int UpdateUserData(AIMS_DB_IATI.Web.AIMSSecurityService.User user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateUserData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateUserDataResponse")]
-        System.Threading.Tasks.Task<int> UpdateUserDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user);
+        System.Threading.Tasks.Task<int> UpdateUserDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.User user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertUserRoles", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertUserRolesResponse")]
-        int InsertUserRoles(int userId, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList, int applicationId, int moduleId);
+        int InsertUserRoles(int userId, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList, int applicationId, int moduleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertUserRoles", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertUserRolesResponse")]
-        System.Threading.Tasks.Task<int> InsertUserRolesAsync(int userId, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList, int applicationId, int moduleId);
+        System.Threading.Tasks.Task<int> InsertUserRolesAsync(int userId, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList, int applicationId, int moduleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetUserList", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetUserListResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User> GetUserList();
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.User> GetUserList();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetUserList", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetUserListResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User>> GetUserListAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.User>> GetUserListAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetUserListByCraiteria", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetUserListByCraiteriaResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User> GetUserListByCraiteria(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.User> GetUserListByCraiteria(AIMS_DB_IATI.Web.AIMSSecurityService.User user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetUserListByCraiteria", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetUserListByCraiteriaResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User>> GetUserListByCraiteriaAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.User>> GetUserListByCraiteriaAsync(AIMS_DB_IATI.Web.AIMSSecurityService.User user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetUserRole", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetUserRoleResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserRoleInfo> GetUserRole(int id);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.UserRoleInfo> GetUserRole(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetUserRole", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetUserRoleResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserRoleInfo>> GetUserRoleAsync(int id);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.UserRoleInfo>> GetUserRoleAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetUser", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetUserResponse")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.User GetUser(int id);
+        AIMS_DB_IATI.Web.AIMSSecurityService.User GetUser(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetUser", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetUserResponse")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User> GetUserAsync(int id);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.User> GetUserAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetUserByLoginId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetUserByLoginIdResponse")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.User GetUserByLoginId(string loginId);
+        AIMS_DB_IATI.Web.AIMSSecurityService.User GetUserByLoginId(string loginId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetUserByLoginId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetUserByLoginIdResponse")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User> GetUserByLoginIdAsync(string loginId);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.User> GetUserByLoginIdAsync(string loginId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/CreateGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/CreateGroupResponse")]
-        int CreateGroup(AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList);
+        int CreateGroup(AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/CreateGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/CreateGroupResponse")]
-        System.Threading.Tasks.Task<int> CreateGroupAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList);
+        System.Threading.Tasks.Task<int> CreateGroupAsync(AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateGroupResponse")]
-        int UpdateGroup(AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList);
+        int UpdateGroup(AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateGroupResponse")]
-        System.Threading.Tasks.Task<int> UpdateGroupAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList);
+        System.Threading.Tasks.Task<int> UpdateGroupAsync(AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/DeleteGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/DeleteGroupResponse")]
         int DeleteGroup(int id);
@@ -1959,76 +1959,76 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
         System.Threading.Tasks.Task<int> DeleteGroupAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetGroupList", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetGroupListResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup> GetGroupList();
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup> GetGroupList();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetGroupList", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetGroupListResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup>> GetGroupListAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup>> GetGroupListAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetGroupById", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetGroupByIdResponse")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup GetGroupById(int id);
+        AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup GetGroupById(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetGroupById", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetGroupByIdResponse")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup> GetGroupByIdAsync(int id);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup> GetGroupByIdAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRolesList", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRolesListResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> GetRolesList();
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> GetRolesList();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRolesList", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRolesListResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role>> GetRolesListAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role>> GetRolesListAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRolesListByCraiteria", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRolesListByCraiteriaResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> GetRolesListByCraiteria(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> GetRolesListByCraiteria(AIMS_DB_IATI.Web.AIMSSecurityService.Role role);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRolesListByCraiteria", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRolesListByCraiteriaResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role>> GetRolesListByCraiteriaAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role>> GetRolesListByCraiteriaAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Role role);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRoleGroups", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRoleGroupsResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup> GetRoleGroups();
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup> GetRoleGroups();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRoleGroups", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRoleGroupsResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup>> GetRoleGroupsAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup>> GetRoleGroupsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRolesListByUser", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRolesListByUserResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> GetRolesListByUser(int userId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> GetRolesListByUser(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRolesListByUser", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRolesListByUserResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role>> GetRolesListByUserAsync(int userId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role>> GetRolesListByUserAsync(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRolesListByUserGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRolesListByUserGroupResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> GetRolesListByUserGroup(int groupId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> GetRolesListByUserGroup(int groupId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRolesListByUserGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRolesListByUserGroupResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role>> GetRolesListByUserGroupAsync(int groupId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role>> GetRolesListByUserGroupAsync(int groupId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertRolesMenusRight", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertRolesMenusRightResponse")]
-        int InsertRolesMenusRight(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> rightList);
+        int InsertRolesMenusRight(AIMS_DB_IATI.Web.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> rightList);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertRolesMenusRight", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertRolesMenusRightResponse")]
-        System.Threading.Tasks.Task<int> InsertRolesMenusRightAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> rightList);
+        System.Threading.Tasks.Task<int> InsertRolesMenusRightAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> rightList);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateRolesMenusRight", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateRolesMenusRightResponse")]
-        int UpdateRolesMenusRight(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> rightList);
+        int UpdateRolesMenusRight(AIMS_DB_IATI.Web.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> rightList);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateRolesMenusRight", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateRolesMenusRightResponse")]
-        System.Threading.Tasks.Task<int> UpdateRolesMenusRightAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> rightList);
+        System.Threading.Tasks.Task<int> UpdateRolesMenusRightAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> rightList);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRoleById", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRoleByIdResponse")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role GetRoleById(int id);
+        AIMS_DB_IATI.Web.AIMSSecurityService.Role GetRoleById(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRoleById", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRoleByIdResponse")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> GetRoleByIdAsync(int id);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Role> GetRoleByIdAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/CreateRoleGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/CreateRoleGroupResponse")]
-        int CreateRoleGroup(AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup item);
+        int CreateRoleGroup(AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup item);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/CreateRoleGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/CreateRoleGroupResponse")]
-        System.Threading.Tasks.Task<int> CreateRoleGroupAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup item);
+        System.Threading.Tasks.Task<int> CreateRoleGroupAsync(AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup item);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateRoleGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateRoleGroupResponse")]
-        int UpdateRoleGroup(AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup item);
+        int UpdateRoleGroup(AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup item);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateRoleGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateRoleGroupResponse")]
-        System.Threading.Tasks.Task<int> UpdateRoleGroupAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup item);
+        System.Threading.Tasks.Task<int> UpdateRoleGroupAsync(AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup item);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/DeleteRoleGroup", ReplyAction="http://tempuri.org/IAIMSUserManagementService/DeleteRoleGroupResponse")]
         int DeleteRoleGroup(int Id);
@@ -2037,22 +2037,22 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
         System.Threading.Tasks.Task<int> DeleteRoleGroupAsync(int Id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRoleGroupById", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRoleGroupByIdResponse")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup GetRoleGroupById(int id);
+        AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup GetRoleGroupById(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRoleGroupById", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRoleGroupByIdResponse")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup> GetRoleGroupByIdAsync(int id);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup> GetRoleGroupByIdAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertMenuData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertMenuDataResponse")]
-        int InsertMenuData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu menu);
+        int InsertMenuData(AIMS_DB_IATI.Web.AIMSSecurityService.Menu menu);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertMenuData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertMenuDataResponse")]
-        System.Threading.Tasks.Task<int> InsertMenuDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu menu);
+        System.Threading.Tasks.Task<int> InsertMenuDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Menu menu);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateMenuData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateMenuDataResponse")]
-        int UpdateMenuData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu menu);
+        int UpdateMenuData(AIMS_DB_IATI.Web.AIMSSecurityService.Menu menu);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateMenuData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateMenuDataResponse")]
-        System.Threading.Tasks.Task<int> UpdateMenuDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu menu);
+        System.Threading.Tasks.Task<int> UpdateMenuDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Menu menu);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/DeleteMenuData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/DeleteMenuDataResponse")]
         int DeleteMenuData(int id);
@@ -2061,112 +2061,112 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
         System.Threading.Tasks.Task<int> DeleteMenuDataAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllMenus", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllMenusResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetAllMenus();
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetAllMenus();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllMenus", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllMenusResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetAllMenusAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetAllMenusAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenusByParent", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenusByParentResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenusByParent(int parentId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenusByParent(int parentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenusByParent", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenusByParentResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetMenusByParentAsync(int parentId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetMenusByParentAsync(int parentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenuListByRoleId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenuListByRoleIdResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenuListByRoleId(int roleId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenuListByRoleId(int roleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenuListByRoleId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenuListByRoleIdResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetMenuListByRoleIdAsync(int roleId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetMenuListByRoleIdAsync(int roleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetParentMenuListByLoginId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetParentMenuListByLoginIdResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetParentMenuListByLoginId(string loginId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetParentMenuListByLoginId(string loginId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetParentMenuListByLoginId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetParentMenuListByLoginIdResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetParentMenuListByLoginIdAsync(string loginId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetParentMenuListByLoginIdAsync(string loginId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetChildMenuListByLoginAndParentId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetChildMenuListByLoginAndParentIdR" +
             "esponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetChildMenuListByLoginAndParentId(string loginId, int parentId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetChildMenuListByLoginAndParentId(string loginId, int parentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetChildMenuListByLoginAndParentId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetChildMenuListByLoginAndParentIdR" +
             "esponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetChildMenuListByLoginAndParentIdAsync(string loginId, int parentId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetChildMenuListByLoginAndParentIdAsync(string loginId, int parentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuNameAndLoginId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuNameAndLoginIdResponse" +
             "")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu GetMenuByMenuNameAndLoginId(string loginId, string MenuName);
+        AIMS_DB_IATI.Web.AIMSSecurityService.Menu GetMenuByMenuNameAndLoginId(string loginId, string MenuName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuNameAndLoginId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuNameAndLoginIdResponse" +
             "")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenuByMenuNameAndLoginIdAsync(string loginId, string MenuName);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenuByMenuNameAndLoginIdAsync(string loginId, string MenuName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuName", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuNameResponse")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu GetMenuByMenuName(string MenuName);
+        AIMS_DB_IATI.Web.AIMSSecurityService.Menu GetMenuByMenuName(string MenuName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuName", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuNameResponse")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenuByMenuNameAsync(string MenuName);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenuByMenuNameAsync(string MenuName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenusByApplicationAndModuleId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenusByApplicationAndModuleIdRes" +
             "ponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenusByApplicationAndModuleId(int roleId, int applicationId, int moduleId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenusByApplicationAndModuleId(int roleId, int applicationId, int moduleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenusByApplicationAndModuleId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenusByApplicationAndModuleIdRes" +
             "ponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetMenusByApplicationAndModuleIdAsync(int roleId, int applicationId, int moduleId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetMenusByApplicationAndModuleIdAsync(int roleId, int applicationId, int moduleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenusByApplicationAndModuleName", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenusByApplicationAndModuleNameR" +
             "esponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenusByApplicationAndModuleName(string appName, string modName);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenusByApplicationAndModuleName(string appName, string modName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenusByApplicationAndModuleName", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenusByApplicationAndModuleNameR" +
             "esponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetMenusByApplicationAndModuleNameAsync(string appName, string modName);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetMenusByApplicationAndModuleNameAsync(string appName, string modName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuIdResponse")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu GetMenuByMenuId(int id);
+        AIMS_DB_IATI.Web.AIMSSecurityService.Menu GetMenuByMenuId(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenuByMenuIdResponse")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenuByMenuIdAsync(int id);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenuByMenuIdAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenus", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenusResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenus(string loginId, string appName, string moduleName);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenus(string loginId, string appName, string moduleName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetMenus", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetMenusResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetMenusAsync(string loginId, string appName, string moduleName);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetMenusAsync(string loginId, string appName, string moduleName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetParentMenus", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetParentMenusResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetParentMenus(int ModuleId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetParentMenus(int ModuleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetParentMenus", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetParentMenusResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetParentMenusAsync(int ModuleId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetParentMenusAsync(int ModuleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllRights", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllRightsResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> GetAllRights();
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> GetAllRights();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllRights", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllRightsResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right>> GetAllRightsAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right>> GetAllRightsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllRightsMapedByRole", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllRightsMapedByRoleResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> GetAllRightsMapedByRole(int roleId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> GetAllRightsMapedByRole(int roleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllRightsMapedByRole", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllRightsMapedByRoleResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right>> GetAllRightsMapedByRoleAsync(int roleId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right>> GetAllRightsMapedByRoleAsync(int roleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRightByLoginIdAndRightName", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRightByLoginIdAndRightNameRespon" +
             "se")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right GetRightByLoginIdAndRightName(string loginId, string rightName);
+        AIMS_DB_IATI.Web.AIMSSecurityService.Right GetRightByLoginIdAndRightName(string loginId, string rightName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRightByLoginIdAndRightName", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRightByLoginIdAndRightNameRespon" +
             "se")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> GetRightByLoginIdAndRightNameAsync(string loginId, string rightName);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Right> GetRightByLoginIdAndRightNameAsync(string loginId, string rightName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRightsByRoleAndAppAndModule", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRightsByRoleAndAppAndModuleRespo" +
             "nse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> GetRightsByRoleAndAppAndModule(int roleId, int appId, int moduleId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> GetRightsByRoleAndAppAndModule(int roleId, int appId, int moduleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetRightsByRoleAndAppAndModule", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetRightsByRoleAndAppAndModuleRespo" +
             "nse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right>> GetRightsByRoleAndAppAndModuleAsync(int roleId, int appId, int moduleId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right>> GetRightsByRoleAndAppAndModuleAsync(int roleId, int appId, int moduleId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/ValidateUser", ReplyAction="http://tempuri.org/IAIMSUserManagementService/ValidateUserResponse")]
         bool ValidateUser(string userId, string password);
@@ -2175,45 +2175,45 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
         System.Threading.Tasks.Task<bool> ValidateUserAsync(string userId, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetCompanysByLoginId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetCompanysByLoginIdResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Company> GetCompanysByLoginId(string loginId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Company> GetCompanysByLoginId(string loginId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetCompanysByLoginId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetCompanysByLoginIdResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Company>> GetCompanysByLoginIdAsync(string loginId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Company>> GetCompanysByLoginIdAsync(string loginId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllDepartment", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllDepartmentResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Department> GetAllDepartment();
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Department> GetAllDepartment();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllDepartment", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllDepartmentResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Department>> GetAllDepartmentAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Department>> GetAllDepartmentAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetEmployeesByApplicationId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetEmployeesByApplicationIdResponse" +
             "")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee> GetEmployeesByApplicationId(int applicationId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee> GetEmployeesByApplicationId(int applicationId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetEmployeesByApplicationId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetEmployeesByApplicationIdResponse" +
             "")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee>> GetEmployeesByApplicationIdAsync(int applicationId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee>> GetEmployeesByApplicationIdAsync(int applicationId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllEmployee", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllEmployeeResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee> GetAllEmployee();
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee> GetAllEmployee();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllEmployee", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllEmployeeResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee>> GetAllEmployeeAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee>> GetAllEmployeeAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllEmployeeWithPaging", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllEmployeeWithPagingResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee> GetAllEmployeeWithPaging(int startRowIndex, int maxRows);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee> GetAllEmployeeWithPaging(int startRowIndex, int maxRows);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllEmployeeWithPaging", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllEmployeeWithPagingResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee>> GetAllEmployeeWithPagingAsync(int startRowIndex, int maxRows);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee>> GetAllEmployeeWithPagingAsync(int startRowIndex, int maxRows);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetSearchEmployeeWithPaging", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetSearchEmployeeWithPagingResponse" +
             "")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingResponse GetSearchEmployeeWithPaging(AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingRequest request);
+        AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingResponse GetSearchEmployeeWithPaging(AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetSearchEmployeeWithPaging", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetSearchEmployeeWithPagingResponse" +
             "")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingResponse> GetSearchEmployeeWithPagingAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingRequest request);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingResponse> GetSearchEmployeeWithPagingAsync(AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetTotalEmployeeCount", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetTotalEmployeeCountResponse")]
         int GetTotalEmployeeCount();
@@ -2222,28 +2222,28 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
         System.Threading.Tasks.Task<int> GetTotalEmployeeCountAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllApplications", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllApplicationsResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application> GetAllApplications();
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Application> GetAllApplications();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllApplications", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllApplicationsResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application>> GetAllApplicationsAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Application>> GetAllApplicationsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetApplicationById", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetApplicationByIdResponse")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application GetApplicationById(int id);
+        AIMS_DB_IATI.Web.AIMSSecurityService.Application GetApplicationById(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetApplicationById", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetApplicationByIdResponse")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application> GetApplicationByIdAsync(int id);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Application> GetApplicationByIdAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertApplicationData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertApplicationDataResponse")]
-        int InsertApplicationData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application app);
+        int InsertApplicationData(AIMS_DB_IATI.Web.AIMSSecurityService.Application app);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertApplicationData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertApplicationDataResponse")]
-        System.Threading.Tasks.Task<int> InsertApplicationDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application app);
+        System.Threading.Tasks.Task<int> InsertApplicationDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Application app);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateApplicationData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateApplicationDataResponse")]
-        int UpdateApplicationData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application app);
+        int UpdateApplicationData(AIMS_DB_IATI.Web.AIMSSecurityService.Application app);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateApplicationData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateApplicationDataResponse")]
-        System.Threading.Tasks.Task<int> UpdateApplicationDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application app);
+        System.Threading.Tasks.Task<int> UpdateApplicationDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Application app);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/DeleteApplicationData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/DeleteApplicationDataResponse")]
         int DeleteApplicationData(int id);
@@ -2252,34 +2252,34 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
         System.Threading.Tasks.Task<int> DeleteApplicationDataAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllModules", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllModulesResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module> GetAllModules();
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Module> GetAllModules();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetAllModules", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetAllModulesResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module>> GetAllModulesAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Module>> GetAllModulesAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetModulesByApplicationId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetModulesByApplicationIdResponse")]
-        System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module> GetModulesByApplicationId(int appId);
+        System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Module> GetModulesByApplicationId(int appId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetModulesByApplicationId", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetModulesByApplicationIdResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module>> GetModulesByApplicationIdAsync(int appId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Module>> GetModulesByApplicationIdAsync(int appId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetModuleById", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetModuleByIdResponse")]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module GetModuleById(int id);
+        AIMS_DB_IATI.Web.AIMSSecurityService.Module GetModuleById(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/GetModuleById", ReplyAction="http://tempuri.org/IAIMSUserManagementService/GetModuleByIdResponse")]
-        System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module> GetModuleByIdAsync(int id);
+        System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Module> GetModuleByIdAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertModuleData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertModuleDataResponse")]
-        int InsertModuleData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module module);
+        int InsertModuleData(AIMS_DB_IATI.Web.AIMSSecurityService.Module module);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/InsertModuleData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/InsertModuleDataResponse")]
-        System.Threading.Tasks.Task<int> InsertModuleDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module module);
+        System.Threading.Tasks.Task<int> InsertModuleDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Module module);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateModuleData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateModuleDataResponse")]
-        int UpdateModuleData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module module);
+        int UpdateModuleData(AIMS_DB_IATI.Web.AIMSSecurityService.Module module);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/UpdateModuleData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/UpdateModuleDataResponse")]
-        System.Threading.Tasks.Task<int> UpdateModuleDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module module);
+        System.Threading.Tasks.Task<int> UpdateModuleDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Module module);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAIMSUserManagementService/DeleteModuleData", ReplyAction="http://tempuri.org/IAIMSUserManagementService/DeleteModuleDataResponse")]
         int DeleteModuleData(int id);
@@ -2294,7 +2294,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     public partial class GetSearchEmployeeWithPagingRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee obj;
+        public AIMS_DB_IATI.Web.AIMSSecurityService.Employee obj;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public int startRowIndex;
@@ -2305,7 +2305,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
         public GetSearchEmployeeWithPagingRequest() {
         }
         
-        public GetSearchEmployeeWithPagingRequest(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee obj, int startRowIndex, int maxRows) {
+        public GetSearchEmployeeWithPagingRequest(AIMS_DB_IATI.Web.AIMSSecurityService.Employee obj, int startRowIndex, int maxRows) {
             this.obj = obj;
             this.startRowIndex = startRowIndex;
             this.maxRows = maxRows;
@@ -2318,7 +2318,7 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
     public partial class GetSearchEmployeeWithPagingResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee> GetSearchEmployeeWithPagingResult;
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee> GetSearchEmployeeWithPagingResult;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public int intTotalRows;
@@ -2326,19 +2326,19 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
         public GetSearchEmployeeWithPagingResponse() {
         }
         
-        public GetSearchEmployeeWithPagingResponse(System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee> GetSearchEmployeeWithPagingResult, int intTotalRows) {
+        public GetSearchEmployeeWithPagingResponse(System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee> GetSearchEmployeeWithPagingResult, int intTotalRows) {
             this.GetSearchEmployeeWithPagingResult = GetSearchEmployeeWithPagingResult;
             this.intTotalRows = intTotalRows;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IAIMSUserManagementServiceChannel : AIMS_DB_IATI.WebAPI.AIMSSecurityService.IAIMSUserManagementService, System.ServiceModel.IClientChannel {
+    public interface IAIMSUserManagementServiceChannel : AIMS_DB_IATI.Web.AIMSSecurityService.IAIMSUserManagementService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class AIMSUserManagementServiceClient : System.ServiceModel.ClientBase<AIMS_DB_IATI.WebAPI.AIMSSecurityService.IAIMSUserManagementService>, AIMS_DB_IATI.WebAPI.AIMSSecurityService.IAIMSUserManagementService {
+    public partial class AIMSUserManagementServiceClient : System.ServiceModel.ClientBase<AIMS_DB_IATI.Web.AIMSSecurityService.IAIMSUserManagementService>, AIMS_DB_IATI.Web.AIMSSecurityService.IAIMSUserManagementService {
         
         public AIMSUserManagementServiceClient() {
         }
@@ -2359,11 +2359,11 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
                 base(binding, remoteAddress) {
         }
         
-        public int InsertUserData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user) {
+        public int InsertUserData(AIMS_DB_IATI.Web.AIMSSecurityService.User user) {
             return base.Channel.InsertUserData(user);
         }
         
-        public System.Threading.Tasks.Task<int> InsertUserDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user) {
+        public System.Threading.Tasks.Task<int> InsertUserDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.User user) {
             return base.Channel.InsertUserDataAsync(user);
         }
         
@@ -2375,75 +2375,75 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
             return base.Channel.DeleteUserDataAsync(id);
         }
         
-        public int UpdateUserData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user) {
+        public int UpdateUserData(AIMS_DB_IATI.Web.AIMSSecurityService.User user) {
             return base.Channel.UpdateUserData(user);
         }
         
-        public System.Threading.Tasks.Task<int> UpdateUserDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user) {
+        public System.Threading.Tasks.Task<int> UpdateUserDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.User user) {
             return base.Channel.UpdateUserDataAsync(user);
         }
         
-        public int InsertUserRoles(int userId, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList, int applicationId, int moduleId) {
+        public int InsertUserRoles(int userId, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList, int applicationId, int moduleId) {
             return base.Channel.InsertUserRoles(userId, roleList, applicationId, moduleId);
         }
         
-        public System.Threading.Tasks.Task<int> InsertUserRolesAsync(int userId, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList, int applicationId, int moduleId) {
+        public System.Threading.Tasks.Task<int> InsertUserRolesAsync(int userId, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList, int applicationId, int moduleId) {
             return base.Channel.InsertUserRolesAsync(userId, roleList, applicationId, moduleId);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User> GetUserList() {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.User> GetUserList() {
             return base.Channel.GetUserList();
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User>> GetUserListAsync() {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.User>> GetUserListAsync() {
             return base.Channel.GetUserListAsync();
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User> GetUserListByCraiteria(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.User> GetUserListByCraiteria(AIMS_DB_IATI.Web.AIMSSecurityService.User user) {
             return base.Channel.GetUserListByCraiteria(user);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User>> GetUserListByCraiteriaAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.User user) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.User>> GetUserListByCraiteriaAsync(AIMS_DB_IATI.Web.AIMSSecurityService.User user) {
             return base.Channel.GetUserListByCraiteriaAsync(user);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserRoleInfo> GetUserRole(int id) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.UserRoleInfo> GetUserRole(int id) {
             return base.Channel.GetUserRole(id);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserRoleInfo>> GetUserRoleAsync(int id) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.UserRoleInfo>> GetUserRoleAsync(int id) {
             return base.Channel.GetUserRoleAsync(id);
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.User GetUser(int id) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.User GetUser(int id) {
             return base.Channel.GetUser(id);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User> GetUserAsync(int id) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.User> GetUserAsync(int id) {
             return base.Channel.GetUserAsync(id);
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.User GetUserByLoginId(string loginId) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.User GetUserByLoginId(string loginId) {
             return base.Channel.GetUserByLoginId(loginId);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.User> GetUserByLoginIdAsync(string loginId) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.User> GetUserByLoginIdAsync(string loginId) {
             return base.Channel.GetUserByLoginIdAsync(loginId);
         }
         
-        public int CreateGroup(AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList) {
+        public int CreateGroup(AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList) {
             return base.Channel.CreateGroup(item, roleList);
         }
         
-        public System.Threading.Tasks.Task<int> CreateGroupAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList) {
+        public System.Threading.Tasks.Task<int> CreateGroupAsync(AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList) {
             return base.Channel.CreateGroupAsync(item, roleList);
         }
         
-        public int UpdateGroup(AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList) {
+        public int UpdateGroup(AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList) {
             return base.Channel.UpdateGroup(item, roleList);
         }
         
-        public System.Threading.Tasks.Task<int> UpdateGroupAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> roleList) {
+        public System.Threading.Tasks.Task<int> UpdateGroupAsync(AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup item, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> roleList) {
             return base.Channel.UpdateGroupAsync(item, roleList);
         }
         
@@ -2455,99 +2455,99 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
             return base.Channel.DeleteGroupAsync(id);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup> GetGroupList() {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup> GetGroupList() {
             return base.Channel.GetGroupList();
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup>> GetGroupListAsync() {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup>> GetGroupListAsync() {
             return base.Channel.GetGroupListAsync();
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup GetGroupById(int id) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup GetGroupById(int id) {
             return base.Channel.GetGroupById(id);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.UserGroup> GetGroupByIdAsync(int id) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.UserGroup> GetGroupByIdAsync(int id) {
             return base.Channel.GetGroupByIdAsync(id);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> GetRolesList() {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> GetRolesList() {
             return base.Channel.GetRolesList();
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role>> GetRolesListAsync() {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role>> GetRolesListAsync() {
             return base.Channel.GetRolesListAsync();
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> GetRolesListByCraiteria(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> GetRolesListByCraiteria(AIMS_DB_IATI.Web.AIMSSecurityService.Role role) {
             return base.Channel.GetRolesListByCraiteria(role);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role>> GetRolesListByCraiteriaAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role>> GetRolesListByCraiteriaAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Role role) {
             return base.Channel.GetRolesListByCraiteriaAsync(role);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup> GetRoleGroups() {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup> GetRoleGroups() {
             return base.Channel.GetRoleGroups();
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup>> GetRoleGroupsAsync() {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup>> GetRoleGroupsAsync() {
             return base.Channel.GetRoleGroupsAsync();
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> GetRolesListByUser(int userId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> GetRolesListByUser(int userId) {
             return base.Channel.GetRolesListByUser(userId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role>> GetRolesListByUserAsync(int userId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role>> GetRolesListByUserAsync(int userId) {
             return base.Channel.GetRolesListByUserAsync(userId);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> GetRolesListByUserGroup(int groupId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role> GetRolesListByUserGroup(int groupId) {
             return base.Channel.GetRolesListByUserGroup(groupId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role>> GetRolesListByUserGroupAsync(int groupId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Role>> GetRolesListByUserGroupAsync(int groupId) {
             return base.Channel.GetRolesListByUserGroupAsync(groupId);
         }
         
-        public int InsertRolesMenusRight(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> rightList) {
+        public int InsertRolesMenusRight(AIMS_DB_IATI.Web.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> rightList) {
             return base.Channel.InsertRolesMenusRight(role, menuList, rightList);
         }
         
-        public System.Threading.Tasks.Task<int> InsertRolesMenusRightAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> rightList) {
+        public System.Threading.Tasks.Task<int> InsertRolesMenusRightAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> rightList) {
             return base.Channel.InsertRolesMenusRightAsync(role, menuList, rightList);
         }
         
-        public int UpdateRolesMenusRight(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> rightList) {
+        public int UpdateRolesMenusRight(AIMS_DB_IATI.Web.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> rightList) {
             return base.Channel.UpdateRolesMenusRight(role, menuList, rightList);
         }
         
-        public System.Threading.Tasks.Task<int> UpdateRolesMenusRightAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> rightList) {
+        public System.Threading.Tasks.Task<int> UpdateRolesMenusRightAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Role role, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> menuList, System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> rightList) {
             return base.Channel.UpdateRolesMenusRightAsync(role, menuList, rightList);
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role GetRoleById(int id) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.Role GetRoleById(int id) {
             return base.Channel.GetRoleById(id);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Role> GetRoleByIdAsync(int id) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Role> GetRoleByIdAsync(int id) {
             return base.Channel.GetRoleByIdAsync(id);
         }
         
-        public int CreateRoleGroup(AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup item) {
+        public int CreateRoleGroup(AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup item) {
             return base.Channel.CreateRoleGroup(item);
         }
         
-        public System.Threading.Tasks.Task<int> CreateRoleGroupAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup item) {
+        public System.Threading.Tasks.Task<int> CreateRoleGroupAsync(AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup item) {
             return base.Channel.CreateRoleGroupAsync(item);
         }
         
-        public int UpdateRoleGroup(AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup item) {
+        public int UpdateRoleGroup(AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup item) {
             return base.Channel.UpdateRoleGroup(item);
         }
         
-        public System.Threading.Tasks.Task<int> UpdateRoleGroupAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup item) {
+        public System.Threading.Tasks.Task<int> UpdateRoleGroupAsync(AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup item) {
             return base.Channel.UpdateRoleGroupAsync(item);
         }
         
@@ -2559,27 +2559,27 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
             return base.Channel.DeleteRoleGroupAsync(Id);
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup GetRoleGroupById(int id) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup GetRoleGroupById(int id) {
             return base.Channel.GetRoleGroupById(id);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.RoleGroup> GetRoleGroupByIdAsync(int id) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.RoleGroup> GetRoleGroupByIdAsync(int id) {
             return base.Channel.GetRoleGroupByIdAsync(id);
         }
         
-        public int InsertMenuData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu menu) {
+        public int InsertMenuData(AIMS_DB_IATI.Web.AIMSSecurityService.Menu menu) {
             return base.Channel.InsertMenuData(menu);
         }
         
-        public System.Threading.Tasks.Task<int> InsertMenuDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu menu) {
+        public System.Threading.Tasks.Task<int> InsertMenuDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Menu menu) {
             return base.Channel.InsertMenuDataAsync(menu);
         }
         
-        public int UpdateMenuData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu menu) {
+        public int UpdateMenuData(AIMS_DB_IATI.Web.AIMSSecurityService.Menu menu) {
             return base.Channel.UpdateMenuData(menu);
         }
         
-        public System.Threading.Tasks.Task<int> UpdateMenuDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu menu) {
+        public System.Threading.Tasks.Task<int> UpdateMenuDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Menu menu) {
             return base.Channel.UpdateMenuDataAsync(menu);
         }
         
@@ -2591,131 +2591,131 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
             return base.Channel.DeleteMenuDataAsync(id);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetAllMenus() {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetAllMenus() {
             return base.Channel.GetAllMenus();
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetAllMenusAsync() {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetAllMenusAsync() {
             return base.Channel.GetAllMenusAsync();
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenusByParent(int parentId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenusByParent(int parentId) {
             return base.Channel.GetMenusByParent(parentId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetMenusByParentAsync(int parentId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetMenusByParentAsync(int parentId) {
             return base.Channel.GetMenusByParentAsync(parentId);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenuListByRoleId(int roleId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenuListByRoleId(int roleId) {
             return base.Channel.GetMenuListByRoleId(roleId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetMenuListByRoleIdAsync(int roleId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetMenuListByRoleIdAsync(int roleId) {
             return base.Channel.GetMenuListByRoleIdAsync(roleId);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetParentMenuListByLoginId(string loginId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetParentMenuListByLoginId(string loginId) {
             return base.Channel.GetParentMenuListByLoginId(loginId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetParentMenuListByLoginIdAsync(string loginId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetParentMenuListByLoginIdAsync(string loginId) {
             return base.Channel.GetParentMenuListByLoginIdAsync(loginId);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetChildMenuListByLoginAndParentId(string loginId, int parentId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetChildMenuListByLoginAndParentId(string loginId, int parentId) {
             return base.Channel.GetChildMenuListByLoginAndParentId(loginId, parentId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetChildMenuListByLoginAndParentIdAsync(string loginId, int parentId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetChildMenuListByLoginAndParentIdAsync(string loginId, int parentId) {
             return base.Channel.GetChildMenuListByLoginAndParentIdAsync(loginId, parentId);
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu GetMenuByMenuNameAndLoginId(string loginId, string MenuName) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.Menu GetMenuByMenuNameAndLoginId(string loginId, string MenuName) {
             return base.Channel.GetMenuByMenuNameAndLoginId(loginId, MenuName);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenuByMenuNameAndLoginIdAsync(string loginId, string MenuName) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenuByMenuNameAndLoginIdAsync(string loginId, string MenuName) {
             return base.Channel.GetMenuByMenuNameAndLoginIdAsync(loginId, MenuName);
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu GetMenuByMenuName(string MenuName) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.Menu GetMenuByMenuName(string MenuName) {
             return base.Channel.GetMenuByMenuName(MenuName);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenuByMenuNameAsync(string MenuName) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenuByMenuNameAsync(string MenuName) {
             return base.Channel.GetMenuByMenuNameAsync(MenuName);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenusByApplicationAndModuleId(int roleId, int applicationId, int moduleId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenusByApplicationAndModuleId(int roleId, int applicationId, int moduleId) {
             return base.Channel.GetMenusByApplicationAndModuleId(roleId, applicationId, moduleId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetMenusByApplicationAndModuleIdAsync(int roleId, int applicationId, int moduleId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetMenusByApplicationAndModuleIdAsync(int roleId, int applicationId, int moduleId) {
             return base.Channel.GetMenusByApplicationAndModuleIdAsync(roleId, applicationId, moduleId);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenusByApplicationAndModuleName(string appName, string modName) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenusByApplicationAndModuleName(string appName, string modName) {
             return base.Channel.GetMenusByApplicationAndModuleName(appName, modName);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetMenusByApplicationAndModuleNameAsync(string appName, string modName) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetMenusByApplicationAndModuleNameAsync(string appName, string modName) {
             return base.Channel.GetMenusByApplicationAndModuleNameAsync(appName, modName);
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu GetMenuByMenuId(int id) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.Menu GetMenuByMenuId(int id) {
             return base.Channel.GetMenuByMenuId(id);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenuByMenuIdAsync(int id) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenuByMenuIdAsync(int id) {
             return base.Channel.GetMenuByMenuIdAsync(id);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetMenus(string loginId, string appName, string moduleName) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetMenus(string loginId, string appName, string moduleName) {
             return base.Channel.GetMenus(loginId, appName, moduleName);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetMenusAsync(string loginId, string appName, string moduleName) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetMenusAsync(string loginId, string appName, string moduleName) {
             return base.Channel.GetMenusAsync(loginId, appName, moduleName);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu> GetParentMenus(int ModuleId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu> GetParentMenus(int ModuleId) {
             return base.Channel.GetParentMenus(ModuleId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Menu>> GetParentMenusAsync(int ModuleId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Menu>> GetParentMenusAsync(int ModuleId) {
             return base.Channel.GetParentMenusAsync(ModuleId);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> GetAllRights() {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> GetAllRights() {
             return base.Channel.GetAllRights();
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right>> GetAllRightsAsync() {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right>> GetAllRightsAsync() {
             return base.Channel.GetAllRightsAsync();
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> GetAllRightsMapedByRole(int roleId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> GetAllRightsMapedByRole(int roleId) {
             return base.Channel.GetAllRightsMapedByRole(roleId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right>> GetAllRightsMapedByRoleAsync(int roleId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right>> GetAllRightsMapedByRoleAsync(int roleId) {
             return base.Channel.GetAllRightsMapedByRoleAsync(roleId);
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right GetRightByLoginIdAndRightName(string loginId, string rightName) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.Right GetRightByLoginIdAndRightName(string loginId, string rightName) {
             return base.Channel.GetRightByLoginIdAndRightName(loginId, rightName);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> GetRightByLoginIdAndRightNameAsync(string loginId, string rightName) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Right> GetRightByLoginIdAndRightNameAsync(string loginId, string rightName) {
             return base.Channel.GetRightByLoginIdAndRightNameAsync(loginId, rightName);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right> GetRightsByRoleAndAppAndModule(int roleId, int appId, int moduleId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right> GetRightsByRoleAndAppAndModule(int roleId, int appId, int moduleId) {
             return base.Channel.GetRightsByRoleAndAppAndModule(roleId, appId, moduleId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Right>> GetRightsByRoleAndAppAndModuleAsync(int roleId, int appId, int moduleId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Right>> GetRightsByRoleAndAppAndModuleAsync(int roleId, int appId, int moduleId) {
             return base.Channel.GetRightsByRoleAndAppAndModuleAsync(roleId, appId, moduleId);
         }
         
@@ -2727,62 +2727,62 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
             return base.Channel.ValidateUserAsync(userId, password);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Company> GetCompanysByLoginId(string loginId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Company> GetCompanysByLoginId(string loginId) {
             return base.Channel.GetCompanysByLoginId(loginId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Company>> GetCompanysByLoginIdAsync(string loginId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Company>> GetCompanysByLoginIdAsync(string loginId) {
             return base.Channel.GetCompanysByLoginIdAsync(loginId);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Department> GetAllDepartment() {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Department> GetAllDepartment() {
             return base.Channel.GetAllDepartment();
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Department>> GetAllDepartmentAsync() {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Department>> GetAllDepartmentAsync() {
             return base.Channel.GetAllDepartmentAsync();
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee> GetEmployeesByApplicationId(int applicationId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee> GetEmployeesByApplicationId(int applicationId) {
             return base.Channel.GetEmployeesByApplicationId(applicationId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee>> GetEmployeesByApplicationIdAsync(int applicationId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee>> GetEmployeesByApplicationIdAsync(int applicationId) {
             return base.Channel.GetEmployeesByApplicationIdAsync(applicationId);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee> GetAllEmployee() {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee> GetAllEmployee() {
             return base.Channel.GetAllEmployee();
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee>> GetAllEmployeeAsync() {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee>> GetAllEmployeeAsync() {
             return base.Channel.GetAllEmployeeAsync();
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee> GetAllEmployeeWithPaging(int startRowIndex, int maxRows) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee> GetAllEmployeeWithPaging(int startRowIndex, int maxRows) {
             return base.Channel.GetAllEmployeeWithPaging(startRowIndex, maxRows);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee>> GetAllEmployeeWithPagingAsync(int startRowIndex, int maxRows) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee>> GetAllEmployeeWithPagingAsync(int startRowIndex, int maxRows) {
             return base.Channel.GetAllEmployeeWithPagingAsync(startRowIndex, maxRows);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingResponse AIMS_DB_IATI.WebAPI.AIMSSecurityService.IAIMSUserManagementService.GetSearchEmployeeWithPaging(AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingRequest request) {
+        AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingResponse AIMS_DB_IATI.Web.AIMSSecurityService.IAIMSUserManagementService.GetSearchEmployeeWithPaging(AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingRequest request) {
             return base.Channel.GetSearchEmployeeWithPaging(request);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee> GetSearchEmployeeWithPaging(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Employee obj, int startRowIndex, int maxRows, out int intTotalRows) {
-            AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingRequest inValue = new AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingRequest();
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Employee> GetSearchEmployeeWithPaging(AIMS_DB_IATI.Web.AIMSSecurityService.Employee obj, int startRowIndex, int maxRows, out int intTotalRows) {
+            AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingRequest inValue = new AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingRequest();
             inValue.obj = obj;
             inValue.startRowIndex = startRowIndex;
             inValue.maxRows = maxRows;
-            AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingResponse retVal = ((AIMS_DB_IATI.WebAPI.AIMSSecurityService.IAIMSUserManagementService)(this)).GetSearchEmployeeWithPaging(inValue);
+            AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingResponse retVal = ((AIMS_DB_IATI.Web.AIMSSecurityService.IAIMSUserManagementService)(this)).GetSearchEmployeeWithPaging(inValue);
             intTotalRows = retVal.intTotalRows;
             return retVal.GetSearchEmployeeWithPagingResult;
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingResponse> GetSearchEmployeeWithPagingAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.GetSearchEmployeeWithPagingRequest request) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingResponse> GetSearchEmployeeWithPagingAsync(AIMS_DB_IATI.Web.AIMSSecurityService.GetSearchEmployeeWithPagingRequest request) {
             return base.Channel.GetSearchEmployeeWithPagingAsync(request);
         }
         
@@ -2794,35 +2794,35 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
             return base.Channel.GetTotalEmployeeCountAsync();
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application> GetAllApplications() {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Application> GetAllApplications() {
             return base.Channel.GetAllApplications();
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application>> GetAllApplicationsAsync() {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Application>> GetAllApplicationsAsync() {
             return base.Channel.GetAllApplicationsAsync();
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application GetApplicationById(int id) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.Application GetApplicationById(int id) {
             return base.Channel.GetApplicationById(id);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application> GetApplicationByIdAsync(int id) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Application> GetApplicationByIdAsync(int id) {
             return base.Channel.GetApplicationByIdAsync(id);
         }
         
-        public int InsertApplicationData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application app) {
+        public int InsertApplicationData(AIMS_DB_IATI.Web.AIMSSecurityService.Application app) {
             return base.Channel.InsertApplicationData(app);
         }
         
-        public System.Threading.Tasks.Task<int> InsertApplicationDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application app) {
+        public System.Threading.Tasks.Task<int> InsertApplicationDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Application app) {
             return base.Channel.InsertApplicationDataAsync(app);
         }
         
-        public int UpdateApplicationData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application app) {
+        public int UpdateApplicationData(AIMS_DB_IATI.Web.AIMSSecurityService.Application app) {
             return base.Channel.UpdateApplicationData(app);
         }
         
-        public System.Threading.Tasks.Task<int> UpdateApplicationDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Application app) {
+        public System.Threading.Tasks.Task<int> UpdateApplicationDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Application app) {
             return base.Channel.UpdateApplicationDataAsync(app);
         }
         
@@ -2834,43 +2834,43 @@ namespace AIMS_DB_IATI.WebAPI.AIMSSecurityService {
             return base.Channel.DeleteApplicationDataAsync(id);
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module> GetAllModules() {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Module> GetAllModules() {
             return base.Channel.GetAllModules();
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module>> GetAllModulesAsync() {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Module>> GetAllModulesAsync() {
             return base.Channel.GetAllModulesAsync();
         }
         
-        public System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module> GetModulesByApplicationId(int appId) {
+        public System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Module> GetModulesByApplicationId(int appId) {
             return base.Channel.GetModulesByApplicationId(appId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module>> GetModulesByApplicationIdAsync(int appId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<AIMS_DB_IATI.Web.AIMSSecurityService.Module>> GetModulesByApplicationIdAsync(int appId) {
             return base.Channel.GetModulesByApplicationIdAsync(appId);
         }
         
-        public AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module GetModuleById(int id) {
+        public AIMS_DB_IATI.Web.AIMSSecurityService.Module GetModuleById(int id) {
             return base.Channel.GetModuleById(id);
         }
         
-        public System.Threading.Tasks.Task<AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module> GetModuleByIdAsync(int id) {
+        public System.Threading.Tasks.Task<AIMS_DB_IATI.Web.AIMSSecurityService.Module> GetModuleByIdAsync(int id) {
             return base.Channel.GetModuleByIdAsync(id);
         }
         
-        public int InsertModuleData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module module) {
+        public int InsertModuleData(AIMS_DB_IATI.Web.AIMSSecurityService.Module module) {
             return base.Channel.InsertModuleData(module);
         }
         
-        public System.Threading.Tasks.Task<int> InsertModuleDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module module) {
+        public System.Threading.Tasks.Task<int> InsertModuleDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Module module) {
             return base.Channel.InsertModuleDataAsync(module);
         }
         
-        public int UpdateModuleData(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module module) {
+        public int UpdateModuleData(AIMS_DB_IATI.Web.AIMSSecurityService.Module module) {
             return base.Channel.UpdateModuleData(module);
         }
         
-        public System.Threading.Tasks.Task<int> UpdateModuleDataAsync(AIMS_DB_IATI.WebAPI.AIMSSecurityService.Module module) {
+        public System.Threading.Tasks.Task<int> UpdateModuleDataAsync(AIMS_DB_IATI.Web.AIMSSecurityService.Module module) {
             return base.Channel.UpdateModuleDataAsync(module);
         }
         

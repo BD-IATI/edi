@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace AIMS_BD_IATI.WebAPIAPI.Controllers
+namespace AIMS_BD_IATI.Web.Controllers
 {
     [Authorize]
     public class SecureDataController : ApiController

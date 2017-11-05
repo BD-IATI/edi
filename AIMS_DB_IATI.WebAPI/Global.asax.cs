@@ -1,4 +1,5 @@
 ﻿using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+using AIMS_BD_IATI.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -7,17 +8,23 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.SessionState;
 using System.Xml.Serialization;
 
-namespace AIMS_BD_IATI.WebAPIAPI
+namespace AIMS_BD_IATI.Web
 {
-    public class WebApiApplication : System.Web.HttpApplication
+    public class WebApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
         {
+            AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            //BundleConfig.RegisterBundles(BundleTable.Bundles);
+
 
             //JSON Media-Type Formatter ref: http://www.asp.net/web-api/overview/formats-and-model-binding/json-and-xml-serialization
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DynamicContractResolver(); //DefaultContractResolver
