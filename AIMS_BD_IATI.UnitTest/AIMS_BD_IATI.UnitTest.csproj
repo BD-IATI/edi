@@ -70,9 +70,9 @@
       <Project>{eb82e9d6-c868-4155-8d20-5127c8ab1d1e}</Project>
       <Name>AIMS_BD_IATI.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AIMS_DB_IATI.WebAPI\AIMS_BD_IATI.WebAPI.csproj">
+    <ProjectReference Include="..\AIMS_DB_IATI.WebAPI\AIMS_BD_IATI.Web.csproj">
       <Project>{7ded54c5-0325-48ba-9908-f51b485eb0ef}</Project>
-      <Name>AIMS_BD_IATI.WebAPI</Name>
+      <Name>AIMS_BD_IATI.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
