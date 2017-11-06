@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AIMS_BD_IATI.UnitTest
+namespace AIMS_BD_IATI.Test
 {
     [TestClass]
     public class SerializableTest

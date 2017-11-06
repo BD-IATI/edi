@@ -47,6 +47,7 @@
     <Content Include="App\1Hierarchy\1HierarchyView.html" />
     <Content Include="App\2FilterBD\2FilterBDView.html" />
     <Content Include="App\3FilterDP\3FilterDPView.html" />
+    <TypeScriptCompile Include="app.ts.d.ts" />
     <TypeScriptCompile Include="App\4Projects\4ProjectsController.ts" />
     <Content Include="App\4Projects\4ProjectsView.html" />
     <TypeScriptCompile Include="App\5Match\5MatchController.ts" />

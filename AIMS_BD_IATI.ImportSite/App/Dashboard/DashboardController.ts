@@ -1,4 +1,4 @@
-﻿/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
+﻿/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../iatiimportapp.ts" />
 
 angular.module('iatiDataImporter').controller("DashboardController", function ($rootScope, $scope, $http, $uibModal, $timeout) {

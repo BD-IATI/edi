@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.Service", "AIMS_BD_IATI.Service\AIMS_BD_IATI.Service.csproj", "{3987F7B9-A726-4F6E-BE2E-A6ADB53A5E61}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.DAL", "AIMS_BD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.WebAPI", "AIMS_DB_IATI.WebAPI\AIMS_BD_IATI.WebAPI.csproj", "{7DED54C5-0325-48BA-9908-F51B485EB0EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.UnitTest", "AIMS_BD_IATI.UnitTest\AIMS_BD_IATI.UnitTest.csproj", "{D5754AE2-6884-41C4-9434-C31FD6730DFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.Test", "AIMS_BD_IATI.UnitTest\AIMS_BD_IATI.Test.csproj", "{D5754AE2-6884-41C4-9434-C31FD6730DFC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIMS_BD_IATI.ImportSite", "AIMS_BD_IATI.ImportSite\AIMS_BD_IATI.ImportSite.csproj", "{353BBB51-0272-4B64-B31B-76184EBDDB66}"
 EndProject
@@ -42,5 +42,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {157DE976-F2F3-4D0E-A0DB-E5661AB11F68}
 	EndGlobalSection
 EndGlobal

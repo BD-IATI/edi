@@ -1,5 +1,5 @@
 ﻿/// <reference path="../IatiImportApp.ts" />
-/// <reference path="../../authentication/definitions.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 
 
 

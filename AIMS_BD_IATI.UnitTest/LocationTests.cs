@@ -5,7 +5,7 @@ using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace AIMS_BD_IATI.UnitTest
+namespace AIMS_BD_IATI.Test
 {
     [TestClass]
     public class LocationTests

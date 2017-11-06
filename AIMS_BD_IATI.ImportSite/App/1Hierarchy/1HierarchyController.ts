@@ -1,6 +1,6 @@
-﻿/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
+﻿/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
-/// <reference path="../../authentication/definitions.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 
 angular.module('iatiDataImporter').controller("1HierarchyController", function ($rootScope : RootScopeModel, $scope, $http, $timeout) {
     //$rootScope.hierarchyModel = null;

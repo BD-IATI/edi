@@ -107,7 +107,7 @@ iatiDataImporterApp.directive('navigationOtherDp', function ($rootScope, $locati
     };
 });
 /// <reference path="../IatiImportApp.ts" />
-/// <reference path="../../authentication/definitions.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 angular.module('iatiDataImporter').controller("0BeginController", function ($rootScope, $scope, $http, $timeout) {
     //$('#divView').slimScroll({ scrollTo: '0px' });
     $rootScope.models = {
@@ -133,9 +133,9 @@ angular.module('iatiDataImporter').controller("0BeginController", function ($roo
         });
     });
 });
-/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
-/// <reference path="../../authentication/definitions.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 angular.module('iatiDataImporter').controller("1HierarchyController", function ($rootScope, $scope, $http, $timeout) {
     //$rootScope.hierarchyModel = null;
     //$rootScope.HasChildActivity = false;
@@ -175,7 +175,7 @@ angular.module('iatiDataImporter').controller("1HierarchyController", function (
         });
     };
 });
-/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope, $scope, $http, $timeout) {
     ////$('#divView').slimScroll({ scrollTo: '0px' });
@@ -239,8 +239,8 @@ angular.module('iatiDataImporter').controller("2FilterBDController", function ($
         }
     };
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("3FilterDPController", function ($rootScope, $scope, $http, $timeout, $filter, $uibModal) {
     //$('#divView').slimScroll({ scrollTo: '0px' });
@@ -444,8 +444,8 @@ angular.module('iatiDataImporter').controller("AddNewImplementingOrgController",
         $uibModalInstance.close(Org);
     };
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("4ProjectsController", function ($rootScope, $scope, $http, $timeout) {
     //$('#divView').slimScroll({ scrollTo: '0px' });
@@ -487,8 +487,8 @@ angular.module('iatiDataImporter').controller("4ProjectsController", function ($
         });
     };
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("5MatchController", function ($rootScope, $scope, $http, $timeout) {
     $scope.models = $rootScope.models;
@@ -511,8 +511,8 @@ angular.module('iatiDataImporter').controller("5MatchController", function ($roo
         }
     };
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/Authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("6GeneralPreferencesController", function ($rootScope, $scope, $http, $timeout, $uibModalInstance) {
     $rootScope.GeneralPreference = {};
@@ -569,8 +569,8 @@ angular.module('iatiDataImporter').controller("6GeneralPreferencesController", f
         });
     };
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/Authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("7ReviewAdjustmentController", function ($rootScope, $scope, $http, $uibModal, $timeout) {
     //$('#divView').slimScroll({ scrollTo: '0px' });
@@ -662,8 +662,8 @@ angular.module('iatiDataImporter').controller("7ReviewAdjustmentController", fun
         });
     };
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/Authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("8ProjectSpecificAdjustmentController", function ($rootScope, $timeout, $uibModalInstance, $scope, $http, MatchedProject) {
     $scope.model = MatchedProject;
@@ -693,8 +693,8 @@ angular.module('iatiDataImporter').controller("8ProjectSpecificAdjustmentControl
         $uibModalInstance.dismiss('cancel');
     };
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/Authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("9CofinancingController", function ($rootScope, $timeout, $scope, $http, $uibModalInstance, model) {
     $scope.AssignedActivities = $rootScope.AssignedActivities;
@@ -746,8 +746,8 @@ angular.module('iatiDataImporter').controller("9CofinancingController", function
         }
     };
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("9OtherDPsActivitiesController", function ($rootScope, $timeout, $scope, $http, $uibModal, $filter) {
     $rootScope.IsImportFromOtherDP = true;
@@ -785,8 +785,8 @@ angular.module('iatiDataImporter').controller("9OtherDPsActivitiesController", f
         //});
     };
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("9TFnCFController", function ($rootScope, $uibModalInstance, $timeout, $scope, $http, Activity, Project) {
     $scope.Activity = Activity;
@@ -805,7 +805,7 @@ angular.module('iatiDataImporter').controller("9TFnCFController", function ($roo
         $uibModalInstance.dismiss('cancel');
     };
 });
-/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../iatiimportapp.ts" />
 angular.module('iatiDataImporter').controller("DashboardController", function ($rootScope, $scope, $http, $uibModal, $timeout) {
     $http({
@@ -949,13 +949,13 @@ angular.module('iatiDataImporter').filter('sumByKey', function () {
         return sum;
     };
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("FinishImportController", function ($rootScope, $scope, $http, $timeout) {
 });
-/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 angular.module('iatiDataImporter').controller("MergeConflictAlertController", function ($rootScope, $timeout, $uibModalInstance, $scope, $http, log) {
     $scope.ActionType = '';

@@ -1,4 +1,4 @@
-﻿/// <reference path="../../../scripts/typings/angularjs/angular.d.ts" />
+﻿/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 
 angular.module('iatiDataImporter').controller("2FilterBDController", function ($rootScope: RootScopeModel, $scope, $http, $timeout) {

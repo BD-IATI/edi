@@ -1,5 +1,5 @@
-﻿/// <reference path="../../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Authentication/definitions.d.ts" />
+﻿/// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../Modules/Authentication/definitions.d.ts" />
 /// <reference path="../IatiImportApp.ts" />
 
 

@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AIMS_BD_IATI.Library;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using System.Collections.Generic;
-namespace AIMS_BD_IATI.UnitTest
+namespace AIMS_BD_IATI.Test
 {
     [TestClass]
     public class NullCheckerTest
