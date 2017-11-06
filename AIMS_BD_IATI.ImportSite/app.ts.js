@@ -1,19 +1,19 @@
-﻿/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
+﻿/// <reference path="../scripts/typings/angularjs/angular.d.ts" />
 var apiprefix = '../../../IATIImport';
 var iatiDataImporterApp = angular.module('iatiDataImporter', ['Authentication', 'ngCookies', 'ngRoute', 'dndLists', 'ngLoadingSpinner', 'smart-table', 'ngAnimate', 'ui.bootstrap', 'angular.filter']);
 iatiDataImporterApp.config(function ($routeProvider) {
     $routeProvider
         .when('/login', {
         controller: 'LoginController',
-        templateUrl: '../Authentication/LoginView.html'
+        templateUrl: 'Modules/Authentication/LoginView.html'
     })
         .when('/restart', {
         controller: 'DashboardController',
-        templateUrl: 'Dashboard/DashboardView.html'
+        templateUrl: 'Modules/Dashboard/DashboardView.html'
     })
         .when('/:name*', {
         templateUrl: function (params) {
-            return params.name + '/' + params.name + 'View.html';
+            return 'App/' + params.name + '/' + params.name + 'View.html';
         }
     })
         .otherwise({ redirectTo: '/login' });

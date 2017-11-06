@@ -17,6 +17,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -38,45 +39,45 @@
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Home.html" />
-    <Content Include="index.html" />
+    <Content Include="index_.html" />
     <Content Include="Modules\Authentication\AuthenticationServices.js" />
     <Content Include="Modules\Authentication\LoginController.js" />
     <Content Include="Modules\Authentication\LoginView.html" />
-    <Content Include="Modules\IATIImport\0Begin\0BeginView.html" />
-    <Content Include="Modules\IATIImport\1Hierarchy\1HierarchyView.html" />
-    <Content Include="Modules\IATIImport\2FilterBD\2FilterBDView.html" />
-    <Content Include="Modules\IATIImport\3FilterDP\3FilterDPView.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\4Projects\4ProjectsController.ts" />
-    <Content Include="Modules\IATIImport\4Projects\4ProjectsView.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\5Match\5MatchController.ts" />
-    <Content Include="Modules\IATIImport\5Match\5MatchView.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\6GeneralPreferences\6GeneralPreferencesController.ts" />
-    <Content Include="Modules\IATIImport\6GeneralPreferences\6GeneralPreferencesView.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\7ReviewAdjustment\7ReviewAdjustmentController.ts" />
-    <Content Include="Modules\IATIImport\7ReviewAdjustment\7ReviewAdjustmentView.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\8ProjectSpecificAdjustment\8ProjectSpecificAdjustmentController.ts" />
-    <Content Include="Modules\IATIImport\7ReviewAdjustment\commitmentvsdisbursmentchart.js" />
-    <Content Include="Modules\IATIImport\8ProjectSpecificAdjustment\8ProjectSpecificAdjustmentView.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\9Cofinancing\9CofinancingController.ts" />
-    <Content Include="Modules\IATIImport\9Cofinancing\9CofinancingView.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\9OtherDPsActivities\9OtherDPsActivitiesController.ts" />
-    <Content Include="Modules\IATIImport\9OtherDPsActivities\9OtherDPsActivitiesView.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\9TFnCF\9TFnCFController.ts" />
-    <Content Include="Modules\IATIImport\9TFnCF\9TFnCFView.html" />
-    <Content Include="Modules\IATIImport\Dashboard\CofinancingModal.html" />
-    <Content Include="Modules\IATIImport\Dashboard\DashboardView.html" />
-    <Content Include="Modules\IATIImport\Dashboard\ImportPreferenceModal.html" />
-    <Content Include="Modules\IATIImport\Dashboard\TrustFundModal.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\FinishImport\FinishImportController.ts" />
-    <Content Include="Modules\IATIImport\FinishImport\FinishImportView.html" />
-    <Content Include="Modules\IATIImport\IATIImportIndex.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\MergeConflictAlert\MergeConflictAlertController.ts" />
-    <Content Include="Modules\IATIImport\MergeConflictAlert\MergeConflictAlertView.html" />
-    <Content Include="Modules\IATIImport\Templates\CofinancingTemplete.html" />
-    <Content Include="Modules\IATIImport\Templates\FieldMappingTemplete.html" />
-    <Content Include="Modules\IATIImport\Templates\TrustFundTemplete.html" />
-    <TypeScriptCompile Include="Modules\IATIImport\Transaction\TransactionController.ts" />
-    <Content Include="Modules\IATIImport\Transaction\TransactionView.html" />
+    <Content Include="App\0Begin\0BeginView.html" />
+    <Content Include="App\1Hierarchy\1HierarchyView.html" />
+    <Content Include="App\2FilterBD\2FilterBDView.html" />
+    <Content Include="App\3FilterDP\3FilterDPView.html" />
+    <TypeScriptCompile Include="App\4Projects\4ProjectsController.ts" />
+    <Content Include="App\4Projects\4ProjectsView.html" />
+    <TypeScriptCompile Include="App\5Match\5MatchController.ts" />
+    <Content Include="App\5Match\5MatchView.html" />
+    <TypeScriptCompile Include="App\6GeneralPreferences\6GeneralPreferencesController.ts" />
+    <Content Include="App\6GeneralPreferences\6GeneralPreferencesView.html" />
+    <TypeScriptCompile Include="App\7ReviewAdjustment\7ReviewAdjustmentController.ts" />
+    <Content Include="App\7ReviewAdjustment\7ReviewAdjustmentView.html" />
+    <TypeScriptCompile Include="App\8ProjectSpecificAdjustment\8ProjectSpecificAdjustmentController.ts" />
+    <Content Include="App\7ReviewAdjustment\commitmentvsdisbursmentchart.js" />
+    <Content Include="App\8ProjectSpecificAdjustment\8ProjectSpecificAdjustmentView.html" />
+    <TypeScriptCompile Include="App\9Cofinancing\9CofinancingController.ts" />
+    <Content Include="App\9Cofinancing\9CofinancingView.html" />
+    <TypeScriptCompile Include="App\9OtherDPsActivities\9OtherDPsActivitiesController.ts" />
+    <Content Include="App\9OtherDPsActivities\9OtherDPsActivitiesView.html" />
+    <TypeScriptCompile Include="App\9TFnCF\9TFnCFController.ts" />
+    <Content Include="App\9TFnCF\9TFnCFView.html" />
+    <Content Include="App\Dashboard\CofinancingModal.html" />
+    <Content Include="App\Dashboard\DashboardView.html" />
+    <Content Include="App\Dashboard\ImportPreferenceModal.html" />
+    <Content Include="App\Dashboard\TrustFundModal.html" />
+    <TypeScriptCompile Include="App\FinishImport\FinishImportController.ts" />
+    <Content Include="App\FinishImport\FinishImportView.html" />
+    <Content Include="Index.html" />
+    <TypeScriptCompile Include="App\MergeConflictAlert\MergeConflictAlertController.ts" />
+    <Content Include="App\MergeConflictAlert\MergeConflictAlertView.html" />
+    <Content Include="App\Templates\CofinancingTemplete.html" />
+    <Content Include="App\Templates\FieldMappingTemplete.html" />
+    <Content Include="App\Templates\TrustFundTemplete.html" />
+    <TypeScriptCompile Include="App\Transaction\TransactionController.ts" />
+    <Content Include="App\Transaction\TransactionView.html" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
@@ -162,12 +163,12 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Modules\Authentication\definitions.d.ts" />
-    <TypeScriptCompile Include="Modules\IATIImport\0Begin\0BeginController.ts" />
-    <TypeScriptCompile Include="Modules\IATIImport\1Hierarchy\1HierarchyController.ts" />
-    <TypeScriptCompile Include="Modules\IATIImport\2FilterBD\2FilterBDController.ts" />
-    <TypeScriptCompile Include="Modules\IATIImport\3FilterDP\3FilterDPController.ts" />
-    <TypeScriptCompile Include="Modules\IATIImport\Dashboard\DashboardController.ts" />
-    <TypeScriptCompile Include="Modules\IATIImport\IATIImportApp.ts" />
+    <TypeScriptCompile Include="App\0Begin\0BeginController.ts" />
+    <TypeScriptCompile Include="App\1Hierarchy\1HierarchyController.ts" />
+    <TypeScriptCompile Include="App\2FilterBD\2FilterBDController.ts" />
+    <TypeScriptCompile Include="App\3FilterDP\3FilterDPController.ts" />
+    <TypeScriptCompile Include="App\Dashboard\DashboardController.ts" />
+    <TypeScriptCompile Include="App\IATIImportApp.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-component-router.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
