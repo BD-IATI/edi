@@ -17,12 +17,12 @@ namespace AIMS_BD_IATI.Test
     public class SeleniumBase
     {
         public RemoteWebDriver driver;
-        private StringBuilder verificationErrors;
+        public StringBuilder verificationErrors;
         //private string baseURL;
-        private bool acceptNextAlert = true;
+        public bool acceptNextAlert = true;
 
-        IOptions opt;
-        ITimeouts timeouts;
+        public IOptions opt;
+        public ITimeouts timeouts;
         public WebDriverWait wait;
 
         //public TestContext TestContext { get; set; }

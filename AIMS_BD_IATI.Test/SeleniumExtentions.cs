@@ -13,9 +13,16 @@ namespace AIMS_BD_IATI.Test
     {
         static string baseURL = "http://localhost/IATIImportSite/";
 
-        public static void FillText(this RemoteWebDriver d, string fieldName, string value)
+        public static void FillTextByName(this RemoteWebDriver d, string inputName, string value)
         {
-            var element = d.FindElementByName(fieldName);
+            var element = d.FindElementByName(inputName);
+            element.Clear();
+            element.SendKeys(value);
+        }
+
+        public static void FillTextById(this RemoteWebDriver d, string inputId, string value)
+        {
+            var element = d.FindElementById(inputId);
             element.Clear();
             element.SendKeys(value);
         }
@@ -39,15 +46,7 @@ namespace AIMS_BD_IATI.Test
         {
             d.Navigate().GoToUrl(baseURL + urlWithoutBase);
         }
-
-        public static void ClickMainGridAddButton(this RemoteWebDriver d)
-        {
-            d.FindElementByClassName("add-button").Click();
-        }
-        public static void ClickButton(this RemoteWebDriver d, string caption)
-        {
-            d.FindElementByClassName(caption).Click();
-        }
+        
     }
 }
 
