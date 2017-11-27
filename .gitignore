@@ -160,3 +160,6 @@ $RECYCLE.BIN/
 /AIMS_DB_IATI.WebAPI/App_Data/IATIDB
 /AIMS_DB_IATI.WebAPI/App_Data/SessionDB
 /AIMS_DB_IATI.WebAPI/CompiledIndexCache
+/AIMS_BD_IATI.ImportSite/app.ts.js.map
+/AIMS_BD_IATI.ImportSite/app.ts.js
+/AIMS_BD_IATI.ImportSite/app.ts.d.ts
