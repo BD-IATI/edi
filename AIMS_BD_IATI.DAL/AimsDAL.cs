@@ -1799,7 +1799,7 @@ namespace AIMS_BD_IATI.DAL
                         TAKA_PER_DOLLAR = e.TAKA_PER_CURRENCY.Value / e.DOLLAR_PER_CURRENCY.Value
                     });
                 }
-                catch (Exception ex) { }
+                catch (Exception) { }
             }
 
 

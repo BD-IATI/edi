@@ -166,7 +166,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                         bdPercent = (BDCommitmentAmount / (BDCommitmentAmount + NotBDCommitmentAmount)) * 100;
 
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         bdPercent = 100;
                     }
