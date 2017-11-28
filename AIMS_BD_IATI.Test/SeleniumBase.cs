@@ -11,6 +11,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 using OpenQA.Selenium.Firefox;
+using TechTalk.SpecFlow;
 
 namespace AIMS_BD_IATI.Test
 {
@@ -27,11 +28,10 @@ namespace AIMS_BD_IATI.Test
 
         //public TestContext TestContext { get; set; }
 
-        //[SetUp]
+        [Before]
         public void SetupTest()
         {
             //baseURL = "http://localhost:53013/";
-            verificationErrors = new StringBuilder();
 
             driver = new ChromeDriver();
             //d.Manage().Window.Maximize();
@@ -40,12 +40,9 @@ namespace AIMS_BD_IATI.Test
             timeouts.ImplicitWait = TimeSpan.FromSeconds(10);
 
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-
-            Login();
-
         }
 
-        //[TearDown]
+        [After]
         public void TeardownTest()
         {
             try
@@ -56,28 +53,7 @@ namespace AIMS_BD_IATI.Test
             {
                 // Ignore errors if unable to close the browser
             }
-            Assert.Equal("", verificationErrors.ToString());
         }
-
-        public void Login()
-        {
-
-            driver.GoToUrl("Account/Login");
-
-            //driver.FillText(nameof(LoginRequest.Username), "admin");
-            //driver.FillText(nameof(LoginRequest.Password), "12345678");
-
-            driver.Keyboard.PressKey(Keys.Enter);
-
-            wait.Until(ExpectedConditions.TitleContains("Dashboard"));
-
-
-        }
-
-
-
-
-
 
 
         private bool IsElementPresent(By by)

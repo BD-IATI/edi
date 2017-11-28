@@ -38,7 +38,6 @@
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Home.html" />
-    <Content Include="index_.html" />
     <Content Include="Modules\Authentication\AuthenticationServices.js" />
     <Content Include="Modules\Authentication\LoginController.js" />
     <Content Include="Modules\Authentication\LoginView.html" />

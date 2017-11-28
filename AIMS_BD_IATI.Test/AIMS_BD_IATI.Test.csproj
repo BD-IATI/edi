@@ -87,13 +87,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Features\SpecFlowFeature1.feature.cs">
+    <Compile Include="SeleniumBase.cs" />
+    <Compile Include="Features\LoginLogoutFeature.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SpecFlowFeature1.feature</DependentUpon>
+      <DependentUpon>LoginLogoutFeature.feature</DependentUpon>
     </Compile>
-    <Compile Include="Features\SpecFlowFeature1Steps.cs" />
+    <Compile Include="Features\LoginLogoutFeatureSteps.cs" />
     <Compile Include="SeleniumExtentions.cs" />
     <Compile Include="UnitTests\NullCheckerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,9 +112,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Features\SpecFlowFeature1.feature">
+    <None Include="Features\LoginLogoutFeature.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SpecFlowFeature1.feature.cs</LastGenOutput>
+      <LastGenOutput>LoginLogoutFeature.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

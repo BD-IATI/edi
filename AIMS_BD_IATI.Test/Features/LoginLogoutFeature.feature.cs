@@ -17,17 +17,17 @@ namespace AIMS_BD_IATI.Test.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.2.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class SpecFlowFeature1Feature : Xunit.IClassFixture<SpecFlowFeature1Feature.FixtureData>, System.IDisposable
+    public partial class LogInLogOutFeature : Xunit.IClassFixture<LogInLogOutFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "SpecFlowFeature1.feature"
+#line 1 "LoginLogoutFeature.feature"
 #line hidden
         
-        public SpecFlowFeature1Feature(SpecFlowFeature1Feature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public LogInLogOutFeature(LogInLogOutFeature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -36,8 +36,7 @@ namespace AIMS_BD_IATI.Test.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SpecFlowFeature1", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
-                    "f two numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Log in / Log out", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -73,43 +72,45 @@ namespace AIMS_BD_IATI.Test.Features
         }
         
         [Xunit.FactAttribute(DisplayName="Login/Logout")]
-        [Xunit.TraitAttribute("FeatureTitle", "SpecFlowFeature1")]
+        [Xunit.TraitAttribute("FeatureTitle", "Log in / Log out")]
         [Xunit.TraitAttribute("Description", "Login/Logout")]
-        [Xunit.TraitAttribute("Category", "mytag")]
+        [Xunit.TraitAttribute("Category", "web")]
         public virtual void LoginLogout()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login/Logout", new string[] {
-                        "mytag"});
-#line 7
+                        "web"});
+#line 4
 this.ScenarioSetup(scenarioInfo);
-#line 8
+#line 5
  testRunner.Given("open a browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
+#line 6
  testRunner.And("goto http://localhost/IATIImportSite", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
+#line 7
  testRunner.And("input UserName = \"admin\", password = \"123456\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
+#line 8
  testRunner.And("click login button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
+#line 9
  testRunner.Then("the DP selection page should appear", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Xunit.FactAttribute(DisplayName="Logout")]
-        [Xunit.TraitAttribute("FeatureTitle", "SpecFlowFeature1")]
+        [Xunit.TraitAttribute("FeatureTitle", "Log in / Log out")]
         [Xunit.TraitAttribute("Description", "Logout")]
         public virtual void Logout()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Logout", ((string[])(null)));
-#line 14
+#line 11
 this.ScenarioSetup(scenarioInfo);
-#line 15
+#line 12
  testRunner.Given("loggen in browser window", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 16
- testRunner.And("click login button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
- testRunner.Then("the DP selection page should appear", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 13
+ testRunner.When("click on user button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 14
+ testRunner.And("click on logout button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
+ testRunner.Then("the login page should appear", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -121,12 +122,12 @@ this.ScenarioSetup(scenarioInfo);
             
             public FixtureData()
             {
-                SpecFlowFeature1Feature.FeatureSetup();
+                LogInLogOutFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                SpecFlowFeature1Feature.FeatureTearDown();
+                LogInLogOutFeature.FeatureTearDown();
             }
         }
     }

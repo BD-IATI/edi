@@ -8,15 +8,7 @@ namespace AIMS_BD_IATI.Test
     [TestClass]
     public class NullCheckerTest
     {
-        [TestMethod]
-        public void nnn()
-        {
-            activitydate e = null;
-            int? a = null;
 
-
-            Assert.AreEqual(e, a);
-        }
         [TestMethod]
         public void ReturnTheObjFromSpecifiedPositionOfAnArray()
         {
