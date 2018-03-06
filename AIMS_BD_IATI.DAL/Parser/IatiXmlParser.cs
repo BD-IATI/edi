@@ -11,27 +11,28 @@ using System.Xml.Serialization;
 
 namespace AIMS_BD_IATI.Library.Parser
 {
-    public class IatiXmlParser {
+    public class IatiXmlParser
+    {
         static XmlSerializer iatiactivitySerealizer = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity), new XmlRootAttribute("iati-activity"));
-
+        public string Message { get; set; }
         /// <summary>
         /// Download the XML from IATI datastore, parse xml then save to DB
         /// </summary>
         /// <param name="fundSourcesCount"></param>
-        /// <param name="i">used for notifying user. i out of total number of projects</param>
+        /// <param name="counter">used for notifying user. i out of total number of projects</param>
         /// <param name="fundSource"></param>
         /// <param name="URL"></param>
-        public void Parse(int fundSourcesCount, int i, tblFundSource fundSource, string URL = null) {
-
-
+        public string Parse(tblFundSource fundSource, int fundSourcesCount = 1, int counter = 1, string URL = null)
+        {
 
             IParserIATI parserIATI;
             string activitiesURL;
             XmlResultv2 returnResult2;
             XmlResultv1 returnResult1;
-            try {
+            try
+            {
                 Logger.Write("");
-                Logger.Write(i + "/" + fundSourcesCount + " " + fundSource.FundSourceName + " (" + fundSource.IATICode + ")");
+                Logger.Write(counter + "/" + fundSourcesCount + " " + fundSource.FundSourceName + " (" + fundSource.IATICode + ")");
                 Logger.Write("-------------------->");
                 Logger.Write("INFO: Downloading...");
 
@@ -70,13 +71,18 @@ namespace AIMS_BD_IATI.Library.Parser
                 #endregion
 
                 iatiactivityArray = returnResult2?.iatiactivities?.iatiactivity;
-                if (iatiactivityArray != null) {
+                if (iatiactivityArray != null)
+                {
                     SaveToDB(fundSource, iatiactivityArray);
                 }
-            } catch (DbEntityValidationException ex) {
+            }
+            catch (DbEntityValidationException ex)
+            {
                 string messages = "";
-                foreach (var validationErrors in ex.EntityValidationErrors) {
-                    foreach (var validationError in validationErrors.ValidationErrors) {
+                foreach (var validationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
                         messages += string.Format("\nProperty: {0} Error: {1}",
                                                 validationError.PropertyName,
                                                 validationError.ErrorMessage);
@@ -84,9 +90,13 @@ namespace AIMS_BD_IATI.Library.Parser
                 }
                 Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, null, messages);
 
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.WriteToDbAndFile(ex, LogType.Error, fundSource.IATICode);
             }
+
+            return Message;
         }
 
 
@@ -94,7 +104,8 @@ namespace AIMS_BD_IATI.Library.Parser
         /// Save Data To DB
         /// </summary>
         /// <param name="returnResult2"></param>
-        private void SaveToDB(tblFundSource fundSource, AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray) {
+        private void SaveToDB(tblFundSource fundSource, AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray)
+        {
 
             int counter = 1;
             int successfullySavedActivityCounter = 0;
@@ -102,16 +113,20 @@ namespace AIMS_BD_IATI.Library.Parser
 
             Logger.Write("INFO: " + "Total Activity found: " + totalActivity);
             Console.WriteLine();
-            if (totalActivity > 0) {
-                foreach (var iatiactivityItem in iatiactivityArray) {
-                    try {
+            if (totalActivity > 0)
+            {
+                foreach (var iatiactivityItem in iatiactivityArray)
+                {
+                    try
+                    {
                         var Activity = new Activity();
 
                         Activity.OrgId = Activity.AssignedOrgId = fundSource.IATICode;// iatiactivityItem.reportingorg?.@ref;
                         Activity.IatiIdentifier = iatiactivityItem.IatiIdentifier;
                         Activity.Hierarchy = iatiactivityItem.hierarchy;
 
-                        using (StringWriter ww = new StringWriter()) {
+                        using (StringWriter ww = new StringWriter())
+                        {
                             iatiactivitySerealizer.Serialize(ww, iatiactivityItem);
                             Activity.IatiActivity = ww.ToString();
                         }
@@ -120,10 +135,14 @@ namespace AIMS_BD_IATI.Library.Parser
 
                         Console.Write("\r Activity Counter: {0}   ", counter++);
 
-                    } catch (DbEntityValidationException ex) {
+                    }
+                    catch (DbEntityValidationException ex)
+                    {
                         string messages = "";
-                        foreach (var validationErrors in ex.EntityValidationErrors) {
-                            foreach (var validationError in validationErrors.ValidationErrors) {
+                        foreach (var validationErrors in ex.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
                                 messages += string.Format("\nProperty: {0} Error: {1}",
                                                         validationError.PropertyName,
                                                         validationError.ErrorMessage);
@@ -131,7 +150,9 @@ namespace AIMS_BD_IATI.Library.Parser
                         }
                         Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, iatiactivityItem.IatiIdentifier, messages);
 
-                    } catch (Exception ex) {
+                    }
+                    catch (Exception ex)
+                    {
                         Logger.WriteToDbAndFile(ex, LogType.Error, fundSource.IATICode, iatiactivityItem.IatiIdentifier);
                     }
 

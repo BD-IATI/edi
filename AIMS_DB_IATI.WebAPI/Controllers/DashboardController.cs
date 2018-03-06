@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using AIMS_BD_IATI.Library;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+using AIMS_BD_IATI.Library.Parser;
 
 namespace AIMS_DB_IATI.WebAPI.Controllers
 {
@@ -54,8 +55,11 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         [AcceptVerbs("GET", "POST")]
         public string DownloadDataFromIATI(DPLookupItem dp)
         {
+            IatiXmlParser p = new IatiXmlParser();
 
-            return "";
+            var msg = p.Parse(new tblFundSource { IATICode = dp.ID, FundSourceName = dp.Name });
+
+            return msg;
         }
 
         [AcceptVerbs("GET", "POST")]

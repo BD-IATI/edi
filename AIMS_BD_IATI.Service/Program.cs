@@ -49,11 +49,11 @@ namespace AIMS_BD_IATI.Service
                     //Pilot purpose only
                     //usaid demo data:  
                     if (fundSource.IATICode == "US-USAGOV|US-1|USAIDManualData") {
-                        p.Parse(fundSources.Count, i++, fundSource, "http://test.brough.io/usaid/iati/iati-activities.xml");
+                        p.Parse(fundSource, fundSources.Count, i++, "http://test.brough.io/usaid/iati/iati-activities.xml");
                     } else if (fundSource.IATICode.Contains("CA-3")) {
-                        p.Parse(fundSources.Count, i++, fundSource);
+                        p.Parse(fundSource, fundSources.Count, i++);
                     } else {
-                        p.Parse(fundSources.Count, i++, fundSource);
+                        p.Parse(fundSource, fundSources.Count, i++);
                     }
                     p = null;
                 }));
