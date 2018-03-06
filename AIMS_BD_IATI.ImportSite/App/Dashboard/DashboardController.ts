@@ -14,6 +14,25 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
     });
 
 
+    $scope.DownloadDataFromIATI = function () {
+        $scope.downloading = true;
+        $http({
+            method: 'POST',
+            url: apiprefix + '/api/Dashboard/DownloadDataFromIATI',
+
+            data: JSON.stringify($rootScope.getCookie('selectedFundSource'))
+
+        }).success(function (result) {
+            $scope.downloading = false;
+            alert('IATI data successfully downloaded.');
+        }).error(function (result) {
+            $scope.downloading = false;
+            alert('Downloaded failed');
+
+
+        });
+    };
+
     $scope.OpenAdjustImportPreferences = function () {
         var modalInstance = $uibModal.open({
             animation: true,

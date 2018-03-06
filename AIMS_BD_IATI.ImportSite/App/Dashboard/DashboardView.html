@@ -1,4 +1,5 @@
-﻿<div role="tabpanel" class="tab-pane active" id="donor-landing-page" ng-controller="DashboardController">
+﻿
+<div role="tabpanel" class="tab-pane active" id="donor-landing-page" ng-controller="DashboardController">
     <div class="row">
         <div class="col-md-12">
             <h2>IATI Import Module</h2>
@@ -15,8 +16,14 @@
                 <div class="panel-heading">Summary</div>
                 <div class="panel-body">
                     <p>
-                        IATI data last downloaded: <b> <span ng-bind="model.LastDownloadDate | date:'yyyy-MM-dd HH:mm:ss'"> </span> (<span ng-bind="timeSince(model.LastDownloadDate)"></span>)</b>
-
+                        <span ng-hide="downloading == true">
+                            IATI data last downloaded: <b> <span ng-bind="model.LastDownloadDate | date:'yyyy-MM-dd HH:mm:ss'"> </span> (<span ng-bind="timeSince(model.LastDownloadDate)"></span>)</b>
+                            <button ng-click="DownloadDataFromIATI()" class="btn btn-default">Download Now</button>
+                        </span>
+                        <span ng-show="downloading == true">
+                            <i class="glyphicon glyphicon-refresh gly-spin"></i>
+                            IATI data is being downloading at AIMS server. Please wait...
+                        </span>
                         <br />
                         Total Activity: <b ng-bind="model.TotalActivityCount"></b>
                     </p>
@@ -229,7 +236,7 @@
     </div>
 
     <!-- Modal -->
-    <button type="button" id="btnRecallExplanation" hidden data-toggle="modal" data-target="#recallExplanation" >Recall not possible</button>
+    <button type="button" id="btnRecallExplanation" hidden data-toggle="modal" data-target="#recallExplanation">Recall not possible</button>
 
     <div class="modal fade" id="recallExplanation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
