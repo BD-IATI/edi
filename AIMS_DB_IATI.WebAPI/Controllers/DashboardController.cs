@@ -52,6 +52,13 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
+        public string DownloadDataFromIATI(DPLookupItem dp)
+        {
+
+            return "";
+        }
+
+        [AcceptVerbs("GET", "POST")]
         public string CheckSession(DPLookupItem dp)
         {
             Sessions.DP = dp;

@@ -52,6 +52,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Device" />
     <Reference Include="System.Runtime.Serialization" />
@@ -123,10 +124,12 @@
     </Compile>
     <Compile Include="Logger.cs" />
     <Compile Include="NullChecker.cs" />
+    <Compile Include="Parser\Common.cs" />
     <Compile Include="Parser\Fields.cs" />
-    <Compile Include="Parser\IConverterIATI.cs" />
-    <Compile Include="Parser\IParserIATI.cs" />
-    <Compile Include="Parser\IXmlResult.cs" />
+    <Compile Include="Parser\IatiXmlParser.cs" />
+    <Compile Include="Parser\Interfaces\IConverterIATI.cs" />
+    <Compile Include="Parser\Interfaces\IParserIATI.cs" />
+    <Compile Include="Parser\Interfaces\IXmlResult.cs" />
     <Compile Include="Parser\ParserIATIv1\iati-activities-schema.cs">
       <DependentUpon>iati-activities-schema.xsd</DependentUpon>
     </Compile>

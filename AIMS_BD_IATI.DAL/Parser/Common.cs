@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using AIMS_BD_IATI.Library;
 
-namespace AIMS_BD_IATI.Service
+namespace AIMS_BD_IATI
 {
     public sealed class Common
     {
