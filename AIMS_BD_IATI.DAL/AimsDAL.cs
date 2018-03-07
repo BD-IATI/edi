@@ -525,25 +525,56 @@ namespace AIMS_BD_IATI.DAL
                         {
                             foreach (var result in mergedproject.result)
                             {
-                                //var resultTitle = document.title?.narrative.n(0).Value;
-                                //var attachment = p.tblProjectNotes.FirstOrDefault(f => f..AttachmentTitle == resultTitle);
+                                if (result.indicator != null)
+                                {
+                                    foreach (var indicator in result.indicator)
+                                    {
+                                        var indicatorTitle = indicator.title.narrative.n(0).Value ?? result.title?.narrative.n(0).Value;
 
-                                //if (attachment == null)
-                                //{
-                                //    attachment = new tblProjectAttachment();
-                                //    p.tblProjectAttachments.Add(attachment);
-                                //}
+                                        var projectResult = p.tblProjectResults.FirstOrDefault(f => f.IndicatorTitle == indicatorTitle);
 
-                                //var docCatCode = document.category.n(0).code;
-                                //var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == docCatCode);
+                                        if (projectResult == null)
+                                        {
+                                            projectResult = new tblProjectResult();
+                                            p.tblProjectResults.Add(projectResult);
+                                        }
 
-                                //attachment.DocumentCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.OrderBy(o => o.Id).FirstOrDefault().Id;
+                                        var indicatorType = dbContext.tblResultIndicatorTypes.FirstOrDefault(f => f.IATICode == result.type);
 
-                                //attachment.AttachmentTitle = docTitle;
-                                //attachment.AttachmentFileURL = document.url;
-                                //attachment.IUser = Iuser;
-                                //attachment.IDate = DateTime.Now;
+                                        projectResult.ResultIndicatorTypeId = indicatorType != null ? indicatorType.Id : dbContext.tblResultIndicatorTypes.OrderBy(o => o.Id).FirstOrDefault().Id;
 
+                                        projectResult.IndicatorTitle = indicatorTitle;
+                                        projectResult.BaselineYear = Convert.ToInt32(indicator.baseline?.year);
+                                        projectResult.BaselineValue = indicator.baseline?.value;
+                                        projectResult.IUser = Iuser;
+                                        projectResult.IDate = DateTime.Now;
+
+                                        if (indicator.period != null)
+                                        {
+                                            foreach (var period in indicator.period)
+                                            {
+                                                var periodStart = period.periodstart.isodate;
+                                                var periodEnd = period.periodend.isodate;
+
+                                                var projectResultPeriod = projectResult.tblProjectResultDetails
+                                                    .FirstOrDefault(f => f.PeriodStart == periodStart
+                                                                      && f.PeriodEnd == periodEnd);
+
+                                                if (projectResultPeriod == null)
+                                                {
+                                                    projectResultPeriod = new tblProjectResultDetail();
+                                                    projectResult.tblProjectResultDetails.Add(projectResultPeriod);
+                                                }
+
+                                                projectResultPeriod.PeriodStart = periodStart;
+                                                projectResultPeriod.PeriodEnd = periodEnd;
+                                                projectResultPeriod.TargetValue = period.target.value;
+                                                projectResultPeriod.ActualValue = period.actual.value;
+
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -1796,6 +1827,52 @@ namespace AIMS_BD_IATI.DAL
             //conditions
 
             //result
+            List<result> resultList = new List<result>();
+            var projectResults = project.tblProjectResults.ToList();
+            foreach (var projectResult in projectResults)
+            {
+                var indicatorTitle = new textRequiredType { narrative = Statix.getNarativeArray(projectResult.IndicatorTitle) };
+                var indicatorDescription = new description { narrative = Statix.getNarativeArray(projectResult.Description) };
+
+                List<resultIndicatorPeriod> resultIndicatorPeriodList = new List<resultIndicatorPeriod>();
+
+                foreach (var resultDetail in projectResult.tblProjectResultDetails)
+                {
+                    resultIndicatorPeriodList.Add(new resultIndicatorPeriod
+                    {
+                        periodstart = new resultIndicatorPeriodPeriodstart { isodate = resultDetail.PeriodStart.Value },
+                        periodend = new resultIndicatorPeriodPeriodend { isodate = resultDetail.PeriodEnd.Value },
+                        target = new resultIndicatorPeriodTarget { value = resultDetail.TargetValue },
+                        actual = new resultIndicatorPeriodActual { value = resultDetail.ActualValue }
+                    });
+                }
+
+                List<resultIndicator> resultIndicatorList = new List<resultIndicator>
+                {
+                    new resultIndicator
+                    {
+                        title = indicatorTitle,
+                        description = indicatorDescription,
+                        baseline = new resultIndicatorBaseline
+                        {
+                            year = projectResult.BaselineYear?.ToString(),
+                            value = projectResult.BaselineValue
+                        },
+                        period = resultIndicatorPeriodList.ToArray()
+
+                    }
+                };
+
+                resultList.Add(new result
+                {
+
+                    title = indicatorTitle,
+                    description = indicatorDescription,
+                    type = projectResult.tblResultIndicatorType?.Name,
+                    indicator = resultIndicatorList.ToArray()
+                });
+            }
+            iatiActivityObj.result = resultList.ToArray();
 
             //crs-add
 
