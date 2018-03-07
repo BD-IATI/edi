@@ -38,7 +38,7 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
         var modalInstance = $uibModal.open({
             animation: true,
             backdrop: false,
-            templateUrl: 'Dashboard/ImportPreferenceModal.html',
+            templateUrl: 'App/Dashboard/ImportPreferenceModal.html',
             controller: '6GeneralPreferencesController',
             size: 'lg',
         });
@@ -49,7 +49,7 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
         var modalInstance = $uibModal.open({
             animation: true,
             backdrop: false,
-            templateUrl: 'Dashboard/TrustFundModal.html',
+            templateUrl: 'App/Dashboard/TrustFundModal.html',
             controller: '9CofinancingController',
             size: 'lg',
             resolve: {
@@ -65,7 +65,7 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
         var modalInstance = $uibModal.open({
             animation: true,
             backdrop: false,
-            templateUrl: 'Dashboard/CofinancingModal.html',
+            templateUrl: 'App/Dashboard/CofinancingModal.html',
             controller: '9CofinancingController',
             size: 'lg',
             resolve: {
@@ -85,7 +85,7 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
         var modalInstance = $uibModal.open({
             animation: true,
             backdrop: false,
-            templateUrl: 'MergeConflictAlert/MergeConflictAlertView.html',
+            templateUrl: 'App/MergeConflictAlert/MergeConflictAlertView.html',
             controller: 'MergeConflictAlertController',
             size: 'lg',
             resolve: {

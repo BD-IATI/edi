@@ -43,7 +43,7 @@ angular.module('iatiDataImporter').controller("7ReviewAdjustmentController", fun
         var modalInstance = $uibModal.open({
             animation: true,
             backdrop: false,
-            templateUrl: '8ProjectSpecificAdjustment/8ProjectSpecificAdjustmentView.html',
+            templateUrl: 'App/8ProjectSpecificAdjustment/8ProjectSpecificAdjustmentView.html',
             controller: '8ProjectSpecificAdjustmentController',
             size: 'lg',
             resolve: {
@@ -65,7 +65,7 @@ angular.module('iatiDataImporter').controller("7ReviewAdjustmentController", fun
         var modalInstance = $uibModal.open({
             animation: true,
             backdrop: false,
-            templateUrl: 'Transaction/TransactionView.html',
+            templateUrl: 'App/Transaction/TransactionView.html',
             controller: 'TransactionController',
             size: 'lg',
             resolve: {

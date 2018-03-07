@@ -23,7 +23,7 @@ angular.module('iatiDataImporter').controller("9OtherDPsActivitiesController", f
         var modalInstance = $uibModal.open({
             animation: true,
             backdrop: false,
-            templateUrl: '9TFnCF/9TFnCFView.html',
+            templateUrl: 'App/9TFnCF/9TFnCFView.html',
             controller: '9TFnCFController',
             size: 'lg',
             windowClass: 'full-modal-window',
