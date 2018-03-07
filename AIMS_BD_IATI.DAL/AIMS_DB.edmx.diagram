@@ -153,6 +153,29 @@
         <AssociationConnector Association="AIMS_DBModel.FK_tblUserProject_tblUserRegistrationInfo" ManuallyRouted="false" />
         <EntityTypeShape EntityType="AIMS_DBModel.tblExchangeRateBBApi" Width="1.5" PointX="0.75" PointY="9.75" />
         <EntityTypeShape EntityType="AIMS_DBModel.vwExchangeRateBBApi" Width="1.5" PointX="9.375" PointY="9.75" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblPolicyMarker" Width="1.5" PointX="19.25" PointY="66.75" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblPolicyMarkerVocabulary" Width="1.5" PointX="19.25" PointY="33.625" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblPolicySignificance" Width="1.5" PointX="19.25" PointY="62.25" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectFundingIncoming" Width="1.5" PointX="16.5" PointY="65.625" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectPolicyMarker" Width="1.5" PointX="21.5" PointY="51.875" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectResult" Width="1.5" PointX="18.5" PointY="56" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblProjectResultDetail" Width="1.5" PointX="20.75" PointY="57.5" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblResultIndicatorType" Width="1.5" PointX="16.25" PointY="56.25" />
+        <EntityTypeShape EntityType="AIMS_DBModel.tblTransactionType" Width="1.5" PointX="14.25" PointY="82.5" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingIncoming_tblAidCategory" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingIncoming_tblCurrency" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingIncoming_tblFundSource" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectPolicyMarker_tblPolicyMarker" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectPolicyMarker_tblPolicyMarkerVocabulary" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectPolicyMarker_tblPolicySignificance" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingIncoming_tblProjectInfo" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingIncoming_tblTransactionType" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingIncoming_tblTrustFund" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectFundingIncoming_tblVerificationStatus" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectPolicyMarker_tblProjectInfo" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectResult_tblProjectInfo" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectResult_tblResultIndicatorType" />
+        <AssociationConnector Association="AIMS_DBModel.FK_tblProjectResultDetail_tblProjectResult" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

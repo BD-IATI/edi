@@ -248,6 +248,15 @@
     <Compile Include="tblOrganizationType.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblPolicyMarker.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblPolicyMarkerVocabulary.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblPolicySignificance.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblProjectADPInfo.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
@@ -269,6 +278,9 @@
     <Compile Include="tblProjectFundingExpenditure.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblProjectFundingIncoming.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblProjectFundingPlannedDisbursement.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
@@ -284,6 +296,15 @@
     <Compile Include="tblProjectNote.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblProjectPolicyMarker.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectResult.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblProjectResultDetail.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblProjectSectoralAllocation.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
@@ -291,6 +312,9 @@
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="tblProjectType.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblResultIndicatorType.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="tblRevisionStatu.cs">
@@ -306,6 +330,9 @@
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="tblThematicMarker.cs">
+      <DependentUpon>AIMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblTransactionType.cs">
       <DependentUpon>AIMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="tblTrustFund.cs">

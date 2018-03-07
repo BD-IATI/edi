@@ -27,6 +27,8 @@ namespace AIMS_BD_IATI.DAL
         public string EUser { get; set; }
         public System.DateTime IDate { get; set; }
         public Nullable<System.DateTime> EDate { get; set; }
+        public string NameLocal { get; set; }
+        public string Remarks { get; set; }
     
         public virtual ICollection<tblAIDPlanningDetail> tblAIDPlanningDetails { get; set; }
         public virtual ICollection<tblProjectSectoralAllocation> tblProjectSectoralAllocations { get; set; }

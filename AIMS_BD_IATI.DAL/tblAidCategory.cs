@@ -15,6 +15,7 @@ namespace AIMS_BD_IATI.DAL
             this.tblProjectFundingCommitments = new HashSet<tblProjectFundingCommitment>();
             this.tblProjectFundingExpenditures = new HashSet<tblProjectFundingExpenditure>();
             this.tblProjectFundingPlannedDisbursements = new HashSet<tblProjectFundingPlannedDisbursement>();
+            this.tblProjectFundingIncomings = new HashSet<tblProjectFundingIncoming>();
         }
     
         public int Id { get; set; }
@@ -27,10 +28,13 @@ namespace AIMS_BD_IATI.DAL
         public string EUser { get; set; }
         public System.DateTime IDate { get; set; }
         public Nullable<System.DateTime> EDate { get; set; }
+        public string NameLocal { get; set; }
+        public string Remarks { get; set; }
     
         public virtual ICollection<tblProjectFundingActualDisbursement> tblProjectFundingActualDisbursements { get; set; }
         public virtual ICollection<tblProjectFundingCommitment> tblProjectFundingCommitments { get; set; }
         public virtual ICollection<tblProjectFundingExpenditure> tblProjectFundingExpenditures { get; set; }
         public virtual ICollection<tblProjectFundingPlannedDisbursement> tblProjectFundingPlannedDisbursements { get; set; }
+        public virtual ICollection<tblProjectFundingIncoming> tblProjectFundingIncomings { get; set; }
     }
 }

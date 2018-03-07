@@ -16,6 +16,7 @@ namespace AIMS_BD_IATI.DAL
             this.tblProjectFundingExpenditures = new HashSet<tblProjectFundingExpenditure>();
             this.tblProjectFundingPlannedDisbursements = new HashSet<tblProjectFundingPlannedDisbursement>();
             this.tblTrustFundDetails = new HashSet<tblTrustFundDetail>();
+            this.tblProjectFundingIncomings = new HashSet<tblProjectFundingIncoming>();
         }
     
         public int Id { get; set; }
@@ -33,5 +34,6 @@ namespace AIMS_BD_IATI.DAL
         public virtual ICollection<tblProjectFundingExpenditure> tblProjectFundingExpenditures { get; set; }
         public virtual ICollection<tblProjectFundingPlannedDisbursement> tblProjectFundingPlannedDisbursements { get; set; }
         public virtual ICollection<tblTrustFundDetail> tblTrustFundDetails { get; set; }
+        public virtual ICollection<tblProjectFundingIncoming> tblProjectFundingIncomings { get; set; }
     }
 }

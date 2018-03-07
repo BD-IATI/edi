@@ -16,6 +16,8 @@ namespace AIMS_BD_IATI.DAL
     
         public int Id { get; set; }
         public string Name { get; set; }
+        public string NameLocal { get; set; }
+        public string Remarks { get; set; }
     
         public virtual ICollection<tblUserRegistrationInfo> tblUserRegistrationInfoes { get; set; }
     }

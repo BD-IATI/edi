@@ -89,5 +89,14 @@ namespace AIMS_BD_IATI.DAL
         public virtual DbSet<CommonConfigType> CommonConfigTypes { get; set; }
         public virtual DbSet<tblExchangeRateBBApi> tblExchangeRateBBApis { get; set; }
         public virtual DbSet<vwExchangeRateBBApi> vwExchangeRateBBApis { get; set; }
+        public virtual DbSet<tblPolicyMarker> tblPolicyMarkers { get; set; }
+        public virtual DbSet<tblPolicyMarkerVocabulary> tblPolicyMarkerVocabularies { get; set; }
+        public virtual DbSet<tblPolicySignificance> tblPolicySignificances { get; set; }
+        public virtual DbSet<tblProjectFundingIncoming> tblProjectFundingIncomings { get; set; }
+        public virtual DbSet<tblProjectPolicyMarker> tblProjectPolicyMarkers { get; set; }
+        public virtual DbSet<tblProjectResult> tblProjectResults { get; set; }
+        public virtual DbSet<tblProjectResultDetail> tblProjectResultDetails { get; set; }
+        public virtual DbSet<tblResultIndicatorType> tblResultIndicatorTypes { get; set; }
+        public virtual DbSet<tblTransactionType> tblTransactionTypes { get; set; }
     }
 }

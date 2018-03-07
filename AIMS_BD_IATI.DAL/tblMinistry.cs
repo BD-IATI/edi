@@ -29,6 +29,8 @@ namespace AIMS_BD_IATI.DAL
         public string MinistryName { get; set; }
         public string StandardCode { get; set; }
         public string IMEDCode { get; set; }
+        public string NameLocal { get; set; }
+        public string Remarks { get; set; }
     
         public virtual ICollection<tblMinistryAgency> tblMinistryAgencies { get; set; }
         public virtual ICollection<tblProjectGoBExecutingAgency> tblProjectGoBExecutingAgencies { get; set; }

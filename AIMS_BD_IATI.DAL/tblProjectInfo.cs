@@ -25,6 +25,9 @@ namespace AIMS_BD_IATI.DAL
             this.tblProjectSectoralAllocations = new HashSet<tblProjectSectoralAllocation>();
             this.tblProjectThematicMarkers = new HashSet<tblProjectThematicMarker>();
             this.tblUserProjects = new HashSet<tblUserProject>();
+            this.tblProjectFundingIncomings = new HashSet<tblProjectFundingIncoming>();
+            this.tblProjectPolicyMarkers = new HashSet<tblProjectPolicyMarker>();
+            this.tblProjectResults = new HashSet<tblProjectResult>();
         }
     
         public int Id { get; set; }
@@ -95,6 +98,8 @@ namespace AIMS_BD_IATI.DAL
         public string EUser { get; set; }
         public System.DateTime IDate { get; set; }
         public Nullable<System.DateTime> EDate { get; set; }
+        public string TitleLocal { get; set; }
+        public string ObjectiveLocal { get; set; }
     
         public virtual tblAgreementType tblAgreementType { get; set; }
         public virtual ICollection<tblAIDEffectivenessIndicator> tblAIDEffectivenessIndicators { get; set; }
@@ -120,5 +125,8 @@ namespace AIMS_BD_IATI.DAL
         public virtual ICollection<tblProjectSectoralAllocation> tblProjectSectoralAllocations { get; set; }
         public virtual ICollection<tblProjectThematicMarker> tblProjectThematicMarkers { get; set; }
         public virtual ICollection<tblUserProject> tblUserProjects { get; set; }
+        public virtual ICollection<tblProjectFundingIncoming> tblProjectFundingIncomings { get; set; }
+        public virtual ICollection<tblProjectPolicyMarker> tblProjectPolicyMarkers { get; set; }
+        public virtual ICollection<tblProjectResult> tblProjectResults { get; set; }
     }
 }

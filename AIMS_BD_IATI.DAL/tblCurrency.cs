@@ -21,6 +21,7 @@ namespace AIMS_BD_IATI.DAL
             this.tblProjectInfoes = new HashSet<tblProjectInfo>();
             this.tblProjectInfoes1 = new HashSet<tblProjectInfo>();
             this.tblTrustFundDetails = new HashSet<tblTrustFundDetail>();
+            this.tblProjectFundingIncomings = new HashSet<tblProjectFundingIncoming>();
         }
     
         public int Id { get; set; }
@@ -33,6 +34,8 @@ namespace AIMS_BD_IATI.DAL
         public string EUser { get; set; }
         public System.DateTime IDate { get; set; }
         public Nullable<System.DateTime> EDate { get; set; }
+        public string NameLocal { get; set; }
+        public string Remarks { get; set; }
     
         public virtual ICollection<tblCurrencyMapping> tblCurrencyMappings { get; set; }
         public virtual ICollection<tblExchangeRateDetail> tblExchangeRateDetails { get; set; }
@@ -44,5 +47,6 @@ namespace AIMS_BD_IATI.DAL
         public virtual ICollection<tblProjectInfo> tblProjectInfoes { get; set; }
         public virtual ICollection<tblProjectInfo> tblProjectInfoes1 { get; set; }
         public virtual ICollection<tblTrustFundDetail> tblTrustFundDetails { get; set; }
+        public virtual ICollection<tblProjectFundingIncoming> tblProjectFundingIncomings { get; set; }
     }
 }

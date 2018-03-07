@@ -518,6 +518,41 @@ namespace AIMS_BD_IATI.DAL
                     }
                     #endregion
 
+                    #region Result
+                    try
+                    {
+                        if (mergedproject.result != null)
+                        {
+                            foreach (var result in mergedproject.result)
+                            {
+                                //var resultTitle = document.title?.narrative.n(0).Value;
+                                //var attachment = p.tblProjectNotes.FirstOrDefault(f => f..AttachmentTitle == resultTitle);
+
+                                //if (attachment == null)
+                                //{
+                                //    attachment = new tblProjectAttachment();
+                                //    p.tblProjectAttachments.Add(attachment);
+                                //}
+
+                                //var docCatCode = document.category.n(0).code;
+                                //var docCategory = dbContext.tblDocumentCategories.FirstOrDefault(f => f.IATICode == docCatCode);
+
+                                //attachment.DocumentCategoryId = docCategory != null ? docCategory.Id : dbContext.tblDocumentCategories.OrderBy(o => o.Id).FirstOrDefault().Id;
+
+                                //attachment.AttachmentTitle = docTitle;
+                                //attachment.AttachmentFileURL = document.url;
+                                //attachment.IUser = Iuser;
+                                //attachment.IDate = DateTime.Now;
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Result could not be imported.");
+                    }
+                    #endregion
+
                     #region Sector/Thematic Area
                     try
                     {

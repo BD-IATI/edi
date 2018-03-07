@@ -7,11 +7,11 @@ namespace AIMS_BD_IATI.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class tblAIDEffectivenessResourceTiedType
+    public partial class tblPolicySignificance
     {
-        public tblAIDEffectivenessResourceTiedType()
+        public tblPolicySignificance()
         {
-            this.tblAIDEffectivenessIndicators = new HashSet<tblAIDEffectivenessIndicator>();
+            this.tblProjectPolicyMarkers = new HashSet<tblProjectPolicyMarker>();
         }
     
         public int Id { get; set; }
@@ -27,6 +27,6 @@ namespace AIMS_BD_IATI.DAL
         public string NameLocal { get; set; }
         public string Remarks { get; set; }
     
-        public virtual ICollection<tblAIDEffectivenessIndicator> tblAIDEffectivenessIndicators { get; set; }
+        public virtual ICollection<tblProjectPolicyMarker> tblProjectPolicyMarkers { get; set; }
     }
 }
