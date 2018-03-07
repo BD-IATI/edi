@@ -142,6 +142,8 @@ namespace AIMS_BD_IATI.DAL {
                             matchedProject.aimsProject.location = matchedProject.iatiActivity.location;
                         } else if (field.Field == IatiFields.ExecutingAgency) {
                             matchedProject.aimsProject.participatingorg = matchedProject.iatiActivity.participatingorg;
+                        } else if (field.Field == IatiFields.Result) {
+                            matchedProject.aimsProject.result = matchedProject.iatiActivity.result;
                         } else if (field.Field == IatiFields.Dates) {
                             matchedProject.aimsProject.activitydate = matchedProject.iatiActivity.activitydate;
                         }
@@ -283,6 +285,13 @@ namespace AIMS_BD_IATI.DAL {
                     Field = IatiFields.ExecutingAgency,
                     AIMSValue = (aimsProject.ImplementingOrgs?.Count() ?? 0) + " Implementing Organization(s)",
                     IATIValue = (iatiActivity.ImplementingOrgs?.Count(c => c?.AllID != iatiActivity.AllID) ?? 0) + " Implementing Organization(s)",
+                    IsSourceIATI = isSourceIATI
+
+                });
+                Fields.Add(new FieldMap {
+                    Field = IatiFields.Result,
+                    AIMSValue = (aimsProject.result?.Count() ?? 0) + " Result(s)",
+                    IATIValue = (iatiActivity.result?.Count() ?? 0) + " Result(s)",
                     IsSourceIATI = isSourceIATI
 
                 });

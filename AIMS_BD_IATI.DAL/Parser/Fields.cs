@@ -17,6 +17,7 @@ namespace AIMS_BD_IATI.Library
         public const string Sector = "Sector";
         public const string Location = "Location";
         public const string ExecutingAgency = "ExecutingAgency";
+        public const string Result = "Result";
 
         public const string Commitment = "commitment";
         public const string PlannedDisbursment = "planned-disbursment";
