@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
@@ -159,14 +160,17 @@
         </nav>
     </header>
     <div class="container-fluid">
+        <span us-spinner="{radius:30, width:8, length: 16, position: 'fixed'}"></span>
         <div class="row">
-            <span us-spinner="{radius:30, width:8, length: 16, position: 'fixed'}"></span>
             <!-- Nav tabs -->
-            <div class="col-sm-3" style="height: 100%;
-    background-color: #dff0d8; padding: 10px 0px 5px 5px">
-                <ul navigation ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>
-                <!--<ul navigation-Other-Dp ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>-->
-                <!-- Tab panes -->
+            <div class="col-sm-3">
+                <div class="col-sm-3" style="position:fixed;left:0px; height: 100%; background-color: #dff0d8; padding: 10px 0px 5px 10px">
+                    <ul navigation ng-hide="globals.currentUser == undefined"
+                        class="nav nav-pills nav-stacked" role="tablist"
+                        style="width:100%"></ul>
+                    <!--<ul navigation-Other-Dp ng-hide="globals.currentUser == undefined" class="nav nav-pills nav-stacked" role="tablist"></ul>-->
+                    <!-- Tab panes -->
+                </div>
             </div>
             <div id="divView" style="height: 100%;" class="col-sm-9">
 
