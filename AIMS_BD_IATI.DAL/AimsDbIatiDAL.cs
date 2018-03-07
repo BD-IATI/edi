@@ -74,8 +74,10 @@ namespace AIMS_BD_IATI.DAL {
                                 var ProjectFieldMapModel = new ProjectFieldMapModel(iatiActivity, aimsProject, generalPreference);
 
                                 //step 5: SetFieldMappingPreferences
-                                var ProjectFieldMapModels = new List<ProjectFieldMapModel>(); // here we make a list just to use existing method (e.g existing method require a List parameter)
-                                ProjectFieldMapModels.Add(ProjectFieldMapModel);
+                                var ProjectFieldMapModels = new List<ProjectFieldMapModel>
+                                {
+                                    ProjectFieldMapModel
+                                }; // here we make a list just to use existing method (e.g existing method require a List parameter)
 
                                 ImportLogic.SetFieldMappingPreferences(ProjectFieldMapModels, ProjectFieldMapModel);
 
