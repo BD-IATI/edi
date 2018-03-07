@@ -14,7 +14,7 @@ namespace AIMS_BD_IATI.Library.Parser
     public class IatiXmlParser
     {
         static XmlSerializer iatiactivitySerealizer = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity), new XmlRootAttribute("iati-activity"));
-        public string Message { get; set; }
+        public string Message { get; set; } = "";
         /// <summary>
         /// Download the XML from IATI datastore, parse xml then save to DB
         /// </summary>
@@ -26,7 +26,7 @@ namespace AIMS_BD_IATI.Library.Parser
         {
 
             IParserIATI parserIATI;
-            string activitiesURL;
+            string activitiesURL = "";
             XmlResultv2 returnResult2;
             XmlResultv1 returnResult1;
             try
@@ -78,25 +78,25 @@ namespace AIMS_BD_IATI.Library.Parser
             }
             catch (DbEntityValidationException ex)
             {
-                string messages = "";
                 foreach (var validationErrors in ex.EntityValidationErrors)
                 {
                     foreach (var validationError in validationErrors.ValidationErrors)
                     {
-                        messages += string.Format("\nProperty: {0} Error: {1}",
+                        Message += string.Format("\nProperty: {0} Error: {1}",
                                                 validationError.PropertyName,
                                                 validationError.ErrorMessage);
                     }
                 }
-                Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, null, messages);
+                Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, null, Message);
 
             }
             catch (Exception ex)
             {
                 Logger.WriteToDbAndFile(ex, LogType.Error, fundSource.IATICode);
+                Message = "Download failed. " + activitiesURL;
             }
 
-            return Message;
+            return Message == "" ? "IATI data successfully downloaded from " + activitiesURL : Message;
         }
 
 

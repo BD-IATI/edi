@@ -9,7 +9,7 @@ iatiDataImporterApp.config(function ($routeProvider) {
         })
         .when('/restart', {
             controller: 'DashboardController',
-            templateUrl: 'Modules/Dashboard/DashboardView.html'
+            templateUrl: 'App/Dashboard/DashboardView.html'
 
         })
         .when('/:name*', {

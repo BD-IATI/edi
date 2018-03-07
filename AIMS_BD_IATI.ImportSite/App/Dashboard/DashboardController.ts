@@ -24,10 +24,11 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
 
         }).success(function (result) {
             $scope.downloading = false;
-            alert('IATI data successfully downloaded.');
+            alert(result);
+            location.href = '#/restart';
         }).error(function (result) {
             $scope.downloading = false;
-            alert('Downloaded failed');
+            alert(result);
 
 
         });
