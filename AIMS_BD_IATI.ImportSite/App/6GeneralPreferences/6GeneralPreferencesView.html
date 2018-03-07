@@ -1,42 +1,38 @@
 ﻿
 <div role="tabpanel" class="tab-pane active" id="preferences" resolve-controller="6GeneralPreferencesController" resolve="{'$uibModalInstance':null}">
-    <div class="row">
-        <div class="col-md-12">
-            <h2>
-                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-                6. Set import preferences
-            </h2>
-            <p class="lead">
-                Please specify whether you would generally
-                prefer to take data from IATI or from the AIMS. You can
-                see some sample data below to help you decide. Later, you
-                will be able to adjust the import settings for individual
-                projects.
-            </p>
-            <p class="lead">
-                You can adjust whether data is taken from IATI or from
-                the AIMS by clicking on the relevant data source for each
-                field. Whichever side is marked as
-                <span class="label label-success">green</span> will be
-                used as the default preference for your projects.
-            </p>
-            <hr />
+    <h2>
+        <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+        6. Set import preferences
+    </h2>
+    <p class="lead">
+        Please specify whether you would generally
+        prefer to take data from IATI or from the AIMS. You can
+        see some sample data below to help you decide. Later, you
+        will be able to adjust the import settings for individual
+        projects.
+    </p>
+    <p class="lead">
+        You can adjust whether data is taken from IATI or from
+        the AIMS by clicking on the relevant data source for each
+        field. Whichever side is marked as
+        <span class="label label-success">green</span> will be
+        used as the default preference for your projects.
+    </p>
+    <hr />
 
-            <div ng-include="'Templates/FieldMappingTemplete.html'"></div>
+    <div ng-include="'App/Templates/FieldMappingTemplete.html'"></div>
 
-        </div>
-    </div>
 
     <div class="form-group">
-        <div class="col-md-12 btnFooter">
+        <div class="btnFooter">
             <!--<a class="btn btn-default" ng-href="#/5Match">Back</a>-->
             <a class="btn btn-default" ng-href="#/4Projects">Back</a>
             <a tabindex="0"
-                    class="btn btn-primary"
-                    popover-title="Save Preferences"
-                    uib-popover-template="'myPopoverTemplate.html'"
-                    popover-append-to-body="true"
-                    popover-placement="auto">
+               class="btn btn-primary"
+               popover-title="Save Preferences"
+               uib-popover-template="'myPopoverTemplate.html'"
+               popover-append-to-body="true"
+               popover-placement="auto">
                 Next...
             </a>
             <a hidden id="btn7ReviewAdjustment" ng-href="#/7ReviewAdjustment">Next</a>

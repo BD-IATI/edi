@@ -6,29 +6,25 @@
     </h2>
 </div>
 <div class="modal-body">
-    <div class="row">
-        <div class="col-md-12">
-            <p class="lead">
-                Please specify whether you would generally
-                prefer to take data from IATI or from the AIMS (you will
-                only have to do this once for your projects). You can
-                see some sample data below to help you decide. Later, you
-                will be able to adjust the import settings for individual
-                projects.
-            </p>
-            <p class="lead">
-                You can adjust whether data is taken from IATI or from
-                the AIMS by clicking on the relevant data source for each
-                field. Whichever side is marked as
-                <span class="label label-success">green</span> will be
-                used as the default preference for your projects.
-            </p>
-            <hr />
+    <p class="lead">
+        Please specify whether you would generally
+        prefer to take data from IATI or from the AIMS (you will
+        only have to do this once for your projects). You can
+        see some sample data below to help you decide. Later, you
+        will be able to adjust the import settings for individual
+        projects.
+    </p>
+    <p class="lead">
+        You can adjust whether data is taken from IATI or from
+        the AIMS by clicking on the relevant data source for each
+        field. Whichever side is marked as
+        <span class="label label-success">green</span> will be
+        used as the default preference for your projects.
+    </p>
+    <hr />
 
-            <div ng-include="'Templates/FieldMappingTemplete.html'"></div>
+    <div ng-include="'App/Templates/FieldMappingTemplete.html'"></div>
 
-        </div>
-    </div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" type="button" ng-click="Save()">Save</button>
