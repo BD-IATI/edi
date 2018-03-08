@@ -97,20 +97,6 @@ namespace AIMS_BD_IATI.Library
             return total > 0 ? (val / total) * 100 : 0;
         }
 
-        public static T[] Add<T>(this T[] originalArray, T addItem) where T : class
-        {
-            if (addItem == null)
-            {
-                throw new ArgumentNullException("addItem");
-            }
-            var arr = new[] { addItem };
-            if (originalArray == null)
-            {
-                return arr;
-            }
-            return originalArray.Concat(arr).ToArray(); // although Concat is not recommended for performance reasons, see the accepted answer
-        }
-
         public static int ToInt32(this string value)
         {
             int r = default(int);
@@ -125,10 +111,10 @@ namespace AIMS_BD_IATI.Library
         Warning = 1,
         Error = 2,
         Alert = 3,
-        FinancialDataMismathed=4,
-        AddedNewActivity=5,
-        AimsProjectNotFound=6,
-        ValidationError=7
+        FinancialDataMismathed = 4,
+        AddedNewActivity = 5,
+        AimsProjectNotFound = 6,
+        ValidationError = 7
     }
 
     [Serializable]
