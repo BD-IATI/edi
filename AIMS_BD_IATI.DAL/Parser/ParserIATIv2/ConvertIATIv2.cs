@@ -81,6 +81,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                             //desActivity.AnyAttr[0].Prefix = "";
                             desActivity.AnyAttr[0].Value = "2.02";
                             desActivity.location = new List<Parser.ParserIATIv2.location>();
+                            desActivity.result = new List<Parser.ParserIATIv2.result>();
 
                             int otherIdentifierCounter = 0;
                             foreach (var activityItem in activity.Items)
@@ -287,7 +288,102 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                                 //result 
                                 #region result
-                                
+                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.result))
+                                {
+                                    var result = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.result)activityItem;
+
+                                    var resultV2 = new result();
+                                    resultV2.indicator = new List<resultIndicator>();
+
+                                    foreach (var resultItem in result.Items)
+                                    {
+
+
+                                        if (resultItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType))
+                                        {
+                                            var title = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)resultItem;
+                                            resultV2.title = new textRequiredType { narrative = getNarrativeList(resultItem) };
+                                        }
+
+                                        else if (resultItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.description))
+                                        {
+                                            var description = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.description)resultItem;
+                                            resultV2.description = new description { narrative = getNarrativeList(resultItem) };
+                                        }
+
+                                        else if (resultItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicator))
+                                        {
+                                            var indicator = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicator)resultItem;
+
+                                            var indicatorV2 = new resultIndicator();
+                                            indicatorV2.period = new List<resultIndicatorPeriod>();
+
+                                            foreach (var indicatorItem in indicator.Items)
+                                            {
+
+                                                if (indicatorItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType))
+                                                {
+                                                    var title = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)indicatorItem;
+                                                    indicatorV2.title = new textRequiredType { narrative = getNarrativeList(indicatorItem) };
+                                                }
+                                                else if (indicatorItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.description))
+                                                {
+                                                    var desc = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.description)indicatorItem;
+                                                    indicatorV2.description = new description { narrative = getNarrativeList(indicatorItem) };
+                                                }
+                                                else if (indicatorItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorBaseline))
+                                                {
+                                                    var baseline = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorBaseline)indicatorItem;
+                                                    indicatorV2.baseline = new resultIndicatorBaseline { year = baseline.year, value = baseline.value };
+                                                }
+                                                else if (indicatorItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriod))
+                                                {
+                                                    var period = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriod)indicatorItem;
+                                                    var periodV2 = new resultIndicatorPeriod();
+
+                                                    dateType date1 = null;
+                                                    dateType date2 = null;
+                                                    foreach (var periodItem in period.Items)
+                                                    {
+
+                                                        if (periodItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.dateType))
+                                                        {
+                                                            if (date1 == null)
+                                                            {
+                                                                date1 = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.dateType)periodItem;
+                                                            }
+                                                            else
+                                                            {
+                                                                date2 = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.dateType)periodItem;
+                                                            }
+
+                                                        }
+                                                        else if (periodItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriodActual))
+                                                        {
+                                                            var periodActual = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriodActual)periodItem;
+                                                            periodV2.actual = new resultIndicatorPeriodActual { value = periodActual.value };
+                                                        }
+                                                        else if (periodItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriodTarget))
+                                                        {
+                                                            var periodTarget = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriodTarget)periodItem;
+                                                            periodV2.target = new resultIndicatorPeriodTarget { value = periodTarget.value };
+                                                        }
+                                                    }
+                                                    periodV2.periodstart = new resultIndicatorPeriodPeriodstart { isodate = date1.isodate < date2.isodate ? date1.isodate : date2.isodate };
+                                                    periodV2.periodend = new resultIndicatorPeriodPeriodend { isodate = date1.isodate > date2.isodate ? date1.isodate : date2.isodate };
+
+                                                    indicatorV2.period.Add(periodV2);
+                                                }
+
+                                            }
+
+                                            resultV2.indicator.Add(indicatorV2);
+
+                                        }
+                                    }
+
+                                    desActivity.result.Add(resultV2);
+                                }
                                 #endregion
 
 
