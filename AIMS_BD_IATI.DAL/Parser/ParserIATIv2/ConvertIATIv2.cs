@@ -80,8 +80,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                             var desActivity = objDestinaiton.iatiactivities.iatiactivity.FirstOrDefault(q => q.IatiIdentifier == srcIatiidentifier);
                             //desActivity.AnyAttr[0].Prefix = "";
                             desActivity.AnyAttr[0].Value = "2.02";
-
-                            var locations = new List<location>();
+                            desActivity.location = new List<Parser.ParserIATIv2.location>();
 
                             int otherIdentifierCounter = 0;
                             foreach (var activityItem in activity.Items)
@@ -91,7 +90,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 {
                                     var reportingorg = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.reportingorg)activityItem;
 
-                                    narrative[] arrynarrative = getNarrativeArray(reportingorg);
+                                    List<narrative> arrynarrative = getNarrativeList(reportingorg);
 
                                     desActivity.reportingorg.narrative = arrynarrative;
                                 }
@@ -102,7 +101,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 {
                                     var title = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)activityItem;
 
-                                    narrative[] arrynarrative = getNarrativeArray(title);
+                                    List<narrative> arrynarrative = getNarrativeList(title);
 
                                     desActivity.title.narrative = arrynarrative;
                                 }
@@ -113,11 +112,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 {
                                     var description = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.description)activityItem;
 
-                                    narrative[] arrynarrative = getNarrativeArray(description);
+                                    List<narrative> arrynarrative = getNarrativeList(description);
 
-                                    desActivity.description = new iatiactivityDescription[1];
-                                    desActivity.description[0] = new iatiactivityDescription();
-                                    desActivity.description[0].narrative = arrynarrative;
+                                    desActivity.description = new List<iatiactivityDescription> { new iatiactivityDescription { narrative = arrynarrative } };
                                 }
                                 #endregion
 
@@ -126,7 +123,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 {
                                     var participatingorg = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.participatingorg)activityItem;
 
-                                    narrative[] arrynarrative = getNarrativeArray(participatingorg);
+                                    List<narrative> arrynarrative = getNarrativeList(participatingorg);
 
                                     var targetParticipatingOrg = desActivity.participatingorg.FirstOrDefault(x => x.role == participatingorg.role
                                                                                                                 && x.@ref == participatingorg.@ref
@@ -156,8 +153,8 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfo))
                                 {
                                     var contactinfo = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfo)activityItem;
-                                    if (desActivity.contactinfo == null) desActivity.contactinfo = new contactinfo[1];
-                                    if (desActivity.contactinfo[0] == null) desActivity.contactinfo[0] = new contactinfo();
+                                    if (desActivity.contactinfo == null) desActivity.contactinfo = new List<Parser.ParserIATIv2.contactinfo>();
+                                    if (desActivity.contactinfo[0] == null) desActivity.contactinfo.Add(new contactinfo());
                                     var desContactInfo = desActivity.contactinfo;
 
                                     foreach (var it in contactinfo.Items)
@@ -167,7 +164,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                         {
                                             var org = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)it;
 
-                                            narrative[] arrynarrative2 = getNarrativeArray(org);
+                                            List<narrative> arrynarrative2 = getNarrativeList(org);
 
                                             desActivity.contactinfo[0].organisation = new textRequiredType();
 
@@ -178,12 +175,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                         {
                                             var addr = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfoMailingaddress)it;
 
-                                            narrative[] arrynarrative2 = getNarrativeArray2(addr);
+                                            List<narrative> arrynarrative2 = getNarrativeList2(addr);
 
-                                            desActivity.contactinfo[0].mailingaddress = new textRequiredType[1];
-                                            desActivity.contactinfo[0].mailingaddress[0] = new textRequiredType();
-
-                                            desActivity.contactinfo[0].mailingaddress[0].narrative = arrynarrative2;
+                                            desActivity.contactinfo[0].mailingaddress = new List<textRequiredType> { new textRequiredType { narrative = arrynarrative2 } };
                                         }
                                     }
 
@@ -214,13 +208,14 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                         else if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationAdministrative))
                                         {
                                             var adm = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationAdministrative)it;
-
-                                            locationV2.administrative.Add(new locationAdministrative { vocabulary = adm.vocabulary, level = adm.level, code = adm.code });
-
+                                            var adm2 = new locationAdministrative { vocabulary = adm.vocabulary, level = adm.level, code = adm.code };
+                                            if (locationV2.administrative == null) locationV2.administrative = new List<locationAdministrative> { adm2 };
+                                            else locationV2.administrative.Add(adm2);
+ 
                                         }
                                     }
 
-                                    locations.Add(locationV2);
+                                    desActivity.location.Add(locationV2);
                                 }
                                 #endregion
 
@@ -277,7 +272,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                                     if (d != null)
                                     {
-                                        narrative[] arrynarrative = getNarrativeArray((textType)d);
+                                        List<narrative> arrynarrative = getNarrativeList((textType)d);
 
                                         var targetdocumentlink = desActivity.documentlink.FirstOrDefault(x => x.url == documentlink.url);
 
@@ -291,7 +286,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 //Not in 1.05
 
                                 //result 
-                                //Not in 1.05
+                                #region result
+                                
+                                #endregion
 
 
                                 #region other-identifier
@@ -300,7 +297,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                                     var otheridentifier = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.otheridentifier)activityItem;
 
-                                    narrative[] arrynarrative = Statix.getNarativeArray(otheridentifier.ownername);
+                                    List<narrative> arrynarrative = Statix.getNarativeList(otheridentifier.ownername);
 
                                     var targetotheridentifier = desActivity.otheridentifier[otherIdentifierCounter];
 
@@ -318,7 +315,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                             }
 
-                            desActivity.location = locations.ToArray();
+                            
                         }
                     }
                 }
@@ -332,6 +329,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
         public static narrative[] getNarrativeArray(dynamic activityItem)
         {
+            if (activityItem == null)
+                return null;
+
             narrative[] narrativeArray = new narrative[1];
             narrative narrative = new narrative();
             narrative.lang = "en";
@@ -348,6 +348,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         }
         public static narrative[] getNarrativeArray2(dynamic activityItem)
         {
+            if (activityItem == null)
+                return null;
+
             narrative[] narrativeArray = new narrative[1];
             narrative narrative = new narrative();
             narrative.lang = "en";
@@ -363,6 +366,48 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             return narrativeArray;
         }
+
+        public static List<narrative> getNarrativeList(dynamic activityItem)
+        {
+            if (activityItem == null)
+                return null;
+
+            List<narrative> narrativeList = new List<narrative>();
+            narrative narrative = new narrative();
+            narrative.lang = "en";
+
+            if (activityItem.Any != null)
+            {
+                var narrative_value = activityItem.Any[0];
+                narrative.Value = narrative_value != null ? narrative_value.InnerText : "";
+
+                narrativeList.Add(narrative);
+            }
+
+            return narrativeList;
+        }
+
+        public static List<narrative> getNarrativeList2(dynamic activityItem)
+        {
+            if (activityItem == null)
+                return null;
+
+            List<narrative> narrativeList = new List<narrative> { };
+            narrative narrative = new narrative();
+            narrative.lang = "en";
+
+            if (activityItem.Text != null)
+            {
+                var narrative_value = activityItem.Text[0];
+                narrative.Value = narrative_value; //!= null ? narrative_value.InnerText : "";
+
+
+                narrativeList.Add(narrative);
+            }
+
+            return narrativeList;
+        }
+
         //public static narrative[] getNarrativeArrayStr(string ttext)
         //{
         //    narrative narrative = new narrative();

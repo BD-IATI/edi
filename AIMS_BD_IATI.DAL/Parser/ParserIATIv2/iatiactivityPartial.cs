@@ -351,7 +351,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             if (activity.budget != null)
             {
-                budget[] budgets = activity.budget;
+                var budgets = activity.budget;
 
                 //get planned from budget
                 var originalBudgets = budgets.Where(w => w.type == "1").ToList();
@@ -489,7 +489,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             {
                 if (title == null)
                     title = new textRequiredType();
-                title.narrative = Statix.getNarativeArray(value);
+                title.narrative = Statix.getNarativeList(value);
             }
         }
         [XmlIgnore]
@@ -501,7 +501,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
             set
             {
-                description.n(0).narrative = Statix.getNarativeArray(value);
+                description.n(0).narrative = Statix.getNarativeList(value);
             }
         }
         [XmlIgnore]
@@ -877,7 +877,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             }
             set
             {
-                narrative = Statix.getNarativeArray(value);
+                narrative = Statix.getNarativeList(value);
             }
         }
 
@@ -941,7 +941,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             {
                 if (providerorg == null)
                     providerorg = new transactionProviderorg();
-                providerorg.narrative = Statix.getNarativeArray(value);
+                providerorg.narrative = Statix.getNarativeList(value);
             }
         }
 
@@ -971,7 +971,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             {
                 if (providerorg == null)
                     providerorg = new planneddisbursementProviderorg();
-                providerorg.narrative = Statix.getNarativeArray(value);
+                providerorg.narrative = Statix.getNarativeList(value);
             }
         }
 

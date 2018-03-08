@@ -76,7 +76,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
             {
                 
             }
-            return new AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivities { iatiactivity = iatiactivityList.ToArray() };
+            return new AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivities { iatiactivity = iatiactivityList };
         }
         
     }

@@ -8,6 +8,7 @@ using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using AIMS_BD_IATI.DAL;
 using System.Data.Entity.Validation;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace AIMS_BD_IATI.Library.Parser
 {
@@ -104,7 +105,7 @@ namespace AIMS_BD_IATI.Library.Parser
         /// Save Data To DB
         /// </summary>
         /// <param name="returnResult2"></param>
-        private void SaveToDB(tblFundSource fundSource, AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity[] iatiactivityArray)
+        private void SaveToDB(tblFundSource fundSource, List<ParserIATIv2.iatiactivity> iatiactivityArray)
         {
 
             int counter = 1;

@@ -62,7 +62,7 @@ namespace AIMS_BD_IATI.DAL
                     {
                         List<participatingorg> participatingorgs = H1Activity.participatingorg?.ToList();
                         participatingorgs.Add(dominatingParticipatingorg);
-                        H1Activity.participatingorg = participatingorgs.ToArray();
+                        H1Activity.participatingorg = participatingorgs;
                     }
 
                 }
@@ -97,7 +97,7 @@ namespace AIMS_BD_IATI.DAL
                         //if child activity does not have implementing org then set it from parant activity
                         if (H2Activity.participatingorg != null)
                             participatingOrgs.AddRange(H2Activity.participatingorg);
-                        H2Activity.participatingorg = participatingOrgs.ToArray();
+                        H2Activity.participatingorg = participatingOrgs;
                     }
                 }
                 #endregion
@@ -235,8 +235,8 @@ namespace AIMS_BD_IATI.DAL
                     }
                 }
 
-                matchedProject.aimsProject.transaction = trns.ToArray();
-                matchedProject.aimsProject.planneddisbursement = planDis.ToArray();
+                matchedProject.aimsProject.transaction = trns;
+                matchedProject.aimsProject.planneddisbursement = planDis;
 
                 //add all child activities if any and delete all transaction from child activities because we only need child activities to update IsInclude field in database
                 matchedProject.aimsProject.childActivities = matchedProject.iatiActivity.childActivities;

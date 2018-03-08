@@ -42,6 +42,11 @@ namespace AIMS_BD_IATI.Library
             return new narrative[1] { new narrative { lang = "en", Value = val } };
         }
 
+        public static List<narrative> getNarativeList(string val)
+        {
+            return new List<narrative> { new narrative { lang = "en", Value = val } };
+        }
+
         // Clone/Copy an object without changing source
         public static T Clone<T>(this T source)
         {

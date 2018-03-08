@@ -361,9 +361,9 @@ namespace AIMS_BD_IATI.WebAPI.Controllers {
                 bgts.AddRange(activity.budget);
                 plnDis.AddRange(activity.planneddisbursement);
             }
-            groupedActivity.transaction = trns.ToArray();
-            groupedActivity.budget = bgts.ToArray();
-            groupedActivity.planneddisbursement = plnDis.ToArray();
+            groupedActivity.transaction = trns;
+            groupedActivity.budget = bgts;
+            groupedActivity.planneddisbursement = plnDis;
 
             return groupedActivity;
         }
