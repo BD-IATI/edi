@@ -685,9 +685,10 @@ namespace AIMS_BD_IATI.DAL
                     #region Policy Marker
                     try
                     {
-                        if (mergedproject.policymarker?.Count > 0)
+                        var policiMarkerWithoutZero = mergedproject.policymarker.FindAll(f => f.significance != "0");
+                        if (policiMarkerWithoutZero.Count > 0)
                         {
-                            foreach (var policyMarker in mergedproject.policymarker)
+                            foreach (var policyMarker in policiMarkerWithoutZero)
                             {
 
 
@@ -704,7 +705,11 @@ namespace AIMS_BD_IATI.DAL
 
                                 aimsPolicyMarker.Narrative = policyMarker.narrative.n(0).Value;
                                 aimsPolicyMarker.PolicyMarkerId = dbContext.tblPolicyMarkers.FirstOrDefault(f => f.IATICode == policyMarker.code)?.Id ?? 0;
-                                aimsPolicyMarker.PolicySignificanceId = dbContext.tblPolicySignificances.FirstOrDefault(f => f.IATICode == policyMarker.significance)?.Id ?? 0;
+
+                                var significanceId = dbContext.tblPolicySignificances.FirstOrDefault(f => f.IATICode == policyMarker.significance)?.Id ?? 0;
+                                if (significanceId > 0)
+                                    aimsPolicyMarker.PolicySignificanceId = significanceId;
+
                                 aimsPolicyMarker.PolicyMarkerVocabularyId = dbContext.tblPolicyMarkerVocabularies.FirstOrDefault(f => f.IATICode == policyMarker.vocabulary)?.Id;
                                 aimsPolicyMarker.VocabularyUri = policyMarker.vocabularyuri;
 
