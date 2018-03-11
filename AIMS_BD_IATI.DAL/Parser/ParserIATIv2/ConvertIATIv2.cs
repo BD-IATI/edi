@@ -8,10 +8,13 @@ using System.Xml;
 using System.Xml.Serialization;
 //Json
 //using Newtonsoft.Json;
+using AIMS_BD_IATI.Library;
+using AIMS_BD_IATI.Library.Parser;
+using v1 = AIMS_BD_IATI.Library.Parser.ParserIATIv1;
+using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+using v2 = AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 
-using AIMS_BD_IATI.Library.Parser.ParserIATIv1;
-
-namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
+namespace ParserIATIv2
 {
     public class ConvertIATIv2 : IConverterIATI
     {
@@ -46,7 +49,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         //    return objDestinaiton;
         //}
 
-        public XmlResultv2 ConvertIATI105to201XML(XmlResultv1 objSource, XmlResultv2 objDestinaiton)
+        public XmlResultv2 ConvertIATI105to201XML(v1.XmlResultv1 objSource, XmlResultv2 objDestinaiton)
         {
             if (objDestinaiton == null)
                 objDestinaiton = new XmlResultv2();
@@ -59,9 +62,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                 foreach (var item in objSource.iatiactivities.Items)
                 {
 
-                    if (item.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.iatiactivity))
+                    if (item.GetType() == typeof(v1.iatiactivity))
                     {
-                        var activity = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.iatiactivity)item;
+                        var activity = (v1.iatiactivity)item;
 
                         string srcIatiidentifier = "";
 
@@ -70,9 +73,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                             foreach (var activityItem in activity.Items)
                             {
                                 //iati-identifier
-                                if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.iatiidentifier))
+                                if (activityItem.GetType() == typeof(v1.iatiidentifier))
                                 {
-                                    var iatiidentifier = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.iatiidentifier)activityItem;
+                                    var iatiidentifier = (v1.iatiidentifier)activityItem;
                                     srcIatiidentifier = iatiidentifier.Text.n(0);
                                 }
                             }
@@ -80,16 +83,16 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                             var desActivity = objDestinaiton.iatiactivities.iatiactivity.FirstOrDefault(q => q.IatiIdentifier == srcIatiidentifier);
                             //desActivity.AnyAttr[0].Prefix = "";
                             desActivity.AnyAttr[0].Value = "2.02";
-                            desActivity.location = new List<Parser.ParserIATIv2.location>();
-                            desActivity.result = new List<Parser.ParserIATIv2.result>();
+                            desActivity.location = new List<v2.location>();
+                            desActivity.result = new List<v2.result>();
 
                             int otherIdentifierCounter = 0;
                             foreach (var activityItem in activity.Items)
                             {
                                 #region reporting-org
-                                if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.reportingorg))
+                                if (activityItem.GetType() == typeof(v1.reportingorg))
                                 {
-                                    var reportingorg = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.reportingorg)activityItem;
+                                    var reportingorg = (v1.reportingorg)activityItem;
 
                                     List<narrative> arrynarrative = getNarrativeList(reportingorg);
 
@@ -98,9 +101,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 #endregion
 
                                 #region title
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType))
+                                else if (activityItem.GetType() == typeof(v1.textType))
                                 {
-                                    var title = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)activityItem;
+                                    var title = (v1.textType)activityItem;
 
                                     List<narrative> arrynarrative = getNarrativeList(title);
 
@@ -109,9 +112,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 #endregion
 
                                 #region description
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.description))
+                                else if (activityItem.GetType() == typeof(v1.description))
                                 {
-                                    var description = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.description)activityItem;
+                                    var description = (v1.description)activityItem;
 
                                     List<narrative> arrynarrative = getNarrativeList(description);
 
@@ -120,9 +123,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 #endregion
 
                                 #region participating-org
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.participatingorg))
+                                else if (activityItem.GetType() == typeof(v1.participatingorg))
                                 {
-                                    var participatingorg = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.participatingorg)activityItem;
+                                    var participatingorg = (v1.participatingorg)activityItem;
 
                                     List<narrative> arrynarrative = getNarrativeList(participatingorg);
 
@@ -141,9 +144,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 //Same
 
                                 #region activity-date
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.activitydate))
+                                else if (activityItem.GetType() == typeof(v1.activitydate))
                                 {
-                                    var activitydate = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.activitydate)activityItem;
+                                    var activitydate = (v1.activitydate)activityItem;
 
                                     var targetActivitydate = desActivity.activitydate.FirstOrDefault(x => x.type == activitydate.type);
                                     targetActivitydate.type = getActivityDateCode(activitydate.type);
@@ -151,19 +154,19 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 #endregion
 
                                 #region contact-info
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfo))
+                                else if (activityItem.GetType() == typeof(v1.contactinfo))
                                 {
-                                    var contactinfo = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfo)activityItem;
-                                    if (desActivity.contactinfo == null) desActivity.contactinfo = new List<Parser.ParserIATIv2.contactinfo>();
+                                    var contactinfo = (v1.contactinfo)activityItem;
+                                    if (desActivity.contactinfo == null) desActivity.contactinfo = new List<v2.contactinfo>();
                                     if (desActivity.contactinfo[0] == null) desActivity.contactinfo.Add(new contactinfo());
                                     var desContactInfo = desActivity.contactinfo;
 
                                     foreach (var it in contactinfo.Items)
                                     {
                                         //organisation
-                                        if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)) //[textType has multiple]
+                                        if (it.GetType() == typeof(v1.textType)) //[textType has multiple]
                                         {
-                                            var org = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)it;
+                                            var org = (v1.textType)it;
 
                                             List<narrative> arrynarrative2 = getNarrativeList(org);
 
@@ -172,9 +175,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                             desActivity.contactinfo[0].organisation.narrative = arrynarrative2;
                                         }
                                         //mailingaddress
-                                        if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfoMailingaddress))
+                                        if (it.GetType() == typeof(v1.contactinfoMailingaddress))
                                         {
-                                            var addr = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.contactinfoMailingaddress)it;
+                                            var addr = (v1.contactinfoMailingaddress)it;
 
                                             List<narrative> arrynarrative2 = getNarrativeList2(addr);
 
@@ -186,29 +189,29 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 #endregion
 
                                 #region location
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.location))
+                                else if (activityItem.GetType() == typeof(v1.location))
                                 {
-                                    var location = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.location)activityItem;
+                                    var location = (v1.location)activityItem;
 
                                     var locationV2 = new location();
 
                                     foreach (var it in location.Items)
                                     {
-                                        if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationCoordinates))
+                                        if (it.GetType() == typeof(v1.locationCoordinates))
                                         {
-                                            var coordinate = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationCoordinates)it;
+                                            var coordinate = (v1.locationCoordinates)it;
                                             locationV2.point = new locationPoint { pos = coordinate.latitude + " " + coordinate.longitude };
                                         }
 
-                                        else if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationPoint))
+                                        else if (it.GetType() == typeof(v1.locationPoint))
                                         {
-                                            var point = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationPoint)it;
+                                            var point = (v1.locationPoint)it;
                                             locationV2.point = new locationPoint { pos = point.Items.n(0).ToString() };
                                         }
 
-                                        else if (it.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationAdministrative))
+                                        else if (it.GetType() == typeof(v1.locationAdministrative))
                                         {
-                                            var adm = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.locationAdministrative)it;
+                                            var adm = (v1.locationAdministrative)it;
                                             var adm2 = new locationAdministrative { vocabulary = adm.vocabulary, level = adm.level, code = adm.code };
                                             if (locationV2.administrative == null) locationV2.administrative = new List<locationAdministrative> { adm2 };
                                             else locationV2.administrative.Add(adm2);
@@ -233,9 +236,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 //same
 
                                 #region budget
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.budget))
+                                else if (activityItem.GetType() == typeof(v1.budget))
                                 {
-                                    var budget = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.budget)activityItem;
+                                    var budget = (v1.budget)activityItem;
 
                                     foreach (var b in desActivity.budget)
                                     {
@@ -250,9 +253,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                                 #region transaction
 
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.transaction))
+                                else if (activityItem.GetType() == typeof(v1.transaction))
                                 {
-                                    var transaction = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.transaction)activityItem;
+                                    var transaction = (v1.transaction)activityItem;
 
 
                                     var targettransaction = desActivity.transaction.FirstOrDefault(x => x.transactiontype.code == transaction.transactiontype.code);
@@ -265,15 +268,15 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                 #endregion
 
                                 #region document - link
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.documentlink))
+                                else if (activityItem.GetType() == typeof(v1.documentlink))
                                 {
-                                    var documentlink = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.documentlink)activityItem;
+                                    var documentlink = (v1.documentlink)activityItem;
 
-                                    var d = documentlink.Items.FirstOrDefault(x => x.GetType() == typeof(textType));
+                                    var d = documentlink.Items.FirstOrDefault(x => x.GetType() == typeof(v1.textType));
 
                                     if (d != null)
                                     {
-                                        List<narrative> arrynarrative = getNarrativeList((textType)d);
+                                        List<narrative> arrynarrative = getNarrativeList((v1.textType)d);
 
                                         var targetdocumentlink = desActivity.documentlink.FirstOrDefault(x => x.url == documentlink.url);
 
@@ -288,9 +291,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
                                 //result 
                                 #region result
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.result))
+                                else if (activityItem.GetType() == typeof(v1.result))
                                 {
-                                    var result = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.result)activityItem;
+                                    var result = (v1.result)activityItem;
 
                                     var resultV2 = new result();
                                     resultV2.indicator = new List<resultIndicator>();
@@ -299,21 +302,21 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                     {
 
 
-                                        if (resultItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType))
+                                        if (resultItem.GetType() == typeof(v1.textType))
                                         {
-                                            var title = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)resultItem;
+                                            var title = (v1.textType)resultItem;
                                             resultV2.title = new textRequiredType { narrative = getNarrativeList(resultItem) };
                                         }
 
-                                        else if (resultItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.description))
+                                        else if (resultItem.GetType() == typeof(v1.description))
                                         {
-                                            var description = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.description)resultItem;
+                                            var description = (v1.description)resultItem;
                                             resultV2.description = new description { narrative = getNarrativeList(resultItem) };
                                         }
 
-                                        else if (resultItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicator))
+                                        else if (resultItem.GetType() == typeof(v1.resultIndicator))
                                         {
-                                            var indicator = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicator)resultItem;
+                                            var indicator = (v1.resultIndicator)resultItem;
 
                                             var indicatorV2 = new resultIndicator();
                                             indicatorV2.period = new List<resultIndicatorPeriod>();
@@ -321,51 +324,51 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
                                             foreach (var indicatorItem in indicator.Items)
                                             {
 
-                                                if (indicatorItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType))
+                                                if (indicatorItem.GetType() == typeof(v1.textType))
                                                 {
-                                                    var title = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.textType)indicatorItem;
+                                                    var title = (v1.textType)indicatorItem;
                                                     indicatorV2.title = new textRequiredType { narrative = getNarrativeList(indicatorItem) };
                                                 }
-                                                else if (indicatorItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.description))
+                                                else if (indicatorItem.GetType() == typeof(v1.description))
                                                 {
-                                                    var desc = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.description)indicatorItem;
+                                                    var desc = (v1.description)indicatorItem;
                                                     indicatorV2.description = new description { narrative = getNarrativeList(indicatorItem) };
                                                 }
-                                                else if (indicatorItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorBaseline))
+                                                else if (indicatorItem.GetType() == typeof(v1.resultIndicatorBaseline))
                                                 {
-                                                    var baseline = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorBaseline)indicatorItem;
+                                                    var baseline = (v1.resultIndicatorBaseline)indicatorItem;
                                                     indicatorV2.baseline = new resultIndicatorBaseline { year = baseline.year, value = baseline.value };
                                                 }
-                                                else if (indicatorItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriod))
+                                                else if (indicatorItem.GetType() == typeof(v1.resultIndicatorPeriod))
                                                 {
-                                                    var period = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriod)indicatorItem;
+                                                    var period = (v1.resultIndicatorPeriod)indicatorItem;
                                                     var periodV2 = new resultIndicatorPeriod();
 
-                                                    dateType date1 = null;
-                                                    dateType date2 = null;
+                                                    v1.dateType date1 = null;
+                                                    v1.dateType date2 = null;
                                                     foreach (var periodItem in period.Items)
                                                     {
 
-                                                        if (periodItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.dateType))
+                                                        if (periodItem.GetType() == typeof(v1.dateType))
                                                         {
                                                             if (date1 == null)
                                                             {
-                                                                date1 = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.dateType)periodItem;
+                                                                date1 = (v1.dateType)periodItem;
                                                             }
                                                             else
                                                             {
-                                                                date2 = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.dateType)periodItem;
+                                                                date2 = (v1.dateType)periodItem;
                                                             }
 
                                                         }
-                                                        else if (periodItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriodActual))
+                                                        else if (periodItem.GetType() == typeof(v1.resultIndicatorPeriodActual))
                                                         {
-                                                            var periodActual = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriodActual)periodItem;
+                                                            var periodActual = (v1.resultIndicatorPeriodActual)periodItem;
                                                             periodV2.actual = new resultIndicatorPeriodActual { value = periodActual.value };
                                                         }
-                                                        else if (periodItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriodTarget))
+                                                        else if (periodItem.GetType() == typeof(v1.resultIndicatorPeriodTarget))
                                                         {
-                                                            var periodTarget = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.resultIndicatorPeriodTarget)periodItem;
+                                                            var periodTarget = (v1.resultIndicatorPeriodTarget)periodItem;
                                                             periodV2.target = new resultIndicatorPeriodTarget { value = periodTarget.value };
                                                         }
                                                     }
@@ -388,10 +391,10 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
 
                                 #region other-identifier
-                                else if (activityItem.GetType() == typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv1.otheridentifier))
+                                else if (activityItem.GetType() == typeof(v1.otheridentifier))
                                 {
 
-                                    var otheridentifier = (AIMS_BD_IATI.Library.Parser.ParserIATIv1.otheridentifier)activityItem;
+                                    var otheridentifier = (v1.otheridentifier)activityItem;
 
                                     List<narrative> arrynarrative = Statix.getNarativeList(otheridentifier.ownername);
 
