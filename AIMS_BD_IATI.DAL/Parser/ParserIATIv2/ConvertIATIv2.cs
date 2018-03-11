@@ -14,7 +14,7 @@ using v1 = AIMS_BD_IATI.Library.Parser.ParserIATIv1;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 using v2 = AIMS_BD_IATI.Library.Parser.ParserIATIv2;
 
-namespace ParserIATIv2
+namespace AIMS_BD_IATI
 {
     public class ConvertIATIv2 : IConverterIATI
     {

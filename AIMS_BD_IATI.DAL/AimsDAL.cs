@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AIMS_BD_IATI.Library.Parser.ParserIATIv2;
+using AIMS_BD_IATI.Library.Parser;
 using AIMS_BD_IATI.Library;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
@@ -357,7 +358,7 @@ namespace AIMS_BD_IATI.DAL
                             }).ToList();
 
             var aimsSubsectors = dbContext.tblSubSectors.Where(w => w.IATICode.Length > 0).ToList();
-            var aimsThematicMarkers = dbContext.tblThematicMarkers.Where(w => w.IATICode.Length > 0).ToList(); 
+            var aimsThematicMarkers = dbContext.tblThematicMarkers.Where(w => w.IATICode.Length > 0).ToList();
             #endregion
 
             foreach (var mergedproject in projects)
@@ -677,6 +678,44 @@ namespace AIMS_BD_IATI.DAL
                     catch (Exception ex)
                     {
                         Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Sector/Thematic could not be imported.");
+                    }
+
+                    #endregion
+
+                    #region Policy Marker
+                    try
+                    {
+                        if (mergedproject.policymarker?.Count > 0)
+                        {
+                            foreach (var policyMarker in mergedproject.policymarker)
+                            {
+
+
+                                var aimsPolicyMarker = p.tblProjectPolicyMarkers.FirstOrDefault(f => f.Narrative == policyMarker.narrative.n(0).Value);
+
+                                if (aimsPolicyMarker == null)
+                                {
+                                    aimsPolicyMarker = new tblProjectPolicyMarker();
+                                    p.tblProjectPolicyMarkers.Add(aimsPolicyMarker);
+                                    aimsPolicyMarker.IUser = Iuser;
+                                    aimsPolicyMarker.IDate = DateTime.Now;
+
+                                }
+
+                                aimsPolicyMarker.Narrative = policyMarker.narrative.n(0).Value;
+                                aimsPolicyMarker.PolicyMarkerId = dbContext.tblPolicyMarkers.FirstOrDefault(f => f.IATICode == policyMarker.code)?.Id ?? 0;
+                                aimsPolicyMarker.PolicySignificanceId = dbContext.tblPolicySignificances.FirstOrDefault(f => f.IATICode == policyMarker.significance)?.Id ?? 0;
+                                aimsPolicyMarker.PolicyMarkerVocabularyId = dbContext.tblPolicyMarkerVocabularies.FirstOrDefault(f => f.IATICode == policyMarker.vocabulary)?.Id;
+                                aimsPolicyMarker.VocabularyUri = policyMarker.vocabularyuri;
+
+
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Policy Markers could not be imported.");
                     }
 
                     #endregion
@@ -1586,6 +1625,21 @@ namespace AIMS_BD_IATI.DAL
             //humanitarian-scope
 
             //policy-marker
+            List<policymarker> policyMarkerList = new List<policymarker>();
+            var policyMarkers = project.tblProjectPolicyMarkers.ToList();
+            foreach (var policyMarker in policyMarkers)
+            {
+                policyMarkerList.Add(new policymarker
+                {
+                    narrative = Statix.getNarativeList(policyMarker.Narrative.ToString()),
+                    code = policyMarker.tblPolicyMarker?.IATICode,
+                    significance = policyMarker.tblPolicySignificance?.Name,
+                    vocabulary = policyMarker.VocabularyUri,
+                    vocabularyuri = policyMarker.VocabularyUri
+                });
+            }
+            iatiActivityObj.policymarker = policyMarkerList;
+
 
             //collaboration-type
 
