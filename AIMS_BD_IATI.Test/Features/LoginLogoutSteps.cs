@@ -6,7 +6,7 @@ using TechTalk.SpecFlow;
 namespace AIMS_BD_IATI.Test.Features
 {
     [Binding]
-    public class LoginLogoutFeatureSteps : SeleniumBase
+    public class LoginLogoutSteps : SeleniumBase
     {
         [Given(@"open a browser")]
         public void GivenOpenABrowser()
