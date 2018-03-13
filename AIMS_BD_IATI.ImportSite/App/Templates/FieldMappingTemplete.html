@@ -25,7 +25,7 @@
             <p>
                 <span class="label label-default">{{m.Field}}</span>
             </p>
-            <p class="lead field-value">
+            <p ng-attr-id="iati-{{m.Field}}" class="lead field-value">
                 {{m.IATIValue}}
             </p>
         </div>
@@ -35,7 +35,7 @@
             <p>
                 <span class="label label-default">{{m.Field}}</span>
             </p>
-            <p class="lead field-value">
+            <p ng-attr-id="aims-{{m.Field}}" class="lead field-value">
                 {{m.AIMSValue}}
             </p>
         </div>
@@ -48,7 +48,7 @@
             <p>
                 <span class="label label-default">{{m.Field}}</span>
             </p>
-            <p class="lead field-value">
+            <p ng-attr-id="iati-{{m.Field}}" class="lead field-value">
                 {{m.IATIValue | currency : $ : 2}}
             </p>
         </div>
@@ -58,7 +58,7 @@
             <p>
                 <span class="label label-default">{{m.Field}}</span>
             </p>
-            <p class="lead field-value">
+            <p ng-attr-id="aims-{{m.Field}}" class="lead field-value">
                 {{m.AIMSValue | currency : $ : 2}}
             </p>
         </div>
