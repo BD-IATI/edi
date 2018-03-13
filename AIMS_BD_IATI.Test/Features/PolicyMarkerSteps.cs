@@ -11,7 +11,7 @@ namespace AIMS_BD_IATI.Test.Features
         [Given(@"User uses the IATI import module to import a project")]
         public void GivenUserUsesTheIATIImportModuleToImportAProject()
         {
-            ScenarioContext.Current.Pending();
+            
         }
 
         [Given(@"User proceeds to the `(.*)\. Set import preferences` step")]
