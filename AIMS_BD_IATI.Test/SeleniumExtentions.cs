@@ -11,8 +11,31 @@ namespace AIMS_BD_IATI.Test
 {
     public static class SeleniumExtentions
     {
-        static string baseURL = "http://localhost/IATIImportSite/";
 
+        public static void FillText(this RemoteWebDriver d, string inputCssSelector, string value)
+        {
+            var element = d.FindElementByCssSelector(inputCssSelector);
+            element.Clear();
+            element.SendKeys(value);
+        }
+        public static void FillKendoNumeric(this RemoteWebDriver d, string inputId, string value)
+        {
+            var input1 = d.FindElementByXPath($"//input[@id='{inputId}']/preceding-sibling::input[1]");
+
+            input1.Click();
+
+            var element = d.FindElementById(inputId);
+            element.Clear();
+            element.SendKeys(value);
+        }
+        public static void FillDate(this RemoteWebDriver d, string inputCssSelector, string value)
+        {
+            var element = d.FindElementByCssSelector(inputCssSelector);
+            element.Click();
+            element.SendKeys(Keys.ArrowLeft);
+            element.SendKeys(Keys.ArrowLeft);
+            element.SendKeys(value);
+        }
         public static void FillTextByName(this RemoteWebDriver d, string inputName, string value)
         {
             var element = d.FindElementByName(inputName);
@@ -27,7 +50,7 @@ namespace AIMS_BD_IATI.Test
             element.SendKeys(value);
         }
 
-        public static void SelectLookupItem(this RemoteWebDriver d, string fieldName, string text)
+        public static void Select2LookupItem(this RemoteWebDriver d, string fieldName, string text)
         {
             var divField = d.FindElementByCssSelector(".field." + fieldName);
 
@@ -42,11 +65,39 @@ namespace AIMS_BD_IATI.Test
             selectedItem.Click();
         }
 
-        public static void GoToUrl(this RemoteWebDriver d, string urlWithoutBase)
+        public static void SelectLookupItemByText(this RemoteWebDriver d, string selectId, string text)
         {
-            d.Navigate().GoToUrl(baseURL + urlWithoutBase);
+            SelectElement select = new SelectElement(d.FindElementById(selectId));
+            select.SelectByText(text);
         }
+
+        public static void SelectFirstLookupItem(this RemoteWebDriver d, string selectId)
+        {
+            var sss = d.FindElementById(selectId);
+
+            SelectElement select = new SelectElement(sss);
+
+            select.SelectByIndex(1);
+
+        }
+
+        public static void SelectFirstLookupItem(this IWebElement d, string selectId)
+        {
+            var sss = d.FindElement(By.Id(selectId));
+
+            SelectElement select = new SelectElement(sss);
+
+            select.SelectByIndex(1);
+
+
+        }
+
+
+
+
         
+
+
     }
 }
 
