@@ -1,29 +1,24 @@
-﻿using OpenQA.Selenium.Chrome;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
 using TechTalk.SpecFlow;
+using Xunit;
 
 namespace AIMS_BD_IATI.Test.Features
 {
-    [Binding]
-    public class PolicyMarkerSteps : SeleniumBase
+    [Binding, Scope(Feature = "Policy markers from IATI")]
+    public class PolicyMarkerSteps : BaseFieldMappingSteps
     {
-        [Given(@"User uses the IATI import module to import a project")]
-        public void GivenUserUsesTheIATIImportModuleToImportAProject()
-        {
-            
-        }
-
-        [Given(@"User proceeds to the `(.*)\. Set import preferences` step")]
-        public void GivenUserProceedsToThe_SetImportPreferencesStep(int p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
+        
 
         [Then(@"the page includes the list of policy markers that have a significance code that is not `(.*)`\.")]
         public void ThenThePageIncludesTheListOfPolicyMarkersThatHaveASignificanceCodeThatIsNot_(int p0)
         {
-            ScenarioContext.Current.Pending();
+            var policyMarkerDiv = driver.FindElementById("iati-PolicyMarker");
+            var firstChar = Convert.ToInt32(policyMarkerDiv.Text[0]);
+
+            Assert.True(firstChar > 0);
         }
 
         [Given(@"User imports a project from IATI data")]

@@ -1,7 +1,7 @@
 ﻿Feature: Results
 
   Scenario: User can see results in the IATI import interface
-    Given User uses the IATI import module to import a project
+    Given User uses the IATI import module to import a project for DP=`World Bank (WB)`
     And User proceeds to the `5. Set import preferences` step
     Then the page includes the number of `/result/indicator` (e.g. "5 results")
 

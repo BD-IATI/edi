@@ -23,7 +23,7 @@ namespace AIMS_BD_IATI.Test.Features
         [Given(@"goto http://localhost/IATIImportSite")]
         public void GivenGotoHttpLocalhostIATIImportSite()
         {
-            driver.GoToUrl("");
+            GoToUrl("");
         }
 
         [Given(@"input UserName = ""(.*)"", password = ""(.*)""")]

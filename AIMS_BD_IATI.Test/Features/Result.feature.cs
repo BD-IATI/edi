@@ -80,7 +80,7 @@ namespace AIMS_BD_IATI.Test.Features
 #line 3
   this.ScenarioSetup(scenarioInfo);
 #line 4
-    testRunner.Given("User uses the IATI import module to import a project", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("User uses the IATI import module to import a project for DP=`World Bank (WB)`", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 5
     testRunner.And("User proceeds to the `5. Set import preferences` step", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 6
