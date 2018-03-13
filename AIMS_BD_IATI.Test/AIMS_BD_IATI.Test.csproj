@@ -87,11 +87,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Features\Result.feature.cs">
+      <DependentUpon>Result.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Features\PolicyMarker.feature.cs">
       <DependentUpon>PolicyMarker.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\ResultSteps.cs" />
     <Compile Include="Features\PolicyMarkerSteps.cs" />
     <Compile Include="SeleniumBase.cs" />
     <Compile Include="Features\LoginLogout.feature.cs">
@@ -118,6 +124,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Features\Result.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Result.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\PolicyMarker.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PolicyMarker.feature.cs</LastGenOutput>
