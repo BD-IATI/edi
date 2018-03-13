@@ -15,39 +15,46 @@ using TechTalk.SpecFlow;
 
 namespace AIMS_BD_IATI.Test
 {
-    public class SeleniumBase
+    public abstract class SeleniumBase
     {
+        public static string baseURL = "http://localhost/IATIImportSite/";
+
         public RemoteWebDriver driver;
-        public StringBuilder verificationErrors;
-        //private string baseURL;
+
         public bool acceptNextAlert = true;
 
         public IOptions opt;
         public ITimeouts timeouts;
         public WebDriverWait wait;
 
-        //public TestContext TestContext { get; set; }
-
-        [Before]
-        public void SetupTest()
+        [BeforeScenario]
+        public void BeforeScenario()
         {
-            //baseURL = "http://localhost:53013/";
+            //if (driver == null)
+            //{
+            //    StartDriver();
+            //}
+        }
 
+        private void StartDriver()
+        {
             driver = new ChromeDriver();
-            //d.Manage().Window.Maximize();
             opt = driver.Manage();
             timeouts = opt.Timeouts();
             timeouts.ImplicitWait = TimeSpan.FromSeconds(10);
 
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
         }
 
-        [After]
-        public void TeardownTest()
+        [AfterScenario]
+        public void AfterScenario()
         {
             try
             {
-                driver.Quit();
+                if (driver != null)
+                {
+                    driver.Quit();
+                }
             }
             catch (Exception)
             {
@@ -55,8 +62,56 @@ namespace AIMS_BD_IATI.Test
             }
         }
 
+        #region Common Features
+        //public void LoginAsPublic()
+        //{
+        //    GoToUrl("");
 
-        private bool IsElementPresent(By by)
+        //    wait.Until(ExpectedConditions.ElementIsVisible(By.Id("btn-logon-public")))
+        //    .Click();
+
+        //    wait.Until(ExpectedConditions.UrlToBe(baseURL + "AIMS/Home"));
+        //}
+
+        public void LoginAsAdmin()
+        {
+            GoToUrl("");
+
+            driver.FillTextById("username", "admin");
+            driver.FillTextById("password", "123456");
+
+            driver.FindElementById("btnLogin").Click();
+
+            wait.Until(ExpectedConditions.UrlContains("#/0Begin"));
+        }
+
+        //[Given(@"User edits a project")]
+        //public void UserEditsFirstProject()
+        //{
+        //    LoginAsAdmin();
+
+        //    GoToUrl("/AIMS/ProjectInfo/Index");
+
+        //    var firstProjectEditButton = driver.FindElementByCssSelector("#projectInfoKendoGrid > div.k-grid-content > table > tbody > tr:nth-child(1) > td:nth-child(19) > a.lnkEditProjectInfo");
+
+        //    firstProjectEditButton.Click();
+
+
+        //}
+        #endregion
+
+        #region Helpers
+        public void GoToUrl(string urlWithoutBase)
+        {
+            if (driver == null)
+            {
+                StartDriver();
+            }
+
+            driver.Navigate().GoToUrl(baseURL + urlWithoutBase);
+        }
+
+        public bool IsElementPresent(By by)
         {
             try
             {
@@ -69,7 +124,18 @@ namespace AIMS_BD_IATI.Test
             }
         }
 
-        private bool IsAlertPresent()
+        public bool IsElementVisible(By by)
+        {
+            try
+            {
+                return driver.FindElement(by).Displayed;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool IsAlertPresent()
         {
             try
             {
@@ -80,6 +146,11 @@ namespace AIMS_BD_IATI.Test
             {
                 return false;
             }
+        }
+
+        public IWebElement J(string cssSelector)
+        {
+            return wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(cssSelector)));
         }
 
         private string CloseAlertAndGetItsText()
@@ -103,6 +174,7 @@ namespace AIMS_BD_IATI.Test
                 acceptNextAlert = true;
             }
         }
+        #endregion
     }
 }
 
