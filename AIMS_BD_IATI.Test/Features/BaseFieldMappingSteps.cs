@@ -36,6 +36,11 @@ namespace AIMS_BD_IATI.Test.Features
 
         }
 
+        [Given(@"User imports a project from IATI data")]
+        public void GivenUserImportsAProjectFromIATIData()
+        {
+            ScenarioContext.Current.Pending();
+        }
 
     }
 }

@@ -21,11 +21,6 @@ namespace AIMS_BD_IATI.Test.Features
             Assert.True(firstChar > 0);
         }
 
-        [Given(@"User imports a project from IATI data")]
-        public void GivenUserImportsAProjectFromIATIData()
-        {
-            ScenarioContext.Current.Pending();
-        }
 
         [Given(@"the project contains at least one policy marker with a significance code that is not `(.*)`")]
         public void GivenTheProjectContainsAtLeastOnePolicyMarkerWithASignificanceCodeThatIsNot(int p0)
