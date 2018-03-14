@@ -98,10 +98,12 @@ namespace AIMS_BD_IATI.Test.Features
 #line 8
   this.ScenarioSetup(scenarioInfo);
 #line 9
-    testRunner.Given("User imports a project from IATI data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("User uses the IATI import module to import a project for DP=`World Bank (WB)`", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
-    testRunner.And("the project contains at least one `result/indicator`", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("User imports a project from IATI data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
+    testRunner.And("the project contains at least one `result/indicator`", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 12
     testRunner.Then("on the `Results` tab the table contains at least one indicator.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

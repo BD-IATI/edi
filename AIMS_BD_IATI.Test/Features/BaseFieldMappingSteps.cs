@@ -39,7 +39,13 @@ namespace AIMS_BD_IATI.Test.Features
         [Given(@"User imports a project from IATI data")]
         public void GivenUserImportsAProjectFromIATIData()
         {
-            ScenarioContext.Current.Pending();
+            driver.FindElementById("btn-view-mapped-projects").Click();
+            wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.Id("us-spinner")));
+            driver.FindElementById("btn-import-projects").Click();
+            wait.Until(ExpectedConditions.AlertIsPresent());
+
+            driver.SwitchTo().Alert().Dismiss();
+
         }
 
     }

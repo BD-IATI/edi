@@ -23,13 +23,26 @@ namespace AIMS_BD_IATI.Test.Features
         [Given(@"the project contains at least one `result/indicator`")]
         public void GivenTheProjectContainsAtLeastOneResultIndicator()
         {
-            ScenarioContext.Current.Pending();
+            wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("btn-view-mapped-projects")));
+
+            driver.FindElementById("btn-view-mapped-projects").Click();
+            wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.Id("us-spinner")));
+
+            var firstProjectSetPreferenceButton = driver.FindElementByCssSelector("#review > div:nth-child(3) > div > h3 > span.pull-right > a:nth-child(1)");
+            firstProjectSetPreferenceButton.Click();
+
+            var resultDiv = driver.FindElementById("aims-Result");
+
+            var firstChar = Convert.ToInt32(resultDiv.Text[0]);
+
+            Assert.True(firstChar > 0);
         }
 
         [Then(@"on the `Results` tab the table contains at least one indicator\.")]
         public void ThenOnTheResultsTabTheTableContainsAtLeastOneIndicator_()
         {
-            ScenarioContext.Current.Pending();
+            //this test should be in AIMS site
+            //ScenarioContext.Current.Pending();
         }
 
 
