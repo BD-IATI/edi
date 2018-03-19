@@ -37,14 +37,29 @@ namespace AIMS_BD_IATI.Library
         /// </summary>
         public static string FlowType { get { return "10"; } }
 
-        public static narrative[] getNarativeArray(string val)
+        public static narrative[] GetNarrativeArray(string val)
         {
             return new narrative[1] { new narrative { lang = "en", Value = val } };
         }
 
-        public static List<narrative> getNarativeList(string val)
+        public static List<narrative> GetNarrativeList(string val)
         {
             return new List<narrative> { new narrative { lang = "en", Value = val } };
+        }
+
+        public static string GetValue(this textRequiredType input, string lang = "en")
+        {
+            var enValue = input?.narrative?.FirstOrDefault(f => f.lang?.ToLower() == lang)?.Value;
+
+
+            return enValue ?? input?.narrative.n(0).Value;
+        }
+        public static string GetValue(this List<narrative> input, string lang = "en")
+        {
+            var enValue = input?.FirstOrDefault(f => f.lang?.ToLower() == lang)?.Value;
+
+
+            return enValue ?? input.n(0).Value;
         }
 
         // Clone/Copy an object without changing source

@@ -396,7 +396,7 @@ namespace AIMS_BD_IATI
 
                                     var otheridentifier = (v1.otheridentifier)activityItem;
 
-                                    List<narrative> arrynarrative = Statix.getNarativeList(otheridentifier.ownername);
+                                    List<narrative> arrynarrative = Statix.GetNarrativeList(otheridentifier.ownername);
 
                                     var targetotheridentifier = desActivity.otheridentifier[otherIdentifierCounter];
 

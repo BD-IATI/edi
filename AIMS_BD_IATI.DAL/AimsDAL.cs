@@ -242,7 +242,7 @@ namespace AIMS_BD_IATI.DAL
                 var tr = new transaction
                 {
                     transactiontype = new transactionTransactiontype { code = ConvertIATIv2.gettransactionCode("C") },
-                    providerorg = new transactionProviderorg { narrative = Statix.getNarativeList(trustFundDetail.FundSourceName) },
+                    providerorg = new transactionProviderorg { narrative = Statix.GetNarrativeList(trustFundDetail.FundSourceName) },
                     value = new currencyType { currency = Statix.Currency, Value = trustFundDetail.Amount ?? 0 },
                 };
                 AimsDbIatiDAL.SetCurrencyExRateAndVal(tr.value, Statix.Currency);
@@ -532,7 +532,7 @@ namespace AIMS_BD_IATI.DAL
                                 {
                                     foreach (var indicator in result.indicator)
                                     {
-                                        var indicatorTitle = indicator.title.narrative.n(0).Value ?? result.title?.narrative.n(0).Value;
+                                        var indicatorTitle = indicator.title.narrative.GetValue() ?? result.title?.narrative.GetValue();
 
                                         var projectResult = p.tblProjectResults.FirstOrDefault(f => f.IndicatorTitle == indicatorTitle);
 
@@ -692,7 +692,7 @@ namespace AIMS_BD_IATI.DAL
                             {
 
 
-                                var aimsPolicyMarker = p.tblProjectPolicyMarkers.FirstOrDefault(f => f.Narrative == policyMarker.narrative.n(0).Value);
+                                var aimsPolicyMarker = p.tblProjectPolicyMarkers.FirstOrDefault(f => f.Narrative == policyMarker.narrative.GetValue());
 
                                 if (aimsPolicyMarker == null)
                                 {
@@ -703,7 +703,7 @@ namespace AIMS_BD_IATI.DAL
 
                                 }
 
-                                aimsPolicyMarker.Narrative = policyMarker.narrative.n(0).Value;
+                                aimsPolicyMarker.Narrative = policyMarker.narrative.GetValue();
                                 aimsPolicyMarker.PolicyMarkerId = dbContext.tblPolicyMarkers.FirstOrDefault(f => f.IATICode == policyMarker.code)?.Id ?? 0;
 
                                 var significanceId = dbContext.tblPolicySignificances.FirstOrDefault(f => f.IATICode == policyMarker.significance)?.Id ?? 0;
@@ -793,7 +793,7 @@ namespace AIMS_BD_IATI.DAL
                             foreach (var document in mergedproject.documentlink)
                             {
 
-                                var docTitle = document.title?.narrative.n(0).Value;
+                                var docTitle = document.title?.narrative.GetValue();
                                 var attachment = p.tblProjectAttachments.FirstOrDefault(f => f.AttachmentTitle == docTitle);
 
                                 if (attachment == null)
@@ -1144,7 +1144,7 @@ namespace AIMS_BD_IATI.DAL
                     aimsCommitment.ExchangeRateToBDT = trn.value?.BBexchangeRateBDT ?? default(decimal);
                     aimsCommitment.CommittedAmountInBDT = trn.value?.ValueInBDT;
 
-                    aimsCommitment.Remarks = MatchedProject.IsDataSourceAIMS ? trn.description?.narrative.n(0).Value : "Importerd From IATI: " + trn.description?.narrative.n(0).Value;
+                    aimsCommitment.Remarks = MatchedProject.IsDataSourceAIMS ? trn.description?.narrative.GetValue() : "Importerd From IATI: " + trn.description?.narrative.GetValue();
                     aimsCommitment.VerificationRemarks = "Importerd From IATI: ";
 
                     //AidCategory
@@ -1198,7 +1198,7 @@ namespace AIMS_BD_IATI.DAL
                     aimsPlanDisbursment.PlannedDisburseExchangeRateToBDT = trn.value?.BBexchangeRateBDT ?? default(decimal);
                     aimsPlanDisbursment.PlannedDisburseAmountInBDT = trn.value?.ValueInBDT;
 
-                    //aimsPlanDisbursment.VerificationRemarks = project.IsDataSourceAIMS ? trn.description?.narrative.n(0).Value : "Importerd From IATI: " + trn.description?.narrative.n(0).Value;
+                    //aimsPlanDisbursment.VerificationRemarks = project.IsDataSourceAIMS ? trn.description?.narrative.GetValue() : "Importerd From IATI: " + trn.description?.narrative.GetValue();
                     aimsPlanDisbursment.VerificationRemarks = "Importerd From IATI: ";
 
                     //AidCategory
@@ -1249,7 +1249,7 @@ namespace AIMS_BD_IATI.DAL
                     aimsDisbursment.DisbursedExchangeRateToBDT = trn.value?.BBexchangeRateBDT ?? default(decimal);
                     aimsDisbursment.DisbursedAmountInBDT = trn.value?.ValueInBDT;
 
-                    aimsDisbursment.Remarks = MatchedProject.IsDataSourceAIMS ? trn.description?.narrative.n(0).Value : "Importerd From IATI: " + trn.description?.narrative.n(0).Value;
+                    aimsDisbursment.Remarks = MatchedProject.IsDataSourceAIMS ? trn.description?.narrative.GetValue() : "Importerd From IATI: " + trn.description?.narrative.GetValue();
                     aimsDisbursment.VerificationRemarks = "Importerd From IATI: ";
 
                     //AidCategory
@@ -1503,19 +1503,19 @@ namespace AIMS_BD_IATI.DAL
                 @ref = project.tblFundSource?.IATICode,
                 type = project.tblFundSource?.tblFundSourceCategory?.IATICode,
                 //secondary-reporter
-                narrative = Statix.getNarativeList(project.tblFundSource?.FundSourceName),
+                narrative = Statix.GetNarrativeList(project.tblFundSource?.FundSourceName),
             };
 
             //title
-            iatiActivityObj.title = new textRequiredType { narrative = Statix.getNarativeList(project.Title) };
+            iatiActivityObj.title = new textRequiredType { narrative = Statix.GetNarrativeList(project.Title) };
             //description
-            iatiActivityObj.description = new List<iatiactivityDescription> { new iatiactivityDescription { narrative = Statix.getNarativeList(project.Objective) } };
+            iatiActivityObj.description = new List<iatiactivityDescription> { new iatiactivityDescription { narrative = Statix.GetNarrativeList(project.Objective) } };
 
             //participating-org
             List<participatingorg> participatingorgList = new List<participatingorg>();
             participatingorgList.Add(new participatingorg
             {
-                narrative = Statix.getNarativeList(project.tblFundSource?.FundSourceGroup),
+                narrative = Statix.GetNarrativeList(project.tblFundSource?.FundSourceGroup),
                 role = "1",
                 @ref = project.tblFundSource?.IATICode,
                 type = project.tblFundSource?.tblFundSourceCategory?.IATICode,
@@ -1523,7 +1523,7 @@ namespace AIMS_BD_IATI.DAL
 
             participatingorgList.Add(new participatingorg
             {
-                narrative = Statix.getNarativeList(project.tblFundSource?.FundSourceName),
+                narrative = Statix.GetNarrativeList(project.tblFundSource?.FundSourceName),
                 role = "3",
                 @ref = project.tblFundSource?.IATICode,
                 type = project.tblFundSource?.tblFundSourceCategory?.IATICode,
@@ -1534,7 +1534,7 @@ namespace AIMS_BD_IATI.DAL
                 {
                     participatingorgList.Add(new participatingorg
                     {
-                        narrative = Statix.getNarativeList("N/A"),
+                        narrative = Statix.GetNarrativeList("N/A"),
                         role = "4",
                         @ref = "N/A",
                         type = "N/A",
@@ -1569,26 +1569,26 @@ namespace AIMS_BD_IATI.DAL
             contactinfoList.Add(new contactinfo //DP
             {
                 type = "1",
-                organisation = new textRequiredType { narrative = Statix.getNarativeList(project.tblFundSource?.FundSourceName) },
-                department = new textRequiredType { narrative = Statix.getNarativeList(project.tblFundSource?.FundSourceName) },
-                personname = new textRequiredType { narrative = Statix.getNarativeList(project.FocalPointDPContactName) },
-                jobtitle = new textRequiredType { narrative = Statix.getNarativeList(project.FocalPointDPContactDesignation) },
+                organisation = new textRequiredType { narrative = Statix.GetNarrativeList(project.tblFundSource?.FundSourceName) },
+                department = new textRequiredType { narrative = Statix.GetNarrativeList(project.tblFundSource?.FundSourceName) },
+                personname = new textRequiredType { narrative = Statix.GetNarrativeList(project.FocalPointDPContactName) },
+                jobtitle = new textRequiredType { narrative = Statix.GetNarrativeList(project.FocalPointDPContactDesignation) },
                 telephone = new List<contactinfoTelephone> { new contactinfoTelephone { Value = project.FocalPointDPContactTelephone } },
                 email = new List<contactinfoEmail> { new contactinfoEmail { Value = project.FocalPointDPContactEmail } },
                 website = new List<contactinfoWebsite> { new contactinfoWebsite { Value = project.FocalPointDPContactAddress } },
-                mailingaddress = new List<textRequiredType> { new textRequiredType { narrative = Statix.getNarativeList(project.FocalPointDPContactAddress) } }
+                mailingaddress = new List<textRequiredType> { new textRequiredType { narrative = Statix.GetNarrativeList(project.FocalPointDPContactAddress) } }
             });
             contactinfoList.Add(new contactinfo //GoB
             {
                 type = "2",
-                organisation = new textRequiredType { narrative = Statix.getNarativeList(Statix.RecipientCountryName) },
-                department = new textRequiredType { narrative = Statix.getNarativeList("PD") },
-                personname = new textRequiredType { narrative = Statix.getNarativeList(project.FocalPointGoBContactName) },
-                jobtitle = new textRequiredType { narrative = Statix.getNarativeList(project.FocalPointGoBContactDesignation) },
+                organisation = new textRequiredType { narrative = Statix.GetNarrativeList(Statix.RecipientCountryName) },
+                department = new textRequiredType { narrative = Statix.GetNarrativeList("PD") },
+                personname = new textRequiredType { narrative = Statix.GetNarrativeList(project.FocalPointGoBContactName) },
+                jobtitle = new textRequiredType { narrative = Statix.GetNarrativeList(project.FocalPointGoBContactDesignation) },
                 telephone = new List<contactinfoTelephone> { new contactinfoTelephone { Value = project.FocalPointGoBContactTelephone } },
                 email = new List<contactinfoEmail> { new contactinfoEmail { Value = project.FocalPointGoBContactEmail } },
                 website = new List<contactinfoWebsite> { new contactinfoWebsite { Value = project.FocalPointGoBContactAddress } },
-                mailingaddress = new List<textRequiredType> { new textRequiredType { narrative = Statix.getNarativeList(project.FocalPointGoBContactAddress) } }
+                mailingaddress = new List<textRequiredType> { new textRequiredType { narrative = Statix.GetNarrativeList(project.FocalPointGoBContactAddress) } }
             });
             iatiActivityObj.contactinfo = contactinfoList;
 
@@ -1596,7 +1596,7 @@ namespace AIMS_BD_IATI.DAL
 
             //recipient-country
             List<recipientcountry> recipientcountryList = new List<recipientcountry>();
-            recipientcountryList.Add(new recipientcountry { code = Statix.RecipientCountry, narrative = Statix.getNarativeList(Statix.RecipientCountryName), percentage = 100 });
+            recipientcountryList.Add(new recipientcountry { code = Statix.RecipientCountry, narrative = Statix.GetNarrativeList(Statix.RecipientCountryName), percentage = 100 });
             iatiActivityObj.recipientcountry = recipientcountryList;
 
             //recipient-region
@@ -1608,7 +1608,7 @@ namespace AIMS_BD_IATI.DAL
             {
                 locationList.Add(new location
                 {
-                    name = new textRequiredType { narrative = Statix.getNarativeList(location.DistrictId.ToString()) },
+                    name = new textRequiredType { narrative = Statix.GetNarrativeList(location.DistrictId.ToString()) },
                 });
             }
             iatiActivityObj.location = locationList;
@@ -1620,7 +1620,7 @@ namespace AIMS_BD_IATI.DAL
             {
                 sectorList.Add(new sector
                 {
-                    narrative = Statix.getNarativeList(sector.TotalCommitmentPercent.ToString())
+                    narrative = Statix.GetNarrativeList(sector.TotalCommitmentPercent.ToString())
                 });
             }
             iatiActivityObj.sector = sectorList;
@@ -1636,7 +1636,7 @@ namespace AIMS_BD_IATI.DAL
             {
                 policyMarkerList.Add(new policymarker
                 {
-                    narrative = Statix.getNarativeList(policyMarker.Narrative?.ToString()),
+                    narrative = Statix.GetNarrativeList(policyMarker.Narrative?.ToString()),
                     code = policyMarker.tblPolicyMarker?.IATICode,
                     significance = policyMarker.tblPolicySignificance?.Name,
                     vocabulary = policyMarker.VocabularyUri,
@@ -1675,7 +1675,7 @@ namespace AIMS_BD_IATI.DAL
                     {
                         @ref = pd.tblFundSource?.IATICode,
                         provideractivityid = project.IatiIdentifier,
-                        narrative = Statix.getNarativeList(pd.tblFundSource?.FundSourceName),
+                        narrative = Statix.GetNarrativeList(pd.tblFundSource?.FundSourceName),
                         type = pd.tblFundSource?.tblFundSourceCategory?.IATICode
                     },
 
@@ -1683,7 +1683,7 @@ namespace AIMS_BD_IATI.DAL
                     {
                         receiveractivityid = project.IatiIdentifier,
                         @ref = project.tblFundSource?.IATICode,
-                        narrative = Statix.getNarativeList(project.tblFundSource?.FundSourceName),
+                        narrative = Statix.GetNarrativeList(project.tblFundSource?.FundSourceName),
                         type = project.tblFundSource?.tblFundSourceCategory?.IATICode,
                     }
 
@@ -1708,19 +1708,19 @@ namespace AIMS_BD_IATI.DAL
                 tr.transactiondate = new transactionTransactiondate { isodate = date };
                 tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(commitment.CommittedAmountInUSD), ValueInUSD = Convert.ToDecimal(commitment.CommittedAmountInUSD) }; //commitment.tblCurrency.IATICode
 
-                tr.description = new textRequiredType { narrative = Statix.getNarativeList(commitment.Remarks) };
+                tr.description = new textRequiredType { narrative = Statix.GetNarrativeList(commitment.Remarks) };
                 tr.providerorg = new transactionProviderorg
                 {
                     @ref = commitment.tblFundSource?.IATICode,
                     provideractivityid = project.IatiIdentifier,
-                    narrative = Statix.getNarativeList(commitment.tblFundSource?.FundSourceName),
+                    narrative = Statix.GetNarrativeList(commitment.tblFundSource?.FundSourceName),
                     type = commitment.tblFundSource?.tblFundSourceCategory?.IATICode
                 };
                 tr.receiverorg = new transactionReceiverorg
                 {
                     @ref = project.tblFundSource?.IATICode,
                     receiveractivityid = project.IatiIdentifier,
-                    narrative = Statix.getNarativeList(project.tblFundSource?.FundSourceName),
+                    narrative = Statix.GetNarrativeList(project.tblFundSource?.FundSourceName),
                     type = project.tblFundSource?.tblFundSourceCategory?.IATICode
                 };
 
@@ -1762,12 +1762,12 @@ namespace AIMS_BD_IATI.DAL
                 tr.transactiondate = new transactionTransactiondate { isodate = date };
                 tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = Convert.ToDecimal(actualDisbursement.DisbursedAmountInUSD), ValueInUSD = Convert.ToDecimal(actualDisbursement.DisbursedAmountInUSD) }; //actualDisbursement.tblCurrency.IATICode
 
-                tr.description = new textRequiredType { narrative = Statix.getNarativeList(actualDisbursement.Remarks) };
+                tr.description = new textRequiredType { narrative = Statix.GetNarrativeList(actualDisbursement.Remarks) };
                 tr.providerorg = new transactionProviderorg
                 {
                     @ref = actualDisbursement.tblFundSource?.IATICode,
                     provideractivityid = project.IatiIdentifier,
-                    narrative = Statix.getNarativeList(actualDisbursement.tblFundSource?.FundSourceName),
+                    narrative = Statix.GetNarrativeList(actualDisbursement.tblFundSource?.FundSourceName),
                     type = actualDisbursement.tblFundSource?.tblFundSourceCategory?.IATICode
 
                 };
@@ -1775,7 +1775,7 @@ namespace AIMS_BD_IATI.DAL
                 {
                     @ref = project.tblFundSource?.IATICode,
                     receiveractivityid = project.IatiIdentifier,
-                    narrative = Statix.getNarativeList(project.tblFundSource?.FundSourceName),
+                    narrative = Statix.GetNarrativeList(project.tblFundSource?.FundSourceName),
                     type = project.tblFundSource?.tblFundSourceCategory?.IATICode
 
                 };
@@ -1815,12 +1815,12 @@ namespace AIMS_BD_IATI.DAL
                 tr.transactiondate = new transactionTransactiondate { isodate = date };
                 tr.value = new currencyType { currency = Statix.Currency, valuedate = date, Value = expenditure.ExpenditureAmountInUSD ?? 0, ValueInUSD = expenditure.ExpenditureAmountInUSD ?? 0 }; //expenditure.tblCurrency.IATICode
 
-                tr.description = new textRequiredType { narrative = Statix.getNarativeList(expenditure.Remarks) };
+                tr.description = new textRequiredType { narrative = Statix.GetNarrativeList(expenditure.Remarks) };
                 tr.providerorg = new transactionProviderorg
                 {
                     @ref = expenditure.tblFundSource?.IATICode,
                     provideractivityid = project.IatiIdentifier,
-                    narrative = Statix.getNarativeList(expenditure.tblFundSource?.FundSourceName),
+                    narrative = Statix.GetNarrativeList(expenditure.tblFundSource?.FundSourceName),
                     type = expenditure.tblFundSource?.tblFundSourceCategory?.IATICode
 
                 };
@@ -1828,7 +1828,7 @@ namespace AIMS_BD_IATI.DAL
                 {
                     @ref = project.tblFundSource?.IATICode,
                     receiveractivityid = project.IatiIdentifier,
-                    narrative = Statix.getNarativeList(project.tblFundSource?.FundSourceName),
+                    narrative = Statix.GetNarrativeList(project.tblFundSource?.FundSourceName),
                     type = project.tblFundSource?.tblFundSourceCategory?.IATICode
                 };
 
@@ -1876,7 +1876,7 @@ namespace AIMS_BD_IATI.DAL
                 {
                     url = document.AttachmentFileURL ?? Statix.DocumentURL + document.Id,
                     //format = 
-                    title = new textRequiredType { narrative = Statix.getNarativeList(document.AttachmentTitle) },
+                    title = new textRequiredType { narrative = Statix.GetNarrativeList(document.AttachmentTitle) },
                     language = documentlinkLanguageList,
                     category = documentlinkCategoryList
                 });
@@ -1894,8 +1894,8 @@ namespace AIMS_BD_IATI.DAL
             var projectResults = project.tblProjectResults.ToList();
             foreach (var projectResult in projectResults)
             {
-                var indicatorTitle = new textRequiredType { narrative = Statix.getNarativeList(projectResult.IndicatorTitle) };
-                var indicatorDescription = new description { narrative = Statix.getNarativeList(projectResult.Description) };
+                var indicatorTitle = new textRequiredType { narrative = Statix.GetNarrativeList(projectResult.IndicatorTitle) };
+                var indicatorDescription = new description { narrative = Statix.GetNarrativeList(projectResult.Description) };
 
                 List<resultIndicatorPeriod> resultIndicatorPeriodList = new List<resultIndicatorPeriod>();
 

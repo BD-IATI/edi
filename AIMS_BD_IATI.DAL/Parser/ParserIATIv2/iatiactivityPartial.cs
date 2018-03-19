@@ -483,13 +483,13 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return title?.narrative.n(0).Value;
+                return title.GetValue();
             }
             set
             {
                 if (title == null)
                     title = new textRequiredType();
-                title.narrative = Statix.getNarativeList(value);
+                title.narrative = Statix.GetNarrativeList(value);
             }
         }
         [XmlIgnore]
@@ -497,11 +497,11 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return description.n(0).narrative.n(0).Value;
+                return description.n(0).narrative.GetValue();
             }
             set
             {
-                description.n(0).narrative = Statix.getNarativeList(value);
+                description.n(0).narrative = Statix.GetNarrativeList(value);
             }
         }
         [XmlIgnore]
@@ -509,7 +509,7 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return reportingorg?.narrative.n(0).Value;
+                return reportingorg?.narrative.GetValue();
             }
             //set
             //{
@@ -873,11 +873,11 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return narrative.n(0).Value;
+                return narrative.GetValue();
             }
             set
             {
-                narrative = Statix.getNarativeList(value);
+                narrative = Statix.GetNarrativeList(value);
             }
         }
 
@@ -935,13 +935,13 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return providerorg?.narrative.n(0).Value;
+                return providerorg?.narrative.GetValue();
             }
             set
             {
                 if (providerorg == null)
                     providerorg = new transactionProviderorg();
-                providerorg.narrative = Statix.getNarativeList(value);
+                providerorg.narrative = Statix.GetNarrativeList(value);
             }
         }
 
@@ -965,13 +965,13 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         {
             get
             {
-                return providerorg?.narrative.n(0).Value;
+                return providerorg?.narrative.GetValue();
             }
             set
             {
                 if (providerorg == null)
                     providerorg = new planneddisbursementProviderorg();
-                providerorg.narrative = Statix.getNarativeList(value);
+                providerorg.narrative = Statix.GetNarrativeList(value);
             }
         }
 
