@@ -1636,7 +1636,7 @@ namespace AIMS_BD_IATI.DAL
             {
                 policyMarkerList.Add(new policymarker
                 {
-                    narrative = Statix.getNarativeList(policyMarker.Narrative.ToString()),
+                    narrative = Statix.getNarativeList(policyMarker.Narrative?.ToString()),
                     code = policyMarker.tblPolicyMarker?.IATICode,
                     significance = policyMarker.tblPolicySignificance?.Name,
                     vocabulary = policyMarker.VocabularyUri,
