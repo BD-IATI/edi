@@ -194,10 +194,10 @@ namespace AIMS_BD_IATI.WebAPI.Controllers {
         }
 
         [AcceptVerbs("GET", "POST")]
-        public List<iatiactivityModel> FilterDP(List<participatingorg> _iOrgs) {
+        public List<iatiactivityModel> FilterDP(List<participatingorg> _iOrgs, bool onlyRelevantActivities = true) {
             if (_iOrgs == null)
                 _iOrgs = Sessions.iOrgs.Orgs;
-            var relevantActivities = Sessions.activitiesContainer?.RelevantActivities;
+            var relevantActivities = onlyRelevantActivities ? Sessions.activitiesContainer?.RelevantActivities : Sessions.activitiesContainer?.iatiActivities;
             var projectsImpOrgs = new List<participatingorg>();
             var exAgencies = Sessions.iOrgs.ExecutingAgencies;
 
@@ -240,11 +240,11 @@ namespace AIMS_BD_IATI.WebAPI.Controllers {
 
         #region ShowProjects
         [AcceptVerbs("GET", "POST")]
-        public ProjectMapModelMinified SubmitActivities(List<iatiactivityModel> relevantActivies) {
-            if (relevantActivies != null) {
-                UpdateActivities(relevantActivies, Sessions.activitiesContainer?.RelevantActivities);
+        public ProjectMapModelMinified SubmitActivities(List<iatiactivityModel> activies, bool onlyRelevantActivities = true) {
+            if (activies != null) {
+                UpdateActivities(activies, onlyRelevantActivities ? Sessions.activitiesContainer?.RelevantActivities : Sessions.activitiesContainer.iatiActivities);
             }
-            var relevantActiviesSession = Sessions.activitiesContainer?.RelevantActivities;
+            var relevantActiviesSession = onlyRelevantActivities ? Sessions.activitiesContainer?.RelevantActivities : Sessions.activitiesContainer.iatiActivities;
 
             //SetStatics();//since we have no access to session at library project, so we pass it in a static variables
 
@@ -473,8 +473,8 @@ namespace AIMS_BD_IATI.WebAPI.Controllers {
 
                 var filterBDModel = SubmitHierarchy(heirarchyModel);
                 var iOrgs = GetAllImplementingOrg(filterBDModel);
-                var relevantActivities = FilterDP(iOrgs.Orgs);
-                var projectMapModel = SubmitActivities(relevantActivities);
+                var activities = FilterDP(iOrgs.Orgs, false);
+                var projectMapModel = SubmitActivities(activities,false);
 
             } else {
                 Sessions.CurrentStage = Stage.ReviewAdjustment;
