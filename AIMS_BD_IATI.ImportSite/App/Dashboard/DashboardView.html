@@ -18,7 +18,9 @@
                     <p>
                         <span ng-hide="downloading == true">
                             IATI data last downloaded: <b> <span ng-bind="model.LastDownloadDate | date:'yyyy-MM-dd HH:mm:ss'"> </span> (<span ng-bind="timeSince(model.LastDownloadDate)"></span>)</b>
-                            <button ng-click="DownloadDataFromIATI()" class="btn btn-default">Download Now</button>
+                            <button ng-click="DownloadDataFromIATI()" class="btn btn-default">
+                                <span class="glyphicon glyphicon-download"></span> Download Now
+                            </button>
                         </span>
                         <span ng-show="downloading == true">
                             <i class="glyphicon glyphicon-refresh gly-spin"></i>
