@@ -59,10 +59,9 @@
     <div class="row" ng-repeat="m in models.MatchedProjects">
         <div class="col-md-12" style="padding-bottom: 10px;">
             <h3>
-                <span class="label label-danger" ng-show="isDiffGT5(m)"><i class="glyphicon glyphicon-asterisk" title="Significant difference!"></i></span> 
+                <span class="label label-danger" ng-show="isDiffGT5(m)"><i class="glyphicon glyphicon-asterisk" title="Significant difference!"></i></span>
                 <code ng-bind="m.iatiActivity.IatiIdentifier"></code>
-                {{m.iatiActivity.Title}} 
-                <span ng-show="m.IsManuallyMapped" style="float:right; font-size:small" class="alert-danger">Manually Mapped</span>
+                {{m.iatiActivity.Title}}
                 <span class="pull-right">
                     <a class="btn btn-sm btn-default" ng-click="OpenProjectSpecificAdjustment(m)" title="Set project specific adjustment"><i class="glyphicon glyphicon-pencil"></i></a>
                     <a class="btn btn-sm btn-default" ng-click="OpenTransactionDetail(m)" title="Show Transaction Details"><i class="glyphicon glyphicon-usd"></i></a>
@@ -77,6 +76,10 @@
                     </button>
                 </span>
             </h3>
+            <span ng-show="m.IsManuallyMapped" class="label label-danger">Manually Mapped</span>
+            <span ng-show="m.aimsProject.IsCofinancedProject" class="label label-danger"
+                  title="Financial data will not be imported for this activity, as it is a co-financed project. If you would like to import financial data for this activity, you must first uncheck the Is Co-funded Project checkbox on the project Funding Info. tab.">
+            Co-financed project. Financial data will not be imported.</span>
 
             <commitmentvsdisbursmentchart aims-commitment="{{m.aimsProject.TotalCommitment}}"
                                           aims-disbursment="{{m.aimsProject.TotalDisbursment}}"
