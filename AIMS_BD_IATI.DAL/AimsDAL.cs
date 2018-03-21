@@ -287,7 +287,7 @@ namespace AIMS_BD_IATI.DAL
                     }
                     catch (Exception ex)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, TrustFundModel.TFIdentifier);
+                        Logger.WriteToDbAndFile(ex, LoggingType.Error, TrustFundModel.TFIdentifier);
 
                     }
 
@@ -516,7 +516,7 @@ namespace AIMS_BD_IATI.DAL
                     }
                     catch (Exception ex)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Executing Agency could not be imported.");
+                        Logger.WriteToDbAndFile(ex, LoggingType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Executing Agency could not be imported.");
 
                     }
                     #endregion
@@ -585,7 +585,7 @@ namespace AIMS_BD_IATI.DAL
                     }
                     catch (Exception ex)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Result could not be imported.");
+                        Logger.WriteToDbAndFile(ex, LoggingType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Result could not be imported.");
                     }
                     #endregion
 
@@ -677,7 +677,7 @@ namespace AIMS_BD_IATI.DAL
                     }
                     catch (Exception ex)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Sector/Thematic could not be imported.");
+                        Logger.WriteToDbAndFile(ex, LoggingType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Sector/Thematic could not be imported.");
                     }
 
                     #endregion
@@ -720,7 +720,7 @@ namespace AIMS_BD_IATI.DAL
                     }
                     catch (Exception ex)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Policy Markers could not be imported.");
+                        Logger.WriteToDbAndFile(ex, LoggingType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Policy Markers could not be imported.");
                     }
 
                     #endregion
@@ -780,7 +780,7 @@ namespace AIMS_BD_IATI.DAL
                     }
                     catch (Exception ex)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Location could not be imported.");
+                        Logger.WriteToDbAndFile(ex, LoggingType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Location could not be imported.");
                     }
 
                     #endregion
@@ -816,7 +816,7 @@ namespace AIMS_BD_IATI.DAL
                     }
                     catch (Exception ex)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Location could not be imported.");
+                        Logger.WriteToDbAndFile(ex, LoggingType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier, "Location could not be imported.");
                     }
 
                     #endregion
@@ -840,12 +840,12 @@ namespace AIMS_BD_IATI.DAL
                                                     validationError.ErrorMessage);
                         }
                     }
-                    Logger.WriteToDbAndFile(dbEx, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier);
+                    Logger.WriteToDbAndFile(dbEx, LoggingType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier);
 
                 }
                 catch (Exception ex)
                 {
-                    Logger.WriteToDbAndFile(ex, LogType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier);
+                    Logger.WriteToDbAndFile(ex, LoggingType.Error, mergedproject.IATICode, mergedproject.IatiIdentifier);
 
                 }
 
@@ -869,7 +869,7 @@ namespace AIMS_BD_IATI.DAL
             }
             catch (Exception ex)
             {
-                Logger.WriteToDbAndFile(ex, LogType.Error);
+                Logger.WriteToDbAndFile(ex, LoggingType.Error);
 
             }
             return 1;
@@ -1092,7 +1092,7 @@ namespace AIMS_BD_IATI.DAL
                 }
                 catch (Exception ex)
                 {
-                    Logger.WriteToDbAndFile(ex, LogType.Error, project.IATICode, project.IatiIdentifier);
+                    Logger.WriteToDbAndFile(ex, LoggingType.Error, project.IATICode, project.IatiIdentifier);
 
                 }
 
@@ -1331,7 +1331,7 @@ namespace AIMS_BD_IATI.DAL
                         aimsDBIatiDAL.InsertLog(new Log
                         {
                             OrgId = MatchedProject.IATICode,
-                            LogType = (int)LogType.FinancialDataMismathed,
+                            LogType = (int)LoggingType.FinancialDataMismathed,
                             DateTime = DateTime.Now,
                             IatiIdentifier = MatchedProject.IatiIdentifier,
                             ProjectId = p.Id,
@@ -1366,7 +1366,7 @@ namespace AIMS_BD_IATI.DAL
                         {
                             DateTime = DateTime.Now,
                             IatiIdentifier = MatchedProject.IatiIdentifier,
-                            LogType = (int)LogType.FinancialDataMismathed,
+                            LogType = (int)LoggingType.FinancialDataMismathed,
                             ProjectId = p.Id,
                             OrgId = MatchedProject.IATICode,
                             Message = "Transactions (D) are mismatched between IATI and AIMS"

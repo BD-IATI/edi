@@ -125,7 +125,7 @@ namespace AIMS_BD_IATI.Library
         }
     }
     [Serializable]
-    public enum LogType
+    public enum LoggingType
     {
         Info = 0,
         Warning = 1,
@@ -134,7 +134,8 @@ namespace AIMS_BD_IATI.Library
         FinancialDataMismathed = 4,
         AddedNewActivity = 5,
         AimsProjectNotFound = 6,
-        ValidationError = 7
+        ValidationError = 7,
+        Success = 8
     }
 
     [Serializable]

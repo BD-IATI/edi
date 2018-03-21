@@ -94,7 +94,7 @@ namespace AIMS_BD_IATI.DAL {
                                     OrgId = activity.OrgId,
                                     ProjectId = a.MappedProjectId,
                                     Message = "The mapped project is not found in AIMS database",
-                                    LogType = (int)LogType.AimsProjectNotFound,
+                                    LogType = (int)LoggingType.AimsProjectNotFound,
                                     DateTime = DateTime.Now
                                 });
                             }
@@ -117,7 +117,7 @@ namespace AIMS_BD_IATI.DAL {
                                     OrgId = activity.OrgId,
                                     ProjectId = a.MappedProjectId,
                                     Message = "The mapped project is not found in AIMS database",
-                                    LogType = (int)LogType.AimsProjectNotFound,
+                                    LogType = (int)LoggingType.AimsProjectNotFound,
                                     DateTime = DateTime.Now
                                 });
                             }
@@ -135,7 +135,7 @@ namespace AIMS_BD_IATI.DAL {
                         IatiIdentifier = activity.IatiIdentifier,
                         OrgId = activity.OrgId,
                         Message = "Imported new activity",
-                        LogType = (int)LogType.AddedNewActivity,
+                        LogType = (int)LoggingType.AddedNewActivity,
                         DateTime = DateTime.Now
                     });
                 }
@@ -532,7 +532,7 @@ namespace AIMS_BD_IATI.DAL {
 
                     }
             } catch (Exception ex) {
-                Logger.WriteToDbAndFile(ex, LogType.Error, activity.IATICode, activity.IatiIdentifier, "Failed to set Set Currency Exchanged Values");
+                Logger.WriteToDbAndFile(ex, LoggingType.Error, activity.IATICode, activity.IatiIdentifier, "Failed to set Set Currency Exchanged Values");
             }
         }
 

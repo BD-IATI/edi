@@ -1,7 +1,7 @@
 ﻿<div class="modal-header">
     <button type="button" class="close" ng-click="cancel()">&times;</button>
     <h3 class="modal-title">
-        <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
         Download logs
     </h3>
 </div>
@@ -9,12 +9,16 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th style="min-width:140px">Logs</th>
+                <th></th>
+                <th style="min-width:140px">Message</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="m in model.Messages">
-                <td>{{m}}</td>
+            <tr ng-repeat="m in model.Logs">
+                <td><span ng-class="m.CssClass" title="{{m.ExceptionObj}}"> {{m.LogTypeText}}</span></td>
+                <td ng-bind-html="m.Message | toTrusted"></td>
+                <td><code>{{m.IatiIdentifier}}</code></td>
             </tr>
 
         </tbody>

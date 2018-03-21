@@ -34,7 +34,7 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
                 resolve: {
                     model: function () {
 
-                        return { Messages: result };
+                        return { Logs: result.Logs };
                     }
                 }
 
@@ -54,7 +54,7 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
                 resolve: {
                     model: function () {
 
-                        return { Messages: result };
+                        return { Logs: result.Logs };
                     }
                 }
 

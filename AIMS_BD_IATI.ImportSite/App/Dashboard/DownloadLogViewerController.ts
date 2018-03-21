@@ -4,7 +4,7 @@
 
 
 angular.module('iatiDataImporter').controller("DownloadLogViewerController", function ($rootScope: RootScopeModel, $scope, $http, $timeout, $uibModalInstance, model) {
-            $scope.model = model;
+    $scope.model = model;
 
 
     $scope.cancel = function () {
@@ -12,3 +12,10 @@ angular.module('iatiDataImporter').controller("DownloadLogViewerController", fun
     };
 
 });
+
+angular.module('iatiDataImporter')
+    .filter('toTrusted', ['$sce', function ($sce) {
+        return function (text) {
+            return $sce.trustAsHtml(text);
+        };
+    }]);

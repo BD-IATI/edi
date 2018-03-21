@@ -27,7 +27,7 @@ namespace AIMS_BD_IATI.Service
                 //Logger.Write(" ********************** END EXCHANGE RATE PROCESS ********************* ");
                 //Logger.Write("");
             } catch (Exception ex) {
-                Logger.WriteToDbAndFile(ex, LogType.Error);
+                Logger.WriteToDbAndFile(ex, LoggingType.Error);
             }
         }
 

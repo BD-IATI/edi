@@ -222,6 +222,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CFnTFController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Models\IATIImport\DownloadLogModel.cs" />
     <Compile Include="Controllers\IATIImportController.cs" />
     <Compile Include="Controllers\IATIConverterController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />

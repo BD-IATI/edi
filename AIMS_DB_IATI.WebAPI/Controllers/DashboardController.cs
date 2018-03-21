@@ -53,13 +53,13 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
-        public List<string> DownloadDataFromIATI(DPLookupItem dp)
+        public DownloadLogModel DownloadDataFromIATI(DPLookupItem dp)
         {
             IatiXmlParser p = new IatiXmlParser();
 
-            var msg = p.Parse(new tblFundSource { IATICode = dp.ID, FundSourceName = dp.Name });
+            var logs = p.Parse(new tblFundSource { IATICode = dp.ID, FundSourceName = dp.Name });
 
-            return msg;
+            return new DownloadLogModel { Logs = logs };
         }
 
         [AcceptVerbs("GET", "POST")]

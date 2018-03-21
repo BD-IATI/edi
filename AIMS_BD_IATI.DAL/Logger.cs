@@ -12,7 +12,7 @@ namespace AIMS_BD_IATI.DAL
 {
     public sealed class Logger
     {
-        public static string Write(string Text)
+        public static Log Write(string Text, LoggingType logType = LoggingType.Info)
         {
             string dirPath = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? "" + "\\Log\\";
 
@@ -26,25 +26,24 @@ namespace AIMS_BD_IATI.DAL
                 Environment.NewLine +
                 DateTime.Now.ToString("d-MMM-yyyy, HH:mm:ss") + "  " + Text);
 
-            System.Console.WriteLine(Text);
+            Console.WriteLine(Text);
 
-            return Text;
+            return new Log { DateTime = DateTime.Now, LogType = (int)logType, Message = Text };
         }
 
-        public static string WriteToDbAndFile(dynamic ex, LogType type, string orgId = null, string IatiIdentifier = null, string message = null)
+        public static Log WriteToDbAndFile(dynamic ex, LoggingType type, string orgId = null, string IatiIdentifier = null, string message = null)
         {
+            Log log = new Log();
+            if (message == null) message = ex.Message;
+
+            log.DateTime = DateTime.Now;
+            log.OrgId = orgId;
+            log.IatiIdentifier = IatiIdentifier;
+            log.Message = message;
+            log.LogType = (int?)type;
 
             try
             {
-                if (message == null) message = ex.Message;
-
-                Log log = new Log();
-                log.DateTime = DateTime.Now;
-                log.OrgId = orgId;
-                log.IatiIdentifier = IatiIdentifier;
-                log.Message = message;
-                log.LogType = type.GetHashCode();
-
                 using (TextWriter writer = new StringWriter())
                 {
                     try
@@ -61,10 +60,11 @@ namespace AIMS_BD_IATI.DAL
 
             try
             {
-                return Write(type + " " + message);
+                Write(type + " " + message);
             }
-            catch { return type + " " + message; }
+            catch { }
 
+            return log;
         }
 
     }
