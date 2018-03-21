@@ -26,6 +26,7 @@
     <Content Include="About.html" />
     <Content Include="app.css" />
     <Content Include="App.js" />
+    <Content Include="App\Dashboard\DownloadLogViewerModal.html" />
     <Content Include="Contact.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -66,6 +67,7 @@
     <Content Include="App\Dashboard\DashboardView.html" />
     <Content Include="App\Dashboard\ImportPreferenceModal.html" />
     <Content Include="App\Dashboard\TrustFundModal.html" />
+    <TypeScriptCompile Include="App\Dashboard\DownloadLogViewerController.ts" />
     <TypeScriptCompile Include="App\FinishImport\FinishImportController.ts" />
     <Content Include="App\FinishImport\FinishImportView.html" />
     <Content Include="Index.html" />

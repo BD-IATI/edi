@@ -15,7 +15,7 @@ namespace AIMS_BD_IATI.Library.Parser
     public class IatiXmlParser
     {
         static XmlSerializer iatiactivitySerealizer = new XmlSerializer(typeof(AIMS_BD_IATI.Library.Parser.ParserIATIv2.iatiactivity), new XmlRootAttribute("iati-activity"));
-        public string Message { get; set; } = "";
+        public List<string> Messages { get; set; } = new List<string>();
         /// <summary>
         /// Download the XML from IATI datastore, parse xml then save to DB
         /// </summary>
@@ -23,7 +23,7 @@ namespace AIMS_BD_IATI.Library.Parser
         /// <param name="counter">used for notifying user. i out of total number of projects</param>
         /// <param name="fundSource"></param>
         /// <param name="URL"></param>
-        public string Parse(tblFundSource fundSource, int fundSourcesCount = 1, int counter = 1, string URL = null)
+        public List<string> Parse(tblFundSource fundSource, int fundSourcesCount = 1, int counter = 1, string URL = null)
         {
 
             IParserIATI parserIATI;
@@ -35,7 +35,6 @@ namespace AIMS_BD_IATI.Library.Parser
                 Logger.Write("");
                 Logger.Write(counter + "/" + fundSourcesCount + " " + fundSource.FundSourceName + " (" + fundSource.IATICode + ")");
                 Logger.Write("-------------------->");
-                Logger.Write("INFO: Downloading...");
 
                 #region Convert Data from v1.05 to v2.01
 
@@ -48,12 +47,16 @@ namespace AIMS_BD_IATI.Library.Parser
                     activitiesURL = Common.iati_url + "recipient-country=" + Common.iati_recipient_country + "&reporting-org=" + fundSource.IATICode + "&stream=" + Common.iati_stream;
                 else
                     activitiesURL = URL;
+
+                Messages.Add(Logger.Write("INFO: Download started from " + activitiesURL));
+
                 returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
 
-                Logger.Write("INFO: " + "Parsing...");
+                Messages.Add(Logger.Write("INFO: " + "Download completed."));
 
                 var iatiactivityArray = returnResult2?.iatiactivities?.iatiactivity;
-                if (iatiactivityArray != null && iatiactivityArray.n()[0].AnyAttr.n()[0].Value.StartsWith("1.0")) //1.04, 1.05
+                if (iatiactivityArray != null && iatiactivityArray.Count > 0
+                    && iatiactivityArray.n(0).AnyAttr.n(0).Value.StartsWith("1.0")) //1.04, 1.05
                 {
                     //Parser v1.05
                     parserIATI = new ParserIATIv1.ParserIATIv1();
@@ -61,12 +64,12 @@ namespace AIMS_BD_IATI.Library.Parser
                     //Params: activity.xml or activity.json, recipient-country=BD, reporting-org=GB-1 or XM-DAC-12-1
                     returnResult1 = (XmlResultv1)parserIATI.ParseIATIXML(activitiesURL);
 
-                    Logger.Write("INFO: " + "Parsing completed!");
+                    Messages.Add(Logger.Write("INFO: " + "Parsing completed!"));
 
                     //Conversion
                     ConvertIATIv2 convertIATIv2 = new ConvertIATIv2();
                     returnResult2 = convertIATIv2.ConvertIATI105to201XML(returnResult1, returnResult2);
-                    Logger.Write("INFO: " + "Convertion completed!");
+                    Messages.Add(Logger.Write("INFO: " + "Convertion completed!"));
                 }
 
                 #endregion
@@ -74,30 +77,30 @@ namespace AIMS_BD_IATI.Library.Parser
                 iatiactivityArray = returnResult2?.iatiactivities?.iatiactivity;
                 if (iatiactivityArray != null)
                 {
-                    SaveToDB(fundSource, iatiactivityArray);
+                    Messages.AddRange(SaveToDB(fundSource, iatiactivityArray));
                 }
             }
             catch (DbEntityValidationException ex)
             {
+                string msg = "";
                 foreach (var validationErrors in ex.EntityValidationErrors)
                 {
                     foreach (var validationError in validationErrors.ValidationErrors)
                     {
-                        Message += string.Format("\nProperty: {0} Error: {1}",
+                        msg += string.Format("\nProperty: {0} Error: {1}",
                                                 validationError.PropertyName,
                                                 validationError.ErrorMessage);
                     }
                 }
-                Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, null, Message);
+                Messages.Add(Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, null, msg));
 
             }
             catch (Exception ex)
             {
-                Logger.WriteToDbAndFile(ex, LogType.Error, fundSource.IATICode);
-                Message = "Download failed. " + activitiesURL;
+                Messages.Add(Logger.WriteToDbAndFile(ex, LogType.Error, fundSource.IATICode));
             }
 
-            return Message == "" ? "IATI data successfully downloaded from " + activitiesURL : Message;
+            return Messages;
         }
 
 
@@ -105,14 +108,14 @@ namespace AIMS_BD_IATI.Library.Parser
         /// Save Data To DB
         /// </summary>
         /// <param name="returnResult2"></param>
-        private void SaveToDB(tblFundSource fundSource, List<ParserIATIv2.iatiactivity> iatiactivityArray)
+        private List<string> SaveToDB(tblFundSource fundSource, List<ParserIATIv2.iatiactivity> iatiactivityArray)
         {
-
+            List<string> Messages = new List<string>();
             int counter = 1;
             int successfullySavedActivityCounter = 0;
             int totalActivity = iatiactivityArray.Count();
 
-            Logger.Write("INFO: " + "Total Activity found: " + totalActivity);
+            Messages.Add(Logger.Write("INFO: " + "Total Activity found: " + totalActivity));
             Console.WriteLine();
             if (totalActivity > 0)
             {
@@ -149,18 +152,20 @@ namespace AIMS_BD_IATI.Library.Parser
                                                         validationError.ErrorMessage);
                             }
                         }
-                        Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, iatiactivityItem.IatiIdentifier, messages);
+                        Messages.Add(Logger.WriteToDbAndFile(ex, LogType.ValidationError, fundSource.IATICode, iatiactivityItem.IatiIdentifier, messages));
 
                     }
                     catch (Exception ex)
                     {
-                        Logger.WriteToDbAndFile(ex, LogType.Error, fundSource.IATICode, iatiactivityItem.IatiIdentifier);
+                        Messages.Add(Logger.WriteToDbAndFile(ex, LogType.Error, fundSource.IATICode, iatiactivityItem.IatiIdentifier));
                     }
 
                 }
 
-                Logger.Write("INFO: " + successfullySavedActivityCounter + " activities are stored in Database");
+                Messages.Add(Logger.Write("INFO: " + successfullySavedActivityCounter + " activities are stored in Database"));
             }
+
+            return Messages;
         }
 
     }

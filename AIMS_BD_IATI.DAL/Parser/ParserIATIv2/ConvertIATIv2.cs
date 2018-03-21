@@ -81,8 +81,7 @@ namespace AIMS_BD_IATI
                             }
 
                             var desActivity = objDestinaiton.iatiactivities.iatiactivity.FirstOrDefault(q => q.IatiIdentifier == srcIatiidentifier);
-                            //desActivity.AnyAttr[0].Prefix = "";
-                            desActivity.AnyAttr[0].Value = "2.02";
+                            //desActivity.AnyAttr[0].Value = "2.02";
                             desActivity.location = new List<v2.location>();
                             desActivity.result = new List<v2.result>();
 

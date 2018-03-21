@@ -53,7 +53,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
-        public string DownloadDataFromIATI(DPLookupItem dp)
+        public List<string> DownloadDataFromIATI(DPLookupItem dp)
         {
             IatiXmlParser p = new IatiXmlParser();
 

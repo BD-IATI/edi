@@ -12,7 +12,7 @@ namespace AIMS_BD_IATI.DAL
 {
     public sealed class Logger
     {
-        public static void Write(string Text)
+        public static string Write(string Text)
         {
             string dirPath = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? "" + "\\Log\\";
 
@@ -27,10 +27,13 @@ namespace AIMS_BD_IATI.DAL
                 DateTime.Now.ToString("d-MMM-yyyy, HH:mm:ss") + "  " + Text);
 
             System.Console.WriteLine(Text);
+
+            return Text;
         }
 
-        public static void WriteToDbAndFile(dynamic ex, LogType type, string orgId = null, string IatiIdentifier = null, string message = null)
+        public static string WriteToDbAndFile(dynamic ex, LogType type, string orgId = null, string IatiIdentifier = null, string message = null)
         {
+
             try
             {
                 if (message == null) message = ex.Message;
@@ -55,14 +58,13 @@ namespace AIMS_BD_IATI.DAL
                 new AimsDbIatiDAL().InsertLog(log);
             }
             catch { }
-            finally
+
+            try
             {
-                try
-                {
-                    Write(type + " " + message);
-                }
-                catch { }
+                return Write(type + " " + message);
             }
+            catch { return type + " " + message; }
+
         }
 
     }

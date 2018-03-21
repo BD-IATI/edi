@@ -24,16 +24,44 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
 
         }).success(function (result) {
             $scope.downloading = false;
-            alert(result);
+            console.log(result);
+            var modalInstance = $uibModal.open({
+                animation: true,
+                backdrop: false,
+                templateUrl: 'App/Dashboard/DownloadLogViewerModal.html',
+                controller: 'DownloadLogViewerController',
+                size: 'lg',
+                resolve: {
+                    model: function () {
+
+                        return { Messages: result };
+                    }
+                }
+
+            });
+
             location.href = '#/restart';
         }).error(function (result) {
             $scope.downloading = false;
-            alert(result);
+            console.error(result);
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                backdrop: false,
+                templateUrl: 'App/Dashboard/DownloadLogViewerController.html',
+                controller: 'DownloadLogViewerController',
+                size: 'lg',
+                resolve: {
+                    model: function () {
+
+                        return { Messages: result };
+                    }
+                }
 
 
+            });
         });
-    };
-
+    }
     $scope.OpenAdjustImportPreferences = function () {
         var modalInstance = $uibModal.open({
             animation: true,
