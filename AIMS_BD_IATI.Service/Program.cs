@@ -50,8 +50,6 @@ namespace AIMS_BD_IATI.Service
                     //usaid demo data:  
                     if (fundSource.IATICode == "US-USAGOV|US-1|USAIDManualData") {
                         p.Parse(fundSource, fundSources.Count, i++, "http://test.brough.io/usaid/iati/iati-activities.xml");
-                    } else if (fundSource.IATICode.Contains("CA-3")) {
-                        p.Parse(fundSource, fundSources.Count, i++);
                     } else {
                         p.Parse(fundSource, fundSources.Count, i++);
                     }
