@@ -152,6 +152,20 @@ angular.module('iatiDataImporter').controller("DashboardController", function ($
         }
     };
 
+    $scope.RemoveObsoleteActivity = function (da) {
+        if (confirm('Are you sure to remove this activity?')) {
+            $http({
+                method: 'POST',
+                url: apiprefix + '/api/Dashboard/RemoveObsoleteActivity',
+
+                data: JSON.stringify(da)
+
+            }).success(function (result) {
+                $scope.model.ObsoleteActivities = result;
+            });
+        }
+    };
+
     $scope.timeSince = function (date) {
         if (date == null || date == undefined) return '';
 

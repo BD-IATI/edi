@@ -39,6 +39,8 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
             dashboardModel.DelegatedActivities = aimsDbIatiDAL.GetDelegatedActivities(dpId);
             dashboardModel.DelegatedActivities.ForEach(f => f.AssignedOrgName = Sessions.FundSources?.Find(k => k.IATICode == f.AssignedOrgId)?.Name);
 
+            dashboardModel.ObsoleteActivities = aimsDbIatiDAL.GetObsoleteActivities(dpId, dashboardModel.LastDownloadDate ?? DateTime.Now);
+
             #region trust fund and cofinance projects
 
             Sessions.CFnTFModel = aimsDbIatiDAL.GetAssignActivities(dpId, true);
@@ -83,6 +85,17 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
 
             var das = aimsDbIatiDAL.GetDelegatedActivities(Sessions.DP.ID);
             das.ForEach(f => f.AssignedOrgName = Sessions.FundSources?.Find(k => k.IATICode == f.AssignedOrgId)?.Name);
+            return das;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public List<ActivityModel> RemoveObsoleteActivity(ActivityModel da)
+        {
+            aimsDbIatiDAL.RemoveObsoleteActivity(da);
+            var LastDownloadDate = aimsDbIatiDAL.GetLastDownloadDate(Sessions.DP.ID) ?? DateTime.Now;
+
+            var das = aimsDbIatiDAL.GetObsoleteActivities(Sessions.DP.ID, LastDownloadDate);
+
             return das;
         }
     }

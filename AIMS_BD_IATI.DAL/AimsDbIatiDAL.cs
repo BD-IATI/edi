@@ -208,6 +208,16 @@ namespace AIMS_BD_IATI.DAL {
             return dbContext.SaveChanges();
         }
 
+        public int RemoveObsoleteActivity(ActivityModel activity) {
+            var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier && x.OrgId == activity.OrgId);
+            if (a != null) {
+
+                dbContext.Activities.Remove(a);
+            }
+
+            return dbContext.SaveChanges();
+        }
+
         public int MapActivities(List<iatiactivity> activities) {
             foreach (var activity in activities) {
                 var a = dbContext.Activities.FirstOrDefault(x => x.IatiIdentifier == activity.IatiIdentifier);
@@ -672,6 +682,28 @@ namespace AIMS_BD_IATI.DAL {
                          IatiActivity = a.IatiActivity,
                          MappedProjectId = a.MappedProjectId,
                          MappedTrustFundId = a.MappedTrustFundId
+                     }).ToList();
+
+            ParseXMLAndResolve(q);
+
+            return q;
+
+        }
+        public List<ActivityModel> GetObsoleteActivities(string dp, DateTime lastDPDownloadDate) {
+            var threshholdDate = lastDPDownloadDate.AddDays(-3);
+            var q = (from a in dbContext.Activities.Where(a => a.OrgId == dp && a.DownloadDate < threshholdDate)
+
+                     select new ActivityModel {
+                         IatiIdentifier = a.IatiIdentifier,
+                         AssignedOrgId = a.AssignedOrgId,
+                         AssignedDate = a.AssignedDate,
+                         IatiActivity = a.IatiActivity,
+                         MappedProjectId = a.MappedProjectId,
+                         MappedTrustFundId = a.MappedTrustFundId,
+                         DownloadDate = a.DownloadDate,
+                         OrgId = a.OrgId,
+                         
+                        
                      }).ToList();
 
             ParseXMLAndResolve(q);

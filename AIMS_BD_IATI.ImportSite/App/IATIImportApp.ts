@@ -113,6 +113,19 @@ iatiDataImporterApp.directive('navigationOtherDp', function ($rootScope, $locati
     };
 });
 
+angular.module('iatiDataImporter')
+    .filter('toTrusted', ['$sce', function ($sce) {
+        return function (text) {
+            return $sce.trustAsHtml(text);
+        };
+    }]);
+
+angular.module('iatiDataImporter').filter('yesNo', function () {
+    return function (input) {
+        return input ? 'Yes' : 'No';
+    }
+});
+
 declare namespace angular {
 
     interface IScope extends IRootScopeService {

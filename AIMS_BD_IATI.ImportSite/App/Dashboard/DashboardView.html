@@ -57,7 +57,7 @@
             <div class="panel panel-success">
                 <div class="panel-heading">Mapped activities </div>
                 <div class="panel-body">
-                    <p><b ng-bind="model.MappedActivityCount"></b> activities ware mapped.</p>
+                    <p><b ng-bind="model.MappedActivityCount"></b> activities were mapped.</p>
                     <p><a id="btn-view-mapped-projects" class="btn btn-sm btn-success" href="#/7ReviewAdjustment">View Details &raquo;</a></p>
 
                     <h4>Options</h4>
@@ -211,24 +211,39 @@
                                 <td ng-bind="da.AssignedOrgName"></td>
                                 <td><a class="btn " ng-class="{'btn-success':!da.IsProccessed, 'btn-danger': da.IsProccessed}" ng-click="RecallDelegatedActivity(da)"><i class="glyphicon glyphicon-share-alt"></i> Recall</a></td>
                             </tr>
-                            <!--<tr>
-                                <td>2016-02-15</td>
-                                <td><code>GB-1-12345</code></td>
-                                <td>World Bank</td>
-                                <td><a data-toggle="modal" data-target="#recallExplanation" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Recall not possible</a></td>
-                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Obsolete activities </div>
+                <div class="panel-body">
+                    <div class="alert alert-info" ng-hide="model.ObsoleteActivities.length > 0">
+                        There are no Obsolete activities.
+                    </div>
+                    <table class="table table-striped" ng-show="model.ObsoleteActivities.length > 0">
+                        <thead>
                             <tr>
-                                <td>2016-03-20</td>
-                                <td><code>GB-1-23456</code></td>
-                                <td>World Bank</td>
-                                <td><a class="btn btn-success"><i class="glyphicon glyphicon-share-alt"></i> Recall</a></td>
+                                <th>Last Download Date</th>
+                                <th>Activity</th>
+                                <th>Title</th>
+                                <th>Mapped?</th>
+                                <th>Remove</th>
                             </tr>
-                            <tr>
-                                <td>2016-02-15</td>
-                                <td><code>GB-1-12345</code></td>
-                                <td>World Bank</td>
-                                <td><a data-toggle="modal" data-target="#recallExplanation" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Recall not possible</a></td>
-                            </tr>-->
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="da in model.ObsoleteActivities">
+                                <td ng-bind="da.DownloadDate | date:'yyyy-MM-dd'"></td>
+                                <td><code ng-bind="da.IatiIdentifier"></code></td>
+                                <td ng-bind="da.iatiActivity.Title"></td>
+                                <td>{{da.iatiActivity.IsProccessed | yesNo}}</td>
+                                <td><a class="btn " ng-class="{'btn-warning':!da.IsProccessed, 'btn-danger': da.IsProccessed}" ng-click="RemoveObsoleteActivity(da)"><i class="glyphicon glyphicon-trash"></i> Remove</a></td>
+                            </tr>
                         </tbody>
                     </table>
 
@@ -237,7 +252,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Recall Explanation Modal -->
     <button type="button" id="btnRecallExplanation" hidden data-toggle="modal" data-target="#recallExplanation">Recall not possible</button>
 
     <div class="modal fade" id="recallExplanation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -258,5 +273,6 @@
             </div>
         </div>
     </div>
+
 </div>
 

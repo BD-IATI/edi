@@ -13,9 +13,3 @@ angular.module('iatiDataImporter').controller("DownloadLogViewerController", fun
 
 });
 
-angular.module('iatiDataImporter')
-    .filter('toTrusted', ['$sce', function ($sce) {
-        return function (text) {
-            return $sce.trustAsHtml(text);
-        };
-    }]);
