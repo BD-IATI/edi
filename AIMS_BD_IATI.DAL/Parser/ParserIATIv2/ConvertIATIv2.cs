@@ -374,6 +374,8 @@ namespace AIMS_BD_IATI
                                                                 periodV2.target = new resultIndicatorPeriodTarget { value = periodTarget.value };
                                                             }
                                                         }
+                                                        date1 = date1 ?? date2;
+                                                        date2 = date2 ?? date1;
                                                         periodV2.periodstart = new resultIndicatorPeriodPeriodstart { isodate = date1.isodate < date2.isodate ? date1.isodate : date2.isodate };
                                                         periodV2.periodend = new resultIndicatorPeriodPeriodend { isodate = date1.isodate > date2.isodate ? date1.isodate : date2.isodate };
 
