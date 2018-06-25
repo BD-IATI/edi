@@ -59,7 +59,7 @@ namespace AIMS_DB_IATI.WebAPI.Controllers
         {
             IatiXmlParser p = new IatiXmlParser();
 
-            var logs = p.Parse(new tblFundSource { IATICode = dp.ID, FundSourceName = dp.Name });
+            var logs = p.Parse(new tblFundSource { Id = dp.AimsFundSourceId, IATICode = dp.ID, FundSourceName = dp.Name });
 
             return new DownloadLogModel { Logs = logs };
         }
