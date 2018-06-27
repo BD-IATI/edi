@@ -53,6 +53,7 @@ namespace AIMS_BD_IATI.Library.Parser
                 try
                 {
                     returnResult2 = (XmlResultv2)parserIATI.ParseIATIXML(activitiesURL);
+                    Logs.Add(Logger.Write("Download completed.", LoggingType.Success));
                 }
                 catch (Exception ex)
                 {
@@ -66,8 +67,6 @@ The IATI Datastore URL accessed was: <a href=""{activitiesURL}"" target=""_blank
 
                     return Logs;
                 }
-
-                Logs.Add(Logger.Write("Download completed.", LoggingType.Success));
 
                 var iatiactivityArray = returnResult2?.iatiactivities?.iatiactivity;
                 if (iatiactivityArray != null && iatiactivityArray.Count > 0

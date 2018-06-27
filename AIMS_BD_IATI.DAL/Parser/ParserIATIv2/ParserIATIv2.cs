@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 //XML
@@ -17,9 +18,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public ParserIATIv2() 
+        public ParserIATIv2()
         {
- 
+
         }
 
         /// <summary>
@@ -44,10 +45,20 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
             xmlReaderSettings.NameTable = nameTable;
 
-            using (var Reader = XmlReader.Create(url, xmlReaderSettings, xmlParserContext))
+            WebRequest request = WebRequest.Create(url);
+            request.Timeout = 20 * 60 * 1000; //Timeout.Infinite;
+            using (WebResponse response = request.GetResponse())
             {
-                xmlResult = (XmlResultv2)serializer.Deserialize(Reader);
+                using (var reader = XmlReader.Create(response.GetResponseStream(), xmlReaderSettings, xmlParserContext))
+                {
+                    xmlResult = (XmlResultv2)serializer.Deserialize(reader);
+                }
             }
+
+            //using (var Reader = XmlReader.Create(url, xmlReaderSettings, xmlParserContext))
+            //{
+            //    xmlResult = (XmlResultv2)serializer.Deserialize(Reader);
+            //}
 
             return xmlResult;
         }
