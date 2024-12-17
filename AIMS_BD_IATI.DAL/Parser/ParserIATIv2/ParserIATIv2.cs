@@ -47,6 +47,9 @@ namespace AIMS_BD_IATI.Library.Parser.ParserIATIv2
 
             WebRequest request = WebRequest.Create(url);
             request.Timeout = 20 * 60 * 1000; //Timeout.Infinite;
+            // to fix The request was aborted: Could not create SSL/TLS secure channel
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             using (WebResponse response = request.GetResponse())
             {
                 using (var reader = XmlReader.Create(response.GetResponseStream(), xmlReaderSettings, xmlParserContext))

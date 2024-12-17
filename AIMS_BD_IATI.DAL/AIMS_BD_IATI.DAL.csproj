@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AIMS_BD_IATI.DAL</RootNamespace>
     <AssemblyName>AIMS_BD_IATI.DAL</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>55b1e67a</NuGetPackageImportStamp>
     <TargetFrameworkProfile />

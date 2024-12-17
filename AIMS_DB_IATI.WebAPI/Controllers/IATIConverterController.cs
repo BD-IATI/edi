@@ -32,7 +32,7 @@ namespace AIMS_BD_IATI.WebAPI.Controllers
 
             try
             {
-                activitiesURL = "http://datastore.iatistandard.org/api/1/access/activity.xml?recipient-country=" + country + "&reporting-org=" + org + "&stream=True";
+                activitiesURL = Common.iati_url + "recipient-country=" + country + "&reporting-org=" + org + "&stream=True";
                 //Parser v2.01
                 parserIATI = new ParserIATIv2();
 
