@@ -38,7 +38,10 @@ namespace AIMS_BD_IATI.Test
 
         private void StartDriver()
         {
-            driver = new ChromeDriver();
+            var options = new ChromeOptions();
+            options.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+
+            driver = new ChromeDriver(options);
             opt = driver.Manage();
             timeouts = opt.Timeouts();
             timeouts.ImplicitWait = TimeSpan.FromSeconds(10);
