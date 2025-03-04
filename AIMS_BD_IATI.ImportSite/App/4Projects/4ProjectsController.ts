@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Modules/authentication/definitions.d.ts" />
-/// <reference path="../IatiImportApp.ts" />
+/// <reference path="../IATIImportApp.ts" />
 
 
 angular.module('iatiDataImporter').controller("4ProjectsController", function ($rootScope: RootScopeModel, $scope, $http, $timeout) {
