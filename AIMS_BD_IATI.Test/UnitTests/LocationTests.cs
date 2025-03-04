@@ -37,7 +37,7 @@ namespace AIMS_BD_IATI.Test
 
             var nearestGeoLocation = AimsDAL.GetNearestGeoLocation(districts, location);
 
-            Assert.AreEqual("Chittagong", nearestGeoLocation.Name);
+            Assert.AreEqual("Chattogram", nearestGeoLocation.Name);
         }
 
         [TestMethod]
